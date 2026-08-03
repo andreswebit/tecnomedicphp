@@ -138,6 +138,24 @@ function get_ocupados(string $fecha): array {
     return $conteo;
 }
 
+// Igual que get_ocupados(), pero sin contar el propio turno que se está
+// editando (para poder validar disponibilidad al modificar sin que el
+// turno se bloquee a sí mismo).
+function get_ocupados_excluyendo(string $fecha, int $idExcluir): array {
+    global $HORARIOS;
+    $conteo = array_fill_keys($HORARIOS, 0);
+    $st = db()->prepare("SELECT id, hora, estado FROM tm_turnos WHERE fecha=?");
+    $st->bind_param('s', $fecha);
+    $st->execute();
+    foreach ($st->get_result()->fetch_all(MYSQLI_ASSOC) as $r) {
+        if ((int)$r['id'] === $idExcluir) continue;
+        if (strtolower($r['estado']) === 'cancelado') continue;
+        $h = trim($r['hora']);
+        if (isset($conteo[$h])) $conteo[$h]++;
+    }
+    return $conteo;
+}
+
 // ── CRUD Sesiones Bot ───────────────────────────────────────────
 
 function get_sesion(string $phone): array {

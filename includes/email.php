@@ -114,3 +114,13 @@ function email_recordatorio(string $nombre, string $email, string $fecha, string
     );
     return enviar_email($email, '🔔 Recordatorio: tu turno en TECNOMEDIC es mañana', $txt, $html);
 }
+
+function email_cancelacion(string $nombre, string $email, string $fecha, string $hora): bool {
+    $txt = "Hola $nombre,\n\nTu turno fue CANCELADO.\n\nFecha: $fecha\nHora: {$hora}hs\n\nSi querés sacar un nuevo turno, escribinos o llamá al (3794) 34-9278.\n\nTECNOMEDIC";
+    $html = _html_email('❌ Turno Cancelado', $nombre,
+        "<p style='color:#475569;font-size:14px;line-height:1.7;'>Te confirmamos que tu turno fue <strong style='color:#c94f4f;'>cancelado</strong>.</p>"
+        . _bloque_turno($fecha, $hora)
+        . "<p style='color:#64748b;font-size:13px;'>Si querés sacar un nuevo turno, escribinos o llamá al 📞 (3794) 34-9278.</p>"
+    );
+    return enviar_email($email, '❌ Turno cancelado – TECNOMEDIC', $txt, $html);
+}

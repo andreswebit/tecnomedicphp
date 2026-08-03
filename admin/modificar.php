@@ -29,6 +29,21 @@ $d = [
 ];
 
 if ($id) {
+    // ── Validar que el horario nuevo tenga lugar (evita duplicar/pisar turnos) ──
+    if (in_array($d['estado'], ['Pendiente', 'Confirmado'], true)) {
+        $ocupados = get_ocupados_excluyendo($d['fecha'], $id);
+        $max      = MAX_POR_HORARIO;
+        $actual   = $ocupados[$d['hora']] ?? 0;
+        if (!in_array($d['hora'], $GLOBALS['HORARIOS'], true)) {
+            header('Location: ' . BASE_URL . '/admin/index.php?error=horario_invalido');
+            exit;
+        }
+        if ($actual >= $max) {
+            header('Location: ' . BASE_URL . '/admin/index.php?error=sin_lugar');
+            exit;
+        }
+    }
+
     modificar_turno($id, $d);
 
     $nombreCompleto = trim($d['nombre'] . ' ' . $d['apellido']);
@@ -58,6 +73,8 @@ if ($id) {
         } catch (Throwable $e) { error_log('Error WA modificacion: ' . $e->getMessage()); }
 
     } elseif ($d['estado'] === 'Cancelado') {
+        try { email_cancelacion($nombreCompleto, $d['email'], $d['fecha'], $d['hora']); }
+        catch (Throwable $e) { error_log('Error email cancelacion: ' . $e->getMessage()); }
         try {
             enviar_whatsapp($d['telefono'],
                 "TECNOMEDIC - Turno cancelado\n\n" .

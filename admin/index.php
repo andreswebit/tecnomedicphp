@@ -433,6 +433,8 @@ foreach ($turnos as $t) {
 
     <!-- Toast guardado -->
     <div id="toast-ok">✅ &nbsp;Guardado exitosamente</div>
+    <!-- Toast error -->
+    <div id="toast-error" style="display:none;position:fixed;bottom:24px;right:24px;background:#c94f4f;color:#fff;padding:14px 22px;border-radius:10px;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2);"></div>
 
     <script>
     // ── Datos para el calendario ──────────────────────────────────
@@ -737,6 +739,18 @@ foreach ($turnos as $t) {
             setTimeout(function() {
                 t.classList.remove('show');
             }, 3000);
+            history.replaceState({}, '', window.location.pathname);
+        }
+        var err = new URLSearchParams(window.location.search).get('error');
+        if (err) {
+            var mensajes = {
+                'sin_lugar': '⚠️ No se pudo modificar: ese horario ya no tiene lugares disponibles.',
+                'horario_invalido': '⚠️ No se pudo modificar: horario inválido.'
+            };
+            var te = document.getElementById('toast-error');
+            te.textContent = mensajes[err] || '⚠️ No se pudo guardar el cambio.';
+            te.style.display = 'block';
+            setTimeout(function() { te.style.display = 'none'; }, 4000);
             history.replaceState({}, '', window.location.pathname);
         }
     })();
