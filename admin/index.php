@@ -399,7 +399,9 @@ foreach ($turnos as $t) {
                     <div class="edit-group">
                         <div class="edit-label">🕐 Hora</div>
                         <div class="edit-input-wrap">
-                            <input class="edit-input" type="time" name="hora" id="edit-hora" required>
+                            <select class="edit-input" name="hora" id="edit-hora" required>
+                                <option value="">Elegí una fecha primero</option>
+                            </select>
                         </div>
                     </div>
                     <div class="edit-group full">
@@ -561,6 +563,48 @@ foreach ($turnos as $t) {
     });
 
     // ── Modal edición ─────────────────────────────────────────────
+    var editHoraActual = ''; // guarda la hora original del turno que se está editando
+
+    function cargarHorariosEdit(fechaISO) {
+        var sel = document.getElementById('edit-hora');
+        if (!fechaISO) {
+            sel.innerHTML = '<option value="">Elegí una fecha primero</option>';
+            return;
+        }
+        sel.innerHTML = '<option value="">Cargando horarios…</option>';
+        fetch('<?= $base ?>/api/horarios.php?fecha=' + fechaISO)
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                sel.innerHTML = '';
+                if (!data.slots) {
+                    sel.innerHTML = '<option value="">No se pudieron cargar los horarios</option>';
+                    return;
+                }
+                data.slots.forEach(function(s) {
+                    var esElActual = s.hora === editHoraActual;
+                    var opt = document.createElement('option');
+                    opt.value = s.hora;
+                    if (esElActual) {
+                        opt.textContent = s.hora + ' (horario actual de este turno)';
+                    } else if (s.disponible) {
+                        opt.textContent = s.hora + ' — ' + s.libres + ' lugar(es) libre(s)';
+                    } else {
+                        opt.textContent = s.hora + ' — sin lugar';
+                        opt.disabled = true;
+                    }
+                    if (esElActual) opt.selected = true;
+                    sel.appendChild(opt);
+                });
+            })
+            .catch(function() {
+                sel.innerHTML = '<option value="">Error al cargar horarios</option>';
+            });
+    }
+
+    document.getElementById('edit-fecha').addEventListener('change', function() {
+        cargarHorariosEdit(this.value);
+    });
+
     function openEdit(id, nombre, apellido, dni, obraSocial, telefono, email, fecha, hora, estado) {
         document.getElementById('edit-row').value = id;
         document.getElementById('edit-nombre').value = nombre;
@@ -568,8 +612,8 @@ foreach ($turnos as $t) {
         document.getElementById('edit-dni').value = dni;
         document.getElementById('edit-telefono').value = telefono;
         document.getElementById('edit-email').value = email;
-        document.getElementById('edit-hora').value = hora;
         document.getElementById('edit-estado').value = estado;
+        editHoraActual = hora;
 
         var osSelect = document.getElementById('edit-os');
         var found = false;
@@ -589,6 +633,7 @@ foreach ($turnos as $t) {
                 fecha = p[2] + '-' + p[1].padStart(2, '0') + '-' + p[0].padStart(2, '0');
         }
         document.getElementById('edit-fecha').value = fecha;
+        cargarHorariosEdit(fecha);
 
         document.getElementById('editModal').classList.add('open');
     }
@@ -745,7 +790,8 @@ foreach ($turnos as $t) {
         if (err) {
             var mensajes = {
                 'sin_lugar': '⚠️ No se pudo modificar: ese horario ya no tiene lugares disponibles.',
-                'horario_invalido': '⚠️ No se pudo modificar: horario inválido.'
+                'horario_invalido': '⚠️ No se pudo modificar: horario inválido.',
+                'fecha_invalida': '⚠️ No se pudo modificar: la fecha ingresada no es válida.'
             };
             var te = document.getElementById('toast-error');
             te.textContent = mensajes[err] || '⚠️ No se pudo guardar el cambio.';

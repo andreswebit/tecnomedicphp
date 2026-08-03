@@ -11,9 +11,17 @@ $fecha_raw = trim($_POST['fecha'] ?? '');
 if (strpos($fecha_raw, '-') !== false) {
     // viene de <input type=date> como YYYY-MM-DD -> convertir a DD/MM/YYYY
     $dt    = DateTime::createFromFormat('Y-m-d', $fecha_raw);
-    $fecha = $dt ? $dt->format('d/m/Y') : $fecha_raw;
+    if (!$dt) {
+        header('Location: ' . BASE_URL . '/admin/index.php?error=fecha_invalida');
+        exit;
+    }
+    $fecha = $dt->format('d/m/Y');
 } else {
     $fecha = $fecha_raw; // ya viene en DD/MM/YYYY
+}
+if (!preg_match('#^\d{2}/\d{2}/\d{4}$#', $fecha)) {
+    header('Location: ' . BASE_URL . '/admin/index.php?error=fecha_invalida');
+    exit;
 }
 
 $d = [
