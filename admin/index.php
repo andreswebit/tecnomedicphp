@@ -1,0 +1,747 @@
+<?php
+require_once __DIR__ . '/../includes/db.php';
+require_once __DIR__ . '/../includes/auth.php';
+requiere_login();
+
+$base   = BASE_URL;
+$turnos = get_turnos();
+$total       = count($turnos);
+$confirmados = 0;
+$pendientes  = 0;
+foreach ($turnos as $t) {
+    if ($t['estado'] === 'Confirmado') $confirmados++;
+    if ($t['estado'] === 'Pendiente')  $pendientes++;
+}
+?>
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard – TECNOMEDIC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="<?= $base ?>/static/tecnomedic.css">
+</head>
+
+<body class="page-admin">
+
+    <!-- Cabecera de impresión -->
+    <div class="print-header">
+        <h2>TECNOMEDIC – Planilla de Turnos</h2>
+        <p>Impreso el <span id="printDate"></span></p>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <div class="wrapper">
+
+        <!-- ── SIDEBAR ─────────────────────────────────────────── -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <a href="<?= HOME_URL ?>/">
+                    <img src="<?= $base ?>/static/img/tecno-logo.jpeg" alt="TECNOMEDIC" class="logo-img">
+                </a>
+            </div>
+            <div class="sidebar-sub">Panel de Control</div>
+
+            <div class="nav-label">Menú</div>
+            <a href="<?= HOME_URL ?>/" class="nav-item"><span>🏠</span><span>Inicio</span></a>
+            <a href="<?= $base ?>/admin/index.php" class="nav-item active"><span>📋</span><span>Turnos</span></a>
+            <a href="<?= $base ?>/turnos.php" class="nav-item"><span>➕</span><span>Nuevo Turno</span></a>
+
+            <div class="sidebar-carousel" id="sidebarCarousel">
+                <div class="carousel-slide active">
+                    <img src="<?= $base ?>/static/img/fondo1.JPG" alt="">
+                </div>
+                <div class="carousel-slide">
+                    <img src="<?= $base ?>/static/img/fondo2.jfif" alt="">
+                </div>
+                <div class="carousel-slide">
+                    <img src="<?= $base ?>/static/img/fondo3.webp" alt="">
+                </div>
+            </div>
+            <div class="sidebar-footer">
+                <div style="margin-bottom:12px;">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Sistema activo</span>
+                </div>
+                <a href="<?= $base ?>/admin/logout.php"
+                    style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--g100);text-decoration:none;transition:color .2s;"
+                    onmouseover="this.style.color='var(--amber)'" onmouseout="this.style.color='var(--g100)'">
+                    <span>🚪</span><span>Cerrar sesión</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ── MAIN ────────────────────────────────────────────── -->
+        <div class="main">
+
+            <!-- Topbar -->
+            <div class="topbar">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <button class="hamburger-btn" onclick="toggleSidebar()">
+                        <span></span><span></span><span></span>
+                    </button>
+                    <div class="page-title">Gestión de <span>Turnos</span></div>
+                    <div class="chip">Camara Hiperbarica</div>
+                </div>
+
+                <div class="topbar-right">
+                    <button class="btn-refresh" id="btnRefresh" onclick="refreshTable()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <polyline points="23 4 23 10 17 10" />
+                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                        </svg>
+                        Actualizar
+                    </button>
+
+                    <div class="view-toggle">
+                        <button class="toggle-btn active" id="btnTable" onclick="switchView('table')">📋 Lista</button>
+                        <button class="toggle-btn" id="btnCal" onclick="switchView('calendar')">📅 Calendario</button>
+                    </div>
+                    <button class="btn-print" onclick="printSheet()">🖨 Imprimir</button>
+                </div>
+            </div>
+
+            <!-- Estadísticas -->
+            <div class="stats">
+                <div class="stat-card blue">
+                    <div class="stat-label">Total Turnos</div>
+                    <div class="stat-value" style="text-align: end;"><?= $total ?></div>
+                    <div class="stat-sub">registrados</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-label">Confirmados</div>
+                    <div class="stat-value" style="text-align: end;"><?= $confirmados ?></div>
+                    <div class="stat-sub">listos</div>
+                </div>
+                <div class="stat-card amber">
+                    <div class="stat-label">Pendientes</div>
+                    <div class="stat-value" style="text-align: end;"><?= $pendientes ?></div>
+                    <div class="stat-sub">por confirmar</div>
+                </div>
+            </div>
+
+            <!-- Vista tabla -->
+            <div id="tableView" class="active">
+                <div class="table-card">
+                    <div class="table-header">
+                        <div class="table-title">Lista de turnos</div>
+                        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                            <div class="search-wrap">
+                                <span class="search-icon">🔍</span>
+                                <input type="text" id="searchInput" placeholder="Buscar paciente…">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-wrap">
+                        <table id="turnosTable">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" data-col="0">Paciente<span class="sort-icon"></span></th>
+                                    <th class="sortable" data-col="1">Teléfono<span class="sort-icon"></span></th>
+                                    <th class="sortable" data-col="2">Email<span class="sort-icon"></span></th>
+                                    <th class="sortable" data-col="3">Fecha<span class="sort-icon"></span></th>
+                                    <th class="sortable" data-col="4">Hora<span class="sort-icon"></span></th>
+                                    <th class="estado-col">Estado</th>
+                                    <th class="actions-col">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($turnos as $t): ?>
+                                <tr>
+                                    <!-- Paciente -->
+                                    <td class="paciente-cell">
+                                        <div class="pac-nombre">
+                                            <?= htmlspecialchars($t['nombre'] . ' ' . $t['apellido']) ?>
+                                        </div>
+                                        <?php if (!empty($t['dni'])): ?>
+                                        <div class="pac-dni">DNI <?= htmlspecialchars($t['dni']) ?></div>
+                                        <?php endif; ?>
+                                        <?php if (!empty($t['obra_social'])): ?>
+                                        <div class="pac-os">🏥 <?= htmlspecialchars($t['obra_social']) ?></div>
+                                        <?php endif; ?>
+                                    </td>
+
+                                    <td class="phone-cell"><?= htmlspecialchars($t['telefono']) ?></td>
+                                    <td class="email-cell"><?= htmlspecialchars($t['email']) ?></td>
+                                    <td class="date-cell"><?= htmlspecialchars($t['fecha']) ?></td>
+                                    <td class="date-cell"><?= htmlspecialchars($t['hora']) ?></td>
+
+                                    <!-- Estado -->
+                                    <td class="estado-col">
+                                        <select name="estado" class="select-estado" id="estado-<?= $t['id'] ?>"
+                                            title="Cambiá el estado y presioná Guardar">
+                                            <option <?= $t['estado'] === 'Pendiente'  ? 'selected' : '' ?>>Pendiente
+                                            </option>
+                                            <option <?= $t['estado'] === 'Confirmado' ? 'selected' : '' ?>>Confirmado
+                                            </option>
+                                            <option <?= $t['estado'] === 'Cancelado'  ? 'selected' : '' ?>>Cancelado
+                                            </option>
+                                        </select>
+                                    </td>
+
+                                    <!-- Acciones -->
+                                    <td class="actions-col">
+                                        <div class="btn-actions">
+
+                                            <!-- Guardar estado -->
+                                            <form action="<?= $base ?>/admin/actualizar.php" method="post"
+                                                style="flex:1;" id="form-estado-<?= $t['id'] ?>">
+                                                <input type="hidden" name="id" value="<?= $t['id'] ?>">
+                                                <input type="hidden" name="estado" id="hidden-estado-<?= $t['id'] ?>"
+                                                    value="<?= htmlspecialchars($t['estado']) ?>">
+                                                <button type="submit" class="btn-action btn-save" style="width:100%;"
+                                                    data-tooltip="Guardar y notificar "
+                                                    onclick="document.getElementById('hidden-estado-<?= $t['id'] ?>').value=document.getElementById('estado-<?= $t['id'] ?>').value">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="bi bi-floppy2-fill"
+                                                        viewBox="0 0 16 16">
+                                                        <path d="M12 2h-2v3h2z" />
+                                                        <path
+                                                            d="M1.5 0A1.5 1.5 0 0 0 0 1.5v13A1.5 1.5 0 0 0 1.5 16h13a1.5 1.5 0 0 0 1.5-1.5V2.914a1.5 1.5 0 0 0-.44-1.06L14.147.439A1.5 1.5 0 0 0 13.086 0zM4 6a1 1 0 0 1-1-1V1h10v4a1 1 0 0 1-1 1zM3 9h10a1 1 0 0 1 1 1v5H2v-5a1 1 0 0 1 1-1" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+
+                                            <!-- Editar -->
+                                            <button class="btn-action btn-mod" data-tooltip="Editar " onclick="openEdit(
+                                                    <?= $t['id'] ?>,
+                                                    '<?= htmlspecialchars($t['nombre'], ENT_QUOTES) ?>',
+                                                    '<?= htmlspecialchars($t['apellido'], ENT_QUOTES) ?>',
+                                                    '<?= htmlspecialchars($t['dni'], ENT_QUOTES) ?>',
+                                                    '<?= htmlspecialchars($t['obra_social'], ENT_QUOTES) ?>',
+                                                    '<?= htmlspecialchars($t['telefono'], ENT_QUOTES) ?>',
+                                                    '<?= htmlspecialchars($t['email'], ENT_QUOTES) ?>',
+                                                    '<?= htmlspecialchars($t['fecha'], ENT_QUOTES) ?>',
+                                                    '<?= htmlspecialchars($t['hora'], ENT_QUOTES) ?>',
+                                                    '<?= htmlspecialchars($t['estado'], ENT_QUOTES) ?>'
+                                                )">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
+                                                </svg>
+                                            </button>
+
+                                            <!-- Imprimir -->
+                                            <button class="btn-action btn-print-turn" data-tooltip="Imprimir" onclick="printTurn(
+                                                    '<?= htmlspecialchars($t['nombre'] . ' ' . $t['apellido'], ENT_QUOTES) ?>',
+                                                    '<?= htmlspecialchars($t['telefono'], ENT_QUOTES) ?>',
+                                                    '<?= htmlspecialchars($t['email'], ENT_QUOTES) ?>',
+                                                    '<?= htmlspecialchars($t['fecha'], ENT_QUOTES) ?>',
+                                                    '<?= htmlspecialchars($t['hora'], ENT_QUOTES) ?>',
+                                                    '<?= htmlspecialchars($t['estado'], ENT_QUOTES) ?>'
+                                                )">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1" />
+                                                    <path
+                                                        d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                                                </svg>
+                                            </button>
+
+                                            <!-- Eliminar -->
+                                            <form action="<?= $base ?>/admin/eliminar.php" method="post" style="flex:1;"
+                                                onsubmit="return confirm('¿Eliminar este turno?\nEsta acción no se puede deshacer.')">
+                                                <input type="hidden" name="id" value="<?= $t['id'] ?>">
+                                                <button type="submit" class="btn-action btn-del" data-tooltip="Eliminar"
+                                                    style="width:100%;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                        <path
+                                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                        <path
+                                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                                    </svg>
+                                                </button>
+                                            </form>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                        <?php if (empty($turnos)): ?>
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📭</div>
+                            <div>No hay turnos registrados aún.</div>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vista calendario -->
+            <div id="calendarView">
+                <div class="calendar-card">
+                    <div class="cal-header">
+                        <div class="cal-nav">
+                            <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
+                            <div class="cal-month-label" id="calMonthLabel"></div>
+                            <button class="cal-nav-btn" onclick="changeMonth(1)">›</button>
+                        </div>
+                        <div class="cal-legend">
+                            <div class="legend-item">
+                                <div class="legend-dot confirmed"></div>Confirmado
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-dot pending"></div>Pendiente
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cal-grid">
+                        <div class="cal-weekdays">
+                            <div class="cal-weekday">Dom</div>
+                            <div class="cal-weekday">Lun</div>
+                            <div class="cal-weekday">Mar</div>
+                            <div class="cal-weekday">Mié</div>
+                            <div class="cal-weekday">Jue</div>
+                            <div class="cal-weekday">Vie</div>
+                            <div class="cal-weekday">Sáb</div>
+                        </div>
+                        <div class="cal-days" id="calDays"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /.main -->
+    </div><!-- /.wrapper -->
+
+    <!-- Ticket impresión individual -->
+    <div id="turnTicket">
+        <img src="<?= $base ?>/static/img/tecno-logo.jpeg"
+            style="height:44px;width:auto;margin-bottom:6px;display:block;" alt="TECNOMEDIC">
+        <div class="ticket-sub">Centro de Salud · Cámara Hiperbárica</div>
+        <div class="ticket-title">Comprobante de Turno</div>
+        <div class="ticket-grid">
+            <div class="ticket-field"><label>Paciente</label><span id="tk-nombre"></span></div>
+            <div class="ticket-field"><label>Teléfono</label><span id="tk-telefono"></span></div>
+            <div class="ticket-field"><label>Fecha</label><span id="tk-fecha"></span></div>
+            <div class="ticket-field"><label>Hora</label><span id="tk-hora"></span></div>
+            <div class="ticket-field"><label>Email</label><span id="tk-email"></span></div>
+            <div class="ticket-field"><label>Estado</label><span id="tk-estado"></span></div>
+        </div>
+        <div class="ticket-note">Presentar este comprobante · TECNOMEDIC · (3794) 34-9278</div>
+    </div>
+
+    <!-- Modal edición -->
+    <div class="edit-modal-overlay" id="editModal" onclick="closeEditBg(event)">
+        <div class="edit-modal">
+            <div class="edit-modal-header">
+                <div class="edit-modal-title">✏️ <span>Modificar</span> turno</div>
+                <button class="edit-modal-close" onclick="closeEdit()">❌</button>
+            </div>
+            <form action="<?= $base ?>/admin/modificar.php" method="post">
+                <input type="hidden" name="id" id="edit-row">
+                <div class="edit-grid">
+                    <div class="edit-group">
+                        <div class="edit-label">👤 Nombre</div>
+                        <div class="edit-input-wrap">
+                            <input class="edit-input" type="text" name="nombre" id="edit-nombre" required>
+                        </div>
+                    </div>
+                    <div class="edit-group">
+                        <div class="edit-label"> 👤 Apellido</div>
+                        <div class="edit-input-wrap">
+                            <input class="edit-input" type="text" name="apellido" id="edit-apellido" required>
+                        </div>
+                    </div>
+                    <div class="edit-group">
+                        <div class="edit-label">🪪 DNI <span style="font-size:10px;color:var(--muted)">(opcional)</span>
+                        </div>
+                        <div class="edit-input-wrap">
+                            <input class="edit-input" type="text" name="dni" id="edit-dni">
+                        </div>
+                    </div>
+                    <div class="edit-group">
+                        <div class="edit-label">Obra social</div>
+                        <select class="edit-input" name="obra_social" id="edit-os"
+                            style="padding:12px 14px;cursor:pointer;background:var(--green-dk);color:#fff; font-weight:600; letter-spacing: 1px">
+                            <option value="">-- Seleccioná --</option>
+                            <option value="Particular">Particular</option>
+                            <option value="PAMI">PAMI</option>
+                            <option value="IOSCOR">IOSCOR</option>
+                            <option value="OSDE">OSDE</option>
+                            <option value="Swiss Medical">Swiss Medical</option>
+                            <option value="Galeno">Galeno</option>
+                            <option value="Medifé">Medifé</option>
+                            <option value="OSECAC">OSECAC</option>
+                            <option value="OSPAT">OSPAT</option>
+                            <option value="IOMA">IOMA</option>
+                            <option value="Otra">Otra</option>
+                        </select>
+                    </div>
+                    <div class="edit-group">
+                        <div class="edit-label"> 📱 Teléfono</div>
+                        <div class="edit-input-wrap">
+                            <input class="edit-input" type="tel" name="telefono" id="edit-telefono" required>
+                        </div>
+                    </div>
+                    <div class="edit-group">
+                        <div class="edit-label">✉ Email</div>
+                        <div class="edit-input-wrap">
+                            <input class="edit-input" type="email" name="email" id="edit-email" required>
+                        </div>
+                    </div>
+                    <div class="edit-group">
+                        <div class="edit-label"> 📅 Fecha</div>
+                        <div class="edit-input-wrap">
+                            <input class="edit-input" type="date" name="fecha" id="edit-fecha" required>
+                        </div>
+                    </div>
+                    <div class="edit-group">
+                        <div class="edit-label">🕐 Hora</div>
+                        <div class="edit-input-wrap">
+                            <input class="edit-input" type="time" name="hora" id="edit-hora" required>
+                        </div>
+                    </div>
+                    <div class="edit-group full">
+                        <div class="edit-label">Estado</div>
+                        <select class="select-estado" name="estado" id="edit-estado">
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="Confirmado">Confirmado</option>
+                            <option value="Cancelado">Cancelado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="edit-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeEdit()">Cancelar</button>
+                    <button type="submit" class="btn-edit-save">💾 &nbsp;Guardar </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal calendario -->
+    <div class="modal-overlay" id="modal" onclick="closeModalBg(event)">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle"></div>
+                <button class="modal-close"
+                    onclick="document.getElementById('modal').classList.remove('open')">✕</button>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Toast guardado -->
+    <div id="toast-ok">✅ &nbsp;Guardado exitosamente</div>
+
+    <script>
+    // ── Datos para el calendario ──────────────────────────────────
+    var TURNOS = <?= json_encode(array_map(function($t) {
+        return [
+            'nombre'   => $t['nombre'] . ' ' . $t['apellido'],
+            'telefono' => $t['telefono'],
+            'email'    => $t['email'],
+            'fecha'    => $t['fecha'],
+            'hora'     => $t['hora'],
+            'estado'   => $t['estado'],
+        ];
+    }, $turnos), JSON_UNESCAPED_UNICODE) ?>;
+
+    // ── Sidebar ───────────────────────────────────────────────────
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('open');
+        document.getElementById('sidebarOverlay').classList.toggle('open');
+    }
+
+    function closeSidebar() {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('sidebarOverlay').classList.remove('open');
+    }
+
+    // ── Carousel sidebar ──────────────────────────────────────────
+    (function() {
+        var slides = document.querySelectorAll('#sidebarCarousel .carousel-slide');
+        var idx = 0;
+        if (slides.length > 1) {
+            setInterval(function() {
+                slides[idx].classList.remove('active');
+                idx = (idx + 1) % slides.length;
+                slides[idx].classList.add('active');
+            }, 3500);
+        }
+    })();
+
+    // ── Vista toggle tabla / calendario ──────────────────────────
+    function switchView(v) {
+        document.getElementById('tableView').classList.toggle('active', v === 'table');
+        document.getElementById('calendarView').classList.toggle('active', v === 'calendar');
+        document.getElementById('btnTable').classList.toggle('active', v === 'table');
+        document.getElementById('btnCal').classList.toggle('active', v === 'calendar');
+        if (v === 'calendar') renderCalendar();
+    }
+
+    // ── Botón actualizar tabla ────────────────────────────────────
+    function refreshTable() {
+        var btn = document.getElementById('btnRefresh');
+        btn.classList.add('spinning');
+        btn.disabled = true;
+        setTimeout(function() {
+            window.location.reload();
+        }, 300);
+    }
+
+    // ── Búsqueda ──────────────────────────────────────────────────
+    document.getElementById('searchInput').addEventListener('input', function() {
+        var q = this.value.toLowerCase();
+        document.querySelectorAll('#turnosTable tbody tr').forEach(function(r) {
+            r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
+        });
+    });
+
+    // ── Ordenamiento de columnas ──────────────────────────────────
+    var sortState = {
+        col: -1,
+        dir: 'asc'
+    };
+
+    document.querySelectorAll('th.sortable').forEach(function(th) {
+        th.addEventListener('click', function() {
+            var col = parseInt(th.dataset.col);
+            var dir = (sortState.col === col && sortState.dir === 'asc') ? 'desc' : 'asc';
+            sortState = {
+                col: col,
+                dir: dir
+            };
+            document.querySelectorAll('th.sortable').forEach(function(h) {
+                h.classList.remove('asc', 'desc');
+            });
+            th.classList.add(dir);
+            sortTable(col, dir);
+        });
+    });
+
+    function sortTable(col, dir) {
+        var tbody = document.querySelector('#turnosTable tbody');
+        var rows = Array.from(tbody.querySelectorAll('tr'));
+        rows.sort(function(a, b) {
+            var aVal = getCellText(a, col);
+            var bVal = getCellText(b, col);
+            if (/^\d{2}\/\d{2}\/\d{4}$/.test(aVal)) {
+                var ap = aVal.split('/'),
+                    bp = bVal.split('/');
+                aVal = ap[2] + ap[1] + ap[0];
+                bVal = bp[2] + bp[1] + bp[0];
+            }
+            if (aVal < bVal) return dir === 'asc' ? -1 : 1;
+            if (aVal > bVal) return dir === 'asc' ? 1 : -1;
+            return 0;
+        });
+        rows.forEach(function(r) {
+            tbody.appendChild(r);
+        });
+    }
+
+    function getCellText(row, col) {
+        var cells = row.querySelectorAll('td');
+        if (!cells[col]) return '';
+        return cells[col].textContent.trim().toLowerCase();
+    }
+
+    // ── Animación de filas ────────────────────────────────────────
+    document.querySelectorAll('tbody tr').forEach(function(r, i) {
+        r.style.opacity = '0';
+        r.style.transform = 'translateX(-10px)';
+        r.style.transition = 'opacity .35s ease, transform .35s ease';
+        setTimeout(function() {
+            r.style.opacity = '1';
+            r.style.transform = 'translateX(0)';
+        }, 80 + i * 40);
+    });
+
+    // ── Modal edición ─────────────────────────────────────────────
+    function openEdit(id, nombre, apellido, dni, obraSocial, telefono, email, fecha, hora, estado) {
+        document.getElementById('edit-row').value = id;
+        document.getElementById('edit-nombre').value = nombre;
+        document.getElementById('edit-apellido').value = apellido;
+        document.getElementById('edit-dni').value = dni;
+        document.getElementById('edit-telefono').value = telefono;
+        document.getElementById('edit-email').value = email;
+        document.getElementById('edit-hora').value = hora;
+        document.getElementById('edit-estado').value = estado;
+
+        var osSelect = document.getElementById('edit-os');
+        var found = false;
+        for (var i = 0; i < osSelect.options.length; i++) {
+            if (osSelect.options[i].value === obraSocial) {
+                osSelect.value = obraSocial;
+                found = true;
+                break;
+            }
+        }
+        if (!found && obraSocial) osSelect.value = 'Otra';
+        if (!obraSocial) osSelect.value = '';
+
+        if (fecha && fecha.includes('/')) {
+            var p = fecha.split('/');
+            if (p.length === 3)
+                fecha = p[2] + '-' + p[1].padStart(2, '0') + '-' + p[0].padStart(2, '0');
+        }
+        document.getElementById('edit-fecha').value = fecha;
+
+        document.getElementById('editModal').classList.add('open');
+    }
+
+    function closeEdit() {
+        document.getElementById('editModal').classList.remove('open');
+    }
+
+    function closeEditBg(e) {
+        if (e.target === document.getElementById('editModal')) closeEdit();
+    }
+
+    // ── Imprimir turno individual ─────────────────────────────────
+    function printTurn(nombre, telefono, email, fecha, hora, estado) {
+        document.getElementById('tk-nombre').textContent = nombre;
+        document.getElementById('tk-telefono').textContent = telefono;
+        document.getElementById('tk-email').textContent = email;
+        document.getElementById('tk-fecha').textContent = fecha;
+        document.getElementById('tk-hora').textContent = hora;
+        document.getElementById('tk-estado').textContent = estado;
+        document.getElementById('turnTicket').style.display = 'block';
+        document.querySelector('.wrapper').style.display = 'none';
+        document.querySelector('.print-header').style.display = 'none';
+        window.print();
+        document.getElementById('turnTicket').style.display = 'none';
+        document.querySelector('.wrapper').style.display = 'flex';
+    }
+
+    function printSheet() {
+        document.getElementById('tableView').classList.add('active');
+        window.print();
+    }
+
+    // ── Calendario ────────────────────────────────────────────────
+    var MES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    var calDate = new Date();
+
+    function parseFecha(f) {
+        if (!f) return null;
+        if (f.includes('/')) {
+            var p = f.split('/');
+            return p.length === 3 ? new Date(+p[2], +p[1] - 1, +p[0]) : null;
+        }
+        if (f.includes('-')) {
+            var p = f.split('-');
+            return p[0].length === 4 ?
+                new Date(+p[0], +p[1] - 1, +p[2]) :
+                new Date(+p[2], +p[1] - 1, +p[0]);
+        }
+        return null;
+    }
+
+    function renderCalendar() {
+        var yr = calDate.getFullYear(),
+            mo = calDate.getMonth();
+        document.getElementById('calMonthLabel').textContent = MES[mo] + ' ' + yr;
+        var today = new Date();
+        var firstDay = new Date(yr, mo, 1).getDay();
+        var daysInM = new Date(yr, mo + 1, 0).getDate();
+        var map = {};
+        TURNOS.forEach(function(t) {
+            var d = parseFecha(t.fecha);
+            if (!d || d.getFullYear() !== yr || d.getMonth() !== mo) return;
+            var k = d.getDate();
+            if (!map[k]) map[k] = [];
+            map[k].push(t);
+        });
+        var html = '';
+        for (var i = 0; i < firstDay; i++) html += '<div class="cal-day empty"></div>';
+        for (var day = 1; day <= daysInM; day++) {
+            var turns = map[day] || [];
+            var isToday = today.getFullYear() === yr && today.getMonth() === mo && today.getDate() === day;
+            var cls = 'cal-day' + (isToday ? ' today' : '') + (turns.length ? ' has-turns' : '');
+            var chips = '';
+            turns.slice(0, 3).forEach(function(t) {
+                var s = t.estado === 'Confirmado' ? 'confirmed' : 'pending';
+                chips += '<span class="cal-turn-chip ' + s + '">' + t.hora + ' ' + t.nombre.split(' ')[0] +
+                    '</span>';
+            });
+            if (turns.length > 3) chips += '<div class="cal-more">+' + (turns.length - 3) + ' más</div>';
+            var oc = turns.length ? 'onclick="openDay(' + day + ',' + mo + ',' + yr + ')"' : '';
+            html += '<div class="' + cls + '" ' + oc + '><div class="cal-day-num">' + day + '</div>' + chips + '</div>';
+        }
+        document.getElementById('calDays').innerHTML = html;
+    }
+
+    function changeMonth(d) {
+        calDate.setMonth(calDate.getMonth() + d);
+        renderCalendar();
+    }
+
+    function openDay(day, mo, yr) {
+        var turns = TURNOS.filter(function(t) {
+            var d = parseFecha(t.fecha);
+            return d && d.getDate() === day && d.getMonth() === mo && d.getFullYear() === yr;
+        });
+        document.getElementById('modalTitle').textContent = day + ' de ' + MES[mo] + ' ' + yr;
+        var html = '';
+        if (!turns.length) html = '<p style="color:var(--muted);font-size:13px;">Sin turnos este día.</p>';
+        turns.forEach(function(t) {
+            var s = t.estado === 'Confirmado' ? 'confirmed' : 'pending';
+            var ico = t.estado === 'Confirmado' ? '✅' : '⏳';
+            html += '<div class="modal-turn">' +
+                '<div class="modal-turn-name">' + ico + ' ' + t.nombre + '</div>' +
+                '<div class="modal-turn-meta">' +
+                '<span>🕐 ' + t.hora + '</span>' +
+                '<span>📱 ' + t.telefono + '</span>' +
+                '<span class="badge ' + s + '" style="font-size:11px;padding:2px 8px;">' + t.estado +
+                '</span>' +
+                '</div></div>';
+        });
+        document.getElementById('modalBody').innerHTML = html;
+        document.getElementById('modal').classList.add('open');
+    }
+
+    function closeModalBg(e) {
+        if (e.target === document.getElementById('modal'))
+            document.getElementById('modal').classList.remove('open');
+    }
+
+    document.getElementById('printDate').textContent =
+        new Date().toLocaleDateString('es-AR', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        });
+
+    function colorearSelect(sel) {
+        sel.classList.remove('estado-pendiente', 'estado-confirmado', 'estado-cancelado');
+        var v = sel.value;
+        if (v === 'Pendiente') sel.classList.add('estado-pendiente');
+        if (v === 'Confirmado') sel.classList.add('estado-confirmado');
+        if (v === 'Cancelado') sel.classList.add('estado-cancelado');
+    }
+    document.querySelectorAll('.select-estado').forEach(function(sel) {
+        colorearSelect(sel);
+        sel.addEventListener('change', function() {
+            colorearSelect(this);
+        });
+    });
+
+    (function() {
+        if (new URLSearchParams(window.location.search).get('guardado') === '1') {
+            var t = document.getElementById('toast-ok');
+            t.classList.add('show');
+            setTimeout(function() {
+                t.classList.remove('show');
+            }, 3000);
+            history.replaceState({}, '', window.location.pathname);
+        }
+    })();
+    </script>
+
+</body>
+
+</html>

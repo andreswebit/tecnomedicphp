@@ -1,0 +1,17 @@
+# Variables de entorno con claves reales — NUNCA subir
+.env
+.env.production
+.env.local
+.env.*.local
+
+# Carpeta con datos sensibles / de trabajo interno
+/no subir/
+
+# Script de un solo uso para crear el primer admin del Portal
+crear_admin_temporal.php
+
+# Archivos de SO / editor
+.DS_Store
+Thumbs.db
+.vscode/
+*.log

@@ -1,0 +1,95 @@
+/* ── TECNOMEDIC · areas.css ─────────────────────────────────────
+   Complementa a home.css (que ya trae navbar, .btn, .container,
+   .section-label y las variables de color). Solo lo específico
+   de las landing pages de área va acá. */
+
+.area-breadcrumb {
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 14px 0;
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 78px; /* alto del navbar fijo */
+}
+.area-breadcrumb a { color: var(--teal); text-decoration: none; font-weight: 600; }
+.area-breadcrumb a:hover { text-decoration: underline; }
+.area-breadcrumb span { margin: 0 6px; color: #cbd5e1; }
+
+.area-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    padding: 64px 0;
+    text-align: center;
+}
+.area-hero-inner { max-width: 700px; margin: 0 auto; }
+.area-hero-icon {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 28px;
+    color: #fff;
+}
+.area-hero h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: clamp(28px, 4vw, 42px);
+    color: #fff;
+    margin-bottom: 16px;
+}
+.area-hero p {
+    color: rgba(255,255,255,.78);
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.area-section { padding: 64px 0; }
+.area-section-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+}
+@media (max-width: 768px) {
+    .area-section-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+.area-col .section-label { margin-bottom: 16px; }
+.area-list { list-style: none; padding: 0; margin: 0; }
+.area-list li {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #eef2f6;
+    color: var(--navy);
+    font-size: 15px;
+    line-height: 1.5;
+}
+.area-list li:last-child { border-bottom: none; }
+.area-list li i { color: var(--green); margin-top: 3px; flex-shrink: 0; }
+.area-nota {
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: #f8fafc;
+    border-left: 3px solid var(--teal);
+    border-radius: 8px;
+    font-size: 13px;
+    color: #64748b;
+    font-style: italic;
+}
+
+.area-cta {
+    background: #f8fafc;
+    padding: 56px 0;
+    text-align: center;
+}
+.area-cta-inner h2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: 26px;
+    color: var(--navy);
+    margin-bottom: 28px;
+}
+.area-cta-btns {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+}

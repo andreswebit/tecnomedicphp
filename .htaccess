@@ -1,0 +1,13 @@
+
+
+# Frena la herencia de reglas de rewrite del .htaccess padre (WordPress)
+RewriteEngine On
+RewriteBase /tecnomedic_php/
+
+# Servir archivos estáticos directo, sin pasar por ninguna reescritura
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# Tipos MIME correctos para video
+AddType video/mp4 .mp4
+AddType video/webm .webm
