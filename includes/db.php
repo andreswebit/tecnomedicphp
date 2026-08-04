@@ -53,11 +53,10 @@ $HORARIOS = ['08:30','09:45','11:00','16:30','17:45','19:00'];
 function db(): mysqli {
     static $conn = null;
     if ($conn === null) {
+        // Sin esto, mysqli falla en SILENCIO ante errores de SQL
+        // (INSERT/UPDATE que no se guardan sin ningún aviso).
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        if ($conn->connect_error) {
-            error_log('MySQL connect error: ' . $conn->connect_error);
-            die('Error de conexión a la base de datos.');
-        }
         $conn->set_charset(DB_CHARSET);
     }
     return $conn;
