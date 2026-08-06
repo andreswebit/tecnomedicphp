@@ -2,6 +2,22 @@
 require_once __DIR__ . '/db.php';
 
 function enviar_email(string $dest, string $asunto, string $txt, string $html = ''): bool {
+    // Modo local de desarrollo: en vez de llamar a Brevo, guarda el mail
+    // como un archivo .html para poder revisarlo sin depender de la API.
+    // Se activa poniendo MAIL_DRIVER=log en el .env (dejar sin definir,
+    // o MAIL_DRIVER=brevo, para el comportamiento normal con Brevo).
+    if (function_exists('env') && env('MAIL_DRIVER', 'brevo') === 'log') {
+        $carpeta = __DIR__ . '/../storage/mails_log';
+        if (!is_dir($carpeta)) mkdir($carpeta, 0777, true);
+        $archivo = $carpeta . '/' . date('Y-m-d_His') . '_' . preg_replace('/[^a-zA-Z0-9]/', '_', $dest) . '.html';
+        $contenido = "<h3>Para: " . htmlspecialchars($dest) . "</h3>"
+            . "<h3>Asunto: " . htmlspecialchars($asunto) . "</h3><hr>"
+            . ($html ?: '<pre>' . htmlspecialchars($txt) . '</pre>');
+        file_put_contents($archivo, $contenido);
+        error_log("Email (modo log, no enviado por Brevo) → $dest → guardado en $archivo");
+        return true;
+    }
+
     if (!BREVO_API_KEY) { error_log('BREVO_API_KEY no configurada'); return false; }
     $payload = [
         'sender'      => ['name' => MAIL_NAME, 'email' => MAIL_FROM],

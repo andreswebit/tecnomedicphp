@@ -67,7 +67,7 @@ function db(): mysqli {
 function get_turnos(): array {
     $r = db()->query(
         "SELECT id, nombre, apellido, dni, obra_social, telefono, email,
-                DATE_FORMAT(fecha, '%d/%m/%Y') AS fecha, hora, estado, creado_en
+                DATE_FORMAT(fecha, '%d/%m/%Y') AS fecha, TIME_FORMAT(hora, '%H:%i') AS hora, estado, creado_en
          FROM tm_turnos ORDER BY fecha, hora"
     );
     return $r ? $r->fetch_all(MYSQLI_ASSOC) : [];
@@ -76,7 +76,7 @@ function get_turnos(): array {
 function get_turno_by_id(int $id): ?array {
     $st = db()->prepare(
         "SELECT id, nombre, apellido, dni, obra_social, telefono, email,
-                DATE_FORMAT(fecha, '%d/%m/%Y') AS fecha, hora, estado, creado_en
+                DATE_FORMAT(fecha, '%d/%m/%Y') AS fecha, TIME_FORMAT(hora, '%H:%i') AS hora, estado, creado_en
          FROM tm_turnos WHERE id=?"
     );
     $st->bind_param('i', $id);
@@ -86,7 +86,7 @@ function get_turno_by_id(int $id): ?array {
 }
 
 function get_turnos_por_fecha(string $fecha): array {
-    $st = db()->prepare("SELECT hora, estado FROM tm_turnos WHERE fecha = STR_TO_DATE(?, '%d/%m/%Y')");
+    $st = db()->prepare("SELECT TIME_FORMAT(hora, '%H:%i') AS hora, estado FROM tm_turnos WHERE fecha = STR_TO_DATE(?, '%d/%m/%Y')");
     $st->bind_param('s', $fecha);
     $st->execute();
     return $st->get_result()->fetch_all(MYSQLI_ASSOC);
@@ -149,7 +149,7 @@ function get_ocupados(string $fecha): array {
 function get_ocupados_excluyendo(string $fecha, int $idExcluir): array {
     global $HORARIOS;
     $conteo = array_fill_keys($HORARIOS, 0);
-    $st = db()->prepare("SELECT id, hora, estado FROM tm_turnos WHERE fecha = STR_TO_DATE(?, '%d/%m/%Y')");
+    $st = db()->prepare("SELECT id, TIME_FORMAT(hora, '%H:%i') AS hora, estado FROM tm_turnos WHERE fecha = STR_TO_DATE(?, '%d/%m/%Y')");
     $st->bind_param('s', $fecha);
     $st->execute();
     foreach ($st->get_result()->fetch_all(MYSQLI_ASSOC) as $r) {
@@ -215,7 +215,7 @@ function buscar_turno_dni(string $dni): ?array {
     $dni = preg_replace('/\D/','',$dni);
     $st = db()->prepare(
         "SELECT id, nombre, apellido, dni, obra_social, telefono, email,
-                DATE_FORMAT(fecha, '%d/%m/%Y') AS fecha, hora, estado, creado_en
+                DATE_FORMAT(fecha, '%d/%m/%Y') AS fecha, TIME_FORMAT(hora, '%H:%i') AS hora, estado, creado_en
          FROM tm_turnos WHERE dni=? AND estado != 'Cancelado' LIMIT 1"
     );
     $st->bind_param('s', $dni);
