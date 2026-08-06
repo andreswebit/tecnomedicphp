@@ -10,6 +10,9 @@
 # Script de un solo uso para crear el primer admin del Portal
 crear_admin_temporal.php
 
+# Dependencias instaladas por Composer (se instalan con "composer install")
+/vendor/
+
 # Archivos de SO / editor
 .DS_Store
 Thumbs.db
