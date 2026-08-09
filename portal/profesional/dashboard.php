@@ -7,7 +7,7 @@ $perfilProf = perfil_profesional($user['id']);
 $pacientes = pacientes_de_profesional($user['id']);
 
 $portal_titulo = 'Mis pacientes · Mi Portal';
-require __DIR__ . '/../../portal/portal_header.php';
+require __DIR__ . '/../../includes/portal_header.php';
 ?>
 <div class="portal-card">
     <h2>Hola, <?= htmlspecialchars($user['nombre']) ?> 👋</h2>
@@ -23,7 +23,7 @@ require __DIR__ . '/../../portal/portal_header.php';
         <p>Todavía no tenés pacientes asignados. El administrador te asigna pacientes desde el panel.</p>
     <?php else: ?>
         <table class="portal-table">
-            <thead><tr><th>Nombre</th><th>DNI</th><th>Obra social</th><th>Teléfono</th><th>Área</th></tr></thead>
+            <thead><tr><th>Nombre</th><th>DNI</th><th>Obra social</th><th>Teléfono</th><th>Área</th><th></th></tr></thead>
             <tbody>
             <?php foreach ($pacientes as $p): ?>
                 <tr>
@@ -32,10 +32,11 @@ require __DIR__ . '/../../portal/portal_header.php';
                     <td><?= htmlspecialchars($p['obra_social'] ?? '-') ?></td>
                     <td><?= htmlspecialchars($p['telefono'] ?: '-') ?></td>
                     <td><?= htmlspecialchars($p['area'] ?? '-') ?></td>
+                    <td><button type="button" class="portal-btn secundario" style="padding:6px 12px;margin:0;" onclick="abrirFicha(<?= $p['id'] ?>)">📋 Ver ficha médica</button></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
         </table>
     <?php endif; ?>
 </div>
-<?php require __DIR__ . '/../../portal/portal_footer.php'; ?>
+<?php require __DIR__ . '/../../includes/portal_footer.php'; ?>

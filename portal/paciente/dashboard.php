@@ -16,6 +16,7 @@ require __DIR__ . '/../../includes/portal_header.php';
     <p><strong>Teléfono:</strong> <?= htmlspecialchars($user['telefono'] ?: '-') ?></p>
     <p><strong>Obra social:</strong> <?= htmlspecialchars($perfil['obra_social_nombre'] ?? '-') ?></p>
     <a href="<?= b('/portal/paciente/perfil.php') ?>" class="portal-btn secundario">Editar mis datos</a>
+    <button type="button" class="portal-btn" onclick="abrirFicha(<?= $user['id'] ?>)">📋 Mi ficha médica</button>
 </div>
 
 <div class="portal-card">

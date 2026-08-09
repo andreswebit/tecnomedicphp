@@ -155,8 +155,9 @@ require __DIR__ . '/../includes/portal_header.php';
                     <td><?= htmlspecialchars($a['paciente_apellido'] . ', ' . $a['paciente_nombre']) ?></td>
                     <td><?= htmlspecialchars($a['profesional_apellido'] . ', ' . $a['profesional_nombre']) ?></td>
                     <td><?= htmlspecialchars($a['area']) ?></td>
-                    <td>
-                        <form method="post" onsubmit="return confirm('¿Quitar esta asignación?');">
+                    <td style="white-space:nowrap;">
+                        <button type="button" class="portal-btn secundario" style="padding:4px 10px;margin:0;" onclick="abrirFicha(<?= $a['paciente_id'] ?>)">📋 Ficha</button>
+                        <form method="post" style="display:inline;" onsubmit="return confirm('¿Quitar esta asignación?');">
                             <input type="hidden" name="accion" value="desasignar">
                             <input type="hidden" name="asignacion_id" value="<?= $a['id'] ?>">
                             <button type="submit" class="portal-btn peligro" style="padding:4px 12px;margin:0;">Quitar</button>
@@ -169,4 +170,4 @@ require __DIR__ . '/../includes/portal_header.php';
     <?php endif; ?>
 </div>
 
-<?php require __DIR__ . '/../includes/portal_footer.php'; ?> 
+<?php require __DIR__ . '/../includes/portal_footer.php'; ?>

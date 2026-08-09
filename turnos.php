@@ -1,5 +1,4 @@
 <?php require_once __DIR__ . '/includes/db.php'; $base = BASE_URL; ?>
-
 <?php require_once __DIR__ . '/includes/db.php'; ?>
 <?php ini_set('display_errors', 1);
 error_reporting(E_ALL); ?>
