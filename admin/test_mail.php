@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../includes/email.php';
+requiere_login();
 
 $email="TU_EMAIL@gmail.com";
 
