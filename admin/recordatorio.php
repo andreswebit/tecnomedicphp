@@ -10,7 +10,7 @@ require_once __DIR__ . '/../includes/whatsapp.php';
 define('CRON_TOKEN', 'TM_CRON_2025');
 
 $es_cron   = isset($_GET['token']) && $_GET['token'] === CRON_TOKEN;
-$es_manual = !$es_cron && esta_logueado();
+$es_manual = !$es_cron && (esta_logueado() || portal_rol() === 'admin');
 
 if (!$es_cron && !$es_manual) {
     http_response_code(403);

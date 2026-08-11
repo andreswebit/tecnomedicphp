@@ -8,8 +8,9 @@ if (!$fecha_raw) { echo json_encode(['error'=>'fecha requerida']); exit; }
 $dt = DateTime::createFromFormat('Y-m-d', $fecha_raw);
 if (!$dt) { echo json_encode(['error'=>'formato inválido, usar YYYY-MM-DD']); exit; }
 
+$area = trim($_GET['area'] ?? '');
 $fecha = $dt->format('d/m/Y');
-$ocupados = get_ocupados($fecha);
+$ocupados = get_ocupados($fecha, $area);
 
 $slots = [];
 foreach ($GLOBALS['HORARIOS'] as $h) {

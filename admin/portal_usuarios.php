@@ -30,6 +30,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (Exception $e) {
             $error = $e->getMessage();
         }
+    } elseif ($accion === 'crear_admin') {
+        try {
+            usuario_crear_admin([
+                'nombre' => trim($_POST['nombre']),
+                'apellido' => trim($_POST['apellido']),
+                'email' => trim($_POST['email']),
+                'dni' => preg_replace('/\D/', '', $_POST['dni']),
+                'telefono' => trim($_POST['telefono'] ?? ''),
+                'password' => $_POST['password'],
+            ]);
+            $mensaje = 'Administrador creado con éxito.';
+        } catch (Exception $e) {
+            $error = $e->getMessage();
+        }
     } elseif ($accion === 'asignar') {
         asignar_paciente_profesional((int)$_POST['paciente_id'], (int)$_POST['profesional_id'], $_POST['area']);
         $mensaje = 'Asignación creada.';
@@ -111,6 +125,26 @@ require __DIR__ . '/../includes/portal_header.php';
         <label>Contraseña provisoria*</label>
         <input type="password" name="password" required>
         <button type="submit" class="portal-btn">Crear profesional</button>
+    </form>
+</div>
+
+<div class="portal-card">
+    <h2>Dar de alta otro administrador</h2>
+    <form class="portal-form" method="post">
+        <input type="hidden" name="accion" value="crear_admin">
+        <label>Nombre*</label>
+        <input type="text" name="nombre" required>
+        <label>Apellido*</label>
+        <input type="text" name="apellido" required>
+        <label>DNI*</label>
+        <input type="text" name="dni" required>
+        <label>Email*</label>
+        <input type="email" name="email" required>
+        <label>Teléfono</label>
+        <input type="text" name="telefono">
+        <label>Contraseña provisoria*</label>
+        <input type="password" name="password" required>
+        <button type="submit" class="portal-btn">Crear administrador</button>
     </form>
 </div>
 

@@ -1143,8 +1143,9 @@ body.login-box {
 
 .login-box {
   width: 100%;
-  max-width: auto;
+  max-width: 520px;
   animation: fadeUp 0.7s ease both;
+  box-sizing: border-box;
 }
 
 .login-logo {
@@ -1165,6 +1166,8 @@ body.login-box {
   padding: 36px 32px;
   backdrop-filter: blur(20px);
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+  
+  
 }
 
 .login-title {
@@ -1292,9 +1295,9 @@ body.login-box {
   letter-spacing: 0.05rem;
 }
 
-/* Fondo animado específico de la página de login */
+/* Fondo específico de la página de login  agregar una marca de agua en todo el fondo el logo una imgen etc*/
 body.login-box {
-  background: var(--g400);
+  background: var(--g100);
   
 }
 /* Cuadrados inferiores izquierda */

@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/auth.php';
-requiere_login();
+portal_require_role(['admin']);
 
 $base   = BASE_URL;
 $turnos = get_turnos();
@@ -48,7 +48,8 @@ foreach ($turnos as $t) {
             <div class="sidebar-sub">Panel de Control</div>
 
             <div class="nav-label">Menú</div>
-            <a href="<?= HOME_URL ?>/" class="nav-item"><span>🏠</span><span>Inicio</span></a>
+            <a href="<?= $base ?>/admin/tablero.php" class="nav-item"><span>🧭</span><span>Tablero</span></a>
+            <a href="<?= HOME_URL ?>/" class="nav-item"><span>🏠</span><span>Sitio público</span></a>
             <a href="<?= $base ?>/admin/index.php" class="nav-item active"><span>📋</span><span>Turnos</span></a>
             <a href="<?= $base ?>/turnos.php" class="nav-item"><span>➕</span><span>Nuevo Turno</span></a>
 
@@ -165,6 +166,14 @@ foreach ($turnos as $t) {
                                         <?php if (!empty($t['obra_social'])): ?>
                                         <div class="pac-os">🏥 <?= htmlspecialchars($t['obra_social']) ?></div>
                                         <?php endif; ?>
+                                        <?php
+                                        $areasNombres = [
+                                            'audiologia' => 'Audiología', 'hiperbarica' => 'Hiperbárica',
+                                            'nutricion' => 'Nutrición', 'ortopedia' => 'Ortopedia',
+                                            'equipamiento' => 'Equipamiento',
+                                        ];
+                                        ?>
+                                        <div class="pac-os">🩺 <?= htmlspecialchars($areasNombres[$t['area']] ?? $t['area'] ?? '-') ?></div>
                                     </td>
 
                                     <td class="phone-cell"><?= htmlspecialchars($t['telefono']) ?></td>
@@ -219,7 +228,8 @@ foreach ($turnos as $t) {
                                                     '<?= htmlspecialchars($t['email'], ENT_QUOTES) ?>',
                                                     '<?= htmlspecialchars($t['fecha'], ENT_QUOTES) ?>',
                                                     '<?= htmlspecialchars($t['hora'], ENT_QUOTES) ?>',
-                                                    '<?= htmlspecialchars($t['estado'], ENT_QUOTES) ?>'
+                                                    '<?= htmlspecialchars($t['estado'], ENT_QUOTES) ?>',
+                                                    '<?= htmlspecialchars($t['area'] ?? 'hiperbarica', ENT_QUOTES) ?>'
                                                 )">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
@@ -359,6 +369,17 @@ foreach ($turnos as $t) {
                         <div class="edit-input-wrap">
                             <input class="edit-input" type="text" name="dni" id="edit-dni">
                         </div>
+                    </div>
+                    <div class="edit-group">
+                        <div class="edit-label">🩺 Especialidad</div>
+                        <select class="edit-input" name="area" id="edit-area" required
+                            style="padding:12px 14px;cursor:pointer;background:var(--green-dk);color:#fff; font-weight:600; letter-spacing: 1px">
+                            <option value="audiologia">Audiología</option>
+                            <option value="hiperbarica">Medicina Hiperbárica</option>
+                            <option value="nutricion">Nutrición</option>
+                            <option value="ortopedia">Ortopedia y Rehabilitación</option>
+                            <option value="equipamiento">Equipamiento Médico y Quirúrgico</option>
+                        </select>
                     </div>
                     <div class="edit-group">
                         <div class="edit-label">Obra social</div>
@@ -567,12 +588,13 @@ foreach ($turnos as $t) {
 
     function cargarHorariosEdit(fechaISO) {
         var sel = document.getElementById('edit-hora');
+        var area = document.getElementById('edit-area').value;
         if (!fechaISO) {
             sel.innerHTML = '<option value="">Elegí una fecha primero</option>';
             return;
         }
         sel.innerHTML = '<option value="">Cargando horarios…</option>';
-        fetch('<?= $base ?>/api/horarios.php?fecha=' + fechaISO)
+        fetch('<?= $base ?>/api/horarios.php?fecha=' + fechaISO + '&area=' + encodeURIComponent(area))
             .then(function(r) { return r.json(); })
             .then(function(data) {
                 sel.innerHTML = '';
@@ -605,7 +627,12 @@ foreach ($turnos as $t) {
         cargarHorariosEdit(this.value);
     });
 
-    function openEdit(id, nombre, apellido, dni, obraSocial, telefono, email, fecha, hora, estado) {
+    document.getElementById('edit-area').addEventListener('change', function() {
+        var fechaActual = document.getElementById('edit-fecha').value;
+        if (fechaActual) cargarHorariosEdit(fechaActual);
+    });
+
+    function openEdit(id, nombre, apellido, dni, obraSocial, telefono, email, fecha, hora, estado, area) {
         document.getElementById('edit-row').value = id;
         document.getElementById('edit-nombre').value = nombre;
         document.getElementById('edit-apellido').value = apellido;
@@ -613,6 +640,7 @@ foreach ($turnos as $t) {
         document.getElementById('edit-telefono').value = telefono;
         document.getElementById('edit-email').value = email;
         document.getElementById('edit-estado').value = estado;
+        document.getElementById('edit-area').value = area || 'hiperbarica';
         editHoraActual = hora;
 
         var osSelect = document.getElementById('edit-os');

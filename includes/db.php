@@ -66,7 +66,7 @@ function db(): mysqli {
 
 function get_turnos(): array {
     $r = db()->query(
-        "SELECT id, nombre, apellido, dni, obra_social, telefono, email,
+        "SELECT id, nombre, apellido, dni, obra_social, area, telefono, email,
                 DATE_FORMAT(fecha, '%d/%m/%Y') AS fecha, TIME_FORMAT(hora, '%H:%i') AS hora, estado, creado_en
          FROM tm_turnos ORDER BY fecha, hora"
     );
@@ -75,7 +75,7 @@ function get_turnos(): array {
 
 function get_turno_by_id(int $id): ?array {
     $st = db()->prepare(
-        "SELECT id, nombre, apellido, dni, obra_social, telefono, email,
+        "SELECT id, nombre, apellido, dni, obra_social, area, telefono, email,
                 DATE_FORMAT(fecha, '%d/%m/%Y') AS fecha, TIME_FORMAT(hora, '%H:%i') AS hora, estado, creado_en
          FROM tm_turnos WHERE id=?"
     );
@@ -85,20 +85,26 @@ function get_turno_by_id(int $id): ?array {
     return $r ?: null;
 }
 
-function get_turnos_por_fecha(string $fecha): array {
-    $st = db()->prepare("SELECT TIME_FORMAT(hora, '%H:%i') AS hora, estado FROM tm_turnos WHERE fecha = STR_TO_DATE(?, '%d/%m/%Y')");
-    $st->bind_param('s', $fecha);
+function get_turnos_por_fecha(string $fecha, string $area = ''): array {
+    if ($area !== '') {
+        $st = db()->prepare("SELECT TIME_FORMAT(hora, '%H:%i') AS hora, estado FROM tm_turnos WHERE fecha = STR_TO_DATE(?, '%d/%m/%Y') AND area = ?");
+        $st->bind_param('ss', $fecha, $area);
+    } else {
+        $st = db()->prepare("SELECT TIME_FORMAT(hora, '%H:%i') AS hora, estado FROM tm_turnos WHERE fecha = STR_TO_DATE(?, '%d/%m/%Y')");
+        $st->bind_param('s', $fecha);
+    }
     $st->execute();
     return $st->get_result()->fetch_all(MYSQLI_ASSOC);
 }
 
 function crear_turno(array $d): int {
+    $area = $d['area'] ?? 'hiperbarica';
     $st = db()->prepare(
-        "INSERT INTO tm_turnos (nombre,apellido,dni,obra_social,telefono,email,fecha,hora,estado)
-        VALUES (?,?,?,?,?,?,STR_TO_DATE(?, '%d/%m/%Y'),?,'Pendiente')"
+        "INSERT INTO tm_turnos (nombre,apellido,dni,obra_social,area,telefono,email,fecha,hora,estado)
+        VALUES (?,?,?,?,?,?,?,STR_TO_DATE(?, '%d/%m/%Y'),?,'Pendiente')"
     );
-    $st->bind_param('ssssssss',
-        $d['nombre'],$d['apellido'],$d['dni'],$d['obra_social'],
+    $st->bind_param('sssssssss',
+        $d['nombre'],$d['apellido'],$d['dni'],$d['obra_social'],$area,
         $d['telefono'],$d['email'],$d['fecha'],$d['hora']
     );
     $st->execute();
@@ -115,12 +121,13 @@ function actualizar_estado(int $id, string $estado): void {
 }
 
 function modificar_turno(int $id, array $d): void {
+    $area = $d['area'] ?? 'hiperbarica';
     $st = db()->prepare(
-        "UPDATE tm_turnos SET nombre=?,apellido=?,dni=?,obra_social=?,
+        "UPDATE tm_turnos SET nombre=?,apellido=?,dni=?,obra_social=?,area=?,
         telefono=?,email=?,fecha=STR_TO_DATE(?, '%d/%m/%Y'),hora=?,estado=? WHERE id=?"
     );
-    $st->bind_param('sssssssssi',
-        $d['nombre'],$d['apellido'],$d['dni'],$d['obra_social'],
+    $st->bind_param('ssssssssssi',
+        $d['nombre'],$d['apellido'],$d['dni'],$d['obra_social'],$area,
         $d['telefono'],$d['email'],$d['fecha'],$d['hora'],$d['estado'],$id
     );
     $st->execute();
@@ -132,10 +139,10 @@ function eliminar_turno(int $id): void {
     $st->execute();
 }
 
-function get_ocupados(string $fecha): array {
+function get_ocupados(string $fecha, string $area = ''): array {
     global $HORARIOS;
     $conteo = array_fill_keys($HORARIOS, 0);
-    foreach (get_turnos_por_fecha($fecha) as $r) {
+    foreach (get_turnos_por_fecha($fecha, $area) as $r) {
         if (strtolower($r['estado']) === 'cancelado') continue;
         $h = trim($r['hora']);
         if (isset($conteo[$h])) $conteo[$h]++;
@@ -146,11 +153,16 @@ function get_ocupados(string $fecha): array {
 // Igual que get_ocupados(), pero sin contar el propio turno que se está
 // editando (para poder validar disponibilidad al modificar sin que el
 // turno se bloquee a sí mismo).
-function get_ocupados_excluyendo(string $fecha, int $idExcluir): array {
+function get_ocupados_excluyendo(string $fecha, int $idExcluir, string $area = ''): array {
     global $HORARIOS;
     $conteo = array_fill_keys($HORARIOS, 0);
-    $st = db()->prepare("SELECT id, TIME_FORMAT(hora, '%H:%i') AS hora, estado FROM tm_turnos WHERE fecha = STR_TO_DATE(?, '%d/%m/%Y')");
-    $st->bind_param('s', $fecha);
+    if ($area !== '') {
+        $st = db()->prepare("SELECT id, TIME_FORMAT(hora, '%H:%i') AS hora, estado FROM tm_turnos WHERE fecha = STR_TO_DATE(?, '%d/%m/%Y') AND area = ?");
+        $st->bind_param('ss', $fecha, $area);
+    } else {
+        $st = db()->prepare("SELECT id, TIME_FORMAT(hora, '%H:%i') AS hora, estado FROM tm_turnos WHERE fecha = STR_TO_DATE(?, '%d/%m/%Y')");
+        $st->bind_param('s', $fecha);
+    }
     $st->execute();
     foreach ($st->get_result()->fetch_all(MYSQLI_ASSOC) as $r) {
         if ((int)$r['id'] === $idExcluir) continue;

@@ -157,13 +157,25 @@ function _fh(?string $valor, string $fallback): string {
 
 // ── Emails específicos ──────────────────────────────────────────
 
+function _nombre_area(string $area): string {
+    $nombres = [
+        'audiologia'   => 'Audiología',
+        'hiperbarica'  => 'Medicina Hiperbárica',
+        'nutricion'    => 'Nutrición',
+        'ortopedia'    => 'Ortopedia y Rehabilitación',
+        'equipamiento' => 'Equipamiento Médico y Quirúrgico',
+    ];
+    return $nombres[$area] ?? 'TECNOMEDIC';
+}
+
 function email_solicitud(array $d): void {
     $nombre = trim("{$d['nombre']} {$d['apellido']}");
     $d['fecha'] = _fh($d['fecha'] ?? null, 'a confirmar');
     $d['hora']  = _fh($d['hora'] ?? null, 'a confirmar');
-    $txt = "Hola $nombre,\n\nRecibimos tu solicitud de turno para Cámara Hiperbárica.\n\nFecha: {$d['fecha']}\nHora: {$d['hora']}hs\n\nTe confirmaremos a la brevedad.\n\nTECNOMEDIC - (3794) 34-9278";
+    $areaNombre = _nombre_area($d['area'] ?? '');
+    $txt = "Hola $nombre,\n\nRecibimos tu solicitud de turno para $areaNombre.\n\nFecha: {$d['fecha']}\nHora: {$d['hora']}hs\n\nTe confirmaremos a la brevedad.\n\nTECNOMEDIC - (3794) 34-9278";
     $html = _html_email('Solicitud de turno recibida', $nombre,
-        "<p style='color:#475569;font-size:14px;line-height:1.7;'>Recibimos tu solicitud de turno para <strong>Cámara Hiperbárica</strong>. Te confirmaremos a la brevedad.</p>"
+        "<p style='color:#475569;font-size:14px;line-height:1.7;'>Recibimos tu solicitud de turno para <strong>$areaNombre</strong>. Te confirmaremos a la brevedad.</p>"
         . _bloque_turno($d['fecha'], $d['hora'])
         . "<p style='color:#64748b;font-size:13px;'>⏳ Estado actual: <strong>Pendiente de confirmación</strong></p>"
     );

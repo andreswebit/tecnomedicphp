@@ -3,7 +3,7 @@ require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/email.php';
 require_once __DIR__ . '/../includes/whatsapp.php';
-requiere_login();
+portal_require_role(['admin']);
 
 $id = (int)($_POST['id'] ?? 0);
 
@@ -29,6 +29,7 @@ $d = [
     'apellido'    => trim($_POST['apellido'] ?? ''),
     'dni'         => trim($_POST['dni'] ?? ''),
     'obra_social' => trim($_POST['obra_social'] ?? ''),
+    'area'        => trim($_POST['area'] ?? 'hiperbarica'),
     'telefono'    => trim($_POST['telefono'] ?? ''),
     'email'       => trim($_POST['email'] ?? ''),
     'fecha'       => $fecha,
@@ -39,7 +40,7 @@ $d = [
 if ($id) {
     // ── Validar que el horario nuevo tenga lugar (evita duplicar/pisar turnos) ──
     if (in_array($d['estado'], ['Pendiente', 'Confirmado'], true)) {
-        $ocupados = get_ocupados_excluyendo($d['fecha'], $id);
+        $ocupados = get_ocupados_excluyendo($d['fecha'], $id, $d['area']);
         $max      = MAX_POR_HORARIO;
         $actual   = $ocupados[$d['hora']] ?? 0;
         if (!in_array($d['hora'], $GLOBALS['HORARIOS'], true)) {

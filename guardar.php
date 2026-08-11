@@ -15,11 +15,14 @@ function titulo(string $s): string {
     return $s === '' ? '' : mb_convert_case($s, MB_CASE_TITLE, 'UTF-8');
 }
 
+$AREAS_VALIDAS = ['audiologia','hiperbarica','nutricion','ortopedia','equipamiento'];
+
 $d = [
     'nombre'      => titulo($_POST['nombre'] ?? ''),
     'apellido'    => titulo($_POST['apellido'] ?? ''),
     'dni'         => trim($_POST['dni'] ?? ''),
     'obra_social' => trim($_POST['obra_social'] ?? ''),
+    'area'        => trim($_POST['area'] ?? ''),
     'telefono'    => trim($_POST['telefono'] ?? ''),
     'email'       => trim($_POST['email'] ?? ''),
     'fecha'       => trim($_POST['fecha'] ?? ''), // ya viene en DD/MM/YYYY desde el JS del form
@@ -28,15 +31,17 @@ $d = [
 
 // ── Validación de campos obligatorios ──────────────────────────
 $error = null;
-if (!$d['nombre'] || !$d['apellido'] || !$d['telefono'] || !$d['email'] || !$d['fecha'] || !$d['hora']) {
+if (!$d['nombre'] || !$d['apellido'] || !$d['telefono'] || !$d['email'] || !$d['fecha'] || !$d['hora'] || !$d['area']) {
     $error = 'Por favor completá todos los campos obligatorios.';
+} elseif (!in_array($d['area'], $AREAS_VALIDAS, true)) {
+    $error = 'Elegí una especialidad válida.';
 } elseif (!filter_var($d['email'], FILTER_VALIDATE_EMAIL)) {
     $error = 'El email ingresado no es válido.';
 }
 
 // ── Validar que el horario siga disponible (evita doble reserva) ──
 if (!$error) {
-    $ocupados = get_ocupados($d['fecha']);
+    $ocupados = get_ocupados($d['fecha'], $d['area']);
     $max      = MAX_POR_HORARIO;
     $actual   = $ocupados[$d['hora']] ?? 0;
     if (!in_array($d['hora'], $GLOBALS['HORARIOS'], true)) {

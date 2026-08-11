@@ -56,6 +56,21 @@ function usuario_crear_profesional(array $d): int {
     return $id;
 }
 
+// Crea un admin adicional. Solo otro admin puede hacerlo desde el panel.
+function usuario_crear_admin(array $d): int {
+    if (usuario_buscar_login($d['email']) || usuario_buscar_login($d['dni'])) {
+        throw new Exception('Ya existe una cuenta con ese email o DNI.');
+    }
+    $hash = password_hash($d['password'], PASSWORD_DEFAULT);
+    $st = db()->prepare(
+        "INSERT INTO tm_usuarios (email,dni,password_hash,rol,nombre,apellido,telefono,activo,fecha_aprobacion)
+         VALUES (?,?,?,'admin',?,?,?,1,NOW())"
+    );
+    $st->bind_param('ssssss', $d['email'], $d['dni'], $hash, $d['nombre'], $d['apellido'], $d['telefono']);
+    $st->execute();
+    return db()->insert_id;
+}
+
 // ── Usuarios: búsqueda / login ──────────────────────────────────
 
 // Busca por email O dni (para login flexible)

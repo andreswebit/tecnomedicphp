@@ -3,7 +3,7 @@ require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/email.php';
 require_once __DIR__ . '/../includes/whatsapp.php';
-requiere_login();
+portal_require_role(['admin']);
 
 $id     = (int)($_POST['id'] ?? 0);
 $estado = trim($_POST['estado'] ?? '');

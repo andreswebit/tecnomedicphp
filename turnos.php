@@ -62,6 +62,21 @@ error_reporting(E_ALL); ?>
                             <div class="form-grid">
 
                                 <div class="form-group">
+                                    <label>Especialidad <span style="color:#f87171">*</span></label>
+                                    <div class="select-icon-wrap">
+                                        <span class="input-icon">🩺</span>
+                                        <select name="area" id="areaSelect" class="obra-select" required>
+                                            <option value="">— Seleccioná —</option>
+                                            <option value="audiologia" <?= ($_POST['area'] ?? '') === 'audiologia' ? 'selected' : '' ?>>Audiología</option>
+                                            <option value="hiperbarica" <?= ($_POST['area'] ?? '') === 'hiperbarica' ? 'selected' : '' ?>>Medicina Hiperbárica</option>
+                                            <option value="nutricion" <?= ($_POST['area'] ?? '') === 'nutricion' ? 'selected' : '' ?>>Nutrición</option>
+                                            <option value="ortopedia" <?= ($_POST['area'] ?? '') === 'ortopedia' ? 'selected' : '' ?>>Ortopedia y Rehabilitación</option>
+                                            <option value="equipamiento" <?= ($_POST['area'] ?? '') === 'equipamiento' ? 'selected' : '' ?>>Equipamiento Médico y Quirúrgico</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
                                     <label>Nombre <span style="color:#f87171">*</span></label>
                                     <div class="input-wrap">
                                         <input type="text" name="nombre" placeholder="Tu nombre" required
@@ -224,12 +239,20 @@ error_reporting(E_ALL); ?>
         var section = document.getElementById('slotsSection');
         var grid = document.getElementById('slotsGrid');
         var submit = document.getElementById('submitBtn');
+        var area = document.getElementById('areaSelect').value;
         document.getElementById('horaElegida').value = '';
         document.getElementById('fechaHoja').value = '';
         submit.disabled = true;
+
+        if (!area) {
+            section.style.display = 'block';
+            grid.innerHTML = '<div class="slots-loading" style="color:#f87171">⚠️ Elegí primero la especialidad.</div>';
+            return;
+        }
+
         section.style.display = 'block';
         grid.innerHTML = '<div class="slots-loading">⏳ Consultando disponibilidad…</div>';
-        fetch('<?= $base ?>/api/horarios.php?fecha=' + fechaISO)
+        fetch('<?= $base ?>/api/horarios.php?fecha=' + fechaISO + '&area=' + encodeURIComponent(area))
             .then(function(r) {
                 if (!r.ok) throw new Error('Error ' + r.status);
                 return r.json();
@@ -242,6 +265,18 @@ error_reporting(E_ALL); ?>
                     '<div class="slots-loading" style="color:#f87171">❌ Error al consultar. Intentá de nuevo.</div>';
             });
     }
+
+    // Si cambia la especialidad después de haber elegido fecha, recalcular disponibilidad
+    document.getElementById('areaSelect').addEventListener('change', function() {
+        var fp = document.querySelector('#dateInput')._flatpickr;
+        if (fp && fp.selectedDates.length) {
+            var fecha = fp.selectedDates[0];
+            var iso = fecha.getFullYear() + '-' +
+                String(fecha.getMonth() + 1).padStart(2, '0') + '-' +
+                String(fecha.getDate()).padStart(2, '0');
+            cargarHorarios(iso);
+        }
+    });
 
     function renderSlots(slots, fechaHoja) {
         var grid = document.getElementById('slotsGrid');

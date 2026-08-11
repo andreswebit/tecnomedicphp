@@ -22,6 +22,8 @@ $nombreSesion = $_SESSION['portal_nombre'] ?? '';
         <?php elseif ($rol === 'profesional'): ?>
             <a href="<?= b('/portal/profesional/dashboard.php') ?>">Mis pacientes</a>
         <?php elseif ($rol === 'admin'): ?>
+            <a href="<?= b('/admin/tablero.php') ?>">Tablero</a>
+            <a href="<?= b('/admin/index.php') ?>">Turnos</a>
             <a href="<?= b('/admin/portal_usuarios.php') ?>">Administración</a>
             <a href="<?= b('/admin/consultar_dni.php') ?>">Consultar DNI</a>
         <?php endif; ?>

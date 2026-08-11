@@ -44,17 +44,16 @@ $base = BASE_URL; ?>
             <a href="#contacto">Contacto</a>
         </div>
         <div style="display:flex;align-items:center;gap:12px;">
-            <a href="https://nutreando.com/auth/login" class="btn btn-dark"
+            <!-- <a href="https://tecnomedic.com.ar/login.php" class="btn btn-dark"  produccion-->
+<!-- nivel localhost   -->
+            <a href="<?= $base ?>/login.php" class="btn btn-dark" 
+            
                 style="border-radius:8px;padding:7px 10px;font-size:11px;">
-                <i class="fa-regular fa-user"></i> Mi Portal N
+                <i class="fa-regular fa-user"></i> Mi Portal
             </a>
             <a href="<?= $base ?>/turnos.php" class="btn btn-dark"
                 style="border-radius:8px;padding:7px 10px;font-size:11px;">
                 <i class="fa-regular fa-calendar"></i> Reservar Turno
-            </a>
-            <a href="<?= $base ?>/admin/login.php" class="btn btn-dark"
-                style="border-radius:8px;padding:7px 10px;font-size:11px;">
-                🔒 Acceso Adm
             </a>
             <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
         </div>
@@ -67,14 +66,11 @@ $base = BASE_URL; ?>
         <a href="<?= $base ?>/tienda/" onclick="closeMobile()">Tienda</a>
         <a href="#equipo" onclick="closeMobile()">Nosotros</a>
         <a href="#contacto" onclick="closeMobile()">Contacto</a>
-        <a href="https://nutreando.com/auth/login" class="btn btn-green" style="font-size:17px;margin-top:8px;">
+        <a href="<?= $base ?>/login.php"  class="btn btn-green" style="font-size:17px;margin-top:8px;">
             <i class="fa-regular fa-user"></i> Mi Portal
         </a>
         <a href="<?= $base ?>/turnos.php" class="btn btn-green" style="font-size:17px;margin-top:8px;">
             <i class="fa-regular fa-calendar-check"></i> Reservar Turno
-        </a>
-        <a href="<?= $base ?>/admin/login.php" class="btn btn-green" style="font-size:17px;margin-top:8px;">
-            🔒 Acceso Admin
         </a>
         <div class="mobile-swipe-hint"><span></span>
             <p>Tocá afuera para cerrar</p>
