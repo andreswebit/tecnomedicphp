@@ -1378,6 +1378,8 @@ body.login-box {
   top: 0;
   left: 0;
   bottom: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .sidebar-logo {
   padding: 10px 10px 20px 10px;
@@ -2237,34 +2239,11 @@ tbody td {
   color: #555;
 }
 
-/* ── Responsive admin ── */
-@media (max-width: 900px) {
-  .sidebar {
-    width: 60px;
-  }
-  .sidebar-logo,
-  .nav-label,
-  .sidebar-footer {
-    display: none;
-  }
-  .nav-item span:last-child {
-    display: none;
-  }
-  .nav-item {
-    justify-content: center;
-    padding: 14px;
-  }
-  .main {
-    margin-left: 60px;
-    padding: 24px 16px;
-  }
-  .stats {
-    grid-template-columns: 1fr;
-  }
-  .cal-day {
-    min-height: 60px;
-  }
-}
+/* ── Responsive admin ──────────────────────────────────────────
+   (el sidebar responsive real vive en "RESPONSIVE ADMIN MEJORADO",
+   más abajo en este archivo — este bloque viejo se eliminó porque
+   ocultaba .sidebar-footer/.nav-label con display:none y nunca se
+   revertía, dejando "Cerrar sesión" inaccesible en pantallas < 900px) */
 
 /* ── Ordenamiento de columnas  (ESTABA EN ADMIN.HTML STYLE──────────────────────── */
 th.sortable {

@@ -156,6 +156,49 @@ function usuario_rechazar(int $id): void {
     $st->execute();
 }
 
+// Alta de paciente hecha directamente por el admin (a diferencia del
+// autorregistro público, queda activo=1 de una, sin esperar aprobación).
+function usuario_crear_paciente_admin(array $d): int {
+    if (usuario_buscar_login($d['email']) || usuario_buscar_login($d['dni'])) {
+        throw new Exception('Ya existe una cuenta con ese email o DNI.');
+    }
+    $hash = password_hash($d['password'], PASSWORD_DEFAULT);
+    $st = db()->prepare(
+        "INSERT INTO tm_usuarios (email,dni,password_hash,rol,nombre,apellido,telefono,activo,fecha_aprobacion)
+         VALUES (?,?,?,'paciente',?,?,?,1,NOW())"
+    );
+    $st->bind_param('ssssss', $d['email'], $d['dni'], $hash, $d['nombre'], $d['apellido'], $d['telefono']);
+    $st->execute();
+    $id = db()->insert_id;
+
+    $obraSocialId = !empty($d['obra_social_id']) ? (int)$d['obra_social_id'] : null;
+    $st2 = db()->prepare("INSERT INTO tm_perfiles_paciente (usuario_id, obra_social_id) VALUES (?, ?)");
+    $st2->bind_param('ii', $id, $obraSocialId);
+    $st2->execute();
+
+    return $id;
+}
+
+// Edita datos básicos de cualquier usuario (no cambia rol ni contraseña
+// desde acá — para eso está usuario_cambiar_password()).
+function usuario_editar(int $id, array $d): void {
+    $st = db()->prepare(
+        "UPDATE tm_usuarios SET nombre=?, apellido=?, email=?, dni=?, telefono=? WHERE id=?"
+    );
+    $st->bind_param('sssssi', $d['nombre'], $d['apellido'], $d['email'], $d['dni'], $d['telefono'], $id);
+    $st->execute();
+}
+
+// Elimina un usuario (cascada: perfiles, asignaciones, historia clínica,
+// tratamientos y estudios asociados se borran solos por FK ON DELETE
+// CASCADE). Usar con cuidado, especialmente con pacientes/profesionales
+// que ya tengan datos clínicos cargados.
+function usuario_eliminar(int $id): void {
+    $st = db()->prepare("DELETE FROM tm_usuarios WHERE id=?");
+    $st->bind_param('i', $id);
+    $st->execute();
+}
+
 function usuarios_todos(): array {
     $r = db()->query("SELECT * FROM tm_usuarios ORDER BY rol, apellido, nombre");
     return $r ? $r->fetch_all(MYSQLI_ASSOC) : [];

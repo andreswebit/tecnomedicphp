@@ -33,21 +33,21 @@ $base = BASE_URL; ?>
     <!-- NAVBAR -->
     <nav class="navbar" id="navbar">
         <div class="nb-brand">
+            <a href="<?= $base ?>/">
             <img class="nb-logo" src="<?= $base ?>/static/img/logotec.png" alt="TECNOMEDIC"
                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+            </a>
+        </div>
         </div>
         <div class="nb-links">
             <a href="#areas">Áreas</a>
             <a href="<?= $base ?>/tienda/">Tienda</a>
             <!-- <a href="<?= $base ?>/turnos.php">Turnos</a> -->
             <a href="#equipo">Nosotros</a>
-            <a href="#contacto">Contacto</a>
+            <a href="<?= $base ?>/contacto.php">Contacto</a>
         </div>
         <div style="display:flex;align-items:center;gap:12px;">
-            <!-- <a href="https://tecnomedic.com.ar/login.php" class="btn btn-dark"  produccion-->
-<!-- nivel localhost   -->
-            <a href="<?= $base ?>/login.php" class="btn btn-dark" 
-            
+            <a href="<?= $base ?>/login.php" class="btn btn-dark"
                 style="border-radius:8px;padding:7px 10px;font-size:11px;">
                 <i class="fa-regular fa-user"></i> Mi Portal
             </a>
@@ -65,8 +65,8 @@ $base = BASE_URL; ?>
         <a href="#areas" onclick="closeMobile()">Áreas</a>
         <a href="<?= $base ?>/tienda/" onclick="closeMobile()">Tienda</a>
         <a href="#equipo" onclick="closeMobile()">Nosotros</a>
-        <a href="#contacto" onclick="closeMobile()">Contacto</a>
-        <a href="<?= $base ?>/login.php"  class="btn btn-green" style="font-size:17px;margin-top:8px;">
+        <a href="<?= $base ?>/contacto.php" onclick="closeMobile()">Contacto</a>
+        <a href="<?= $base ?>/login.php" class="btn btn-green" style="font-size:17px;margin-top:8px;">
             <i class="fa-regular fa-user"></i> Mi Portal
         </a>
         <a href="<?= $base ?>/turnos.php" class="btn btn-green" style="font-size:17px;margin-top:8px;">

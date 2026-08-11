@@ -96,16 +96,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     Ingresar →
                 </button>
                 <div class="login-divider"></div>
-                <button type="button" class="login-btn" onclick="window.location.href='<?= b('/register.php') ?>'">
-                    📝 &nbsp; Crear cuenta de paciente
-                </button>
+
+
                 <button type="button" class="login-btn" onclick="window.location.href='<?= HOME_URL ?>/'">
                     ⮌ &nbsp; Volver a Inicio
                 </button>
             </form>
         </div>
         <p style="margin-top:16px;font-size:0.88rem;">
-            ¿Todavía no tenés cuenta? <a href="<?= b('/register.php') ?>">Creá una como paciente</a>
+            ¿Todavía no tenés cuenta? 📝 &nbsp;<a href="<?= b('/register.php') ?>">Creá una como paciente</a>
         </p>
         <div class="login-footer">© <?= date('Y') ?> TECNOMEDIC · Acceso restringido</div>
     </div>
