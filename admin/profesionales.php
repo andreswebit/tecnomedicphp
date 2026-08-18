@@ -137,6 +137,9 @@ require __DIR__ . '/../includes/portal_header.php';
                     <td><?= htmlspecialchars($a['area']) ?></td>
                     <td style="white-space:nowrap;">
                         <button type="button" class="portal-btn secundario" style="padding:4px 10px;margin:0;" onclick="abrirFicha(<?= $a['paciente_id'] ?>)">📋 Ficha</button>
+                        <?php if ($a['area'] === 'nutricion'): ?>
+                        <a href="<?= b('/portal/nutricion/registro.php?paciente_id=' . $a['paciente_id']) ?>" class="portal-btn secundario" style="padding:4px 10px;margin:0;">🥗 Nutrición</a>
+                        <?php endif; ?>
                         <form method="post" style="display:inline;" onsubmit="return confirm('¿Quitar esta asignación?');">
                             <input type="hidden" name="accion" value="desasignar">
                             <input type="hidden" name="asignacion_id" value="<?= $a['id'] ?>">

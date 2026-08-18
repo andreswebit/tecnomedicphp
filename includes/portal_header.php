@@ -19,14 +19,17 @@ $nombreSesion = $_SESSION['portal_nombre'] ?? '';
         <?php if ($rol === 'paciente'): ?>
             <a href="<?= b('/portal/paciente/dashboard.php') ?>">Inicio</a>
             <a href="<?= b('/portal/paciente/perfil.php') ?>">Mi perfil</a>
+            <a href="<?= b('/portal/recursos.php') ?>">Recursos</a>
         <?php elseif ($rol === 'profesional'): ?>
             <a href="<?= b('/portal/profesional/dashboard.php') ?>">Mis pacientes</a>
+            <a href="<?= b('/portal/recursos.php') ?>">Recursos</a>
         <?php elseif ($rol === 'admin'): ?>
             <a href="<?= b('/admin/tablero.php') ?>">Tablero</a>
             <a href="<?= b('/admin/index.php') ?>">Turnos</a>
             <a href="<?= b('/admin/pacientes.php') ?>">Pacientes</a>
             <a href="<?= b('/admin/profesionales.php') ?>">Profesionales</a>
             <a href="<?= b('/admin/usuarios.php') ?>">Usuarios</a>
+            <a href="<?= b('/admin/recursos.php') ?>">Recursos</a>
             <a href="<?= b('/admin/consultar_dni.php') ?>">Consultar DNI</a>
         <?php endif; ?>
         <?php if ($nombreSesion): ?>

@@ -32,7 +32,12 @@ require __DIR__ . '/../../includes/portal_header.php';
                     <td><?= htmlspecialchars($p['obra_social'] ?? '-') ?></td>
                     <td><?= htmlspecialchars($p['telefono'] ?: '-') ?></td>
                     <td><?= htmlspecialchars($p['area'] ?? '-') ?></td>
-                    <td><button type="button" class="portal-btn secundario" style="padding:6px 12px;margin:0;" onclick="abrirFicha(<?= $p['id'] ?>)">📋 Ver ficha médica</button></td>
+                    <td>
+                        <button type="button" class="portal-btn secundario" style="padding:6px 12px;margin:0;" onclick="abrirFicha(<?= $p['id'] ?>)">📋 Ver ficha médica</button>
+                        <?php if (($p['area'] ?? '') === 'nutricion'): ?>
+                        <a href="<?= b('/portal/nutricion/registro.php?paciente_id=' . $p['id']) ?>" class="portal-btn secundario" style="padding:6px 12px;margin:0;">🥗 Registro alimentario</a>
+                        <?php endif; ?>
+                    </td>
                 </tr>
             <?php endforeach; ?>
             </tbody>

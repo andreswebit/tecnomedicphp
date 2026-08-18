@@ -48,6 +48,12 @@ require __DIR__ . '/../includes/portal_header.php';
         <div class="tablero-desc">Consultas del formulario de contacto</div>
     </a>
 
+    <a class="tablero-tile" href="<?= b('/admin/recursos.php') ?>">
+        <div class="tablero-icon">📚</div>
+        <div class="tablero-title">Recursos</div>
+        <div class="tablero-desc">Subir formularios y material descargable</div>
+    </a>
+
     <a class="tablero-tile disabled" href="#" onclick="return false;">
         <div class="tablero-icon">📄</div>
         <div class="tablero-title">Presupuestos</div>
