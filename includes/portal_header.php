@@ -1,8 +1,11 @@
 <?php
 // Incluir DESPUÉS de require auth.php y de resolver la lógica de la página.
 // Variable opcional $portal_titulo para el <title>.
+// Variable opcional $portal_activo para resaltar el item activo del sidebar
+// del paciente (valores: 'inicio' | 'perfil' | 'recursos').
 $rol = portal_rol();
 $nombreSesion = $_SESSION['portal_nombre'] ?? '';
+$activo = $portal_activo ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -10,17 +13,59 @@ $nombreSesion = $_SESSION['portal_nombre'] ?? '';
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= htmlspecialchars($portal_titulo ?? 'Mi Portal · TECNOMEDIC') ?></title>
+<?php if ($rol === 'paciente'): ?>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="<?= b('/static/tecnomedic.css') ?>">
+<?php endif; ?>
 <link rel="stylesheet" href="<?= b('/portal/css/portal.css') ?>">
 </head>
 <body class="portal">
+<?php if ($rol === 'paciente'): ?>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    <div class="wrapper">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <a href="<?= HOME_URL ?>/">
+                    <img src="<?= b('/static/img/tecno-logo.jpeg') ?>" alt="TECNOMEDIC" class="logo-img">
+                </a>
+            </div>
+            <div class="sidebar-sub">Portal Paciente</div>
+
+            <div class="nav-label">Menú</div>
+            <a href="<?= b('/portal/paciente/dashboard.php') ?>" class="nav-item <?= $activo === 'inicio' ? 'active' : '' ?>"><span>🏠</span><span>Inicio</span></a>
+            <a href="<?= b('/portal/paciente/perfil.php') ?>" class="nav-item <?= $activo === 'perfil' ? 'active' : '' ?>"><span>👤</span><span>Mi perfil</span></a>
+            <a href="<?= b('/portal/recursos.php') ?>" class="nav-item <?= $activo === 'recursos' ? 'active' : '' ?>"><span>📚</span><span>Recursos</span></a>
+
+            <div class="sidebar-footer">
+                <div style="margin-bottom:12px;">
+                    <span class="status-dot"></span>
+                    <span class="status-text"><?= htmlspecialchars($nombreSesion) ?></span>
+                </div>
+                <a href="<?= b('/logout.php') ?>"
+                    style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--g100);text-decoration:none;transition:color .2s;"
+                    onmouseover="this.style.color='var(--amber)'" onmouseout="this.style.color='var(--g100)'">
+                    <span>🚪</span><span>Cerrar sesión</span>
+                </a>
+            </div>
+        </aside>
+
+        <div class="main">
+            <div class="topbar">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <button class="hamburger-btn" onclick="toggleSidebar()">
+                        <span></span><span></span><span></span>
+                    </button>
+                    <div class="page-title">Mi <span>Portal</span></div>
+                </div>
+            </div>
+            <div class="portal-container" style="padding:0;max-width:none;margin:0;">
+
+<?php else: ?>
 <nav class="portal-nav">
     <span class="brand">TECNOMEDIC · Mi Portal</span>
     <div>
-        <?php if ($rol === 'paciente'): ?>
-            <a href="<?= b('/portal/paciente/dashboard.php') ?>">Inicio</a>
-            <a href="<?= b('/portal/paciente/perfil.php') ?>">Mi perfil</a>
-            <a href="<?= b('/portal/recursos.php') ?>">Recursos</a>
-        <?php elseif ($rol === 'profesional'): ?>
+        <?php if ($rol === 'profesional'): ?>
             <a href="<?= b('/portal/profesional/dashboard.php') ?>">Mis pacientes</a>
             <a href="<?= b('/portal/recursos.php') ?>">Recursos</a>
         <?php elseif ($rol === 'admin'): ?>
@@ -39,6 +84,7 @@ $nombreSesion = $_SESSION['portal_nombre'] ?? '';
     </div>
 </nav>
 <div class="portal-container">
+<?php endif; ?>
 
 <!-- Modal Ficha Médica (Fase D) -->
 <div class="ficha-modal-overlay" id="fichaModalOverlay" onclick="if(event.target===this) cerrarFicha()">
@@ -83,7 +129,7 @@ function bindFichaForms(pacienteId) {
                 .then(function(r) { return r.text(); })
                 .then(function(txt) {
                     if (txt.trim() !== 'ok') alert('No se pudo guardar: ' + txt);
-                    abrirFicha(pacienteId); // recarga el contenido del modal
+                    abrirFicha(pacienteId);
                 })
                 .catch(function() { alert('Error de conexión al guardar.'); });
         });
@@ -93,4 +139,15 @@ function bindFichaForms(pacienteId) {
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') cerrarFicha();
 });
+
+<?php if ($rol === 'paciente'): ?>
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('open');
+}
+<?php endif; ?>
 </script>

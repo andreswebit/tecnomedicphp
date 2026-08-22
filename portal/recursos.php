@@ -11,6 +11,7 @@ $areasNombres = [
 ];
 
 $portal_titulo = 'Recursos · Mi Portal';
+$portal_activo = 'recursos';
 require __DIR__ . '/../includes/portal_header.php';
 ?>
 <div class="portal-card">

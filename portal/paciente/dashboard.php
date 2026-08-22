@@ -7,6 +7,7 @@ $perfil = perfil_paciente($user['id']);
 $turnos = turnos_de_paciente($user['dni']);
 
 $portal_titulo = 'Mi Portal · ' . $user['nombre'];
+$portal_activo = 'inicio';
 require __DIR__ . '/../../includes/portal_header.php';
 ?>
 <div class="portal-card">
@@ -15,9 +16,11 @@ require __DIR__ . '/../../includes/portal_header.php';
     <p><strong>Email:</strong> <?= htmlspecialchars($user['email']) ?></p>
     <p><strong>Teléfono:</strong> <?= htmlspecialchars($user['telefono'] ?: '-') ?></p>
     <p><strong>Obra social:</strong> <?= htmlspecialchars($perfil['obra_social_nombre'] ?? '-') ?></p>
-    <a href="<?= b('/portal/paciente/perfil.php') ?>" class="portal-btn secundario">Editar mis datos</a>
-    <button type="button" class="portal-btn" onclick="abrirFicha(<?= $user['id'] ?>)">📋 Mi ficha médica</button>
-    <a href="<?= b('/portal/nutricion/registro.php?paciente_id=' . $user['id']) ?>" class="portal-btn secundario">🥗 Mi registro alimentario</a>
+    <div class="btn-actions" style="margin-top:14px;flex-wrap:wrap;">
+        <a href="<?= b('/portal/paciente/perfil.php') ?>" class="btn-action btn-mod" data-tooltip="Editar mis datos" style="flex:none;padding:9px 16px;">✏️ Editar mis datos</a>
+        <button type="button" class="btn-action btn-save" data-tooltip="Ver ficha médica" style="flex:none;padding:9px 16px;" onclick="abrirFicha(<?= $user['id'] ?>)">📋 Mi ficha médica</button>
+        <a href="<?= b('/portal/nutricion/registro.php?paciente_id=' . $user['id']) ?>" class="btn-action btn-print-turn" data-tooltip="Registro alimentario" style="flex:none;padding:9px 16px;">🥗 Mi registro alimentario</a>
+    </div>
 </div>
 
 <div class="portal-card">

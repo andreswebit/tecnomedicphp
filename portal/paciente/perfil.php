@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $portal_titulo = 'Mi perfil · Mi Portal';
+$portal_activo = 'perfil';
 require __DIR__ . '/../../includes/portal_header.php';
 ?>
 <div class="portal-card" style="max-width:480px;margin:0 auto;">
