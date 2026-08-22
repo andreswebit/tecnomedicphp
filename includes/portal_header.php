@@ -2,10 +2,16 @@
 // Incluir DESPUÉS de require auth.php y de resolver la lógica de la página.
 // Variable opcional $portal_titulo para el <title>.
 // Variable opcional $portal_activo para resaltar el item activo del sidebar
-// del paciente (valores: 'inicio' | 'perfil' | 'recursos').
+// (valores según rol, ver los value= de cada <a> más abajo).
 $rol = portal_rol();
 $nombreSesion = $_SESSION['portal_nombre'] ?? '';
 $activo = $portal_activo ?? '';
+
+$etiquetaRol = [
+    'paciente'    => 'Portal Paciente',
+    'profesional' => 'Portal Profesional',
+    'admin'       => 'Panel Admin',
+][$rol] ?? 'Mi Portal';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -13,14 +19,11 @@ $activo = $portal_activo ?? '';
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= htmlspecialchars($portal_titulo ?? 'Mi Portal · TECNOMEDIC') ?></title>
-<?php if ($rol === 'paciente'): ?>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?= b('/static/tecnomedic.css') ?>">
-<?php endif; ?>
 <link rel="stylesheet" href="<?= b('/portal/css/portal.css') ?>">
 </head>
 <body class="portal">
-<?php if ($rol === 'paciente'): ?>
 
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
     <div class="wrapper">
@@ -30,12 +33,28 @@ $activo = $portal_activo ?? '';
                     <img src="<?= b('/static/img/tecno-logo.jpeg') ?>" alt="TECNOMEDIC" class="logo-img">
                 </a>
             </div>
-            <div class="sidebar-sub">Portal Paciente</div>
+            <div class="sidebar-sub"><?= htmlspecialchars($etiquetaRol) ?></div>
 
             <div class="nav-label">Menú</div>
-            <a href="<?= b('/portal/paciente/dashboard.php') ?>" class="nav-item <?= $activo === 'inicio' ? 'active' : '' ?>"><span>🏠</span><span>Inicio</span></a>
-            <a href="<?= b('/portal/paciente/perfil.php') ?>" class="nav-item <?= $activo === 'perfil' ? 'active' : '' ?>"><span>👤</span><span>Mi perfil</span></a>
-            <a href="<?= b('/portal/recursos.php') ?>" class="nav-item <?= $activo === 'recursos' ? 'active' : '' ?>"><span>📚</span><span>Recursos</span></a>
+            <?php if ($rol === 'paciente'): ?>
+                <a href="<?= b('/portal/paciente/dashboard.php') ?>" class="nav-item <?= $activo === 'inicio' ? 'active' : '' ?>"><span>🏠</span><span>Inicio</span></a>
+                <a href="<?= b('/portal/paciente/perfil.php') ?>" class="nav-item <?= $activo === 'perfil' ? 'active' : '' ?>"><span>👤</span><span>Mi perfil</span></a>
+                <a href="<?= b('/portal/recursos.php') ?>" class="nav-item <?= $activo === 'recursos' ? 'active' : '' ?>"><span>📚</span><span>Recursos</span></a>
+
+            <?php elseif ($rol === 'profesional'): ?>
+                <a href="<?= b('/portal/profesional/dashboard.php') ?>" class="nav-item <?= $activo === 'pacientes' ? 'active' : '' ?>"><span>🧑‍⚕️</span><span>Mis pacientes</span></a>
+                <a href="<?= b('/portal/recursos.php') ?>" class="nav-item <?= $activo === 'recursos' ? 'active' : '' ?>"><span>📚</span><span>Recursos</span></a>
+
+            <?php elseif ($rol === 'admin'): ?>
+                <a href="<?= b('/admin/tablero.php') ?>" class="nav-item <?= $activo === 'tablero' ? 'active' : '' ?>"><span>🧭</span><span>Tablero</span></a>
+                <a href="<?= b('/admin/index.php') ?>" class="nav-item"><span>📅</span><span>Turnos</span></a>
+                <a href="<?= b('/admin/pacientes.php') ?>" class="nav-item <?= $activo === 'pacientes' ? 'active' : '' ?>"><span>🧑‍⚕️</span><span>Pacientes</span></a>
+                <a href="<?= b('/admin/profesionales.php') ?>" class="nav-item <?= $activo === 'profesionales' ? 'active' : '' ?>"><span>👨‍⚕️</span><span>Profesionales</span></a>
+                <a href="<?= b('/admin/usuarios.php') ?>" class="nav-item <?= $activo === 'usuarios' ? 'active' : '' ?>"><span>🧑‍💼</span><span>Usuarios</span></a>
+                <a href="<?= b('/admin/recursos.php') ?>" class="nav-item <?= $activo === 'recursos' ? 'active' : '' ?>"><span>📚</span><span>Recursos</span></a>
+                <a href="<?= b('/admin/contactos.php') ?>" class="nav-item <?= $activo === 'contactos' ? 'active' : '' ?>"><span>✉️</span><span>Mensajes</span></a>
+                <a href="<?= b('/admin/consultar_dni.php') ?>" class="nav-item <?= $activo === 'dni' ? 'active' : '' ?>"><span>🔎</span><span>Consultar DNI</span></a>
+            <?php endif; ?>
 
             <div class="sidebar-footer">
                 <div style="margin-bottom:12px;">
@@ -60,31 +79,6 @@ $activo = $portal_activo ?? '';
                 </div>
             </div>
             <div class="portal-container" style="padding:0;max-width:none;margin:0;">
-
-<?php else: ?>
-<nav class="portal-nav">
-    <span class="brand">TECNOMEDIC · Mi Portal</span>
-    <div>
-        <?php if ($rol === 'profesional'): ?>
-            <a href="<?= b('/portal/profesional/dashboard.php') ?>">Mis pacientes</a>
-            <a href="<?= b('/portal/recursos.php') ?>">Recursos</a>
-        <?php elseif ($rol === 'admin'): ?>
-            <a href="<?= b('/admin/tablero.php') ?>">Tablero</a>
-            <a href="<?= b('/admin/index.php') ?>">Turnos</a>
-            <a href="<?= b('/admin/pacientes.php') ?>">Pacientes</a>
-            <a href="<?= b('/admin/profesionales.php') ?>">Profesionales</a>
-            <a href="<?= b('/admin/usuarios.php') ?>">Usuarios</a>
-            <a href="<?= b('/admin/recursos.php') ?>">Recursos</a>
-            <a href="<?= b('/admin/consultar_dni.php') ?>">Consultar DNI</a>
-        <?php endif; ?>
-        <?php if ($nombreSesion): ?>
-            <span style="margin-left:18px; opacity:0.8;">👤 <?= htmlspecialchars($nombreSesion) ?></span>
-            <a href="<?= b('/logout.php') ?>">Salir</a>
-        <?php endif; ?>
-    </div>
-</nav>
-<div class="portal-container">
-<?php endif; ?>
 
 <!-- Modal Ficha Médica (Fase D) -->
 <div class="ficha-modal-overlay" id="fichaModalOverlay" onclick="if(event.target===this) cerrarFicha()">
@@ -140,7 +134,6 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') cerrarFicha();
 });
 
-<?php if ($rol === 'paciente'): ?>
 function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('open');
     document.getElementById('sidebarOverlay').classList.toggle('open');
@@ -149,5 +142,4 @@ function closeSidebar() {
     document.getElementById('sidebar').classList.remove('open');
     document.getElementById('sidebarOverlay').classList.remove('open');
 }
-<?php endif; ?>
 </script>

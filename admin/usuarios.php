@@ -63,6 +63,7 @@ $usuarios = usuarios_todos();
 $obrasSociales = obras_sociales_todas();
 
 $portal_titulo = 'Usuarios · Mi Portal';
+$portal_activo = 'usuarios';
 require __DIR__ . '/../includes/portal_header.php';
 ?>
 

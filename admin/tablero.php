@@ -4,6 +4,7 @@ portal_require_role(['admin']);
 
 $user = portal_current_user();
 $portal_titulo = 'Tablero · Mi Portal';
+$portal_activo = 'tablero';
 require __DIR__ . '/../includes/portal_header.php';
 ?>
 <div class="portal-card">

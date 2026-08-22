@@ -20,6 +20,7 @@ $pendientes = usuarios_pendientes();
 $pacientes = pacientes_todos_activos();
 
 $portal_titulo = 'Pacientes · Mi Portal';
+$portal_activo = 'pacientes';
 require __DIR__ . '/../includes/portal_header.php';
 ?>
 
@@ -74,8 +75,10 @@ require __DIR__ . '/../includes/portal_header.php';
                     <td><?= htmlspecialchars($p['email']) ?></td>
                     <td><?= htmlspecialchars($p['telefono'] ?: '-') ?></td>
                     <td>
-                        <button type="button" class="portal-btn secundario" style="padding:5px 12px;margin:0;" onclick="abrirFicha(<?= $p['id'] ?>)">📋 Ver ficha médica</button>
-                        <a href="<?= b('/portal/nutricion/registro.php?paciente_id=' . $p['id']) ?>" class="portal-btn secundario" style="padding:5px 12px;margin:0;">🥗 Nutrición</a>
+                        <div class="btn-actions" style="flex-wrap:wrap;">
+                        <button type="button" class="btn-action btn-save" data-tooltip="Ver ficha médica" style="flex:none;padding:7px 12px;" onclick="abrirFicha(<?= $p['id'] ?>)">📋 Ficha</button>
+                        <a href="<?= b('/portal/nutricion/registro.php?paciente_id=' . $p['id']) ?>" class="btn-action btn-print-turn" data-tooltip="Nutrición" style="flex:none;padding:7px 12px;">🥗 Nutrición</a>
+                        </div>
                     </td>
                 </tr>
             <?php endforeach; ?>

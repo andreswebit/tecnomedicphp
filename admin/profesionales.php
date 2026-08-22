@@ -37,6 +37,7 @@ $pacientes = pacientes_todos_activos();
 $asignaciones = asignaciones_todas();
 
 $portal_titulo = 'Profesionales · Mi Portal';
+$portal_activo = 'profesionales';
 require __DIR__ . '/../includes/portal_header.php';
 ?>
 
@@ -136,15 +137,17 @@ require __DIR__ . '/../includes/portal_header.php';
                     <td><?= htmlspecialchars($a['profesional_apellido'] . ', ' . $a['profesional_nombre']) ?></td>
                     <td><?= htmlspecialchars($a['area']) ?></td>
                     <td style="white-space:nowrap;">
-                        <button type="button" class="portal-btn secundario" style="padding:4px 10px;margin:0;" onclick="abrirFicha(<?= $a['paciente_id'] ?>)">📋 Ficha</button>
+                        <div class="btn-actions" style="flex-wrap:wrap;">
+                        <button type="button" class="btn-action btn-save" data-tooltip="Ver ficha médica" style="flex:none;padding:6px 12px;" onclick="abrirFicha(<?= $a['paciente_id'] ?>)">📋 Ficha</button>
                         <?php if ($a['area'] === 'nutricion'): ?>
-                        <a href="<?= b('/portal/nutricion/registro.php?paciente_id=' . $a['paciente_id']) ?>" class="portal-btn secundario" style="padding:4px 10px;margin:0;">🥗 Nutrición</a>
+                        <a href="<?= b('/portal/nutricion/registro.php?paciente_id=' . $a['paciente_id']) ?>" class="btn-action btn-print-turn" data-tooltip="Nutrición" style="flex:none;padding:6px 12px;">🥗 Nutrición</a>
                         <?php endif; ?>
                         <form method="post" style="display:inline;" onsubmit="return confirm('¿Quitar esta asignación?');">
                             <input type="hidden" name="accion" value="desasignar">
                             <input type="hidden" name="asignacion_id" value="<?= $a['id'] ?>">
-                            <button type="submit" class="portal-btn peligro" style="padding:4px 12px;margin:0;">Quitar</button>
+                            <button type="submit" class="btn-action btn-del" data-tooltip="Quitar asignación" style="flex:none;padding:6px 12px;">🗑 Quitar</button>
                         </form>
+                        </div>
                     </td>
                 </tr>
             <?php endforeach; ?>

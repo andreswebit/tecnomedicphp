@@ -56,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $recursos = recursos_listar_todos();
 $portal_titulo = 'Recursos · Mi Portal';
+$portal_activo = 'recursos';
 require __DIR__ . '/../includes/portal_header.php';
 ?>
 

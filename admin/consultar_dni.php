@@ -11,6 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['dni'])) {
 }
 
 $portal_titulo = 'Consultar DNI · Mi Portal';
+$portal_activo = 'dni';
 require __DIR__ . '/../includes/portal_header.php';
 ?>
 <div class="portal-card" style="max-width:520px;margin:0 auto;">

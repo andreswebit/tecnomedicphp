@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['accion'] ?? '') === 'atend
 $contactos = contactos_listar();
 
 $portal_titulo = 'Mensajes de contacto · Mi Portal';
+$portal_activo = 'contactos';
 require __DIR__ . '/../includes/portal_header.php';
 ?>
 <div class="portal-card">
