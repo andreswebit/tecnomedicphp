@@ -55,13 +55,19 @@ foreach ($turnos as $t) {
 
             <div class="sidebar-carousel" id="sidebarCarousel">
                 <div class="carousel-slide active">
-                    <img src="<?= $base ?>/static/img/fondo1.JPG" alt="">
+                    <img src="<?= $base ?>/static/img/HISTORIAS IG & WPP/Convenios/Descuento cardiologia.jpg" alt="">
                 </div>
                 <div class="carousel-slide">
-                    <img src="<?= $base ?>/static/img/fondo2.jfif" alt="">
+                    <img src="<?= $base ?>/static/img/HISTORIAS IG & WPP/Convenios/Descuento Rugby.jpg" alt="">
                 </div>
                 <div class="carousel-slide">
-                    <img src="<?= $base ?>/static/img/fondo3.webp" alt="">
+                    <img src="<?= $base ?>/static/img/HISTORIAS IG & WPP/Convenios/Sportclub descuento-1 (1).jpg" alt="">
+                </div>
+                <div class="carousel-slide">
+                    <img src="<?= $base ?>/static/img/HISTORIAS IG & WPP/Convenios/Sportclub descuento-2 (1).jpg" alt="">
+                </div>
+                <div class="carousel-slide">
+                    <img src="<?= $base ?>/static/img/HISTORIAS IG & WPP/Convenios/Descuento cardiologia-2 (1).jpg" alt="">
                 </div>
             </div>
             <div class="sidebar-footer">

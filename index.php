@@ -34,8 +34,9 @@ $base = BASE_URL; ?>
     <nav class="navbar" id="navbar">
         <div class="nb-brand">
             <a href="<?= $base ?>/">
-            <img class="nb-logo" src="<?= $base ?>/static/img/logotec.png" alt="TECNOMEDIC"
+            <img class="nb-logo" src="<?= $base ?>/static/img/logos/Logotipo2.png" alt="TECNOMEDIC"
                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+                
             </a>
         </div>
         </div>
@@ -174,7 +175,7 @@ $base = BASE_URL; ?>
                         <video controls autoplay muted loop src="<?= $base ?>/static/video/sede.mp4"
                             title="Cámara Hiperbárica"></video>
                         <div class="ncar-badge">
-                            <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/tecno-logo.jpeg"
+                            <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/logos/Logotipo - foto perfil - sin fondo.png"
                                     alt="Logo" /></div>
                             <div>
                                 <div class="ncar-badge-name">Tecnomedic Salud</div>
@@ -204,7 +205,7 @@ $base = BASE_URL; ?>
                     <div class="ncar-visual">
                         <video controls autoplay muted loop src="<?= $base ?>/static/video/PieDiabetico.mp4"></video>
                         <div class="ncar-badge">
-                            <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/tecno-logo.jpeg"
+                            <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/logos/Logotipo - foto perfil - sin fondo.png"
                                     alt="Logo" /></div>
                             <div>
                                 <div class="ncar-badge-name">Tecnomedic Salud</div>
@@ -234,7 +235,7 @@ $base = BASE_URL; ?>
                     <div class="ncar-visual">
                         <video controls autoplay muted loop src="<?= $base ?>/static/video/Heridas.mp4"></video>
                         <div class="ncar-badge">
-                            <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/tecno-logo.jpeg"
+                            <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/logos/Logotipo - foto perfil - sin fondo.png"
                                     alt="Logo" /></div>
                             <div>
                                 <div class="ncar-badge-name">Tecnomedic Salud</div>
@@ -266,7 +267,7 @@ $base = BASE_URL; ?>
                         <img src="https://plus.unsplash.com/premium_photo-1664304770925-6f9a1386d7b9?q=80&w=1073&auto=format&fit=crop"
                             alt="Recuperación deportiva" loading="lazy" />
                         <div class="ncar-badge">
-                            <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/tecno-logo.jpeg"
+                            <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/logos/Logotipo - foto perfil - sin fondo.png"
                                     alt="Logo" /></div>
                             <div>
                                 <div class="ncar-badge-name">Tecnomedic Salud</div>
@@ -297,7 +298,7 @@ $base = BASE_URL; ?>
                         <video src="<?= $base ?>/static/video/sesiones.mp4" controls autoplay muted loop
                             style="min-height:480px;"></video>
                         <div class="ncar-badge">
-                            <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/tecno-logo.jpeg"
+                            <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/logos/Logotipo - foto perfil - sin fondo.png"
                                     alt="Logo" /></div>
                             <div>
                                 <div class="ncar-badge-name">Tecnomedic Salud</div>
@@ -327,7 +328,7 @@ $base = BASE_URL; ?>
             <div class="areas-grid">
 
                 <div class="area-card">
-                    <div class="area-img area-img--placeholder"><img src="<?= $base ?>/static/img/tecno-logo.jpeg"
+                    <div class="area-img area-img--placeholder"><img src="<?= $base ?>/static/img/areas/audiologia.jpg"
                             alt="Audiología"></div>
                     <div class="area-body">
                         <div class="area-title"><i class="fa-solid fa-headphones"></i> Audiología</div>
@@ -339,7 +340,7 @@ $base = BASE_URL; ?>
                 </div>
 
                 <div class="area-card">
-                    <div class="area-img area-img--placeholder"><img src="<?= $base ?>/static/img/tecno-logo.jpeg"
+                    <div class="area-img area-img--placeholder"><img src="<?= $base ?>/static/img/areas/hiperbarica.jpg"
                             alt="Medicina Hiperbárica"></div>
                     <div class="area-body">
                         <div class="area-title"><i class="fa-solid fa-lungs"></i> Medicina Hiperbárica</div>
@@ -351,7 +352,7 @@ $base = BASE_URL; ?>
                 </div>
 
                 <div class="area-card">
-                    <div class="area-img area-img--placeholder"><img src="<?= $base ?>/static/img/tecno-logo.jpeg"
+                    <div class="area-img area-img--placeholder"><img src="<?= $base ?>/static/img/areas/nutricion.jpg"
                             alt="Nutrición"></div>
                     <div class="area-body">
                         <div class="area-title"><i class="fa-solid fa-apple-whole"></i> Nutrición</div>
@@ -362,7 +363,7 @@ $base = BASE_URL; ?>
                 </div>
 
                 <div class="area-card">
-                    <div class="area-img area-img--placeholder"><img src="<?= $base ?>/static/img/tecno-logo.jpeg"
+                    <div class="area-img area-img--placeholder"><img src="<?= $base ?>/static/img/areas/Recuperación H1.JPG"
                             alt="Ortopedia y Rehabilitación"></div>
                     <div class="area-body">
                         <div class="area-title"><i class="fa-solid fa-wheelchair"></i> Ortopedia y Rehabilitación</div>
@@ -374,7 +375,7 @@ $base = BASE_URL; ?>
                 </div>
 
                 <div class="area-card">
-                    <div class="area-img area-img--placeholder"><img src="<?= $base ?>/static/img/tecno-logo.jpeg"
+                    <div class="area-img area-img--placeholder"><img src="<?= $base ?>/static/img/areas/insumos.jpg"
                             alt="Equipamiento Médico y Quirúrgico"></div>
                     <div class="area-body">
                         <div class="area-title"><i class="fa-solid fa-kit-medical"></i> Equipamiento Médico y Quirúrgico
@@ -427,7 +428,7 @@ $base = BASE_URL; ?>
             <div class="doctors-grid-wrap">
                 <div class="doctors-grid">
                     <div class="doctor-card">
-                        <div class="doctor-photo-wrap"><img src="<?= $base ?>/static/img/dra unger.jpg"
+                        <div class="doctor-photo-wrap"><img src="<?= $base ?>/static/img/profesionales/dra unger.jpg"
                                 alt="Dra. Carolina Unger" loading="lazy" />
                         </div>
                         <div class="doctor-name">Dra. Carolina Unger</div>
@@ -438,7 +439,7 @@ $base = BASE_URL; ?>
                         <button class="doctor-plus" title="Ver más"><i class="fa-solid fa-plus"></i></button>
                     </div>
                     <div class="doctor-card">
-                        <div class="doctor-photo-wrap"><img src="<?= $base ?>/static/img/dra repetto.JPG"
+                        <div class="doctor-photo-wrap"><img src="<?= $base ?>/static/img/profesionales/dra repetto.JPG"
                                 alt="Lic. Valentina Repetto" loading="lazy" /></div>
                         <div class="doctor-name">Lic. Valentina Repetto</div>
                         <div class="doctor-specialty">Fonoaudióloga</div>
@@ -447,7 +448,7 @@ $base = BASE_URL; ?>
                         <button class="doctor-plus" title="Ver más"><i class="fa-solid fa-plus"></i></button>
                     </div>
                     <div class="doctor-card">
-                        <div class="doctor-photo-wrap"><img src="<?= $base ?>/static/img/dra repettoL.JPG"
+                        <div class="doctor-photo-wrap"><img src="<?= $base ?>/static/img/profesionales/dra repettoL.JPG"
                                 alt="Lic. Luciana Repetto" loading="lazy" /></div>
                         <div class="doctor-name">Lic. Luciana Repetto</div>
                         <div class="doctor-specialty">Licenciada en Nutrición</div>
@@ -827,7 +828,7 @@ $base = BASE_URL; ?>
             <div class="footer-grid">
                 <div>
                     <div class="ftr-logo-row">
-                        <img class="ftr-logo" src="<?= $base ?>/static/img/tecno-logo.jpeg" alt="TECNOMEDIC" />
+                        <img class="ftr-logo" src="<?= $base ?>/static/img/logos/Logotipo - foto perfil - sin fondo.png" alt="TECNOMEDIC" />
                         <div class="ftr-name">TECNOMEDIC</div>
                     </div>
                     <p class="ftr-desc">Tecnología avanzada para tu recuperación y bienestar integral en Corrientes,

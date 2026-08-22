@@ -108,14 +108,13 @@ function estudio_get(int $id): ?array {
 }
 
 function estudio_crear(int $pacienteId, int $subidoPor, string $nombreOriginal, string $rutaArchivo, string $tipo, string $notas, string $fechaEstudioDMY): int {
-    $fecha = $fechaEstudioDMY !== '' ? $fechaEstudioDMY : null;
+    // STR_TO_DATE('', ...) devuelve NULL solo, así que mandamos '' cuando no hay fecha.
+    $fecha = $fechaEstudioDMY;
     $st = db()->prepare(
         "INSERT INTO tm_estudios (paciente_id, subido_por, nombre_original, ruta_archivo, tipo, notas, fecha_estudio)
          VALUES (?,?,?,?,?,?, STR_TO_DATE(?,'%d/%m/%Y'))"
     );
-    // bind_param no admite null directo con 's' fácilmente si querés NULL real;
-    // como STR_TO_DATE('', ...) ya devuelve NULL, mandamos '' cuando no hay fecha.
-    $st->bind_param('issssss', $pacienteId, $subidoPor, $nombreOriginal, $rutaArchivo, $tipo, $notas, $fecha ?? '');
+    $st->bind_param('issssss', $pacienteId, $subidoPor, $nombreOriginal, $rutaArchivo, $tipo, $notas, $fecha);
     $st->execute();
     return db()->insert_id;
 }
