@@ -1434,7 +1434,7 @@ body.login-box {
     background 0.2s;
   border-left: 2px solid transparent;
   text-decoration: none;
-  text-shadow:var(--g800) 0 1px 2px ;
+  
 }
 .nav-item.active {
   color: var(--g800);

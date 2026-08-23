@@ -46,6 +46,7 @@ $base = BASE_URL; ?>
             <!-- <a href="<?= $base ?>/turnos.php">Turnos</a> -->
             <a href="#equipo">Nosotros</a>
             <a href="<?= $base ?>/recursos.php">Recursos</a>
+            <a href="<?= $base ?>/presupuesto.php">Presupuesto</a>
             <a href="<?= $base ?>/contacto.php">Contacto</a>
         </div>
         <div style="display:flex;align-items:center;gap:12px;">
@@ -68,6 +69,7 @@ $base = BASE_URL; ?>
         <a href="<?= $base ?>/tienda/" onclick="closeMobile()">Tienda</a>
         <a href="#equipo" onclick="closeMobile()">Nosotros</a>
         <a href="<?= $base ?>/recursos.php" onclick="closeMobile()">Recursos</a>
+        <a href="<?= $base ?>/presupuesto.php" onclick="closeMobile()">Presupuesto</a>
         <a href="<?= $base ?>/contacto.php" onclick="closeMobile()">Contacto</a>
         <a href="<?= $base ?>/login.php" class="btn btn-green" style="font-size:17px;margin-top:8px;">
             <i class="fa-regular fa-user"></i> Mi Portal

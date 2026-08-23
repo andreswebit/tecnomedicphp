@@ -13,7 +13,7 @@ body.portal {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
     background: var(--tm-bg);
-    color: var(--tm-text);
+    color: var(--white);
 }
 
 .portal-nav {
@@ -125,12 +125,14 @@ table.portal-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.9rem;
+    color: #454545;
 }
 
 table.portal-table th, table.portal-table td {
     text-align: left;
     padding: 10px 8px;
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid;
+    color: #222121;
 }
 
 table.portal-table th {

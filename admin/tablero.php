@@ -55,10 +55,10 @@ require __DIR__ . '/../includes/portal_header.php';
         <div class="tablero-desc">Subir formularios y material descargable</div>
     </a>
 
-    <a class="tablero-tile disabled" href="#" onclick="return false;">
+    <a class="tablero-tile" href="<?= b('/admin/presupuestos.php') ?>">
         <div class="tablero-icon">📄</div>
         <div class="tablero-title">Presupuestos</div>
-        <div class="tablero-desc">Próximamente</div>
+        <div class="tablero-desc">Cargar PDF y enviar por email</div>
     </a>
 
     <a class="tablero-tile" href="<?= b('/tienda/') ?>">

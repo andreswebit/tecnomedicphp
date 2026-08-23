@@ -50,7 +50,8 @@ function enviar_email(
     string $dest,
     string $asunto,
     string $txt,
-    string $html=''
+    string $html='',
+    array $adjuntos = []   // array de rutas absolutas de archivos a adjuntar
 ): bool {
 
     if (env('MAIL_DRIVER','smtp') == 'log') {
@@ -62,9 +63,13 @@ function enviar_email(
 
         $archivo = $carpeta.'/'.date('Ymd_His').'.html';
 
+        $notaAdjuntos = $adjuntos
+            ? '<p><em>Adjuntos (no se copian en modo log): ' . implode(', ', array_map('basename', $adjuntos)) . '</em></p>'
+            : '';
+
         file_put_contents(
             $archivo,
-            $html ?: nl2br($txt)
+            ($html ?: nl2br($txt)) . $notaAdjuntos
         );
 
         return true;
@@ -79,6 +84,12 @@ function enviar_email(
         $mail->addAddress($dest);
 
         $mail->Subject = $asunto;
+
+        foreach ($adjuntos as $rutaAdjunto) {
+            if (is_file($rutaAdjunto)) {
+                $mail->addAttachment($rutaAdjunto);
+            }
+        }
 
         if($html!=""){
 
@@ -229,4 +240,25 @@ function email_cancelacion(string $nombre, string $email, ?string $fecha, ?strin
         . "<p style='color:#64748b;font-size:13px;'>Si querés sacar un nuevo turno, escribinos o llamá al 📞 (3794) 34-9278.</p>"
     );
     return enviar_email($email, '❌ Turno cancelado – TECNOMEDIC', $txt, $html);
+}
+
+// ── Presupuestos (Fase H) ─────────────────────────────────────
+
+function email_presupuesto_solicitud(array $d): void {
+    $nombre = trim("{$d['nombre']} {$d['apellido']}");
+    $txt = "Hola $nombre,\n\nRecibimos tu solicitud de presupuesto. Te vamos a contactar apenas esté listo.\n\nDetalle: {$d['descripcion']}\n\nTECNOMEDIC - (3794) 34-9278";
+    $html = _html_email('Solicitud de presupuesto recibida', $nombre,
+        "<p style='color:#475569;font-size:14px;line-height:1.7;'>Recibimos tu solicitud de presupuesto. Te vamos a contactar por este mismo email apenas esté listo.</p>"
+        . "<div style='background:#f0f9ff;border-left:4px solid #00b4d8;border-radius:0 12px 12px 0;padding:16px 20px;margin:20px 0;color:#0a2540;font-size:14px;'>"
+        . nl2br(htmlspecialchars($d['descripcion'])) . "</div>"
+    );
+    enviar_email($d['email'], 'Solicitud de presupuesto recibida – TECNOMEDIC', $txt, $html);
+}
+
+function email_presupuesto_elaborado(string $nombre, string $email, string $rutaPdfAbsoluta): bool {
+    $txt = "Hola $nombre,\n\nAdjuntamos el presupuesto solicitado.\n\nAnte cualquier consulta, escribinos o llamá al (3794) 34-9278.\n\nTECNOMEDIC";
+    $html = _html_email('📄 Tu presupuesto está listo', $nombre,
+        "<p style='color:#475569;font-size:14px;line-height:1.7;'>Adjuntamos el presupuesto que solicitaste. Ante cualquier consulta, escribinos o llamá al 📞 (3794) 34-9278.</p>"
+    );
+    return enviar_email($email, '📄 Tu presupuesto de TECNOMEDIC', $txt, $html, [$rutaPdfAbsoluta]);
 }

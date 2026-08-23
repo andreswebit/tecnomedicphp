@@ -51,6 +51,7 @@ $etiquetaRol = [
                 <a href="<?= b('/admin/pacientes.php') ?>" class="nav-item <?= $activo === 'pacientes' ? 'active' : '' ?>"><span>🧑‍⚕️</span><span>Pacientes</span></a>
                 <a href="<?= b('/admin/profesionales.php') ?>" class="nav-item <?= $activo === 'profesionales' ? 'active' : '' ?>"><span>👨‍⚕️</span><span>Profesionales</span></a>
                 <a href="<?= b('/admin/usuarios.php') ?>" class="nav-item <?= $activo === 'usuarios' ? 'active' : '' ?>"><span>🧑‍💼</span><span>Usuarios</span></a>
+                <a href="<?= b('/admin/presupuestos.php') ?>" class="nav-item <?= $activo === 'presupuestos' ? 'active' : '' ?>"><span>📄</span><span>Presupuestos</span></a>
                 <a href="<?= b('/admin/recursos.php') ?>" class="nav-item <?= $activo === 'recursos' ? 'active' : '' ?>"><span>📚</span><span>Recursos</span></a>
                 <a href="<?= b('/admin/contactos.php') ?>" class="nav-item <?= $activo === 'contactos' ? 'active' : '' ?>"><span>✉️</span><span>Mensajes</span></a>
                 <a href="<?= b('/admin/consultar_dni.php') ?>" class="nav-item <?= $activo === 'dni' ? 'active' : '' ?>"><span>🔎</span><span>Consultar DNI</span></a>
