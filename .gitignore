@@ -3,12 +3,14 @@
 .env.production
 .env.local
 .env.*.local
+.env.example
 
 # Carpeta con datos sensibles / de trabajo interno
 /no subir/
 
 # Script de un solo uso para crear el primer admin del Portal
 crear_admin_temporal.php
+
 
 # Dependencias instaladas por Composer (se instalan con "composer install")
 /vendor/
@@ -19,3 +21,16 @@ Thumbs.db
 .vscode/
 *.log
 storage/mails_log/
+CLAUDE.md
+
+# Archivos temporales de Office (Excel deja un "~$archivo.xlsx" abierto)
+/~$*.xlsx
+/~$*.xls
+/~$*.doc
+/~$*.docx
+~$*
+
+# Planillas de tareas personales (no son parte del proyecto)
+/Lista de tareas pendientes*.xlsx
+/*.xlsx
+!sql/**/*.xlsx

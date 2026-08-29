@@ -15,14 +15,18 @@ $etiquetaRol = [
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?= htmlspecialchars($portal_titulo ?? 'Mi Portal · TECNOMEDIC') ?></title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="<?= b('/static/tecnomedic.css') ?>">
-<link rel="stylesheet" href="<?= b('/portal/css/portal.css') ?>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= htmlspecialchars($portal_titulo ?? 'Mi Portal · TECNOMEDIC') ?></title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Montserrat:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="<?= b('/static/tecnomedic.css') ?>">
+    <link rel="stylesheet" href="<?= b('/portal/css/portal.css') ?>">
 </head>
+
 <body class="portal">
 
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
@@ -37,24 +41,53 @@ $etiquetaRol = [
 
             <div class="nav-label">Menú</div>
             <?php if ($rol === 'paciente'): ?>
-                <a href="<?= b('/portal/paciente/dashboard.php') ?>" class="nav-item <?= $activo === 'inicio' ? 'active' : '' ?>"><span>🏠</span><span>Inicio</span></a>
-                <a href="<?= b('/portal/paciente/perfil.php') ?>" class="nav-item <?= $activo === 'perfil' ? 'active' : '' ?>"><span>👤</span><span>Mi perfil</span></a>
-                <a href="<?= b('/portal/recursos.php') ?>" class="nav-item <?= $activo === 'recursos' ? 'active' : '' ?>"><span>📚</span><span>Recursos</span></a>
+            <a href="<?= b('/portal/paciente/dashboard.php') ?>"
+                class="nav-item <?= $activo === 'inicio' ? 'active' : '' ?>"><span><img class="tm-thumb"
+                        src="<?= $base ?>/static/img/icons/home.png" alt="" /></span><span>Inicio</span></a>
+            <a href="<?= b('/portal/paciente/perfil.php') ?>"
+                class="nav-item <?= $activo === 'perfil' ? 'active' : '' ?>"><span><img class="tm-thumb"
+                        src="<?= $base ?>/static/img/icons/usuario.png" alt="" /></span><span>Mi perfil</span></a>
+            <a href="<?= b('/portal/recursos.php') ?>"
+                class="nav-item <?= $activo === 'recursos' ? 'active' : '' ?>"><span><img class="tm-thumb"
+                        src="<?= $base ?>/static/img/icons/carpeta.PNG" alt="" /></span><span>Recursos</span></a>
 
             <?php elseif ($rol === 'profesional'): ?>
-                <a href="<?= b('/portal/profesional/dashboard.php') ?>" class="nav-item <?= $activo === 'pacientes' ? 'active' : '' ?>"><span>🧑‍⚕️</span><span>Mis pacientes</span></a>
-                <a href="<?= b('/portal/recursos.php') ?>" class="nav-item <?= $activo === 'recursos' ? 'active' : '' ?>"><span>📚</span><span>Recursos</span></a>
+            <a href="<?= b('/portal/profesional/dashboard.php') ?>"
+                class="nav-item <?= $activo === 'pacientes' ? 'active' : '' ?>"><span><img class="tm-thumb"
+                        src="<?= $base ?>/static/img/icons/doctor.png" alt="" /></span><span>Mis pacientes</span></a>
+            <a href="<?= b('/portal/recursos.php') ?>"
+                class="nav-item <?= $activo === 'recursos' ? 'active' : '' ?>"><span><img class="tm-thumb"
+                        src="<?= $base ?>/static/img/icons/carpeta.PNG" alt="" /></span><span>Recursos</span></a>
 
             <?php elseif ($rol === 'admin'): ?>
-                <a href="<?= b('/admin/tablero.php') ?>" class="nav-item <?= $activo === 'tablero' ? 'active' : '' ?>"><span>🧭</span><span>Tablero</span></a>
-                <a href="<?= b('/admin/index.php') ?>" class="nav-item"><span>📅</span><span>Turnos</span></a>
-                <a href="<?= b('/admin/pacientes.php') ?>" class="nav-item <?= $activo === 'pacientes' ? 'active' : '' ?>"><span>🧑‍⚕️</span><span>Pacientes</span></a>
-                <a href="<?= b('/admin/profesionales.php') ?>" class="nav-item <?= $activo === 'profesionales' ? 'active' : '' ?>"><span>👨‍⚕️</span><span>Profesionales</span></a>
-                <a href="<?= b('/admin/usuarios.php') ?>" class="nav-item <?= $activo === 'usuarios' ? 'active' : '' ?>"><span>🧑‍💼</span><span>Usuarios</span></a>
-                <a href="<?= b('/admin/presupuestos.php') ?>" class="nav-item <?= $activo === 'presupuestos' ? 'active' : '' ?>"><span>📄</span><span>Presupuestos</span></a>
-                <a href="<?= b('/admin/recursos.php') ?>" class="nav-item <?= $activo === 'recursos' ? 'active' : '' ?>"><span>📚</span><span>Recursos</span></a>
-                <a href="<?= b('/admin/contactos.php') ?>" class="nav-item <?= $activo === 'contactos' ? 'active' : '' ?>"><span>✉️</span><span>Mensajes</span></a>
-                <a href="<?= b('/admin/consultar_dni.php') ?>" class="nav-item <?= $activo === 'dni' ? 'active' : '' ?>"><span>🔎</span><span>Consultar DNI</span></a>
+            <a href="<?= b('/admin/tablero.php') ?>"
+                class="nav-item <?= $activo === 'tablero' ? 'active' : '' ?>"><span></span><span>Tablero</span></a>
+            <a href="<?= b('/admin/index.php') ?>" class="nav-item"><span><img class="tm-thumb"
+                        src="<?= $base ?>/static/img/icons/calendario2.png" alt="" /></span><span>Turnos</span></a>
+            <a href="<?= b('/admin/pacientes.php') ?>"
+                class="nav-item <?= $activo === 'pacientes' ? 'active' : '' ?>"><span><img class="tm-thumb"
+                        src="<?= $base ?>/static/img/icons/pacientes.png" alt="" /></span><span>Pacientes</span></a>
+            <a href="<?= b('/admin/profesionales.php') ?>"
+                class="nav-item <?= $activo === 'profesionales' ? 'active' : '' ?>"><span><img class="tm-thumb"
+                        src="<?= $base ?>/static/img/icons/doctor.png" alt="" /></span><span>Profesionales</span></a>
+            <a href="<?= b('/admin/usuarios.php') ?>"
+                class="nav-item <?= $activo === 'usuarios' ? 'active' : '' ?>"><span><img class="tm-thumb"
+                        src="<?= $base ?>/static/img/icons/personas.PNG" alt="" /></span><span>Usuarios</span></a>
+            <a href="<?= b('/admin/presupuestos.php') ?>"
+                class="nav-item <?= $activo === 'presupuestos' ? 'active' : '' ?>"><span><img class="tm-thumb"
+                        src="<?= $base ?>/static/img/icons/calculadora.PNG" alt="" /></span><span>Presupuestos</span></a>
+            <a href="<?= b('/admin/recursos.php') ?>"
+                class="nav-item <?= $activo === 'recursos' ? 'active' : '' ?>"><span><img class="tm-thumb"
+                        src="<?= $base ?>/static/img/icons/carpeta.PNG" alt="" /></span><span>Recursos</span></a>
+            <a href="<?= b('/admin/contactos.php') ?>"
+                class="nav-item <?= $activo === 'contactos' ? 'active' : '' ?>"><span><img class="tm-thumb"
+                        src="<?= $base ?>/static/img/icons/email.png" alt="" /></span><span>Mensajes</span></a>
+            <a href="<?= b('/admin/consultar_dni.php') ?>"
+                class="nav-item <?= $activo === 'dni' ? 'active' : '' ?>"><span><img class="tm-thumb"
+                        src="<?= $base ?>/static/img/icons/lupa.png" alt="" /></span><span>Consultar DNI</span></a>
+            <a href="<?= b('/admin/multimedia.php') ?>"
+                class="nav-item <?= $activo === 'multimedia' || in_array($activo, ['novedades','staff','testimonios','destacados','config']) ? 'active' : '' ?>"><span><img class="tm-thumb"
+                        src="<?= $base ?>/static/img/icons/multimedia.png" alt="" /></span><span>Multimedia</span></a>
             <?php endif; ?>
 
             <div class="sidebar-footer">
@@ -81,66 +114,79 @@ $etiquetaRol = [
             </div>
             <div class="portal-container" style="padding:0;max-width:none;margin:0;">
 
-<!-- Modal Ficha Médica (Fase D) -->
-<div class="ficha-modal-overlay" id="fichaModalOverlay" onclick="if(event.target===this) cerrarFicha()">
-    <div class="ficha-modal">
-        <div class="ficha-modal-header">
-            <strong>Ficha médica</strong>
-            <button type="button" class="ficha-modal-close" onclick="cerrarFicha()">✕</button>
-        </div>
-        <div class="ficha-modal-body" id="fichaModalBody">Cargando…</div>
-    </div>
-</div>
-<script>
-const TM_BASE = "<?= b('') ?>";
+                <!-- Modal Ficha Médica (Fase D) -->
+                <div class="ficha-modal-overlay" id="fichaModalOverlay" onclick="if(event.target===this) cerrarFicha()">
+                    <div class="ficha-modal">
+                        <div class="ficha-modal-header">
+                            <strong>Ficha médica</strong>
+                            <button type="button" class="ficha-modal-close" onclick="cerrarFicha()">✕</button>
+                        </div>
+                        <div class="ficha-modal-body" id="fichaModalBody">Cargando…</div>
+                    </div>
+                </div>
+                <script>
+                const TM_BASE = "<?= b('') ?>";
 
-function abrirFicha(pacienteId) {
-    var overlay = document.getElementById('fichaModalOverlay');
-    var body = document.getElementById('fichaModalBody');
-    body.innerHTML = 'Cargando…';
-    overlay.classList.add('open');
-    fetch(TM_BASE + '/portal/ficha/ver.php?modal=1&paciente_id=' + pacienteId)
-        .then(function(r) { return r.text(); })
-        .then(function(html) {
-            body.innerHTML = html;
-            bindFichaForms(pacienteId);
-        })
-        .catch(function() {
-            body.innerHTML = '<div class="portal-alert error">No se pudo cargar la ficha.</div>';
-        });
-}
+                function abrirFicha(pacienteId) {
+                    var overlay = document.getElementById('fichaModalOverlay');
+                    var body = document.getElementById('fichaModalBody');
+                    body.innerHTML = 'Cargando…';
+                    overlay.classList.add('open');
+                    fetch(TM_BASE + '/portal/ficha/ver.php?modal=1&paciente_id=' + pacienteId)
+                        .then(function(r) {
+                            return r.text();
+                        })
+                        .then(function(html) {
+                            body.innerHTML = html;
+                            bindFichaForms(pacienteId);
+                        })
+                        .catch(function() {
+                            body.innerHTML = '<div class="portal-alert error">No se pudo cargar la ficha.</div>';
+                        });
+                }
 
-function cerrarFicha() {
-    document.getElementById('fichaModalOverlay').classList.remove('open');
-}
+                function cerrarFicha() {
+                    document.getElementById('fichaModalOverlay').classList.remove('open');
+                }
 
-function bindFichaForms(pacienteId) {
-    document.querySelectorAll('#fichaModalBody form[data-ficha-form]').forEach(function(form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            var btn = form.querySelector('button[type=submit]');
-            if (btn) { btn.disabled = true; btn.textContent = 'Guardando…'; }
-            fetch(form.action, { method: 'POST', body: new FormData(form) })
-                .then(function(r) { return r.text(); })
-                .then(function(txt) {
-                    if (txt.trim() !== 'ok') alert('No se pudo guardar: ' + txt);
-                    abrirFicha(pacienteId);
-                })
-                .catch(function() { alert('Error de conexión al guardar.'); });
-        });
-    });
-}
+                function bindFichaForms(pacienteId) {
+                    document.querySelectorAll('#fichaModalBody form[data-ficha-form]').forEach(function(form) {
+                        form.addEventListener('submit', function(e) {
+                            e.preventDefault();
+                            var btn = form.querySelector('button[type=submit]');
+                            if (btn) {
+                                btn.disabled = true;
+                                btn.textContent = 'Guardando…';
+                            }
+                            fetch(form.action, {
+                                    method: 'POST',
+                                    body: new FormData(form)
+                                })
+                                .then(function(r) {
+                                    return r.text();
+                                })
+                                .then(function(txt) {
+                                    if (txt.trim() !== 'ok') alert('No se pudo guardar: ' + txt);
+                                    abrirFicha(pacienteId);
+                                })
+                                .catch(function() {
+                                    alert('Error de conexión al guardar.');
+                                });
+                        });
+                    });
+                }
 
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') cerrarFicha();
-});
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') cerrarFicha();
+                });
 
-function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('open');
-    document.getElementById('sidebarOverlay').classList.toggle('open');
-}
-function closeSidebar() {
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('sidebarOverlay').classList.remove('open');
-}
-</script>
+                function toggleSidebar() {
+                    document.getElementById('sidebar').classList.toggle('open');
+                    document.getElementById('sidebarOverlay').classList.toggle('open');
+                }
+
+                function closeSidebar() {
+                    document.getElementById('sidebar').classList.remove('open');
+                    document.getElementById('sidebarOverlay').classList.remove('open');
+                }
+                </script>

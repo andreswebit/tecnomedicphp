@@ -304,6 +304,10 @@ body {
 /* Fondo animado específico de la página de formulario */
 body.page-form {
   background: var(--g400);
+  background-image: url("../static/img/fondo/fondo1.jfif") ;
+  background-repeat:repeat ;
+  background-blend-mode:soft-light;
+  background-size:contain;
   
 }
 /* Cuadrados inferiores izquierda */
@@ -1434,10 +1438,10 @@ body.login-box {
     background 0.2s;
   border-left: 2px solid transparent;
   text-decoration: none;
-  
+
 }
 .nav-item.active {
-  color: var(--g800);
+  color: var(--g50);
   text-shadow:var(--g600) 0 1px 2px ;
   background: var(--green-dk);
   border-left-color: var(--green-glow);
@@ -1446,6 +1450,20 @@ body.login-box {
   color: var(--g800);
   background: var(--green, 0.12);
   text-shadow:var(--g600) 0 1.5px 3px ;
+}
+.tm-thumb {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+.nav-item .tm-thumb {
+  filter: brightness(0) saturate(100%) invert(100%) opacity(0.8);
+  transition: opacity 0.2s ease, filter 0.2s ease;
+}
+.nav-item:hover .tm-thumb,
+.nav-item.active .tm-thumb {
+  opacity: 1;
+  filter: brightness(0) saturate(100%) invert(100%) opacity(1);
 }
 .sidebar-footer {
   margin-top: fit-content;
@@ -1722,7 +1740,7 @@ tbody tr:hover {
 tbody td {
   padding: 14px 20px;
   font-size: 13.5px;
-  color: var(--g50);
+  color: var(--g800);
   white-space: nowrap;
 }
 .name-cell {

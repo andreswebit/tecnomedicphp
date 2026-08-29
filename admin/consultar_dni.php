@@ -16,7 +16,9 @@ require __DIR__ . '/../includes/portal_header.php';
 ?>
 <div class="portal-card" style="max-width:520px;margin:0 auto;">
     <h2>Consultar un DNI</h2>
-    <p style="font-size:0.9rem;">Cruza si esa persona ya tiene cuenta en el portal y/o turnos cargados.</p>
+    <p style="font-size:0.9rem; color: var(--tm-text);">
+        Cruza si esa persona ya tiene cuenta en el portal y/o turnos cargados.
+    </p>
     <form class="portal-form" method="post">
         <label>DNI</label>
         <input type="text" name="dni" required value="<?= htmlspecialchars($dniBuscado) ?>">
@@ -49,7 +51,7 @@ require __DIR__ . '/../includes/portal_header.php';
                     Obra social: <?= htmlspecialchars($resultado['persona']['obra_social'] ?? '-') ?>
                 </p>
             <?php else: ?>
-                <p>Este DNI todavía no figura en el padrón (ni turnos ni registro en el portal).</p>
+                <p >Este DNI todavía no figura en el padrón (ni turnos ni registro en el portal).</p>
             <?php endif; ?>
         </div>
     <?php endif; ?>

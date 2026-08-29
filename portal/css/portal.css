@@ -13,7 +13,7 @@ body.portal {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
     background: var(--tm-bg);
-    color: var(--white);
+    color: var(--g50);
 }
 
 .portal-nav {
@@ -234,23 +234,46 @@ table.portal-table th {
 
 .tablero-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 18px;
+    padding: 28px;
 }
 
 .tablero-tile {
-    background: #fff;
-    border-radius: 14px;
-    padding: 22px 18px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 16px;
+    padding: 24px 20px;
     text-decoration: none;
-    box-shadow: 0 2px 10px rgba(13,27,42,0.06);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-    display: block;
+    box-shadow: 0 2px 12px rgba(13, 27, 42, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border: 1px solid rgba(26, 165, 165, 0.12);
+    position: relative;
+    overflow: hidden;
+}
+
+.tablero-tile::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--tm-teal);
+    opacity: 0;
+    transition: opacity 0.2s ease;
 }
 
 .tablero-tile:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 18px rgba(13,27,42,0.12);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(13, 27, 42, 0.15);
+    border-color: var(--tm-teal);
+}
+
+.tablero-tile:hover::before {
+    opacity: 1;
 }
 
 .tablero-tile.disabled {
@@ -258,17 +281,102 @@ table.portal-table th {
     cursor: not-allowed;
 }
 
-.tablero-tile.disabled:hover { transform: none; box-shadow: 0 2px 10px rgba(13,27,42,0.06); }
+.tablero-tile.disabled:hover {
+    transform: none;
+    box-shadow: 0 2px 10px rgba(13, 27, 42, 0.06);
+    border-color: rgba(26, 165, 165, 0.12);
+}
 
-.tablero-icon { font-size: 1.8rem; margin-bottom: 8px; }
+.tablero-tile.disabled:hover::before {
+    opacity: 0;
+}
+
+.tablero-icon {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(26, 165, 165, 0.1), rgba(152, 197, 68, 0.1));
+    border-radius: 12px;
+}
+
+.tablero-icon img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    filter: none;
+}
 
 .tablero-title {
     font-family: 'Poppins', sans-serif;
     color: var(--tm-navy);
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 1.05rem;
     margin-bottom: 4px;
 }
 
-.tablero-desc { font-size: 0.82rem; color: #64748b; }
+.tablero-desc {
+    font-size: 0.82rem;
+    color: #64748b;
+    line-height: 1.4;
+}
 
+/* ── Stats cards armonizadas ─────────────────────────────────── */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    padding: 28px 28px 0;
+}
+
+.stat-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 16px;
+    padding: 18px 20px;
+    box-shadow: 0 2px 12px rgba(13, 27, 42, 0.06);
+    border: 1px solid rgba(13, 27, 42, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+}
+
+.stat-card.blue::before { background: var(--tm-teal); }
+.stat-card.green::before { background: var(--tm-lima); }
+.stat-card.amber::before { background: #f59e0b; }
+.stat-card.red::before { background: #c94f4f; }
+.stat-card.purple::before { background: #8b5cf6; }
+
+.stat-label {
+    font-size: 0.75rem;
+    color: #64748b;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+}
+
+.stat-value {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--tm-navy);
+    line-height: 1;
+}
+
+.stat-sub {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-top: 4px;
+}

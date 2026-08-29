@@ -20,8 +20,9 @@ error_reporting(E_ALL); ?>
 </head>
 
 <body class="page-form">
-
+          
     <div class="form-square">
+        
         <div class="square"></div>
         <div class="square"></div>
         <div class="square"></div>
@@ -29,7 +30,7 @@ error_reporting(E_ALL); ?>
 
     <div style="display:flex;min-height:100vh;position:relative;z-index:1;">
         <div class="wrapper-form" style="flex:1;">
-            <header class="site-header">
+            <!-- <header class="site-header">
                 <div class="logo">
                     <a href="<?= HOME_URL ?>/">
                         <img src="<?= $base ?>/static/img/tecno-logo.jpeg" alt="TECNOMEDIC" class="logo-img">
@@ -42,10 +43,11 @@ error_reporting(E_ALL); ?>
                     <div class="badge-dot"></div>
                     Turnos disponibles
                 </div>
-            </header>
+            </header> -->
 
             <main class="form-main">
                 <div class="form-content">
+
                     <div class="hero-label">Cámara Hiperbárica</div>
                     <h1>Solicitá tu <span>turno</span><br>en línea</h1>
                     <p class="form-subtitle">Elegí fecha y horario. Te confirmamos a la brevedad.</p>
@@ -67,11 +69,21 @@ error_reporting(E_ALL); ?>
                                         <span class="input-icon">🩺</span>
                                         <select name="area" id="areaSelect" class="obra-select" required>
                                             <option value="">— Seleccioná —</option>
-                                            <option value="audiologia" <?= ($_POST['area'] ?? '') === 'audiologia' ? 'selected' : '' ?>>Audiología</option>
-                                            <option value="hiperbarica" <?= ($_POST['area'] ?? '') === 'hiperbarica' ? 'selected' : '' ?>>Medicina Hiperbárica</option>
-                                            <option value="nutricion" <?= ($_POST['area'] ?? '') === 'nutricion' ? 'selected' : '' ?>>Nutrición</option>
-                                            <option value="ortopedia" <?= ($_POST['area'] ?? '') === 'ortopedia' ? 'selected' : '' ?>>Ortopedia y Rehabilitación</option>
-                                            <option value="equipamiento" <?= ($_POST['area'] ?? '') === 'equipamiento' ? 'selected' : '' ?>>Equipamiento Médico y Quirúrgico</option>
+                                            <option value="audiologia"
+                                                <?= ($_POST['area'] ?? '') === 'audiologia' ? 'selected' : '' ?>>
+                                                Audiología</option>
+                                            <option value="hiperbarica"
+                                                <?= ($_POST['area'] ?? '') === 'hiperbarica' ? 'selected' : '' ?>>
+                                                Medicina Hiperbárica</option>
+                                            <option value="nutricion"
+                                                <?= ($_POST['area'] ?? '') === 'nutricion' ? 'selected' : '' ?>>
+                                                Nutrición</option>
+                                            <option value="ortopedia"
+                                                <?= ($_POST['area'] ?? '') === 'ortopedia' ? 'selected' : '' ?>>
+                                                Ortopedia y Rehabilitación</option>
+                                            <option value="equipamiento"
+                                                <?= ($_POST['area'] ?? '') === 'equipamiento' ? 'selected' : '' ?>>
+                                                Equipamiento Médico y Quirúrgico</option>
                                         </select>
                                     </div>
                                 </div>
@@ -164,7 +176,7 @@ error_reporting(E_ALL); ?>
                             <div class="form-divider" style="margin-top:24px;"></div>
 
                             <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                                <a href="<?= HOME_URL ?>/" class="btn btn-outline" style="flex:0 0 auto;">
+                                <a href="<?= HOME_URL ?>/" class="btn btn-outline" style="flex:0 0 auto color: yellow; background: rgba(245, 245, 6, 0.56); border: 1px solid yellow; color: #f8f4f4;">
                                     <span class="ai-undo"></span> Volver
                                 </a>
                                 <button type="submit" class="submit-btn" id="submitBtn" disabled style="flex:1;">

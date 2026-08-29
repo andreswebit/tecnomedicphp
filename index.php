@@ -84,9 +84,13 @@ $base = BASE_URL; ?>
 
     <!-- HERO -->
     <section id="inicio">
-        <div class="hero-yt-bg">
+        <?php
+require_once __DIR__ . '/includes/db_config.php';
+$hero_video_url = @config_get('hero_video_url') ?: 'https://www.youtube.com/embed/IqcZl86vtXU';
+?>
+<div class="hero-yt-bg">
             <iframe
-                src="https://www.youtube.com/embed/IqcZl86vtXU?autoplay=1&mute=1&loop=1&controls=0&playlist=IqcZl86vtXU&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3"
+                src="<?= $hero_video_url ?>?autoplay=1&mute=1&loop=1&controls=0&playlist=<?= urlencode($hero_video_url) ?>&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3"
                 title="Sesión BioBarica – video de fondo" allow="autoplay; encrypted-media" allowfullscreen
                 loading="eager"></iframe>
         </div>
@@ -147,6 +151,16 @@ $base = BASE_URL; ?>
         </div>
     </div>
 
+    <?php
+require_once __DIR__ . '/includes/db_novedades.php';
+require_once __DIR__ . '/includes/db_testimonios.php';
+require_once __DIR__ . '/includes/db_staff.php';
+$novedades_carousel = [];
+try {
+    $novedades_carousel = array_filter(novedades_listar(), fn($n) => $n['tipo'] === 'novedad' && $n['activo']);
+    $novedades_carousel = array_slice($novedades_carousel, 0, 5); // Máximo 5 slides
+} catch (Throwable $e) { /* BD sin tablas todavía → fallback hardcoded */ }
+?>
     <!-- NOVEDADES CAROUSEL -->
     <section id="novedades">
         <div class="ncar-progress">
@@ -155,160 +169,205 @@ $base = BASE_URL; ?>
         <div class="ncar-wrap">
             <div class="ncar-track" id="ncarTrack">
 
-                <!-- SLIDE 1 -->
-                <div class="ncar-slide">
-                    <div class="ncar-text">
-                        <span class="ncar-tag"><i class="fa-brands fa-facebook"></i>&nbsp; Reel TECNOMEDIC</span>
-                        <h2 class="ncar-title">OXIGENOTERAPIA<br>HIPERBÁRICA</h2>
-                        <p class="ncar-excerpt">La Cámara Hiperbárica Revitalair 430 es la tecnología más avanzada para
-                            el tratamiento integral de heridas, pie diabético y recuperación deportiva.<br><br>Es un
-                            tratamiento no invasivo en el que la persona respira oxígeno al 100% dentro de una cámara
-                            presurizada.</p>
-                        <ul class="ncar-list">
-                            <li><i class="fa-solid fa-circle-check"></i> Tecnología FDA aprobada — Revitalair 430</li>
-                            <li><i class="fa-solid fa-circle-check"></i> Sesiones de 60 a 90 min, sin dolor</li>
-                            <li><i class="fa-solid fa-circle-check"></i> Resultados visibles desde las primeras sesiones
-                            </li>
-                        </ul>
-                        <a href="<?= $base ?>/turnos.php" class="btn btn-green" style="width:fit-content;"><i
-                                class="fa-regular fa-calendar-check"></i> Contactar</a>
-                    </div>
-                    <div class="ncar-visual">
-                        <video controls autoplay muted loop src="<?= $base ?>/static/video/sede.mp4"
-                            title="Cámara Hiperbárica"></video>
-                        <div class="ncar-badge">
-                            <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/logos/Logotipo - foto perfil - sin fondo.png"
-                                    alt="Logo" /></div>
-                            <div>
-                                <div class="ncar-badge-name">Tecnomedic Salud</div>
-                                <div class="ncar-badge-sub">Centro Hiperbárico · Corrientes</div>
+                <?php if (empty($novedades_carousel)): ?>
+                    <!-- Fallback if no novedades in DB -->
+                    <div class="ncar-slide">
+                        <div class="ncar-text">
+                            <span class="ncar-tag"><i class="fa-brands fa-facebook"></i>&nbsp; Reel TECNOMEDIC</span>
+                            <h2 class="ncar-title">OXIGENOTERAPIA<br>HIPERBÁRICA</h2>
+                            <p class="ncar-excerpt">La Cámara Hiperbárica Revitalair 430 es la tecnología más avanzada para
+                                el tratamiento integral de heridas, pie diabético y recuperación deportiva.<br><br>Es un
+                                tratamiento no invasivo en el que la persona respira oxígeno al 100% dentro de una cámara
+                                presurizada.</p>
+                            <ul class="ncar-list">
+                                <li><i class="fa-solid fa-circle-check"></i> Tecnología FDA aprobada — Revitalair 430</li>
+                                <li><i class="fa-solid fa-circle-check"></i> Sesiones de 60 a 90 min, sin dolor</li>
+                                <li><i class="fa-solid fa-circle-check"></i> Resultados visibles desde las primeras sesiones
+                                </li>
+                            </ul>
+                            <a href="<?= $base ?>/turnos.php" class="btn btn-green" style="width:fit-content;"><i
+                                    class="fa-regular fa-calendar-check"></i> Contactar</a>
+                        </div>
+                        <div class="ncar-visual">
+                            <video controls autoplay muted loop src="<?= $base ?>/static/video/sede.mp4"
+                                title="Cámara Hiperbárica"></video>
+                            <div class="ncar-badge">
+                                <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/logos/Logotipo - foto perfil - sin fondo.png"
+                                        alt="Logo" /></div>
+                                <div>
+                                    <div class="ncar-badge-name">Tecnomedic Salud</div>
+                                    <div class="ncar-badge-sub">Centro Hiperbárico · Corrientes</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- SLIDE 2 -->
-                <div class="ncar-slide">
-                    <div class="ncar-text">
-                        <span class="ncar-tag"><i class="fa-solid fa-star-of-life"></i>&nbsp; Tratamiento</span>
-                        <h2 class="ncar-title">PIE<br>DIABÉTICO</h2>
-                        <p class="ncar-excerpt">Las complicaciones del pie diabético son una de las principales causas
-                            de hospitalización en personas con diabetes. En TECNOMEDIC abordamos el tratamiento integral
-                            con oxigenoterapia hiperbárica, curación avanzada y seguimiento médico continuo.</p>
-                        <ul class="ncar-list">
-                            <li><i class="fa-solid fa-circle-check"></i> Evaluación especializada de heridas y escaras
-                            </li>
-                            <li><i class="fa-solid fa-circle-check"></i> OHB para acelerar la cicatrización</li>
-                            <li><i class="fa-solid fa-circle-check"></i> Equipo médico multidisciplinario</li>
-                        </ul>
-                        <a href="<?= $base ?>/turnos.php" class="btn btn-green" style="width:fit-content;"><i
-                                class="fa-regular fa-calendar"></i> Contactar</a>
-                    </div>
-                    <div class="ncar-visual">
-                        <video controls autoplay muted loop src="<?= $base ?>/static/video/PieDiabetico.mp4"></video>
-                        <div class="ncar-badge">
-                            <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/logos/Logotipo - foto perfil - sin fondo.png"
-                                    alt="Logo" /></div>
-                            <div>
-                                <div class="ncar-badge-name">Tecnomedic Salud</div>
-                                <div class="ncar-badge-sub">Centro Hiperbárico · Corrientes</div>
+                    <div class="ncar-slide">
+                        <div class="ncar-text">
+                            <span class="ncar-tag"><i class="fa-solid fa-star-of-life"></i>&nbsp; Tratamiento</span>
+                            <h2 class="ncar-title">PIE<br>DIABÉTICO</h2>
+                            <p class="ncar-excerpt">Las complicaciones del pie diabético son una de las principales causas
+                                de hospitalización en personas con diabetes. En TECNOMEDIC abordamos el tratamiento integral
+                                con oxigenoterapia hiperbárica, curación avanzada y seguimiento médico continuo.</p>
+                            <ul class="ncar-list">
+                                <li><i class="fa-solid fa-circle-check"></i> Evaluación especializada de heridas y escaras
+                                </li>
+                                <li><i class="fa-solid fa-circle-check"></i> OHB para acelerar la cicatrización</li>
+                                <li><i class="fa-solid fa-circle-check"></i> Equipo médico multidisciplinario</li>
+                            </ul>
+                            <a href="<?= $base ?>/turnos.php" class="btn btn-green" style="width:fit-content;"><i
+                                    class="fa-regular fa-calendar"></i> Contactar</a>
+                        </div>
+                        <div class="ncar-visual">
+                            <video controls autoplay muted loop src="<?= $base ?>/static/video/PieDiabetico.mp4"></video>
+                            <div class="ncar-badge">
+                                <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/logos/Logotipo - foto perfil - sin fondo.png"
+                                        alt="Logo" /></div>
+                                <div>
+                                    <div class="ncar-badge-name">Tecnomedic Salud</div>
+                                    <div class="ncar-badge-sub">Centro Hiperbárico · Corrientes</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- SLIDE 3 -->
-                <div class="ncar-slide">
-                    <div class="ncar-text">
-                        <span class="ncar-tag"><i class="fa-brands fa-youtube" style="color:#ff0000;"></i>&nbsp; Video
-                            educativo</span>
-                        <h2 class="ncar-title">CICATRIZACIÓN<br>DE HERIDAS</h2>
-                        <p class="ncar-excerpt">El oxígeno hiperbárico genera beneficios fisiológicos comprobados:
-                            estimula la formación de vasos sanguíneos, la síntesis de colágeno y actúa sobre bacterias
-                            resistentes.</p>
-                        <ul class="ncar-list">
-                            <li><i class="fa-solid fa-circle-check"></i> Escaras y úlceras por presión</li>
-                            <li><i class="fa-solid fa-circle-check"></i> Heridas post-quirúrgicas y quemaduras</li>
-                            <li><i class="fa-solid fa-circle-check"></i> Osteomielitis crónica</li>
-                        </ul>
-                        <a href="<?= $base ?>/turnos.php" class="btn btn-green" style="width:fit-content;"><i
-                                class="fa-regular fa-calendar"></i> Contactar</a>
-                    </div>
-                    <div class="ncar-visual">
-                        <video controls autoplay muted loop src="<?= $base ?>/static/video/Heridas.mp4"></video>
-                        <div class="ncar-badge">
-                            <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/logos/Logotipo - foto perfil - sin fondo.png"
-                                    alt="Logo" /></div>
-                            <div>
-                                <div class="ncar-badge-name">Tecnomedic Salud</div>
-                                <div class="ncar-badge-sub">Centro Hiperbárico · Corrientes</div>
+                    <div class="ncar-slide">
+                        <div class="ncar-text">
+                            <span class="ncar-tag"><i class="fa-brands fa-youtube" style="color:#ff0000;"></i>&nbsp; Video
+                                educativo</span>
+                            <h2 class="ncar-title">CICATRIZACIÓN<br>DE HERIDAS</h2>
+                            <p class="ncar-excerpt">El oxígeno hiperbárico genera beneficios fisiológicos comprobados:
+                                estimula la formación de vasos sanguíneos, la síntesis de colágeno y actúa sobre bacterias
+                                resistentes.</p>
+                            <ul class="ncar-list">
+                                <li><i class="fa-solid fa-circle-check"></i> Escaras y úlceras por presión</li>
+                                <li><i class="fa-solid fa-circle-check"></i> Heridas post-quirúrgicas y quemaduras</li>
+                                <li><i class="fa-solid fa-circle-check"></i> Osteomielitis crónica</li>
+                            </ul>
+                            <a href="<?= $base ?>/turnos.php" class="btn btn-green" style="width:fit-content;"><i
+                                    class="fa-regular fa-calendar"></i> Contactar</a>
+                        </div>
+                        <div class="ncar-visual">
+                            <video controls autoplay muted loop src="<?= $base ?>/static/video/Heridas.mp4"></video>
+                            <div class="ncar-badge">
+                                <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/logos/Logotipo - foto perfil - sin fondo.png"
+                                        alt="Logo" /></div>
+                                <div>
+                                    <div class="ncar-badge-name">Tecnomedic Salud</div>
+                                    <div class="ncar-badge-sub">Centro Hiperbárico · Corrientes</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- SLIDE 4 -->
-                <div class="ncar-slide">
-                    <div class="ncar-text">
-                        <span class="ncar-tag"><i class="fa-solid fa-dumbbell"></i>&nbsp; Deporte</span>
-                        <h2 class="ncar-title">RECUPERACIÓN<br>DEPORTIVA</h2>
-                        <p class="ncar-excerpt">La oxigenoterapia hiperbárica es el aliado de los deportistas de alto
-                            rendimiento. Reduce la inflamación, acelera la recuperación muscular y permite volver a la
-                            actividad física hasta 3 semanas antes.</p>
-                        <ul class="ncar-list">
-                            <li><i class="fa-solid fa-circle-check"></i> Reducción de inflamación y dolor post-esfuerzo
-                            </li>
-                            <li><i class="fa-solid fa-circle-check"></i> Recuperación acelerada de desgarros y esguinces
-                            </li>
-                            <li><i class="fa-solid fa-circle-check"></i> Mejora del rendimiento y energía celular</li>
-                        </ul>
-                        <a href="https://wa.me/5493794775341" target="_blank" class="btn btn-green"
-                            style="width:fit-content;"><i class="fa-brands fa-whatsapp"></i> Consultar</a>
-                    </div>
-                    <div class="ncar-visual">
-                        <img src="https://plus.unsplash.com/premium_photo-1664304770925-6f9a1386d7b9?q=80&w=1073&auto=format&fit=crop"
-                            alt="Recuperación deportiva" loading="lazy" />
-                        <div class="ncar-badge">
-                            <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/logos/Logotipo - foto perfil - sin fondo.png"
-                                    alt="Logo" /></div>
-                            <div>
-                                <div class="ncar-badge-name">Tecnomedic Salud</div>
-                                <div class="ncar-badge-sub">Centro Hiperbárico · Corrientes</div>
+                    <div class="ncar-slide">
+                        <div class="ncar-text">
+                            <span class="ncar-tag"><i class="fa-solid fa-dumbbell"></i>&nbsp; Deporte</span>
+                            <h2 class="ncar-title">RECUPERACIÓN<br>DEPORTIVA</h2>
+                            <p class="ncar-excerpt">La oxigenoterapia hiperbárica es el aliado de los deportistas de alto
+                                rendimiento. Reduce la inflamación, acelera la recuperación muscular y permite volver a la
+                                actividad física hasta 3 semanas antes.</p>
+                            <ul class="ncar-list">
+                                <li><i class="fa-solid fa-circle-check"></i> Reducción de inflamación y dolor post-esfuerzo
+                                </li>
+                                <li><i class="fa-solid fa-circle-check"></i> Recuperación acelerada de desgarros y esguinces
+                                </li>
+                                <li><i class="fa-solid fa-circle-check"></i> Mejora del rendimiento y energía celular</li>
+                            </ul>
+                            <a href="https://wa.me/5493794775341" target="_blank" class="btn btn-green"
+                                    style="width:fit-content;"><i class="fa-brands fa-whatsapp"></i> Consultar</a>
+                        </div>
+                        <div class="ncar-visual">
+                            <img src="https://plus.unsplash.com/premium_photo-1664304770925-6f9a1386d7b9&q=80&w=1073&auto=format&fit=crop"
+                                alt="Recuperación deportiva" loading="lazy" />
+                            <div class="ncar-badge">
+                                <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/logos/Logotipo - foto perfil - sin fondo.png"
+                                        alt="Logo" /></div>
+                                <div>
+                                    <div class="ncar-badge-name">Tecnomedic Salud</div>
+                                    <div class="ncar-badge-sub">Centro Hiperbárico · Corrientes</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- SLIDE 5 -->
-                <div class="ncar-slide">
-                    <div class="ncar-text">
-                        <span class="ncar-tag"><i class="fa-brands fa-youtube" style="color:#ff0000;"></i>&nbsp;
-                            Video</span>
-                        <h2 class="ncar-title">ASÍ ES UNA<br>SESIÓN EN<br>CÁMARA</h2>
-                        <p class="ncar-excerpt">Cada sesión dura entre 60 y 90 minutos. El paciente descansa dentro de
-                            la cámara respirando oxígeno puro al 100% a presión controlada. Es un tratamiento
-                            completamente seguro, no invasivo y sin dolor.</p>
-                        <ul class="ncar-list">
-                            <li><i class="fa-solid fa-circle-check"></i> Ambiente cómodo y climatizado</li>
-                            <li><i class="fa-solid fa-circle-check"></i> Monitoreo continuo del paciente</li>
-                            <li><i class="fa-solid fa-circle-check"></i> Puede leer, escuchar música o descansar</li>
-                        </ul>
-                        <a href="<?= $base ?>/turnos.php" class="btn btn-green" style="width:fit-content;"><i
-                                class="fa-regular fa-calendar-check"></i> Empezar tratamiento</a>
-                    </div>
-                    <div class="ncar-visual">
-                        <video src="<?= $base ?>/static/video/sesiones.mp4" controls autoplay muted loop
-                            style="min-height:480px;"></video>
-                        <div class="ncar-badge">
-                            <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/logos/Logotipo - foto perfil - sin fondo.png"
-                                    alt="Logo" /></div>
-                            <div>
-                                <div class="ncar-badge-name">Tecnomedic Salud</div>
-                                <div class="ncar-badge-sub">Centro Hiperbárico · Corrientes</div>
+                    <div class="ncar-slide">
+                        <div class="ncar-text">
+                            <span class="ncar-tag"><i class="fa-brands fa-youtube" style="color:#ff0000;"></i>&nbsp;
+                                Video</span>
+                            <h2 class="ncar-title">ASÍ ES UNA<br>SESIÓN EN<br>CÁMARA</h2>
+                            <p class="ncar-excerpt">Cada sesión dura entre 60 y 90 minutos. El paciente descansa dentro de
+                                la cámara respirando oxígeno puro al 100% a presión controlada. Es un tratamiento
+                                completamente seguro, no invasivo y sin dolor.</p>
+                            <ul class="ncar-list">
+                                <li><i class="fa-solid fa-circle-check"></i> Ambiente cómodo y climatizado</li>
+                                <li><i class="fa-solid fa-circle-check"></i> Monitoreo continuo del paciente</li>
+                                <li><i class="fa-solid fa-circle-check"></i> Puede leer, escuchar música o descansar</li>
+                            </ul>
+                            <a href="<?= $base ?>/turnos.php" class="btn btn-green" style="width:fit-content;"><i
+                                    class="fa-regular fa-calendar-check"></i> Empezar tratamiento</a>
+                        </div>
+                        <div class="ncar-visual">
+                            <video src="<?= $base ?>/static/video/sesiones.mp4" controls autoplay muted loop
+                                    style="min-height:480px;"></video>
+                            <div class="ncar-badge">
+                                <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/logos/Logotipo - foto perfil - sin fondo.png"
+                                        alt="Logo" /></div>
+                                <div>
+                                    <div class="ncar-badge-name">Tecnomedic Salud</div>
+                                    <div class="ncar-badge-sub">Centro Hiperbárico · Corrientes</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                <?php else: ?>
+                    <?php $slide_num = 0; foreach ($novedades_carousel as $n): ?>
+                        <?php
+                        $video_url = $n['video_url'] ?? '';
+                        $has_video = !empty($video_url) && (str_contains($video_url, 'youtube.com') || str_contains($video_url, 'vimeo.com') || str_contains($video_url, '.mp4'));
+                        $has_image = !empty($n['imagen']) && file_exists(__DIR__ . '/../' . $n['imagen']);
+                        ?>
+                        <!-- SLIDE <?= $slide_num + 1 ?> -->
+                        <div class="ncar-slide">
+                            <div class="ncar-text">
+                                <span class="ncar-tag"><i class="fa-solid fa-circle"></i>&nbsp; <?= htmlspecialchars($n['categoria'] ?? 'Novedad') ?></span>
+                                <h2 class="ncar-title"><?= htmlspecialchars($n['titulo']) ?></h2>
+                                <p class="ncar-excerpt"><?= nl2br(htmlspecialchars(substr(strip_tags($n['contenido']), 0, 200))) ?></p>
+                                <?php if (!empty($n['video_url']) || !empty($n['imagen'])): ?>
+                                <ul class="ncar-list">
+                                    <?php if (!empty($n['video_url'])): ?>
+                                    <li><i class="fa-solid fa-video"></i> Video incluido</li>
+                                    <?php endif; ?>
+                                    <?php if (!empty($n['imagen'])): ?>
+                                    <li><i class="fa-solid fa-image"></i> Imagen incluida</li>
+                                    <?php endif; ?>
+                                </ul>
+                                <?php endif; ?>
+                                <a href="<?= $base ?>/turnos.php" class="btn btn-green" style="width:fit-content;"><i
+                                        class="fa-regular fa-calendar-check"></i> Contactar</a>
+                            </div>
+                            <div class="ncar-visual">
+                                <?php if ($has_video): ?>
+                                    <video controls autoplay muted loop src="<?= b('/' . $video_url) ?>"
+                                        title="<?= htmlspecialchars($n['titulo']) ?>"></video>
+                                <?php elseif ($has_image): ?>
+                                    <img src="<?= b('/' . $n['imagen']) ?>" alt="<?= htmlspecialchars($n['titulo']) ?>" loading="lazy" />
+                                <?php else: ?>
+                                    <div style="background:#f8fafc;padding:20px;text-align:center;border-radius:8px;color:#64748b;">
+                                        <i class="fa-solid fa-file"></i><br>
+                            Contenido multimedia
+                                    </div>
+                                <?php endif; ?>
+                                <?php if (!empty($n['video_url']) || !empty($n['imagen'])): ?>
+                                <div class="ncar-badge">
+                                    <div class="ncar-badge-logo"><img src="<?= $base ?>/static/img/logos/Logotipo - foto perfil - sin fondo.png"
+                                            alt="Logo" /></div>
+                                    <div>
+                                        <div class="ncar-badge-name">Tecnomedic Salud</div>
+                                        <div class="ncar-badge-sub">Centro Hiperbárico · Corrientes</div>
+                                    </div>
+                                </div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <?php $slide_num++; endforeach; ?>
+                <?php endif; ?>
 
             </div>
         </div>
@@ -429,6 +488,12 @@ $base = BASE_URL; ?>
             </div>
             <div class="doctors-grid-wrap">
                 <div class="doctors-grid">
+                    <?php
+                    $staff_home = [];
+                    try { $staff_home = array_filter(staff_listar(), fn($s) => $s['activo']); } catch (Throwable $e) {}
+                    if (empty($staff_home)):
+                    ?>
+                    <!-- Fallback: si no hay staff en BD, mostrar los hardcoded -->
                     <div class="doctor-card">
                         <div class="doctor-photo-wrap"><img src="<?= $base ?>/static/img/profesionales/dra unger.jpg"
                                 alt="Dra. Carolina Unger" loading="lazy" />
@@ -458,6 +523,27 @@ $base = BASE_URL; ?>
                             nutrición, suplementación especializada y seguimiento continuo.</p>
                         <button class="doctor-plus" title="Ver más"><i class="fa-solid fa-plus"></i></button>
                     </div>
+                    <?php else: foreach ($staff_home as $s): ?>
+                    <div class="doctor-card">
+                        <div class="doctor-photo-wrap">
+                            <?php if ($s['foto']): ?>
+                                <img src="<?= b('/' . $s['foto']) ?>" alt="<?= htmlspecialchars($s['apellido'] . ', ' . $s['nombre']) ?>" loading="lazy" />
+                            <?php else: ?>
+                                <div style="background:#f8fafc;height:100%;display:flex;align-items:center;justify-content:center;color:#94a3b8;"><i class="fa-solid fa-user-doctor" style="font-size:48px;"></i></div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="doctor-name"><?= htmlspecialchars($s['titulo'] ?? '') ?> <?= htmlspecialchars($s['apellido'] . ', ' . $s['nombre']) ?></div>
+                        <div class="doctor-specialty"><?= htmlspecialchars($s['especialidad'] ?? '-') ?></div>
+                        <?php if (!empty($s['descripcion'])): ?>
+                        <p class="doctor-desc"><?= htmlspecialchars(substr($s['descripcion'], 0, 200)) ?><?= strlen($s['descripcion']) > 200 ? '...' : '' ?></p>
+                        <?php endif; ?>
+                        <?php if (!empty($s['instagram'])): ?>
+                        <a href="https://instagram.com/<?= htmlspecialchars(ltrim($s['instagram'], '@')) ?>" target="_blank" class="doctor-plus" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <?php else: ?>
+                        <button class="doctor-plus" title="Ver más"><i class="fa-solid fa-plus"></i></button>
+                        <?php endif; ?>
+                    </div>
+                    <?php endforeach; endif; ?>
                 </div>
             </div>
             <div style="text-align:center;margin-top:44px;position:relative;z-index:1;">
@@ -702,125 +788,93 @@ $base = BASE_URL; ?>
                 style="font-family:'Poppins',sans-serif;font-weight:900;text-transform:uppercase;font-size:clamp(28px,4vw,44px);color:var(--navy);">
                 TESTIMONIOS REALES</h2>
 
+            <?php
+            $testimonios_home = [];
+            try {
+                $testimonios_home = array_filter(testimonios_listar(), fn($t) => $t['activo']);
+                $testimonios_home = array_slice($testimonios_home, 0, 6); // Máximo 6 testimonios
+            } catch (Throwable $e) { /* BD sin tablas todavía → fallback hardcoded */ }
+            ?>
             <!-- Grilla 4 columnas -->
             <div class="testim-grid">
+                <?php
+                // Mezclar testimonios de la BD con los 4 hardcoded (fallback) si la BD está vacía
+                $testim_default = [
+                    [
+                        'nombre'   => 'Susana',
+                        'rol'      => 'Paciente de heridas complejas-pie diabético',
+                        'texto'    => '"Mi herida no cerraba hace 2 años."',
+                        'resultado'=> 'Con el asesoramiento adecuado y tratamiento, cicatrizó.',
+                        'media_tipo' => 'imagen',
+                        'media_url'  => 'https://plus.unsplash.com/premium_photo-1675808575868-8547c37c047c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                    ],
+                    [
+                        'nombre'   => 'Luciano',
+                        'rol'      => 'Paciente deportista',
+                        'texto'    => '"Tenía dolores en la espalda, vine a recuperación muscular"',
+                        'resultado'=> 'Con el tratamiento, sentí cambios en la segunda sesión.',
+                        'media_tipo' => 'video',
+                        'media_url'  => $base . '/static/video/deporte2.mp4',
+                        'video_thumb'=> $base . '/static/video/deporte2.JPG',
+                    ],
+                    [
+                        'nombre'   => 'Marilyn - Luciana - Alejandro',
+                        'rol'      => 'Deportistas',
+                        'texto'    => '"Me ayudaron en la recuperación y oxigenación"',
+                        'resultado'=> 'La OHB aceleró la recuperación de mis atletas.',
+                        'media_tipo' => 'video',
+                        'media_url'  => $base . '/static/video/deporte1.mp4',
+                        'video_thumb'=> $base . '/static/video/deporte1.JPG',
+                    ],
+                    [
+                        'nombre'   => 'Marta',
+                        'rol'      => 'Paciente hipoacúsica',
+                        'texto'    => '"Ahora puedo escuchar a mis nietos jugar."',
+                        'resultado'=> 'Volví a sentirme parte de la conversación.',
+                        'media_tipo' => 'imagen',
+                        'media_url'  => 'https://plus.unsplash.com/premium_photo-1726797723292-b2dc29e3dff2?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                    ],
+                ];
 
-                <!-- CARD 1 — Imagen simple -->
+                $testimonios_render = empty($testimonios_home) ? $testim_default : $testimonios_home;
+                $i = 0;
+                foreach ($testimonios_render as $t):
+                    $i++;
+                    $media_id = 'tmMedia' . $i;
+                    $video_id = 'tmVideo' . $i;
+                    $tipo = $t['media_tipo'] ?? 'imagen';
+                ?>
                 <div class="testim-card">
-                    <div class="testim-media">
-                        <img class="tm-thumb"
-                            src="https://plus.unsplash.com/premium_photo-1675808575868-8547c37c047c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                            alt="Susana M." loading="lazy" />
+                    <div class="testim-media" id="<?= $media_id ?>">
+                        <?php if ($tipo === 'video'): ?>
+                            <img class="tm-thumb" src="<?= htmlspecialchars($t['video_thumb'] ?? '') ?>" alt="<?= htmlspecialchars($t['nombre']) ?>" loading="lazy" />
+                            <video class="tm-video" id="<?= $video_id ?>" controls preload="none">
+                                <source src="<?= htmlspecialchars($t['media_url'] ?? '') ?>" type="video/mp4" />
+                            </video>
+                            <div class="tm-play-btn" onclick="playTestimVideo('<?= $media_id ?>','<?= $video_id ?>')">
+                                <div class="tm-play-icon"><i class="fa-solid fa-play"></i></div>
+                            </div>
+                            <div class="tm-video-badge"><i class="fa-solid fa-video"></i> Video</div>
+                        <?php else: ?>
+                            <img class="tm-thumb" src="<?= htmlspecialchars($t['media_url'] ?? '') ?>" alt="<?= htmlspecialchars($t['nombre']) ?>" loading="lazy" />
+                        <?php endif; ?>
                     </div>
                     <div class="testim-body">
                         <div class="testim-brand">TECNOMEDIC SALUD</div>
                         <div class="testim-icon"><i class="fa-solid fa-quote-left"></i></div>
-                        <div class="testim-quote">"Mi herida no cerraba hace 2 años."</div>
-                        <div class="testim-result">Con el asesoramiento adecuado y tratamiento , cicatrizó.</div>
-                        <div class="testim-name">Susana .</div>
-                        <div class="testim-role">Paciente de heridas complejas-pie diabetico</div>
+                        <div class="testim-quote"><?= nl2br(htmlspecialchars($t['texto'])) ?></div>
+                        <?php if (!empty($t['resultado'])): ?>
+                        <div class="testim-result"><?= htmlspecialchars($t['resultado']) ?></div>
+                        <?php endif; ?>
+                        <div class="testim-name"><?= htmlspecialchars($t['nombre']) ?></div>
+                        <?php if (!empty($t['rol'])): ?>
+                        <div class="testim-role"><?= htmlspecialchars($t['rol']) ?></div>
+                        <?php endif; ?>
                         <div class="testim-badge"><i class="fa-solid fa-circle-check"></i> Verificado</div>
                     </div>
                 </div>
-
-                <!-- CARD 2 — Video con thumbnail (click para reproducir) -->
-                <div class="testim-card">
-                    <div class="testim-media" id="tmMedia1">
-                        <!-- Thumbnail: reemplazá src por un frame del video -->
-                        <img class="tm-thumb" src="<?= $base ?>/static/video/deporte2.JPG" alt="Video testimonio"
-                            loading="lazy" />
-                        <!-- Video: reemplazá src por tu video real -->
-                        <video class="tm-video" id="tmVideo1" controls preload="none">
-                            <source src="<?= $base ?>/static/video/deporte2.mp4" type="video/mp4" />
-                        </video>
-                        <!-- Botón play -->
-                        <div class="tm-play-btn" onclick="playTestimVideo('tmMedia1','tmVideo1')">
-                            <div class="tm-play-icon"><i class="fa-solid fa-play"></i></div>
-                        </div>
-                        <div class="tm-video-badge">
-                            <i class="fa-solid fa-video"></i> Video
-                        </div>
-                    </div>
-                    <div class="testim-body">
-                        <div class="testim-brand">TECNOMEDIC SALUD</div>
-                        <div class="testim-icon"><i class="fa-solid fa-quote-left"></i></div>
-                        <div class="testim-quote">"Tenía dolores en la espalda , vine a recuperacion muscular"</div>
-                        <div class="testim-result">Con el tratamiento, senti cambios en la segunda sesion.</div>
-                        <div class="testim-name">Luciano</div>
-                        <div class="testim-role">Paciente deportista</div>
-                        <div class="testim-badge"><i class="fa-solid fa-circle-check"></i> Verificado</div>
-                    </div>
-                </div>
-
-                <!-- CARD 3 — Imagen simple -->
-                <div class="testim-card">
-                    <div class="testim-media" id="tmMedia2">
-                        <!-- Thumbnail: reemplazá src por un frame del video -->
-                        <img class="tm-thumb" src="<?= $base ?>/static/video/deporte1.JPG" alt="Video testimonio"
-                            loading="lazy" />
-                        <!-- Video: reemplazá src por tu video real -->
-                        <video class="tm-video" id="tmVideo2" controls preload="none">
-                            <source src="<?= $base ?>/static/video/deporte1.mp4" type="video/mp4" />
-                        </video>
-                        <!-- Botón play -->
-                        <div class="tm-play-btn" onclick="playTestimVideo('tmMedia2','tmVideo2')">
-                            <div class="tm-play-icon"><i class="fa-solid fa-play"></i></div>
-                        </div>
-                        <div class="tm-video-badge">
-                            <i class="fa-solid fa-video"></i> Video
-                        </div>
-                    </div>
-                    <div class="testim-body">
-                        <div class="testim-brand">TECNOMEDIC SALUD</div>
-                        <div class="testim-icon"><i class="fa-solid fa-quote-left"></i></div>
-                        <div class="testim-quote">"Me ayudaron en la recuperacion y oxigenación"</div>
-                        <div class="testim-result">La OHB aceleró la recuperación de mis atletas.</div>
-                        <div class="testim-name">Marilyn -Luciana -Alejandro</div>
-                        <div class="testim-role">Deportistas</div>
-                        <div class="testim-badge"><i class="fa-solid fa-circle-check"></i> Verificado</div>
-                    </div>
-                </div>
-
-                <!-- CARD 4 — Video con thumbnail (click para reproducir) -->
-                <div class="testim-card">
-                    <div class="testim-media" id="tmMedia2">
-                        <!-- Thumbnail del video: capturá un frame o usá una imagen representativa -->
-                        <img class="tm-thumb"
-                            src="https://plus.unsplash.com/premium_photo-1726797723292-b2dc29e3dff2?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                            alt="audifonos" loading="lazy" />
-                        <!-- Video: reemplazá src por tu segundo video -->
-                        <!-- <video class="tm-video" id="tmVideo2" controls preload="none">
-                            <source src="{{ url_for('static', filename='video/') }}" type="video/mp4" />
-                        </video>
-                        <div class="tm-play-btn" onclick="playTestimVideo('tmMedia2','tmVideo2')">
-                            <div class="tm-play-icon"><i class="fa-solid fa-play"></i></div>
-                        </div>
-                        <div class="tm-video-badge">
-                            <i class="fa-solid fa-video"></i> Video
-                        </div> -->
-                    </div>
-                    <div class="testim-body">
-                        <div class="testim-brand">TECNOMEDIC SALUD</div>
-                        <div class="testim-icon"><i class="fa-solid fa-quote-left"></i></div>
-                        <div class="testim-quote">"Ahora puedo escuchar a mis nietos jugar."</div>
-                        <div class="testim-result">volvi a sentirme parte de la conversación.</div>
-                        <div class="testim-name">Marta</div>
-                        <div class="testim-role">Paciente hipoacusico</div>
-                        <div class="testim-badge"><i class="fa-solid fa-circle-check"></i> Verificado</div>
-                    </div>
-                </div>
-
+                <?php endforeach; ?>
             </div><!-- /testim-grid -->
-
-            <!--
-                ★ PARA AGREGAR TARJETAS:
-                – Imagen: copiar CARD 1 o CARD 3
-                – Video:  copiar CARD 2 o CARD 4 y cambiar:
-                    · id="tmMedia3" id="tmVideo3" (número nuevo)
-                    · src del <video> por tu archivo
-                    · src del <img> por el thumbnail
-                    · onclick="playTestimVideo('tmMedia3','tmVideo3')"
-            -->
 
         </div>
     </section>
