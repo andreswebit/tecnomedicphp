@@ -1301,8 +1301,12 @@ body.login-box {
 
 /* Fondo específico de la página de login  agregar una marca de agua en todo el fondo el logo una imgen etc*/
 body.login-box {
-  background: var(--g100);
-  
+  background: var(--g300);
+  background-image: url("../static/img/fondo/fondo1.jfif");
+  background-repeat: repeat;
+  background-blend-mode: soft-light;
+  background-size: contain;
+
 }
 /* Cuadrados inferiores izquierda */
 .login-square ::before{
@@ -1409,7 +1413,7 @@ body.login-box {
   margin-top: 10px;
   font-family: 'Poppins' , sans-serif;
   text-shadow:var(--g600) 0 1px 3px ;
-  background-color: var(--navy-mid);
+  background-color: var(--green);
   font-weight: 600;
   border-left-color: var(--navy);
   text-align: center;
@@ -1457,8 +1461,9 @@ body.login-box {
   object-fit: contain;
 }
 .nav-item .tm-thumb {
-  filter: brightness(0) saturate(100%) invert(100%) opacity(0.8);
+  filter:  brightness(0) saturate(100%) invert(100%) opacity(0.6);
   transition: opacity 0.2s ease, filter 0.2s ease;
+  
 }
 .nav-item:hover .tm-thumb,
 .nav-item.active .tm-thumb {

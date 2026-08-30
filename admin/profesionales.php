@@ -68,6 +68,8 @@ try {
     $pacientes = [];
 }
 
+$asignaciones_json = json_encode($asignaciones, JSON_UNESCAPED_UNICODE);
+
 $portal_titulo = 'Profesionales · Mi Portal';
 $portal_activo = 'profesionales';
 require __DIR__ . '/../includes/portal_header.php';
@@ -298,10 +300,24 @@ require __DIR__ . '/../includes/portal_header.php';
     </div>
 </div>
 
+<!-- Modal ver profesional y pacientes por área -->
+<div class="edit-modal-overlay" id="modalVerProf" onclick="if(event.target===this) closeModalVerProf()">
+    <div class="edit-modal" style="max-width:500px;max-height:80vh;overflow-y:auto;">
+        <div class="edit-modal-header">
+            <div class="edit-modal-title" id="verProfTitle"></div>
+            <button class="edit-modal-close btn-cerrar-rojo" onclick="closeModalVerProf()">❌</button>
+        </div>
+        <div class="edit-modal-body" id="verProfBody">Cargando…</div>
+    </div>
+</div>
+
 <div id="toast-ok">✅ Acción realizada</div>
 
 <script>
 (function() {
+    // Datos de asignaciones para ver pacientes por profesional
+    var ASIGNACIONES = <?= $asignaciones_json ?>;
+
     if (new URLSearchParams(location.search).get('ok') === '1') {
         var t = document.getElementById('toast-ok');
         t.classList.add('show');
@@ -347,7 +363,43 @@ require __DIR__ . '/../includes/portal_header.php';
     setupTable('tablaProfs', 'searchProfs');
     setupTable('tablaAsig', 'searchAsig');
 
-    window.verProfs = function(d) { alert('Profesional: ' + d.apellido + ', ' + d.nombre + '\nEmail: ' + d.email + '\nDNI: ' + (d.dni||'-')); };
+    window.verProfs = function(d) {
+        var areas = {};
+        ASIGNACIONES.forEach(function(a) {
+            if (a.profesional_id == d.id) {
+                if (!areas[a.area]) areas[a.area] = [];
+                areas[a.area].push(a.paciente_apellido + ', ' + a.paciente_nombre);
+            }
+        });
+        var html = '<div style="margin-bottom:8px;font-weight:600;">Email: ' + (d.email||'-') + '</div>';
+        html += '<div style="margin-bottom:8px;font-weight:600;">DNI: ' + (d.dni||'-') + '</div>';
+        html += '<div style="margin-bottom:12px;font-weight:600;">Pacientes por área:</div>';
+        var areasNombres = {
+            'audiologia': 'Audiología',
+            'hiperbarica': 'Medicina Hiperbárica',
+            'nutricion': 'Nutrición',
+            'ortopedia': 'Ortopedia y Rehabilitación',
+            'equipamiento': 'Equipamiento Médico y Quirúrgico'
+        };
+        Object.keys(areas).forEach(function(area) {
+            html += '<div style="margin-bottom:10px;border-left:3px solid var(--tm-teal);padding-left:10px;">';
+            html += '<div style="font-weight:600;margin-bottom:4px;">' + (areasNombres[area] || area) + '</div>';
+            areas[area].forEach(function(p) {
+                html += '<div style="padding:2px 0;">• ' + p + '</div>';
+            });
+            html += '</div>';
+        });
+        if (Object.keys(areas).length === 0) {
+            html += '<div style="color:var(--muted);">Este profesional no tiene asignaciones activas.</div>';
+        }
+        document.getElementById('verProfTitle').textContent = d.apellido + ', ' + d.nombre;
+        document.getElementById('verProfBody').innerHTML = html;
+        document.getElementById('modalVerProf').classList.add('open');
+    };
+
+    window.closeModalVerProf = function() {
+        document.getElementById('modalVerProf').classList.remove('open');
+    };
 
     window.openModal = function(mode) {
         if (mode === 'prof') document.getElementById('modalProf').classList.add('open');
@@ -357,7 +409,14 @@ require __DIR__ . '/../includes/portal_header.php';
 
     document.getElementById('modalProf').addEventListener('click', function(e) { if (e.target === this) closeModal('modalProf'); });
     document.getElementById('modalAsig').addEventListener('click', function(e) { if (e.target === this) closeModal('modalAsig'); });
-    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeModal('modalProf'); closeModal('modalAsig'); } });
+    document.getElementById('modalVerProf').addEventListener('click', function(e) { if (e.target === this) closeModalVerProf(); });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal('modalProf');
+            closeModal('modalAsig');
+            closeModalVerProf();
+        }
+    });
 })();
 </script>
 

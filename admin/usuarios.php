@@ -27,6 +27,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email    = trim($_POST['email'] ?? '');
         $dni      = trim($_POST['dni'] ?? '');
         $telefono = trim($_POST['telefono'] ?? '');
+        // Validar email único (excluyendo al usuario actual)
+        $stCheck = db()->prepare("SELECT id FROM tm_usuarios WHERE email=? AND id!=?");
+        $stCheck->bind_param('si', $email, $id);
+        $stCheck->execute();
+        $resCheck = $stCheck->get_result();
+        if ($resCheck->num_rows > 0) {
+            header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?') . '?error=email_duplicado');
+            exit;
+        }
         $st = db()->prepare("UPDATE tm_usuarios SET nombre=?, apellido=?, email=?, dni=?, telefono=? WHERE id=?");
         $st->bind_param('sssssi', $nombre, $apellido, $email, $dni, $telefono, $id);
         $st->execute();
@@ -72,6 +81,8 @@ try {
 $total = count($usuarios);
 $aprobados = count(array_filter($usuarios, fn($u) => $u['activo'] == 1));
 $pendientes = count(array_filter($usuarios, fn($u) => $u['activo'] == 0));
+
+$esAdmin = (portal_rol() === 'admin');
 
 $portal_titulo = 'Usuarios · Mi Portal';
 $portal_activo = 'usuarios';
@@ -148,15 +159,42 @@ require __DIR__ . '/../includes/portal_header.php';
                             <form method="post" style="flex:1;">
                                 <input type="hidden" name="accion" value="aprobar">
                                 <input type="hidden" name="id" value="<?= $u['id'] ?>">
-                                <button type="submit" class="btn-action btn-save" style="width:100%;">✅</button>
+                                <button type="submit" class="btn-action btn-save" data-tooltip="Aprobar" style="width:100%;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+                                        <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0"/>
+                                        <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
+                                    </svg>
+                                </button>
                             </form>
                             <?php endif; ?>
-                            <button class="btn-action btn-mod" onclick='openEdit(<?= json_encode($u, JSON_UNESCAPED_UNICODE) ?>)' style="padding:7px 10px;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708z"/><path d="M3 3v12h1V3zM2 2v14h14V2z"/></svg>
+
+                            <!-- Editar -->
+                            <button class="btn-action btn-mod" data-tooltip="Editar"
+                                onclick="<?= $esAdmin ? "openEdit(" . json_encode($u, JSON_UNESCAPED_UNICODE) . ")" : 'mostrarSinPermiso()' ?>"
+                                style="padding:7px 10px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                                </svg>
                             </button>
-                            <button class="btn-action btn-mod" onclick='openPass(<?= $u['id'] ?>)' style="padding:7px 10px;" title="Resetear contraseña">
-                                🔑
+
+                            <!-- Resetear contraseña (admin siempre) -->
+                            <button class="btn-action btn-print-turn" data-tooltip="Resetear contraseña" onclick='openPass(<?= $u['id'] ?>)' style="padding:7px 10px;display:flex;align-items:center;justify-content:center;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill" viewBox="0 0 16 16">
+                                    <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2M2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                                </svg>
                             </button>
+
+                            <!-- Eliminar/Desactivar (solo admin) -->
+                            <form method="post" style="flex:1;" onsubmit="return <?= $esAdmin ? "confirm('¿Cambiar el estado de este usuario?')" : "mostrarSinPermisoSinConfirm() && false" ?>">
+                                <input type="hidden" name="accion" value="<?= $u['activo'] == 1 ? 'desactivar' : 'aprobar' ?>">
+                                <input type="hidden" name="id" value="<?= $u['id'] ?>">
+                                <button type="submit" class="btn-action btn-del" data-tooltip="<?= $u['activo'] == 1 ? 'Desactivar' : 'Activar' ?>" style="width:100%;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                                    </svg>
+                                </button>
+                            </form>
                         </div>
                     </td>
                 </tr>
@@ -289,13 +327,21 @@ require __DIR__ . '/../includes/portal_header.php';
 </div>
 
 <div id="toast-ok">✅ Acción realizada</div>
+<div id="toast-error" style="display:none;position:fixed;bottom:24px;right:24px;background:#c94f4f;color:#fff;padding:14px 22px;border-radius:10px;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2);"></div>
 
 <script>
 (function() {
-    if (new URLSearchParams(location.search).get('ok') === '1') {
+    var params = new URLSearchParams(location.search);
+    if (params.get('ok') === '1') {
         var t = document.getElementById('toast-ok');
         t.classList.add('show');
         setTimeout(function() { t.classList.remove('show'); history.replaceState({}, '', location.pathname); }, 3000);
+    }
+    if (params.get('error') === 'email_duplicado') {
+        var t = document.getElementById('toast-error');
+        t.textContent = '⚠️ El email ya está en uso por otro usuario.';
+        t.style.display = 'block';
+        setTimeout(function() { t.style.display = 'none'; history.replaceState({}, '', location.pathname); }, 4000);
     }
 
     document.getElementById('searchInput').addEventListener('input', function() {
@@ -348,6 +394,21 @@ require __DIR__ . '/../includes/portal_header.php';
         document.getElementById('modalPass').classList.add('open');
     };
 
+    window.mostrarSinPermiso = function() {
+        var t = document.getElementById('toast-error');
+        t.textContent = '⚠️ No tiene permiso para esta acción.';
+        t.style.display = 'block';
+        setTimeout(function() { t.style.display = 'none'; }, 4000);
+        return false;
+    };
+    window.mostrarSinPermisoSinConfirm = function() {
+        var t = document.getElementById('toast-error');
+        t.textContent = '⚠️ No tiene permiso para esta acción.';
+        t.style.display = 'block';
+        setTimeout(function() { t.style.display = 'none'; }, 4000);
+        return true;
+    };
+
     document.getElementById('modalCrear').addEventListener('click', function(e) { if (e.target === this) closeModal('modalCrear'); });
     document.getElementById('modalEditar').addEventListener('click', function(e) { if (e.target === this) closeModal('modalEditar'); });
     document.getElementById('modalPass').addEventListener('click', function(e) { if (e.target === this) closeModal('modalPass'); });
@@ -357,7 +418,7 @@ require __DIR__ . '/../includes/portal_header.php';
         r.style.opacity = '0';
         r.style.transform = 'translateX(-10px)';
         r.style.transition = 'opacity .35s ease, transform .35s ease';
-        setTimeout(function() { r.style.opacity = '1'; r.style.transform = 'translateX(0)'; }, 80 + i * 40);
+        setTimeout(function() { r.style.opacity = '1'; r.style.transform = 'translateX(0); }, 80 + i * 40);
     });
 })();
 </script>

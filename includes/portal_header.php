@@ -6,11 +6,12 @@
 $rol = portal_rol();
 $nombreSesion = $_SESSION['portal_nombre'] ?? '';
 $activo = $portal_activo ?? '';
+$base = b('');
 
 $etiquetaRol = [
     'paciente'    => 'Portal Paciente',
     'profesional' => 'Portal Profesional',
-    'admin'       => 'Panel Admin',
+    'admin'       => 'Portal Administrador',
 ][$rol] ?? 'Mi Portal';
 ?>
 <!DOCTYPE html>
@@ -27,8 +28,9 @@ $etiquetaRol = [
     <link rel="stylesheet" href="<?= b('/portal/css/portal.css') ?>">
 </head>
 
-<body class="portal">
-
+<body class="portal"
+    style="background: var(--g300) url('<?= b('/static/img/fondo/fondo1.jfif') ?>');background-repeat: repeat; background-blend-mode: soft-light; background-size: contain;">
+    
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
     <div class="wrapper">
         <aside class="sidebar" id="sidebar">
@@ -37,57 +39,59 @@ $etiquetaRol = [
                     <img src="<?= b('/static/img/tecno-logo.jpeg') ?>" alt="TECNOMEDIC" class="logo-img">
                 </a>
             </div>
-            <div class="sidebar-sub"><?= htmlspecialchars($etiquetaRol) ?></div>
+            <div class="sidebar-sub"></div>
 
             <div class="nav-label">Menú</div>
             <?php if ($rol === 'paciente'): ?>
             <a href="<?= b('/portal/paciente/dashboard.php') ?>"
                 class="nav-item <?= $activo === 'inicio' ? 'active' : '' ?>"><span><img class="tm-thumb"
-                        src="<?= $base ?>/static/img/icons/home.png" alt="" /></span><span>Inicio</span></a>
+                        src="<?= $base ?>/static/img/icons/home.ico" alt="" /></span><span>Inicio</span></a>
             <a href="<?= b('/portal/paciente/perfil.php') ?>"
                 class="nav-item <?= $activo === 'perfil' ? 'active' : '' ?>"><span><img class="tm-thumb"
-                        src="<?= $base ?>/static/img/icons/usuario.png" alt="" /></span><span>Mi perfil</span></a>
+                        src="<?= $base ?>/static/img/icons/usuario.ico" alt="" /></span><span>Mi perfil</span></a>
             <a href="<?= b('/portal/recursos.php') ?>"
                 class="nav-item <?= $activo === 'recursos' ? 'active' : '' ?>"><span><img class="tm-thumb"
-                        src="<?= $base ?>/static/img/icons/carpeta.PNG" alt="" /></span><span>Recursos</span></a>
+                        src="<?= $base ?>/static/img/icons/carpeta.ico" alt="" /></span><span>Recursos</span></a>
 
             <?php elseif ($rol === 'profesional'): ?>
             <a href="<?= b('/portal/profesional/dashboard.php') ?>"
                 class="nav-item <?= $activo === 'pacientes' ? 'active' : '' ?>"><span><img class="tm-thumb"
-                        src="<?= $base ?>/static/img/icons/doctor.png" alt="" /></span><span>Mis pacientes</span></a>
+                        src="<?= $base ?>/static/img/icons/doctor.ico" alt="" /></span><span>Mis pacientes</span></a>
             <a href="<?= b('/portal/recursos.php') ?>"
                 class="nav-item <?= $activo === 'recursos' ? 'active' : '' ?>"><span><img class="tm-thumb"
-                        src="<?= $base ?>/static/img/icons/carpeta.PNG" alt="" /></span><span>Recursos</span></a>
+                        src="<?= $base ?>/static/img/icons/carpeta.ico" alt="" /></span><span>Recursos</span></a>
 
             <?php elseif ($rol === 'admin'): ?>
             <a href="<?= b('/admin/tablero.php') ?>"
                 class="nav-item <?= $activo === 'tablero' ? 'active' : '' ?>"><span></span><span>Tablero</span></a>
             <a href="<?= b('/admin/index.php') ?>" class="nav-item"><span><img class="tm-thumb"
-                        src="<?= $base ?>/static/img/icons/calendario2.png" alt="" /></span><span>Turnos</span></a>
+                        src="<?= $base ?>/static/img/icons/calendario2.ico" alt="" /></span><span>Turnos</span></a>
             <a href="<?= b('/admin/pacientes.php') ?>"
                 class="nav-item <?= $activo === 'pacientes' ? 'active' : '' ?>"><span><img class="tm-thumb"
-                        src="<?= $base ?>/static/img/icons/pacientes.png" alt="" /></span><span>Pacientes</span></a>
+                        src="<?= $base ?>/static/img/icons/pacientes.ico" alt="" /></span><span>Pacientes</span></a>
             <a href="<?= b('/admin/profesionales.php') ?>"
                 class="nav-item <?= $activo === 'profesionales' ? 'active' : '' ?>"><span><img class="tm-thumb"
-                        src="<?= $base ?>/static/img/icons/doctor.png" alt="" /></span><span>Profesionales</span></a>
+                        src="<?= $base ?>/static/img/icons/doctor.ico" alt="" /></span><span>Profesionales</span></a>
             <a href="<?= b('/admin/usuarios.php') ?>"
                 class="nav-item <?= $activo === 'usuarios' ? 'active' : '' ?>"><span><img class="tm-thumb"
-                        src="<?= $base ?>/static/img/icons/personas.PNG" alt="" /></span><span>Usuarios</span></a>
+                        src="<?= $base ?>/static/img/icons/personas.ico" alt="" /></span><span>Usuarios</span></a>
             <a href="<?= b('/admin/presupuestos.php') ?>"
                 class="nav-item <?= $activo === 'presupuestos' ? 'active' : '' ?>"><span><img class="tm-thumb"
-                        src="<?= $base ?>/static/img/icons/calculadora.PNG" alt="" /></span><span>Presupuestos</span></a>
+                        src="<?= $base ?>/static/img/icons/calculadora.ico"
+                        alt="" /></span><span>Presupuestos</span></a>
             <a href="<?= b('/admin/recursos.php') ?>"
                 class="nav-item <?= $activo === 'recursos' ? 'active' : '' ?>"><span><img class="tm-thumb"
-                        src="<?= $base ?>/static/img/icons/carpeta.PNG" alt="" /></span><span>Recursos</span></a>
+                        src="<?= $base ?>/static/img/icons/carpeta.ico" alt="" /></span><span>Recursos</span></a>
             <a href="<?= b('/admin/contactos.php') ?>"
                 class="nav-item <?= $activo === 'contactos' ? 'active' : '' ?>"><span><img class="tm-thumb"
-                        src="<?= $base ?>/static/img/icons/email.png" alt="" /></span><span>Mensajes</span></a>
+                        src="<?= $base ?>/static/img/icons/email.ico" alt="" /></span><span>Mensajes</span></a>
             <a href="<?= b('/admin/consultar_dni.php') ?>"
                 class="nav-item <?= $activo === 'dni' ? 'active' : '' ?>"><span><img class="tm-thumb"
-                        src="<?= $base ?>/static/img/icons/lupa.png" alt="" /></span><span>Consultar DNI</span></a>
+                        src="<?= $base ?>/static/img/icons/lupa.ico" alt="" /></span><span>Consultar DNI</span></a>
             <a href="<?= b('/admin/multimedia.php') ?>"
-                class="nav-item <?= $activo === 'multimedia' || in_array($activo, ['novedades','staff','testimonios','destacados','config']) ? 'active' : '' ?>"><span><img class="tm-thumb"
-                        src="<?= $base ?>/static/img/icons/multimedia.png" alt="" /></span><span>Multimedia</span></a>
+                class="nav-item <?= $activo === 'multimedia' || in_array($activo, ['novedades','staff','testimonios','destacados','config']) ? 'active' : '' ?>"><span><img
+                        class="tm-thumb" src="<?= $base ?>/static/img/icons/multimedia.ico"
+                        alt="" /></span><span>Multimedia</span></a>
             <?php endif; ?>
 
             <div class="sidebar-footer">
@@ -98,7 +102,9 @@ $etiquetaRol = [
                 <a href="<?= b('/logout.php') ?>"
                     style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--g100);text-decoration:none;transition:color .2s;"
                     onmouseover="this.style.color='var(--amber)'" onmouseout="this.style.color='var(--g100)'">
-                    <span>🚪</span><span>Cerrar sesión</span>
+                    <span><img
+                        class="tm-thumb" src="<?= $base ?>/static/img/icons/boton.ico"
+                        alt="" /></span><span>Cerrar sesión</span>
                 </a>
             </div>
         </aside>
@@ -109,7 +115,7 @@ $etiquetaRol = [
                     <button class="hamburger-btn" onclick="toggleSidebar()">
                         <span></span><span></span><span></span>
                     </button>
-                    <div class="page-title">Mi <span>Portal</span></div>
+                    <div class="page-title">Mi <span> <?= htmlspecialchars($etiquetaRol) ?></span></div>
                 </div>
             </div>
             <div class="portal-container" style="padding:0;max-width:none;margin:0;">
