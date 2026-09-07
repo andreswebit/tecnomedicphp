@@ -127,3 +127,40 @@ function estudio_eliminar(int $id): ?array {
     $st->execute();
     return $e;
 }
+
+// ── Medicamentos recetados ──────────────────────────────────────────────
+
+function medicamentos_listar(int $pacienteId): array {
+    // Verificar si la tabla existe
+    $result = db()->query("SHOW TABLES LIKE 'tm_medicamentos_recetados'");
+    if ($result->num_rows === 0) return [];
+
+    $st = db()->prepare(
+        "SELECT id, nombre_comercial, principio_activo, dosis, frecuencia, via_administracion, estado, fecha_receta
+         FROM tm_medicamentos_recetados
+         WHERE paciente_id = ?
+         ORDER BY fecha_receta DESC, id DESC"
+    );
+    $st->bind_param('i', $pacienteId);
+    $st->execute();
+    return $st->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
+function medicamento_crear(
+    int $pacienteId,
+    string $nombreComercial,
+    string $principioActivo,
+    string $dosis,
+    string $frecuencia,
+    string $viaAdministracion,
+    string $estado
+): int {
+    $st = db()->prepare(
+        "INSERT INTO tm_medicamentos_recetados
+         (paciente_id, nombre_comercial, principio_activo, dosis, frecuencia, via_administracion, estado, fecha_receta)
+         VALUES (?,?,?,?,?,?,?,NOW())"
+    );
+    $st->bind_param('issssss', $pacienteId, $nombreComercial, $principioActivo, $dosis, $frecuencia, $viaAdministracion, $estado);
+    $st->execute();
+    return db()->insert_id;
+}

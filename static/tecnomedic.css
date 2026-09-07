@@ -2809,6 +2809,116 @@ th.sortable:not(.asc):not(.desc) .sort-icon::after {
   transform: scale(1.1);
 }
 
+/* ── Modal de confirmación personalizado (colores de marca) ── */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 26, 52, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: confirmFadeIn 0.2s ease;
+}
+@keyframes confirmFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.confirm-box {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 32px 28px 24px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  text-align: center;
+  animation: confirmPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-family: "Montserrat", "Poppins", sans-serif;
+}
+@keyframes confirmPop {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.confirm-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.confirm-icon.success {
+  background: rgba(152, 197, 68, 0.15);
+  color: var(--green-dk);
+}
+.confirm-icon.warn {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--amber-dk);
+}
+.confirm-icon svg {
+  width: 36px;
+  height: 36px;
+}
+.confirm-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+.confirm-message {
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+.confirm-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.confirm-actions button {
+  min-width: 110px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.confirm-actions .btn.btn-outline {
+  background: var(--g50);
+  color: var(--text);
+  border: 1px solid var(--g100);
+}
+.confirm-actions .btn.btn-outline:hover {
+  background: var(--g100);
+  color: var(--navy);
+}
+.confirm-actions .btn-confirm.success {
+  background: var(--green);
+  color: var(--white);
+}
+.confirm-actions .btn-confirm.success:hover {
+  background: var(--green-dk);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(152, 197, 68, 0.35);
+}
+.confirm-actions .btn-confirm.danger {
+  background: #c94f4f;
+  color: var(--white);
+}
+.confirm-actions .btn-confirm.danger:hover {
+  background: #a93d3d;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(201, 79, 79, 0.35);
+}
+
 /* ══ RESPONSIVE ADMIN MEJORADO ══════════════════════════════ */
 @media (max-width: 900px) {
   /* Sidebar: oculto por defecto, slide-in al abrir */

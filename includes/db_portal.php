@@ -2,10 +2,11 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 // ══════════════════════════════════════════════════════════════
-// TECNOMEDIC — Portal (Fase A+B)
+// TECNOMEDIC — Portal (Fase A+B+I)
 // Funciones de acceso a datos para tm_usuarios, tm_perfiles_*,
-// tm_asignaciones. Requiere que includes/db.php ya esté incluido
-// (usa la función db() ahí definida).
+// tm_asignaciones, tm_obras_sociales, tm_personas, y staff médico
+// (que vive en tm_usuarios con rol='profesional'). Requiere que
+// includes/db.php ya esté incluido (usa la función db() ahí definida).
 // ══════════════════════════════════════════════════════════════
 
 // ── Usuarios: alta ──────────────────────────────────────────────
@@ -350,4 +351,111 @@ function turnos_de_paciente(string $dni): array {
     $st->bind_param('s', $dni);
     $st->execute();
     return $st->get_result()->fetch_all(MYSQLI_ASSOC);
+}
+
+// ── Staff médico (vive en tm_usuarios, rol='profesional') ─────────
+
+function staff_listar(): array {
+    $r = db()->query(
+        "SELECT id, nombre, apellido, titulo, especialidad, descripcion,
+                foto, instagram, orden, activo
+         FROM tm_usuarios
+         WHERE rol = 'profesional'
+         ORDER BY orden ASC, apellido ASC, nombre ASC"
+    );
+    return $r ? $r->fetch_all(MYSQLI_ASSOC) : [];
+}
+
+function staff_get(int $id): ?array {
+    $st = db()->prepare(
+        "SELECT id, nombre, apellido, titulo, especialidad, descripcion,
+                foto, instagram, orden, activo
+         FROM tm_usuarios WHERE id = ? AND rol = 'profesional'"
+    );
+    $st->bind_param('i', $id);
+    $st->execute();
+    return $st->get_result()->fetch_assoc() ?: null;
+}
+
+function staff_crear(array $d): int {
+    $email    = trim($d['email'] ?? '');
+    $dni      = trim($d['dni'] ?? '');
+    $password = $d['password'] ?? '';
+    $nombre   = trim($d['nombre'] ?? '');
+    $apellido = trim($d['apellido'] ?? '');
+
+    if (!$email || !$dni || $password === '' || !$nombre || !$apellido) {
+        throw new Exception('Faltan datos obligatorios del profesional.');
+    }
+    if (usuario_buscar_login($email) || usuario_buscar_login($dni)) {
+        throw new Exception('Ya existe una cuenta con ese email o DNI.');
+    }
+
+    $hash = password_hash($password, PASSWORD_DEFAULT);
+    $st = db()->prepare(
+        "INSERT INTO tm_usuarios
+            (email, dni, password_hash, rol, nombre, apellido, telefono,
+             titulo, especialidad, descripcion, foto, instagram, orden, activo, fecha_aprobacion)
+         VALUES (?,?,?, 'profesional', ?,?,?,?,?,?,?,?,?, 1, NOW())"
+    );
+    $activo = isset($d['activo']) ? 1 : 0;
+    $telefono = trim($d['telefono'] ?? '');
+    $st->bind_param(
+        'sssssssssii',
+        $email, $dni, $hash, $nombre, $apellido, $telefono,
+        $d['titulo'], $d['especialidad'], $d['descripcion'],
+        $d['foto'], $d['instagram'], $d['orden'], $activo
+    );
+    $st->execute();
+    $id = db()->insert_id;
+
+    if (function_exists('persona_upsert')) {
+        persona_upsert($dni, $nombre, $apellido, $telefono, $email);
+    }
+    return $id;
+}
+
+function staff_editar(int $id, array $d): void {
+    $st = db()->prepare(
+        "UPDATE tm_usuarios SET
+            titulo=?, especialidad=?, descripcion=?,
+            foto=?, instagram=?, orden=?, activo=?
+         WHERE id=? AND rol='profesional'"
+    );
+    $activo = isset($d['activo']) ? 1 : 0;
+    $st->bind_param(
+        'sssssiii',
+        $d['titulo'], $d['especialidad'], $d['descripcion'],
+        $d['foto'], $d['instagram'], $d['orden'], $activo, $id
+    );
+    $st->execute();
+
+    $u = db()->prepare("SELECT dni, nombre, apellido, telefono, email FROM tm_usuarios WHERE id=?");
+    $u->bind_param('i', $id);
+    $u->execute();
+    $row = $u->get_result()->fetch_assoc();
+    if ($row && function_exists('persona_upsert')) {
+        persona_upsert($row['dni'], $row['nombre'], $row['apellido'], $row['telefono'], $row['email']);
+    }
+}
+
+function staff_eliminar(int $id): void {
+    $st = db()->prepare("DELETE FROM tm_usuarios WHERE id=? AND rol='profesional'");
+    $st->bind_param('i', $id);
+    $st->execute();
+}
+
+function staff_subir_foto(array $file): string {
+    if ($file['error'] !== UPLOAD_ERR_OK) return '';
+    $permitidas = ['jpg' => 'jpg', 'jpeg' => 'jpeg', 'png' => 'png', 'webp' => 'webp'];
+    $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    if (!isset($permitidas[$ext])) return '';
+    if ($file['size'] > 3 * 1024 * 1024) return '';
+    $carpeta = __DIR__ . '/../storage/staff';
+    if (!is_dir($carpeta)) mkdir($carpeta, 0777, true);
+    $nombre = 'staff_' . uniqid() . '.' . $ext;
+    if (move_uploaded_file($file['tmp_name'], $carpeta . '/' . $nombre)) {
+        return 'storage/staff/' . $nombre;
+    }
+    return '';
 }

@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/auth.php';
-require_once __DIR__ . '/../includes/db_staff.php';
+require_once __DIR__ . '/../includes/db_portal.php';
 portal_require_role(['admin']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -110,7 +110,7 @@ require __DIR__ . '/../includes/portal_header.php';
         <table id="mainTable">
             <thead>
                 <tr>
-                    <th class="sortable" data-col="0">Nombre<span class="sort-icon"></span></th>
+                    <th class="sortable" data-col="0">Apellido Nombre<span class="sort-icon"></span></th>
                     <th class="sortable" data-col="1">Título<span class="sort-icon"></span></th>
                     <th class="sortable" data-col="2">Especialidad<span class="sort-icon"></span></th>
                     <th>Foto</th>
@@ -123,9 +123,9 @@ require __DIR__ . '/../includes/portal_header.php';
             <tbody>
                 <?php foreach ($todos as $s): ?>
                 <tr>
-                    <td><strong><?= htmlspecialchars(($s['titulo'] ?? '') . ' ' . $s['apellido'] . ', ' . $s['nombre']) ?></strong></td>
-                    <td><?= htmlspecialchars($s['titulo'] ?: '-') ?></td>
-                    <td><?= htmlspecialchars($s['especialidad'] ?: '-') ?></td>
+                    <td style="text-transform: first-letter ;"><strong><?= htmlspecialchars(($s['apellido'] ?? '') . ' ' . $s['nombre']) ?></strong></td>
+                    <td style="text-transform: first-letter ;"><?= htmlspecialchars($s['titulo'] ?: '-') ?></td>
+                    <td style="text-transform: first-letter ;"><?= htmlspecialchars($s['especialidad'] ?: '-') ?></td>
                     <td>
                         <?php if ($s['foto']): ?>
                             <img src="<?= b('/' . $s['foto']) ?>" style="max-height:40px;border-radius:50%;object-fit:cover;" alt="">
@@ -191,19 +191,43 @@ require __DIR__ . '/../includes/portal_header.php';
                 <div class="edit-group">
                     <div class="edit-label">Nombre *</div>
                     <div class="edit-input-wrap">
-                        <input class="edit-input" type="text" name="nombre" id="f-nombre" required>
+                        <input style="text-transform: first-letter ;"class="edit-input" type="text" name="nombre" id="f-nombre" required>
                     </div>
                 </div>
                 <div class="edit-group">
                     <div class="edit-label">Apellido *</div>
                     <div class="edit-input-wrap">
-                        <input class="edit-input" type="text" name="apellido" id="f-apellido" required>
+                        <input style="text-transform: first-letter ;"class="edit-input" type="text" name="apellido" id="f-apellido" required>
+                    </div>
+                </div>
+                <div class="edit-group">
+                    <div class="edit-label">DNI <span id="dniHint">*</span></div>
+                    <div class="edit-input-wrap">
+                        <input class="edit-input" type="text" name="dni" id="f-dni">
+                    </div>
+                </div>
+                <div class="edit-group">
+                    <div class="edit-label">Email <span id="emailHint">*</span></div>
+                    <div class="edit-input-wrap">
+                        <input class="edit-input" type="email" name="email" id="f-email">
+                    </div>
+                </div>
+                <div class="edit-group">
+                    <div class="edit-label">Teléfono</div>
+                    <div class="edit-input-wrap">
+                        <input class="edit-input" type="text" name="telefono" id="f-telefono">
+                    </div>
+                </div>
+                <div class="edit-group full">
+                    <div class="edit-label">Contraseña <span id="pwdHint">*</span></div>
+                    <div class="edit-input-wrap">
+                        <input class="edit-input" type="password" name="password" id="f-password" minlength="6" placeholder="Mínimo 6 caracteres">
                     </div>
                 </div>
                 <div class="edit-group">
                     <div class="edit-label">Título profesional</div>
                     <div class="edit-input-wrap">
-                        <input class="edit-input" type="text" name="titulo" id="f-titulo" placeholder="Ej: Dra., Lic., Dr.">
+                        <input style="text-transform: first-letter ;" class="edit-input" type="text" name="titulo" id="f-titulo" placeholder="Ej: Dra., Lic., Dr.">
                     </div>
                 </div>
                 <div class="edit-group">
@@ -307,7 +331,15 @@ require __DIR__ . '/../includes/portal_header.php';
         document.getElementById('modalTitle').textContent = mode === 'editar' ? '✏️ Editar miembro' : '➕ Agregar miembro';
         document.getElementById('modalSubmitBtn').textContent = mode === 'editar' ? '💾 Guardar cambios' : '💾 Crear';
 
-        ['nombre','apellido','titulo','especialidad','descripcion','instagram','orden'].forEach(function(f) {
+        var isEdit = mode === 'editar';
+        document.getElementById('pwdHint').textContent = isEdit ? '(opcional)' : '*';
+        document.getElementById('emailHint').textContent = isEdit ? '(opcional)' : '*';
+        document.getElementById('dniHint').textContent = isEdit ? '(opcional)' : '*';
+        document.getElementById('f-password').required = !isEdit;
+        document.getElementById('f-email').required = !isEdit;
+        document.getElementById('f-dni').required = !isEdit;
+
+        ['nombre','apellido','titulo','especialidad','descripcion','instagram','telefono','dni','email','password'].forEach(function(f) {
             document.getElementById('f-' + f).value = data && data[f] ? data[f] : '';
         });
         document.getElementById('f-orden').value = data && data.orden ? data.orden : 0;

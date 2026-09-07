@@ -43,3 +43,19 @@ CREATE TABLE IF NOT EXISTS tm_estudios (
     FOREIGN KEY (paciente_id) REFERENCES tm_usuarios(id) ON DELETE CASCADE,
     FOREIGN KEY (subido_por) REFERENCES tm_usuarios(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Medicamentos recetados (propuesta compacta - Fase D+)
+CREATE TABLE IF NOT EXISTS tm_medicamentos_recetados (
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    paciente_id         INT NOT NULL,
+    nombre_comercial    VARCHAR(255) NOT NULL COMMENT 'Nombre de la marca/fórmula',
+    principio_activo    VARCHAR(255) DEFAULT NULL COMMENT 'Droga / principio activo',
+    dosis               VARCHAR(100) DEFAULT NULL,
+    frecuencia          VARCHAR(100) DEFAULT NULL COMMENT 'Cómo y cuándo tomarlo',
+    via_administracion  VARCHAR(100) DEFAULT NULL COMMENT 'Oral, subcutánea, IV, etc.',
+    estado              ENUM('activo','suspendido','finalizado') NOT NULL DEFAULT 'activo',
+    fecha_receta        DATE DEFAULT NULL,
+    creado_en           DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (paciente_id) REFERENCES tm_usuarios(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

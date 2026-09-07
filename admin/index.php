@@ -47,6 +47,16 @@ require __DIR__ . '/../includes/portal_header.php';
                     <span class="search-icon">🔍</span>
                     <input type="text" id="searchInput" placeholder="Buscar paciente…">
                 </div>
+                <button class="btn-refresh" id="btnRefrescar" onclick="refrescarTurnos()" title="Refrescar tabla">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                    </svg>
+                    Refrescar
+                </button>
+                <a href="<?= b('/turnos.php') ?>" class="btn-action btn-save" style="padding:7px 14px;text-decoration:none;">
+                    ➕ Nuevo turno
+                </a>
             </div>
         </div>
         <div class="table-wrap">
@@ -257,7 +267,8 @@ require __DIR__ . '/../includes/portal_header.php';
     <div class="edit-modal">
         <div class="edit-modal-header">
             <div class="edit-modal-title">✏️ <span>Modificar</span> turno</div>
-            <button class="edit-modal-close" onclick="closeEdit()">❌</button>
+            <button class="edit-modal-close" onclick="closeEdit()">
+                <img class="tm-thumb" src="<?= $base ?>/static/img/icons/boton.ico" data-tooltip="Cerrar" /></button>
         </div>
         <form action="<?= $base ?>/admin/modificar.php" method="post">
             <input type="hidden" name="id" id="edit-row">
@@ -348,6 +359,107 @@ require __DIR__ . '/../includes/portal_header.php';
             <div class="edit-footer">
                 <button type="button" class="btn btn-outline" onclick="closeEdit()">Cancelar</button>
                 <button type="submit" class="btn-edit-save">💾 &nbsp;Guardar </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal crear turno -->
+<div class="edit-modal-overlay" id="createTurnModal" onclick="closeTurnCreateBg(event)">
+    <div class="edit-modal">
+        <div class="edit-modal-header">
+            <div class="edit-modal-title">➕ <span>Nuevo</span> turno</div>
+            <button class="edit-modal-close" onclick="closeTurnCreate()">❌</button>
+        </div>
+        <form action="<?= $base ?>/admin/actualizar.php" method="post">
+            <input type="hidden" name="accion" value="crear_turno">
+            <div class="edit-grid">
+                <div class="edit-group">
+                    <div class="edit-label">👤 Nombre</div>
+                    <div class="edit-input-wrap">
+                        <input class="edit-input" type="text" name="nombre" id="create-nombre" required>
+                    </div>
+                </div>
+                <div class="edit-group">
+                    <div class="edit-label"> 👤 Apellido</div>
+                    <div class="edit-input-wrap">
+                        <input class="edit-input" type="text" name="apellido" id="create-apellido" required>
+                    </div>
+                </div>
+                <div class="edit-group">
+                    <div class="edit-label">🪪 DNI <span style="font-size:10px;color:var(--muted)">(opcional)</span>
+                    </div>
+                    <div class="edit-input-wrap">
+                        <input class="edit-input" type="text" name="dni" id="create-dni">
+                    </div>
+                </div>
+                <div class="edit-group">
+                    <div class="edit-label">🩺 Especialidad</div>
+                    <select class="edit-input" name="area" id="create-area" required
+                        style="padding:12px 14px;cursor:pointer;background:var(--green-dk);color:#fff; font-weight:600; letter-spacing: 1px">
+                        <option value="audiologia">Audiología</option>
+                        <option value="hiperbarica">Medicina Hiperbárica</option>
+                        <option value="nutricion">Nutrición</option>
+                        <option value="ortopedia">Ortopedia y Rehabilitación</option>
+                        <option value="equipamiento">Equipamiento Médico y Quirúrgico</option>
+                    </select>
+                </div>
+                <div class="edit-group">
+                    <div class="edit-label">Obra social</div>
+                    <select class="edit-input" name="obra_social" id="create-os"
+                        style="padding:12px 14px;cursor:pointer;background:var(--green-dk);color:#fff; font-weight:600; letter-spacing: 1px">
+                        <option value="">-- Seleccioná --</option>
+                        <option value="Particular">Particular</option>
+                        <option value="PAMI">PAMI</option>
+                        <option value="IOSCOR">IOSCOR</option>
+                        <option value="OSDE">OSDE</option>
+                        <option value="Swiss Medical">Swiss Medical</option>
+                        <option value="Galeno">Galeno</option>
+                        <option value="Medifé">Medifé</option>
+                        <option value="OSECAC">OSECAC</option>
+                        <option value="OSPAT">OSPAT</option>
+                        <option value="IOMA">IOMA</option>
+                        <option value="Otra">Otra</option>
+                    </select>
+                </div>
+                <div class="edit-group">
+                    <div class="edit-label"> 📱 Teléfono</div>
+                    <div class="edit-input-wrap">
+                        <input class="edit-input" type="tel" name="telefono" id="create-telefono" required>
+                    </div>
+                </div>
+                <div class="edit-group">
+                    <div class="edit-label">✉ Email</div>
+                    <div class="edit-input-wrap">
+                        <input class="edit-input" type="email" name="email" id="create-email" required>
+                    </div>
+                </div>
+                <div class="edit-group">
+                    <div class="edit-label"> 📅 Fecha</div>
+                    <div class="edit-input-wrap">
+                        <input class="edit-input" type="date" name="fecha" id="create-fecha" required>
+                    </div>
+                </div>
+                <div class="edit-group">
+                    <div class="edit-label">🕐 Hora</div>
+                    <div class="edit-input-wrap">
+                        <select class="edit-input" name="hora" id="create-hora" required>
+                            <option value="">Elegí una fecha primero</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="edit-group full">
+                    <div class="edit-label">Estado</div>
+                    <select class="select-estado" name="estado" id="create-estado">
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="Confirmado">Confirmado</option>
+                        <option value="Cancelado">Cancelado</option>
+                    </select>
+                </div>
+            </div>
+            <div class="edit-footer">
+                <button type="button" class="btn btn-outline" onclick="closeTurnCreate()">Cancelar</button>
+                <button type="submit" class="btn-edit-save">💾 &nbsp;Crear turno </button>
             </div>
         </form>
     </div>
@@ -542,19 +654,118 @@ function closeEditBg(e) {
     if (e.target === document.getElementById('editModal')) closeEdit();
 }
 
+// ── Crear nuevo turno desde admin ───────────────────────────
+function openTurnCreateModal() {
+    document.getElementById('createTurnModal').classList.add('open');
+    var fechaInput = document.getElementById('create-fecha');
+    if (!fechaInput.value) {
+        var today = new Date();
+        var yyyy = today.getFullYear();
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var dd = String(today.getDate()).padStart(2, '0');
+        fechaInput.value = yyyy + '-' + mm + '-' + dd;
+    }
+    cargarHorariosCreate(fechaInput.value);
+}
+
+function closeTurnCreate() {
+    document.getElementById('createTurnModal').classList.remove('open');
+}
+
+function closeTurnCreateBg(e) {
+    if (e.target === document.getElementById('createTurnModal')) closeTurnCreate();
+}
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeTurnCreate();
+});
+
+document.getElementById('create-fecha').addEventListener('change', function() {
+    cargarHorariosCreate(this.value);
+});
+
+document.getElementById('create-area').addEventListener('change', function() {
+    var fechaActual = document.getElementById('create-fecha').value;
+    if (fechaActual) cargarHorariosCreate(fechaActual);
+});
+
+function cargarHorariosCreate(fecha) {
+    if (!fecha) return;
+    var area = document.getElementById('create-area').value;
+    var select = document.getElementById('create-hora');
+    select.innerHTML = '<option value="">Cargando horarios…</option>';
+    fetch('<?= $base ?>/api/horarios.php?fecha=' + encodeURIComponent(fecha) + '&area=' + encodeURIComponent(area))
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            select.innerHTML = '<option value="">-- Seleccioná --</option>';
+            if (data.horarios && data.horarios.length) {
+                data.horarios.forEach(function(h) {
+                    var opt = document.createElement('option');
+                    opt.value = h;
+                    opt.textContent = h;
+                    select.appendChild(opt);
+                });
+            } else {
+                select.innerHTML = '<option value="">No hay horarios disponibles</option>';
+            }
+        })
+        .catch(function() {
+            select.innerHTML = '<option value="">Error al cargar horarios</option>';
+        });
+}
+
 // ── Imprimir turno individual ─────────────────────────────────
 function printTurn(nombre, telefono, email, fecha, hora, estado) {
-    document.getElementById('tk-nombre').textContent = nombre;
-    document.getElementById('tk-telefono').textContent = telefono;
-    document.getElementById('tk-email').textContent = email;
-    document.getElementById('tk-fecha').textContent = fecha;
-    document.getElementById('tk-hora').textContent = hora;
-    document.getElementById('tk-estado').textContent = estado;
-    document.getElementById('turnTicket').style.display = 'block';
-    document.querySelector('.wrapper').style.display = 'none';
-    window.print();
-    document.getElementById('turnTicket').style.display = 'none';
-    document.querySelector('.wrapper').style.display = 'flex';
+    var base = '<?= $base ?>';
+    var html =
+        '<!DOCTYPE html><html><head><meta charset="utf-8">' +
+        '<style>' +
+        '@page { margin: 20mm; }' +
+        'body { font-family: "Montserrat", sans-serif; color: #000; background: #fff; margin: 0; padding: 0; }' +
+        '.ticket-logo { display: flex; align-items: center; justify-content: center; margin-bottom: 6px; }' +
+        '.ticket-logo img { height: 44px; width: auto; display: block; }' +
+        '.ticket-sub { font-size: 12px; color: #555; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 28px; padding-bottom: 16px; border-bottom: 2px solid #98c544; }' +
+        '.ticket-title { font-size: 14px; color: #555; margin-bottom: 20px; letter-spacing: 0.1em; text-transform: uppercase; }' +
+        '.ticket-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }' +
+        '.ticket-field label { display: block; font-size: 10px; color: #888; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; }' +
+        '.ticket-field span { font-size: 16px; font-weight: 500; color: #0d1b2a; }' +
+        '.ticket-note { font-size: 12px; color: #555; border-top: 1px solid #ddd; padding-top: 16px; text-align: center; }' +
+        '</style></head><body>' +
+        '<div class="ticket-logo"><img src="' + base + '/static/img/tecno-logo.jpeg" alt="TECNOMEDIC"></div>' +
+        '<div class="ticket-sub">Centro de Salud · Cámara Hiperbárica</div>' +
+        '<div class="ticket-title">Comprobante de Turno</div>' +
+        '<div class="ticket-grid">' +
+        '<div class="ticket-field"><label>Paciente</label><span>' + nombre + '</span></div>' +
+        '<div class="ticket-field"><label>Teléfono</label><span>' + telefono + '</span></div>' +
+        '<div class="ticket-field"><label>Fecha</label><span>' + fecha + '</span></div>' +
+        '<div class="ticket-field"><label>Hora</label><span>' + hora + '</span></div>' +
+        '<div class="ticket-field"><label>Email</label><span>' + email + '</span></div>' +
+        '<div class="ticket-field"><label>Estado</label><span>' + estado + '</span></div>' +
+        '</div>' +
+        '<div class="ticket-note">Presentar este comprobante · TECNOMEDIC · (3794) 34-9278</div>' +
+        '</body></html>';
+
+    var iframe = document.createElement('iframe');
+    iframe.style.position = 'fixed';
+    iframe.style.right = '0';
+    iframe.style.bottom = '0';
+    iframe.style.width = '0';
+    iframe.style.height = '0';
+    iframe.style.border = '0';
+    document.body.appendChild(iframe);
+
+    var doc = iframe.contentWindow.document;
+    doc.open();
+    doc.write(html);
+    doc.close();
+
+    setTimeout(function() {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+        setTimeout(function() {
+            document.body.removeChild(iframe);
+        }, 1000);
+    }, 500);
 }
 
 function printSheet() {
@@ -664,6 +875,16 @@ document.querySelectorAll('.select-estado').forEach(function(sel) {
         colorearSelect(this);
     });
 });
+
+// ── Refrescar tabla de turnos ────────────────────────────────
+function refrescarTurnos() {
+    var btn = document.getElementById('btnRefrescar');
+    if (btn) {
+        btn.classList.add('spinning');
+        btn.disabled = true;
+    }
+    window.location.reload();
+}
 
 (function() {
     if (new URLSearchParams(window.location.search).get('guardado') === '1') {

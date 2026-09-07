@@ -154,7 +154,7 @@ $hero_video_url = @config_get('hero_video_url') ?: 'https://www.youtube.com/embe
     <?php
 require_once __DIR__ . '/includes/db_novedades.php';
 require_once __DIR__ . '/includes/db_testimonios.php';
-require_once __DIR__ . '/includes/db_staff.php';
+require_once __DIR__ . '/includes/db_portal.php';
 $novedades_carousel = [];
 try {
     $novedades_carousel = array_filter(novedades_listar(), fn($n) => $n['tipo'] === 'novedad' && $n['activo']);

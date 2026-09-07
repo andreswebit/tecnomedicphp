@@ -61,17 +61,17 @@ require __DIR__ . '/../includes/portal_header.php';
 <div class="stats" style="margin:28px 28px 0;">
     <div class="stat-card blue">
         <div class="stat-label">Total</div>
-        <div class="stat-value"><?= $total ?></div>
+        <div class="stat-value"style="text-align: end;"><?= $total ?></div>
         <div class="stat-sub">recursos</div>
     </div>
     <div class="stat-card green">
         <div class="stat-label">Públicos</div>
-        <div class="stat-value"><?= $publicos ?></div>
+        <div class="stat-value" style="text-align: end;"><?= $publicos ?></div>
         <div class="stat-sub">visibles sin login</div>
     </div>
     <div class="stat-card amber">
         <div class="stat-label">Solo Portal</div>
-        <div class="stat-value"><?= $total - $publicos ?></div>
+        <div class="stat-value" style="text-align: end;"><?= $total - $publicos ?></div>
         <div class="stat-sub">requieren login</div>
     </div>
 </div>

@@ -131,6 +131,9 @@ function modificar_turno(int $id, array $d): void {
         $d['telefono'],$d['email'],$d['fecha'],$d['hora'],$d['estado'],$id
     );
     $st->execute();
+    if (function_exists('persona_upsert')) {
+        persona_upsert($d['dni'], $d['nombre'], $d['apellido'], $d['telefono'], $d['email']);
+    }
 }
 
 function eliminar_turno(int $id): void {

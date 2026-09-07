@@ -20,6 +20,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?') . '?ok=1');
             exit;
         }
+    } elseif ($accion === 'editar') {
+        $id       = (int)($_POST['id'] ?? 0);
+        $nombre   = trim($_POST['nombre'] ?? '');
+        $apellido = trim($_POST['apellido'] ?? '');
+        $email    = trim($_POST['email'] ?? '');
+        $dni      = trim($_POST['dni'] ?? '');
+        $telefono = trim($_POST['telefono'] ?? '');
+        $activo   = isset($_POST['activo']) ? 1 : 0;
+        $password = $_POST['password'] ?? '';
+        if ($id && $nombre && $apellido && $email) {
+            if ($password !== '') {
+                $hash = password_hash($password, PASSWORD_DEFAULT);
+                $st = db()->prepare(
+                    "UPDATE tm_usuarios SET nombre=?, apellido=?, email=?, dni=?, telefono=?, activo=?, password_hash=?
+                     WHERE id=? AND rol='profesional'"
+                );
+                $st->bind_param('sssssiss', $nombre, $apellido, $email, $dni, $telefono, $activo, $hash, $id);
+            } else {
+                $st = db()->prepare(
+                    "UPDATE tm_usuarios SET nombre=?, apellido=?, email=?, dni=?, telefono=?, activo=?
+                     WHERE id=? AND rol='profesional'"
+                );
+                $st->bind_param('sssssii', $nombre, $apellido, $email, $dni, $telefono, $activo, $id);
+            }
+            $st->execute();
+            // Sincronizar padrón
+            persona_upsert($dni, $nombre, $apellido, $telefono, $email);
+            header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?') . '?ok=1');
+            exit;
+        }
     } elseif ($accion === 'asignar') {
         $paciente_id    = (int)($_POST['paciente_id'] ?? 0);
         $profesional_id = (int)($_POST['profesional_id'] ?? 0);
@@ -141,7 +171,17 @@ require __DIR__ . '/../includes/portal_header.php';
                     </td>
                     <td class="actions-col">
                         <div class="btn-actions">
-                            <button class="btn-action btn-save" style="padding:7px 12px;" onclick='verProfs(<?= json_encode($pr, JSON_UNESCAPED_UNICODE) ?>)'>👁</button>
+                                <button class="btn-action btn-mod" data-tooltip="Editar"
+                                onclick='openModal("editar", <?= json_encode($pr, JSON_UNESCAPED_UNICODE) ?>)'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/></svg>
+                            </button>
+                            <form method="post" style="flex:1;" onsubmit="return confirm('¿Eliminar este profesional?');">
+                                <input type="hidden" name="accion" value="eliminar">
+                                <input type="hidden" name="id" value="<?= $pr['id'] ?>">
+                                <button type="submit" class="btn-action btn-del" data-tooltip="Eliminar" style="width:100%;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/></svg>
+                                </button>
+                            </form>
                         </div>
                     </td>
                 </tr>
@@ -203,48 +243,134 @@ require __DIR__ . '/../includes/portal_header.php';
     </div>
 </div>
 
-<!-- Modal profesional -->
+<!-- Modal profesional (creación + edición)
 <div class="edit-modal-overlay" id="modalProf">
     <div class="edit-modal">
         <div class="edit-modal-header">
-            <div class="edit-modal-title">➕ Nuevo profesional</div>
+            <div class="edit-modal-title" id="modalProfTitle">➕ Nuevo profesional</div>
             <button class="edit-modal-close" onclick="closeModal('modalProf')">✕</button>
         </div>
-        <form action="<?= b('/admin/profesionales.php') ?>" method="post">
-            <input type="hidden" name="accion" value="crear">
+        <form action="<?= b('/admin/profesionales.php') ?>" method="post" id="modalProfForm">
+            <input type="hidden" name="accion" id="modalProfAccion" value="crear">
+            <input type="hidden" name="id" id="modalProfId" value="">
+
             <div class="edit-grid">
                 <div class="edit-group">
                     <div class="edit-label">Nombre *</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="nombre" required></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="nombre" id="f-nombre" required></div>
                 </div>
                 <div class="edit-group">
                     <div class="edit-label">Apellido *</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="apellido" required></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="apellido" id="f-apellido" required></div>
                 </div>
                 <div class="edit-group">
                     <div class="edit-label">DNI</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="dni"></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="dni" id="f-dni"></div>
                 </div>
                 <div class="edit-group">
-                    <div class="edit-label">Especialidad</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="especialidad" placeholder="Ej: Audiología"></div>
+                    <div class="edit-label">Teléfono</div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="telefono" id="f-telefono"></div>
                 </div>
                 <div class="edit-group full">
                     <div class="edit-label">Email *</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="email" name="email" required></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="email" name="email" id="f-email" required></div>
                 </div>
                 <div class="edit-group full">
-                    <div class="edit-label">Contraseña *</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="password" name="password" required minlength="6" placeholder="Mínimo 6 caracteres"></div>
+                    <div class="edit-label">Contraseña <span id="pwdHint">*</span></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="password" name="password" id="f-password" minlength="6" placeholder="Mínimo 6 caracteres"></div>
+                </div>
+                <div class="edit-group full">
+                    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                        <input type="checkbox" name="activo" id="f-activo" value="1" checked style="width:auto;">
+                        <span style="color:#ccc;">Activo</span>
+                    </label>
                 </div>
             </div>
             <div class="edit-footer">
                 <button type="button" class="btn btn-outline" onclick="closeModal('modalProf')">Cancelar</button>
-                <button type="submit" class="btn-edit-save">💾 Crear profesional</button>
+                <button type="submit" class="btn-edit-save" id="modalProfSubmitBtn">💾 Crear profesional</button>
+            </div>
+        </form>
+    </div>
+</div> -->
+<!-- Modal crear / editar -->
+<div class="edit-modal-overlay" id="editModal">
+    <div class="edit-modal">
+        <div class="edit-modal-header">
+            <div class="edit-modal-title" id="modalTitle">➕ Agregar miembro</div>
+            <button class="edit-modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <form action="<?= b('/admin/staff.php') ?>" method="post" enctype="multipart/form-data" id="modalForm">
+            <input type="hidden" name="accion" id="modalAccion" value="crear">
+            <input type="hidden" name="id" id="modalId" value="">
+
+            <div class="edit-grid">
+                <div class="edit-group">
+                    <div class="edit-label">Nombre *</div>
+                    <div class="edit-input-wrap">
+                        <input class="edit-input" type="text" name="nombre" id="f-nombre" required>
+                    </div>
+                </div>
+                <div class="edit-group">
+                    <div class="edit-label">Apellido *</div>
+                    <div class="edit-input-wrap">
+                        <input class="edit-input" type="text" name="apellido" id="f-apellido" required>
+                    </div>
+                </div>
+                <div class="edit-group">
+                    <div class="edit-label">Título profesional</div>
+                    <div class="edit-input-wrap">
+                        <input class="edit-input" type="text" name="titulo" id="f-titulo" placeholder="Ej: Dra., Lic., Dr.">
+                    </div>
+                </div>
+                <div class="edit-group">
+                    <div class="edit-label">Especialidad</div>
+                    <div class="edit-input-wrap">
+                        <input class="edit-input" type="text" name="especialidad" id="f-especialidad" placeholder="Ej: Audiometría, Nutrición…">
+                    </div>
+                </div>
+                <div class="edit-group full">
+                    <div class="edit-label">Descripción</div>
+                    <div class="edit-input-wrap">
+                        <textarea class="edit-input" name="descripcion" id="f-descripcion" rows="3" placeholder="Breve descripción del profesional…"></textarea>
+                    </div>
+                </div>
+                <div class="edit-group">
+                    <div class="edit-label">Instagram</div>
+                    <div class="edit-input-wrap">
+                        <input class="edit-input" type="text" name="instagram" id="f-instagram" placeholder="@usuario">
+                    </div>
+                </div>
+                <div class="edit-group">
+                    <div class="edit-label">Orden</div>
+                    <div class="edit-input-wrap">
+                        <input class="edit-input" type="number" name="orden" id="f-orden" value="0" min="0">
+                    </div>
+                </div>
+                <div class="edit-group full">
+                    <div class="edit-label">Foto</div>
+                    <div class="edit-input-wrap" id="imgPreviewWrap" style="display:none;margin-bottom:8px;">
+                        <img id="imgPreview" src="" style="max-height:80px;border-radius:50%;object-fit:cover;">
+                    </div>
+                    <input class="edit-input" type="file" name="foto" accept=".jpg,.jpeg,.png,.webp">
+                    <small style="color:#94a3b8;font-size:11px;">JPG, PNG — máx. 3MB. Dejá vacío para no cambiar.</small>
+                </div>
+                <div class="edit-group full">
+                    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                        <input type="checkbox" name="activo" id="f-activo" value="1" checked style="width:auto;">
+                        <span style="color:#ccc;">Visible en el sitio</span>
+                    </label>
+                </div>
+            </div>
+            <div class="edit-footer">
+                <button type="button" class="btn btn-outline" onclick="closeModal()">Cancelar</button>
+                <button type="submit" class="btn-edit-save" id="modalSubmitBtn">💾 Guardar</button>
             </div>
         </form>
     </div>
 </div>
+
+<div id="toast-ok">✅ Guardado exitosamente</div>
 
 <!-- Modal asignar -->
 <div class="edit-modal-overlay" id="modalAsig">
@@ -363,60 +489,114 @@ require __DIR__ . '/../includes/portal_header.php';
     setupTable('tablaProfs', 'searchProfs');
     setupTable('tablaAsig', 'searchAsig');
 
-    window.verProfs = function(d) {
-        var areas = {};
-        ASIGNACIONES.forEach(function(a) {
-            if (a.profesional_id == d.id) {
-                if (!areas[a.area]) areas[a.area] = [];
-                areas[a.area].push(a.paciente_apellido + ', ' + a.paciente_nombre);
-            }
+    // window.verProfs = function(d) {
+    //     var areas = {};
+    //     ASIGNACIONES.forEach(function(a) {
+    //         if (a.profesional_id == d.id) {
+    //             if (!areas[a.area]) areas[a.area] = [];
+    //             areas[a.area].push(a.paciente_apellido + ', ' + a.paciente_nombre);
+    //         }
+    //     });
+    //     var html = '<div style="margin-bottom:8px;font-weight:600;">Email: ' + (d.email||'-') + '</div>';
+    //     html += '<div style="margin-bottom:8px;font-weight:600;">DNI: ' + (d.dni||'-') + '</div>';
+    //     html += '<div style="margin-bottom:12px;font-weight:600;">Pacientes por área:</div>';
+    //     var areasNombres = {
+    //         'audiologia': 'Audiología',
+    //         'hiperbarica': 'Medicina Hiperbárica',
+    //         'nutricion': 'Nutrición',
+    //         'ortopedia': 'Ortopedia y Rehabilitación',
+    //         'equipamiento': 'Equipamiento Médico y Quirúrgico'
+    //     };
+    //     Object.keys(areas).forEach(function(area) {
+    //         html += '<div style="margin-bottom:10px;border-left:3px solid var(--tm-teal);padding-left:10px;">';
+    //         html += '<div style="font-weight:600;margin-bottom:4px;">' + (areasNombres[area] || area) + '</div>';
+    //         areas[area].forEach(function(p) {
+    //             html += '<div style="padding:2px 0;">• ' + p + '</div>';
+    //         });
+    //         html += '</div>';
+    //     });
+    //     if (Object.keys(areas).length === 0) {
+    //         html += '<div style="color:var(--muted);">Este profesional no tiene asignaciones activas.</div>';
+    //     }
+    //     document.getElementById('verProfTitle').textContent = d.apellido + ', ' + d.nombre;
+    //     document.getElementById('verProfBody').innerHTML = html;
+    //     document.getElementById('modalVerProf').classList.add('open');
+    // };
+
+    // window.closeModalVerProf = function() {
+    //     document.getElementById('modalVerProf').classList.remove('open');
+    // };
+
+    // window.openModal = function(mode, data) {
+    //     var accion = mode === 'editar' ? 'editar' : 'crear';
+    //     document.getElementById('modalProfAccion').value = accion;
+    //     document.getElementById('modalProfId').value = data && data.id ? data.id : '';
+    //     document.getElementById('modalProfTitle').textContent = mode === 'editar' ? '✏️ Editar profesional' : '➕ Nuevo profesional';
+    //     document.getElementById('modalProfSubmitBtn').textContent = mode === 'editar' ? '💾 Guardar cambios' : '💾 Crear profesional';
+
+    //     var isEdit = mode === 'editar';
+    //     document.getElementById('pwdHint').textContent = isEdit ? '(opcional)' : '*';
+    //     document.getElementById('f-password').required = !isEdit;
+    //     document.getElementById('f-password').placeholder = isEdit ? 'Dejar vacío para no cambiar' : 'Mínimo 6 caracteres';
+
+    //     var formFields = ['nombre', 'apellido', 'dni', 'telefono', 'email', 'password', 'activo'];
+    //     formFields.forEach(function(f) {
+    //         var el = document.getElementById('f-' + f);
+    //         if (!el) return;
+    //         if (f === 'activo') {
+    //             el.checked = !data || data.activo == '1' || data.activo === 1;
+    //         } else {
+    //             el.value = data && data[f] ? data[f] : '';
+    //         }
+    //     });
+    //     document.getElementById('modalProf').classList.add('open');
+    // };
+    // window.closeModal = function(id) { document.getElementById(id).classList.remove('open'); };
+
+    // document.getElementById('modalProf').addEventListener('click', function(e) { if (e.target === this) closeModal('modalProf'); });
+    // document.getElementById('modalAsig').addEventListener('click', function(e) { if (e.target === this) closeModal('modalAsig'); });
+    // document.getElementById('modalVerProf').addEventListener('click', function(e) { if (e.target === this) closeModalVerProf(); });
+    // document.addEventListener('keydown', function(e) {
+    //     if (e.key === 'Escape') {
+    //         closeModal('modalProf');
+    //         closeModal('modalAsig');
+    //         closeModalVerProf();
+    //     }
+    // });
+
+    window.openModal = function(mode, data) {
+        document.getElementById('modalAccion').value = mode === 'editar' ? 'editar' : 'crear';
+        document.getElementById('modalId').value = data && data.id ? data.id : '';
+        document.getElementById('modalTitle').textContent = mode === 'editar' ? '✏️ Editar miembro' : '➕ Agregar miembro';
+        document.getElementById('modalSubmitBtn').textContent = mode === 'editar' ? '💾 Guardar cambios' : '💾 Crear';
+
+        ['nombre','apellido','titulo','especialidad','descripcion','instagram','orden'].forEach(function(f) {
+            document.getElementById('f-' + f).value = data && data[f] ? data[f] : '';
         });
-        var html = '<div style="margin-bottom:8px;font-weight:600;">Email: ' + (d.email||'-') + '</div>';
-        html += '<div style="margin-bottom:8px;font-weight:600;">DNI: ' + (d.dni||'-') + '</div>';
-        html += '<div style="margin-bottom:12px;font-weight:600;">Pacientes por área:</div>';
-        var areasNombres = {
-            'audiologia': 'Audiología',
-            'hiperbarica': 'Medicina Hiperbárica',
-            'nutricion': 'Nutrición',
-            'ortopedia': 'Ortopedia y Rehabilitación',
-            'equipamiento': 'Equipamiento Médico y Quirúrgico'
-        };
-        Object.keys(areas).forEach(function(area) {
-            html += '<div style="margin-bottom:10px;border-left:3px solid var(--tm-teal);padding-left:10px;">';
-            html += '<div style="font-weight:600;margin-bottom:4px;">' + (areasNombres[area] || area) + '</div>';
-            areas[area].forEach(function(p) {
-                html += '<div style="padding:2px 0;">• ' + p + '</div>';
-            });
-            html += '</div>';
-        });
-        if (Object.keys(areas).length === 0) {
-            html += '<div style="color:var(--muted);">Este profesional no tiene asignaciones activas.</div>';
+        document.getElementById('f-orden').value = data && data.orden ? data.orden : 0;
+        document.getElementById('f-activo').checked = !data || data.activo == '1' || data.activo === 1;
+        document.getElementById('imgPreviewWrap').style.display = 'none';
+        document.getElementById('imgPreview').src = '';
+        if (data && data.foto) {
+            document.getElementById('imgPreview').src = '<?= b('/') ?>' + data.foto;
+            document.getElementById('imgPreviewWrap').style.display = 'block';
         }
-        document.getElementById('verProfTitle').textContent = d.apellido + ', ' + d.nombre;
-        document.getElementById('verProfBody').innerHTML = html;
-        document.getElementById('modalVerProf').classList.add('open');
+
+        document.getElementById('editModal').classList.add('open');
     };
 
-    window.closeModalVerProf = function() {
-        document.getElementById('modalVerProf').classList.remove('open');
+    window.closeModal = function() {
+        document.getElementById('editModal').classList.remove('open');
     };
 
-    window.openModal = function(mode) {
-        if (mode === 'prof') document.getElementById('modalProf').classList.add('open');
-        else if (mode === 'asig') document.getElementById('modalAsig').classList.add('open');
-    };
-    window.closeModal = function(id) { document.getElementById(id).classList.remove('open'); };
-
-    document.getElementById('modalProf').addEventListener('click', function(e) { if (e.target === this) closeModal('modalProf'); });
-    document.getElementById('modalAsig').addEventListener('click', function(e) { if (e.target === this) closeModal('modalAsig'); });
-    document.getElementById('modalVerProf').addEventListener('click', function(e) { if (e.target === this) closeModalVerProf(); });
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeModal('modalProf');
-            closeModal('modalAsig');
-            closeModalVerProf();
-        }
+    document.getElementById('editModal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
     });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+    });
+
 })();
 </script>
 

@@ -13,6 +13,9 @@ function presupuesto_crear(array $d): int {
         $d['nombre'], $d['apellido'], $d['dni_cuit'], $d['telefono'], $d['email'], $d['area'], $d['descripcion']
     );
     $st->execute();
+    if (function_exists('persona_upsert')) {
+        persona_upsert($d['dni_cuit'], $d['nombre'], $d['apellido'], $d['telefono'], $d['email']);
+    }
     return db()->insert_id;
 }
 

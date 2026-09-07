@@ -27,6 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email    = trim($_POST['email'] ?? '');
         $dni      = trim($_POST['dni'] ?? '');
         $telefono = trim($_POST['telefono'] ?? '');
+        $rol      = $_POST['rol'] ?? 'paciente';
+        $password = trim($_POST['password'] ?? '');
+
         // Validar email único (excluyendo al usuario actual)
         $stCheck = db()->prepare("SELECT id FROM tm_usuarios WHERE email=? AND id!=?");
         $stCheck->bind_param('si', $email, $id);
@@ -36,8 +39,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?') . '?error=email_duplicado');
             exit;
         }
-        $st = db()->prepare("UPDATE tm_usuarios SET nombre=?, apellido=?, email=?, dni=?, telefono=? WHERE id=?");
-        $st->bind_param('sssssi', $nombre, $apellido, $email, $dni, $telefono, $id);
+
+        // Construir query de actualización dinámicamente
+        $sets = ["nombre=?", "apellido=?", "email=?", "dni=?", "telefono=?", "rol=?"];
+        $params = [$nombre, $apellido, $email, $dni, $telefono, $rol];
+
+        if ($password !== '') {
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+            $sets[] = "password_hash=?";
+            $params[] = $hash;
+        }
+
+        $query = "UPDATE tm_usuarios SET " . implode(", ", $sets) . " WHERE id=?";
+        $params[] = $id;
+
+        $st = db()->prepare($query);
+        $types = '';
+        foreach ($params as $i => $p) {
+            if (is_int($p)) $types .= 'i';
+            else if (is_float($p)) $types .= 'd';
+            else $types .= 's';
+        }
+        $st->bind_param($types, ...$params);
         $st->execute();
         header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?') . '?ok=1');
         exit;
@@ -107,23 +130,21 @@ require __DIR__ . '/../includes/portal_header.php';
     </div>
 </div>
 
-<div style="padding:24px 28px 0;">
-    <div class="topbar" style="margin-bottom:20px;">
-        <div style="display:flex;align-items:center;gap:12px;">
-            <div class="page-title">Usuarios</div>
-        </div>
-        <button class="btn-action btn-save" style="padding:9px 18px;font-size:13px;" onclick="openModal('crear')">
-            ➕ Nuevo usuario
-        </button>
-    </div>
+<div style="padding:24px 28px 0; margin-bottom: 16px;">
+    <div class="page-title">Usuarios</div>
 </div>
 
 <div class="table-card" style="margin:0 28px 28px;">
     <div class="table-header">
         <div class="table-title"><?= $total ?> usuario<?= $total !== 1 ? 's' : '' ?></div>
-        <div class="search-wrap">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="searchInput" placeholder="Buscar…" style="width:220px;">
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+            <div class="search-wrap">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Buscar…" style="width:220px;">
+            </div>
+            <button class="btn-action btn-save" style="padding:7px 14px;text-decoration:none;" onclick="openModal()">
+                ➕ Nuevo usuario
+            </button>
         </div>
     </div>
     <div class="table-wrap">
@@ -155,46 +176,44 @@ require __DIR__ . '/../includes/portal_header.php';
                     <td><span class="badge <?= $badge ?>"><?= $labelEstado ?></span></td>
                     <td class="actions-col">
                         <div class="btn-actions">
-                            <?php if ($u['activo'] == 0): ?>
-                            <form method="post" style="flex:1;">
-                                <input type="hidden" name="accion" value="aprobar">
+                            <!-- Activar / Desactivar (botón único que cambia de color) -->
+                            <form method="post" style="flex:1;" id="form-toggle-<?= $u['id'] ?>">
+                                <input type="hidden" name="accion"
+                                    value="<?= $u['activo'] == 1 ? 'desactivar' : 'aprobar' ?>">
                                 <input type="hidden" name="id" value="<?= $u['id'] ?>">
-                                <button type="submit" class="btn-action btn-save" data-tooltip="Aprobar" style="width:100%;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
-                                        <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0"/>
-                                        <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
-                                    </svg>
+                                <button type="button"
+                                    class="btn-action <?= $u['activo'] == 1 ? 'btn-del' : 'btn-save' ?>"
+                                    data-tooltip="<?= $u['activo'] == 1 ? 'Desactivar' : 'Activar' ?>"
+                                    style="width:100%;"
+                                    onclick="<?= $esAdmin ? "mostrarConfirmacion('form-toggle-" . $u['id'] . "', '" . ($u['activo'] == 1 ? 'Desactivar' : 'Activar') . " este usuario')" : "mostrarSinPermiso(); false" ?>">
+                                    <?php if ($u['activo'] == 1): ?>
+                                    <svg fill="#f5f1f1" width="16px" height="16px" viewBox="-2 0 19 19" xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg"><path d="M7.498 17.1a7.128 7.128 0 0 1-.98-.068 7.455 7.455 0 0 1-1.795-.483 7.26 7.26 0 0 1-3.028-2.332A7.188 7.188 0 0 1 .73 12.52a7.304 7.304 0 0 1 .972-7.128 7.221 7.221 0 0 1 1.387-1.385 1.03 1.03 0 0 1 1.247 1.638 5.176 5.176 0 0 0-.993.989 5.313 5.313 0 0 0-.678 1.181 5.23 5.23 0 0 0-.348 1.292 5.22 5.22 0 0 0 .326 2.653 5.139 5.139 0 0 0 .69 1.212 5.205 5.205 0 0 0 .992.996 5.257 5.257 0 0 0 1.178.677 5.37 5.37 0 0 0 1.297.35 5.075 5.075 0 0 0 1.332.008 5.406 5.406 0 0 0 1.32-.343 5.289 5.289 0 0 0 2.211-1.682 5.18 5.18 0 0 0 1.02-2.465 5.2 5.2 0 0 0 .01-1.336 5.315 5.315 0 0 0-.343-1.318 5.195 5.195 0 0 0-.695-1.222 5.134 5.134 0 0 0-.987-.989 1.03 1.03 0 1 1 1.24-1.643 7.186 7.186 0 0 1 1.384 1.386 7.259 7.259 0 0 1 .97 1.706 7.413 7.413 0 0 1 .473 1.827 7.296 7.296 0 0 1-4.522 7.65 7.476 7.476 0 0 1-1.825.471 7.203 7.203 0 0 1-.89.056zM7.5 9.613a1.03 1.03 0 0 1-1.03-1.029V2.522a1.03 1.03 0 0 1 2.06 0v6.062a1.03 1.03 0 0 1-1.03 1.03z"/></svg>
+                                    <?php else: ?>
+                                     <svg fill="#f5f1f1" width="16px" height="16px" viewBox="-2 0 19 19" xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg"><path d="M7.498 17.1a7.128 7.128 0 0 1-.98-.068 7.455 7.455 0 0 1-1.795-.483 7.26 7.26 0 0 1-3.028-2.332A7.188 7.188 0 0 1 .73 12.52a7.304 7.304 0 0 1 .972-7.128 7.221 7.221 0 0 1 1.387-1.385 1.03 1.03 0 0 1 1.247 1.638 5.176 5.176 0 0 0-.993.989 5.313 5.313 0 0 0-.678 1.181 5.23 5.23 0 0 0-.348 1.292 5.22 5.22 0 0 0 .326 2.653 5.139 5.139 0 0 0 .69 1.212 5.205 5.205 0 0 0 .992.996 5.257 5.257 0 0 0 1.178.677 5.37 5.37 0 0 0 1.297.35 5.075 5.075 0 0 0 1.332.008 5.406 5.406 0 0 0 1.32-.343 5.289 5.289 0 0 0 2.211-1.682 5.18 5.18 0 0 0 1.02-2.465 5.2 5.2 0 0 0 .01-1.336 5.315 5.315 0 0 0-.343-1.318 5.195 5.195 0 0 0-.695-1.222 5.134 5.134 0 0 0-.987-.989 1.03 1.03 0 1 1 1.24-1.643 7.186 7.186 0 0 1 1.384 1.386 7.259 7.259 0 0 1 .97 1.706 7.413 7.413 0 0 1 .473 1.827 7.296 7.296 0 0 1-4.522 7.65 7.476 7.476 0 0 1-1.825.471 7.203 7.203 0 0 1-.89.056zM7.5 9.613a1.03 1.03 0 0 1-1.03-1.029V2.522a1.03 1.03 0 0 1 2.06 0v6.062a1.03 1.03 0 0 1-1.03 1.03z"/></svg>
+                                    <?php endif; ?>
                                 </button>
                             </form>
-                            <?php endif; ?>
 
                             <!-- Editar -->
-                            <button class="btn-action btn-mod" data-tooltip="Editar"
-                                onclick="<?= $esAdmin ? "openEdit(" . json_encode($u, JSON_UNESCAPED_UNICODE) . ")" : 'mostrarSinPermiso()' ?>"
-                                style="padding:7px 10px;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
-                                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                            <button class="btn-action btn-mod" data-tooltip="Editar" style="padding:7px 1px;"
+                                onclick='<?= $esAdmin ? "openEdit(" . json_encode($u, JSON_UNESCAPED_UNICODE) . ")" : 'mostrarSinPermiso()' ?>'
+                                >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
                                 </svg>
                             </button>
 
                             <!-- Resetear contraseña (admin siempre) -->
-                            <button class="btn-action btn-print-turn" data-tooltip="Resetear contraseña" onclick='openPass(<?= $u['id'] ?>)' style="padding:7px 10px;display:flex;align-items:center;justify-content:center;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill" viewBox="0 0 16 16">
-                                    <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2M2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                            <button class="btn-action btn-print-turn" data-tooltip="Resetear contraseña" style="padding:7px 1px;"
+                                onclick="openPass(<?= $u['id'] ?>)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-key-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2M2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
                                 </svg>
                             </button>
-
-                            <!-- Eliminar/Desactivar (solo admin) -->
-                            <form method="post" style="flex:1;" onsubmit="return <?= $esAdmin ? "confirm('¿Cambiar el estado de este usuario?')" : "mostrarSinPermisoSinConfirm() && false" ?>">
-                                <input type="hidden" name="accion" value="<?= $u['activo'] == 1 ? 'desactivar' : 'aprobar' ?>">
-                                <input type="hidden" name="id" value="<?= $u['id'] ?>">
-                                <button type="submit" class="btn-action btn-del" data-tooltip="<?= $u['activo'] == 1 ? 'Desactivar' : 'Activar' ?>" style="width:100%;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                                    </svg>
-                                </button>
-                            </form>
                         </div>
                     </td>
                 </tr>
@@ -251,7 +270,8 @@ require __DIR__ . '/../includes/portal_header.php';
                 </div>
                 <div class="edit-group">
                     <div class="edit-label">Contraseña *</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="password" name="password" required minlength="6"></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="password" name="password" required
+                            minlength="6"></div>
                 </div>
             </div>
             <div class="edit-footer">
@@ -275,11 +295,13 @@ require __DIR__ . '/../includes/portal_header.php';
             <div class="edit-grid">
                 <div class="edit-group">
                     <div class="edit-label">Nombre *</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="nombre" id="f-nombre" required></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="nombre" id="f-nombre"
+                            required></div>
                 </div>
                 <div class="edit-group">
                     <div class="edit-label">Apellido *</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="apellido" id="f-apellido" required></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="apellido" id="f-apellido"
+                            required></div>
                 </div>
                 <div class="edit-group">
                     <div class="edit-label">DNI</div>
@@ -287,11 +309,27 @@ require __DIR__ . '/../includes/portal_header.php';
                 </div>
                 <div class="edit-group">
                     <div class="edit-label">Teléfono</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="telefono" id="f-telefono"></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="telefono" id="f-telefono">
+                    </div>
                 </div>
                 <div class="edit-group full">
                     <div class="edit-label">Email *</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="email" name="email" id="f-email" required></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="email" name="email" id="f-email"
+                            required></div>
+                </div>
+                <div class="edit-group">
+                    <div class="edit-label">Rol *</div>
+                    <div class="edit-input-wrap">
+                        <select class="edit-input" name="rol" id="f-rol" required>
+                            <option value="paciente">Paciente</option>
+                            <option value="profesional">Profesional</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="edit-group">
+                    <div class="edit-label">Contraseña (dejar vacío para no cambiar)</div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="password" name="password"
+                            id="f-password" placeholder="Dejar vacío para mantener la actual"></div>
                 </div>
             </div>
             <div class="edit-footer">
@@ -299,6 +337,19 @@ require __DIR__ . '/../includes/portal_header.php';
                 <button type="submit" class="btn-edit-save">💾 Guardar cambios</button>
             </div>
         </form>
+    </div>
+</div>
+
+<!-- Modal confirmación personalizado con colores de marca -->
+<div class="confirm-overlay" id="confirmOverlay" style="display:none;">
+    <div class="confirm-box">
+        <div class="confirm-icon" id="confirmIcon"></div>
+        <div class="confirm-title" id="confirmTitle">¿Estás seguro?</div>
+        <div class="confirm-message" id="confirmMessage"></div>
+        <div class="confirm-actions">
+            <button class="btn btn-outline" id="confirmCancel">Cancelar</button>
+            <button class="btn-confirm" id="confirmBtn">Confirmar</button>
+        </div>
     </div>
 </div>
 
@@ -315,7 +366,8 @@ require __DIR__ . '/../includes/portal_header.php';
             <div class="edit-grid">
                 <div class="edit-group full">
                     <div class="edit-label">Nueva contraseña *</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="password" name="password" required minlength="6" placeholder="Mínimo 6 caracteres"></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="password" name="password" required
+                            minlength="6" placeholder="Mínimo 6 caracteres"></div>
                 </div>
             </div>
             <div class="edit-footer">
@@ -326,101 +378,172 @@ require __DIR__ . '/../includes/portal_header.php';
     </div>
 </div>
 
-<div id="toast-ok">✅ Acción realizada</div>
-<div id="toast-error" style="display:none;position:fixed;bottom:24px;right:24px;background:#c94f4f;color:#fff;padding:14px 22px;border-radius:10px;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2);"></div>
+<div id="toast-ok">✅ Guardado Exitosamente</div>
+<div id="toast-error"
+    style="display:none;position:fixed;bottom:24px;right:24px;background:#c94f4f;color:#fff;padding:14px 22px;border-radius:10px;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2);">
+</div>
 
 <script>
-(function() {
+var formToSubmitConfirm = null;
+var formIdActual = null;
+
+function openModal() {
+    document.getElementById('modalCrear').classList.add('open');
+}
+function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+}
+function openEdit(d) {
+    document.getElementById('f-id').value = d.id;
+    document.getElementById('f-nombre').value = d.nombre || '';
+    document.getElementById('f-apellido').value = d.apellido || '';
+    document.getElementById('f-dni').value = d.dni || '';
+    document.getElementById('f-telefono').value = d.telefono || '';
+    document.getElementById('f-email').value = d.email || '';
+    var rolSelect = document.getElementById('f-rol');
+    if (rolSelect) {
+        var validRoles = ['paciente', 'profesional', 'admin'];
+        if (validRoles.includes(d.rol)) {
+            rolSelect.value = d.rol;
+        } else {
+            rolSelect.value = 'paciente';
+        }
+    }
+    document.getElementById('f-password').value = '';
+    document.getElementById('modalEditar').classList.add('open');
+}
+function openPass(id) {
+    document.getElementById('f-pass-id').value = id;
+    document.getElementById('modalPass').classList.add('open');
+}
+function mostrarConfirmacion(formId, mensaje) {
+    formIdActual = formId;
+    var overlay = document.getElementById('confirmOverlay');
+    var msgEl = document.getElementById('confirmMessage');
+    var titleEl = document.getElementById('confirmTitle');
+    var iconEl = document.getElementById('confirmIcon');
+    var btnEl = document.getElementById('confirmBtn');
+
+    if (!overlay || !msgEl || !titleEl || !iconEl || !btnEl) return;
+
+    msgEl.textContent = mensaje;
+
+    if (mensaje.indexOf('Desactivar') === 0) {
+        titleEl.textContent = 'Desactivar usuario';
+        iconEl.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/></svg>';
+        iconEl.className = 'confirm-icon warn';
+        btnEl.textContent = 'Desactivar';
+        btnEl.className = 'btn-confirm danger';
+    } else {
+        titleEl.textContent = 'Activar usuario';
+        iconEl.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16"><path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0"/><path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/></svg>';
+        iconEl.className = 'confirm-icon success';
+        btnEl.textContent = 'Activar';
+        btnEl.className = 'btn-confirm success';
+    }
+    overlay.style.display = 'flex';
+}
+function cerrarConfirmacion() {
+    var overlay = document.getElementById('confirmOverlay');
+    if (overlay) overlay.style.display = 'none';
+    formIdActual = null;
+}
+function ejecutarConfirmacion() {
+    if (formIdActual) {
+        var form = document.getElementById(formIdActual);
+        if (form) form.submit();
+    }
+}
+function mostrarSinPermiso() {
+    var t = document.getElementById('toast-error');
+    if (t) { t.textContent = '⚠️ No tiene permiso para esta acción.'; t.style.display = 'block'; setTimeout(function() { t.style.display = 'none'; }, 4000); }
+    return false;
+}
+function mostrarSinPermisoSinConfirm() {
+    var t = document.getElementById('toast-error');
+    if (t) { t.textContent = '⚠️ No tiene permiso para esta acción.'; t.style.display = 'block'; setTimeout(function() { t.style.display = 'none'; }, 4000); }
+    return true;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Toasts
     var params = new URLSearchParams(location.search);
     if (params.get('ok') === '1') {
         var t = document.getElementById('toast-ok');
-        t.classList.add('show');
-        setTimeout(function() { t.classList.remove('show'); history.replaceState({}, '', location.pathname); }, 3000);
+        if (t) { t.classList.add('show'); setTimeout(function() { t.classList.remove('show'); history.replaceState({}, '', location.pathname); }, 3000); }
     }
     if (params.get('error') === 'email_duplicado') {
         var t = document.getElementById('toast-error');
-        t.textContent = '⚠️ El email ya está en uso por otro usuario.';
-        t.style.display = 'block';
-        setTimeout(function() { t.style.display = 'none'; history.replaceState({}, '', location.pathname); }, 4000);
+        if (t) { t.textContent = '⚠️ El email ya está en uso.'; t.style.display = 'block'; setTimeout(function() { t.style.display = 'none'; history.replaceState({}, '', location.pathname); }, 4000); }
     }
 
-    document.getElementById('searchInput').addEventListener('input', function() {
-        var q = this.value.toLowerCase();
-        document.querySelectorAll('#mainTable tbody tr').forEach(function(r) {
-            r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
+    // Buscador
+    var searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            var q = this.value.toLowerCase();
+            document.querySelectorAll('#mainTable tbody tr').forEach(function(r) {
+                r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
+            });
         });
-    });
+    }
 
+    // Ordenamiento
     var sortState = { col: -1, dir: 'asc' };
     document.querySelectorAll('th.sortable').forEach(function(th) {
         th.addEventListener('click', function() {
             var col = parseInt(th.dataset.col);
             var dir = (sortState.col === col && sortState.dir === 'asc') ? 'desc' : 'asc';
             sortState = { col: col, dir: dir };
-            document.querySelectorAll('th.sortable').forEach(function(h) { h.classList.remove('asc','desc'); });
+            document.querySelectorAll('th.sortable').forEach(function(h) { h.classList.remove('asc', 'desc'); });
             th.classList.add(dir);
-            sortTable(col, dir);
+            var tbody = document.querySelector('#mainTable tbody');
+            var rows = Array.from(tbody.querySelectorAll('tr'));
+            rows.sort(function(a, b) {
+                var aVal = (a.querySelectorAll('td')[col] || { textContent: '' }).textContent.trim().toLowerCase();
+                var bVal = (b.querySelectorAll('td')[col] || { textContent: '' }).textContent.trim().toLowerCase();
+                return (aVal < bVal ? -1 : aVal > bVal ? 1 : 0) * (dir === 'asc' ? 1 : -1);
+            });
+            rows.forEach(function(r) { tbody.appendChild(r); });
         });
     });
 
-    function sortTable(col, dir) {
-        var tbody = document.querySelector('#mainTable tbody');
-        var rows = Array.from(tbody.querySelectorAll('tr'));
-        rows.sort(function(a, b) {
-            var aVal = (a.querySelectorAll('td')[col] || {textContent:''}).textContent.trim().toLowerCase();
-            var bVal = (b.querySelectorAll('td')[col] || {textContent:''}).textContent.trim().toLowerCase();
-            if (aVal < bVal) return dir === 'asc' ? -1 : 1;
-            if (aVal > bVal) return dir === 'asc' ? 1 : -1;
-            return 0;
+    // Botones del modal de confirmación
+    var confirmBtn = document.getElementById('confirmBtn');
+    if (confirmBtn) confirmBtn.addEventListener('click', ejecutarConfirmacion);
+    var confirmCancel = document.getElementById('confirmCancel');
+    if (confirmCancel) confirmCancel.addEventListener('click', cerrarConfirmacion);
+    var confirmOverlay = document.getElementById('confirmOverlay');
+    if (confirmOverlay) {
+        confirmOverlay.addEventListener('click', function(e) {
+            if (e.target === this) cerrarConfirmacion();
         });
-        rows.forEach(function(r) { tbody.appendChild(r); });
     }
 
-    window.openModal = function() { document.getElementById('modalCrear').classList.add('open'); };
-    window.closeModal = function(id) { document.getElementById(id).classList.remove('open'); };
+    // Cerrar modales al hacer clic fuera
+    ['modalCrear', 'modalEditar', 'modalPass'].forEach(function(id) {
+        var m = document.getElementById(id);
+        if (m) m.addEventListener('click', function(e) { if (e.target === this) closeModal(id); });
+    });
 
-    window.openEdit = function(d) {
-        document.getElementById('f-id').value = d.id;
-        document.getElementById('f-nombre').value = d.nombre || '';
-        document.getElementById('f-apellido').value = d.apellido || '';
-        document.getElementById('f-dni').value = d.dni || '';
-        document.getElementById('f-telefono').value = d.telefono || '';
-        document.getElementById('f-email').value = d.email || '';
-        document.getElementById('modalEditar').classList.add('open');
-    };
+    // Escape para cerrar
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeModal('modalCrear');
+            closeModal('modalEditar');
+            closeModal('modalPass');
+            cerrarConfirmacion();
+        }
+    });
 
-    window.openPass = function(id) {
-        document.getElementById('f-pass-id').value = id;
-        document.getElementById('modalPass').classList.add('open');
-    };
-
-    window.mostrarSinPermiso = function() {
-        var t = document.getElementById('toast-error');
-        t.textContent = '⚠️ No tiene permiso para esta acción.';
-        t.style.display = 'block';
-        setTimeout(function() { t.style.display = 'none'; }, 4000);
-        return false;
-    };
-    window.mostrarSinPermisoSinConfirm = function() {
-        var t = document.getElementById('toast-error');
-        t.textContent = '⚠️ No tiene permiso para esta acción.';
-        t.style.display = 'block';
-        setTimeout(function() { t.style.display = 'none'; }, 4000);
-        return true;
-    };
-
-    document.getElementById('modalCrear').addEventListener('click', function(e) { if (e.target === this) closeModal('modalCrear'); });
-    document.getElementById('modalEditar').addEventListener('click', function(e) { if (e.target === this) closeModal('modalEditar'); });
-    document.getElementById('modalPass').addEventListener('click', function(e) { if (e.target === this) closeModal('modalPass'); });
-    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeModal('modalCrear'); closeModal('modalEditar'); closeModal('modalPass'); } });
-
+    // Animación de filas
     document.querySelectorAll('#mainTable tbody tr').forEach(function(r, i) {
         r.style.opacity = '0';
         r.style.transform = 'translateX(-10px)';
         r.style.transition = 'opacity .35s ease, transform .35s ease';
-        setTimeout(function() { r.style.opacity = '1'; r.style.transform = 'translateX(0); }, 80 + i * 40);
+        setTimeout(function() { r.style.opacity = '1'; r.style.transform = 'translateX(0)'; }, 80 + i * 40);
     });
-})();
+});
 </script>
 
 <?php require __DIR__ . '/../includes/portal_footer.php'; ?>
