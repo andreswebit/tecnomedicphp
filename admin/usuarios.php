@@ -196,6 +196,8 @@ $esAdmin = (portal_rol() === 'admin');
 $portal_titulo = 'Usuarios · Mi Portal';
 $portal_activo = 'usuarios';
 require __DIR__ . '/../includes/portal_header.php';
+
+
 ?>
 
 <div class="stats" style="margin:28px 28px 0;">
@@ -320,7 +322,7 @@ require __DIR__ . '/../includes/portal_header.php';
     <div class="edit-modal">
         <div class="edit-modal-header">
             <div class="edit-modal-title">➕ Nuevo usuario</div>
-            <button class="edit-modal-close" onclick="closeModal('modalCrear')">✕</button>
+            <button class="edit-modal-close" onclick="closeModal('modalCrear')" style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;padding:4px;">✕</button>
         </div>
         <form action="<?= b('/admin/usuarios.php') ?>" method="post">
             <input type="hidden" name="accion" value="crear">
@@ -443,7 +445,7 @@ require __DIR__ . '/../includes/portal_header.php';
     <div class="edit-modal">
         <div class="edit-modal-header">
             <div class="edit-modal-title">✏️ Editar usuario</div>
-            <button class="edit-modal-close" onclick="closeModal('modalEditar')">✕</button>
+            <button class="edit-modal-close" onclick="closeModal('modalEditar')" style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;padding:4px;">✕</button>
         </div>
         <form action="<?= b('/admin/usuarios.php') ?>" method="post">
             <input type="hidden" name="accion" value="editar">
@@ -585,7 +587,7 @@ require __DIR__ . '/../includes/portal_header.php';
     <div class="edit-modal" style="max-width:420px;">
         <div class="edit-modal-header">
             <div class="edit-modal-title">🔑 Nueva contraseña</div>
-            <button class="edit-modal-close" onclick="closeModal('modalPass')">✕</button>
+            <button class="edit-modal-close" onclick="closeModal('modalPass')" style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;padding:4px;">✕</button>
         </div>
         <form action="<?= b('/admin/usuarios.php') ?>" method="post">
             <input type="hidden" name="accion" value="password">
