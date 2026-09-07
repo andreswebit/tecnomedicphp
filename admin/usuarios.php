@@ -12,11 +12,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $dni      = trim($_POST['dni'] ?? '');
         $telefono = trim($_POST['telefono'] ?? '');
         $rol      = $_POST['rol'] ?? 'paciente';
+        $titulo        = trim($_POST['titulo'] ?? '');
+        $especialidad  = trim($_POST['especialidad'] ?? '');
+        $descripcion   = trim($_POST['descripcion'] ?? '');
+        $instagram     = trim($_POST['instagram'] ?? '');
+        $orden         = !empty($_POST['orden']) ? (int)$_POST['orden'] : 0;
+        $area          = trim($_POST['area'] ?? '');
+        $matricula     = trim($_POST['matricula'] ?? '');
+        $obra_social_id = !empty($_POST['obra_social_id']) ? (int)$_POST['obra_social_id'] : null;
+
         if ($nombre && $apellido && $email && $password) {
             $hash = password_hash($password, PASSWORD_DEFAULT);
-            $st = db()->prepare("INSERT INTO tm_usuarios (nombre,apellido,email,password_hash,dni,telefono,rol,activo,fecha_aprobacion) VALUES (?,?,?,?,?,?,?,1,NOW())");
-            $st->bind_param('sssssss', $nombre, $apellido, $email, $hash, $dni, $telefono, $rol);
+            if ($rol === 'profesional') {
+                $st = db()->prepare(
+                    "INSERT INTO tm_usuarios (nombre,apellido,email,password_hash,dni,telefono,rol,titulo,especialidad,descripcion,instagram,orden,activo,fecha_aprobacion)
+                     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,1,NOW())"
+                );
+                $st->bind_param('sssssssssssi', $nombre, $apellido, $email, $hash, $dni, $telefono, $rol, $titulo, $especialidad, $descripcion, $instagram, $orden);
+            } else {
+                $st = db()->prepare(
+                    "INSERT INTO tm_usuarios (nombre,apellido,email,password_hash,dni,telefono,rol,activo,fecha_aprobacion)
+                     VALUES (?,?,?,?,?,?,?,1,NOW())"
+                );
+                $st->bind_param('sssssss', $nombre, $apellido, $email, $hash, $dni, $telefono, $rol);
+            }
             $st->execute();
+            $id = db()->insert_id;
+
+            // Crear perfil según rol
+            if ($rol === 'paciente') {
+                $stP = db()->prepare("INSERT INTO tm_perfiles_paciente (usuario_id, obra_social_id) VALUES (?,?)");
+                $stP->bind_param('ii', $id, $obra_social_id);
+                $stP->execute();
+            } elseif ($rol === 'profesional') {
+                $stP = db()->prepare("INSERT INTO tm_perfiles_profesional (usuario_id, area, matricula) VALUES (?,?,?)");
+                $stP->bind_param('iss', $id, $area, $matricula);
+                $stP->execute();
+            }
+
+            // Sincronizar tm_personas
+            if (function_exists('persona_upsert')) {
+                persona_upsert($dni, $nombre, $apellido, $telefono, $email, $obra_social_id);
+            }
+
             header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?') . '?ok=1');
             exit;
         }
@@ -30,6 +68,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $rol      = $_POST['rol'] ?? 'paciente';
         $password = trim($_POST['password'] ?? '');
 
+        // Campos específicos paciente
+        $fecha_nacimiento = !empty($_POST['fecha_nacimiento']) ? $_POST['fecha_nacimiento'] : null;
+        $obra_social_id   = !empty($_POST['obra_social_id']) ? (int)$_POST['obra_social_id'] : null;
+
+        // Campos específicos profesional
+        $area       = trim($_POST['area'] ?? '');
+        $matricula  = trim($_POST['matricula'] ?? '');
+        $titulo     = trim($_POST['titulo'] ?? '');
+        $especialidad = trim($_POST['especialidad'] ?? '');
+        $descripcion  = trim($_POST['descripcion'] ?? '');
+        $foto         = trim($_POST['foto'] ?? '');
+        $instagram    = trim($_POST['instagram'] ?? '');
+        $orden        = !empty($_POST['orden']) ? (int)$_POST['orden'] : 0;
+
         // Validar email único (excluyendo al usuario actual)
         $stCheck = db()->prepare("SELECT id FROM tm_usuarios WHERE email=? AND id!=?");
         $stCheck->bind_param('si', $email, $id);
@@ -40,9 +92,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        // Construir query de actualización dinámicamente
+        // Construir query de actualización dinámicamente para tm_usuarios
         $sets = ["nombre=?", "apellido=?", "email=?", "dni=?", "telefono=?", "rol=?"];
         $params = [$nombre, $apellido, $email, $dni, $telefono, $rol];
+
+        // Campos de staff (solo si es profesional)
+        if ($rol === 'profesional') {
+            $sets[] = "titulo=?";        $params[] = $titulo;
+            $sets[] = "especialidad=?";  $params[] = $especialidad;
+            $sets[] = "descripcion=?";   $params[] = $descripcion;
+            $sets[] = "foto=?";          $params[] = $foto;
+            $sets[] = "instagram=?";     $params[] = $instagram;
+            $sets[] = "orden=?";         $params[] = $orden;
+        }
 
         if ($password !== '') {
             $hash = password_hash($password, PASSWORD_DEFAULT);
@@ -62,6 +124,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $st->bind_param($types, ...$params);
         $st->execute();
+
+        // Actualizar perfiles específicos según rol
+        if ($rol === 'paciente') {
+            // tm_perfiles_paciente
+            $stP = db()->prepare("INSERT INTO tm_perfiles_paciente (usuario_id, fecha_nacimiento, obra_social_id) VALUES (?,?,?) ON DUPLICATE KEY UPDATE fecha_nacimiento=VALUES(fecha_nacimiento), obra_social_id=VALUES(obra_social_id)");
+            $stP->bind_param('isi', $id, $fecha_nacimiento, $obra_social_id);
+            $stP->execute();
+        } elseif ($rol === 'profesional') {
+            // tm_perfiles_profesional
+            $stP = db()->prepare("INSERT INTO tm_perfiles_profesional (usuario_id, area, matricula) VALUES (?,?,?) ON DUPLICATE KEY UPDATE area=VALUES(area), matricula=VALUES(matricula)");
+            $stP->bind_param('iss', $id, $area, $matricula);
+            $stP->execute();
+        }
+
+        // Sincronizar tm_personas
+        if (function_exists('persona_upsert')) {
+            persona_upsert($dni, $nombre, $apellido, $telefono, $email, $obra_social_id);
+        }
+
         header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?') . '?ok=1');
         exit;
     } elseif ($accion === 'password') {
@@ -95,7 +176,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $usuarios = [];
 try {
     $usuarios = db()->query(
-        "SELECT * FROM tm_usuarios WHERE rol != 'admin' ORDER BY activo ASC, apellido, nombre"
+        "SELECT u.*, pp.fecha_nacimiento, pp.obra_social_id, pf.area, pf.matricula
+         FROM tm_usuarios u
+         LEFT JOIN tm_perfiles_paciente pp ON pp.usuario_id = u.id
+         LEFT JOIN tm_perfiles_profesional pf ON pf.usuario_id = u.id
+         WHERE u.rol != 'admin'
+         ORDER BY u.activo ASC, u.apellido, u.nombre"
     )->fetch_all(MYSQLI_ASSOC);
 } catch (Throwable $e) {
     $usuarios = [];
@@ -262,9 +348,10 @@ require __DIR__ . '/../includes/portal_header.php';
                 <div class="edit-group">
                     <div class="edit-label">Rol *</div>
                     <div class="edit-input-wrap">
-                        <select class="edit-input" name="rol" required>
+                        <select class="edit-input" name="rol" required onchange="toggleRolFieldsCrear()">
                             <option value="paciente">Paciente</option>
                             <option value="profesional">Profesional</option>
+                            <option value="admin">Admin</option>
                         </select>
                     </div>
                 </div>
@@ -272,6 +359,75 @@ require __DIR__ . '/../includes/portal_header.php';
                     <div class="edit-label">Contraseña *</div>
                     <div class="edit-input-wrap"><input class="edit-input" type="password" name="password" required
                             minlength="6"></div>
+                </div>
+
+                <!-- Campos específicos Paciente -->
+                <div class="edit-group-separator" id="sep-paciente-c" style="display:none;">
+                    <div class="edit-label-section">Datos de Paciente</div>
+                </div>
+                <div class="edit-group" id="grp-fecha-nacimiento-c" style="display:none;">
+                    <div class="edit-label">Fecha de nacimiento</div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="date" name="fecha_nacimiento" id="f-fecha-nacimiento-c"></div>
+                </div>
+                <div class="edit-group full" id="grp-obra-social-c" style="display:none;">
+                    <div class="edit-label">Obra Social</div>
+                    <div class="edit-input-wrap">
+                        <select class="edit-input" name="obra_social_id" id="f-obra-social-c">
+                            <option value="">-- Seleccionar --</option>
+                            <?php
+                            $obras = obras_sociales_todas();
+                            foreach ($obras as $o):
+                            ?>
+                                <option value="<?= $o['id'] ?>"><?= htmlspecialchars($o['nombre']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Campos específicos Profesional -->
+                <div class="edit-group-separator" id="sep-profesional-c" style="display:none;">
+                    <div class="edit-label-section">Datos de Profesional</div>
+                </div>
+                <div class="edit-group" id="grp-area-c" style="display:none;">
+                    <div class="edit-label">Área</div>
+                    <div class="edit-input-wrap">
+                        <select class="edit-input" name="area" id="f-area-c">
+                            <option value="">-- Seleccionar --</option>
+                            <option value="audiologia">Audiología</option>
+                            <option value="hiperbarica">Medicina Hiperbárica</option>
+                            <option value="nutricion">Nutrición</option>
+                            <option value="ortopedia">Ortopedia y Rehabilitación</option>
+                            <option value="equipamiento">Equipamiento Médico</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="edit-group" id="grp-matricula-c" style="display:none;">
+                    <div class="edit-label">Matrícula</div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="matricula" id="f-matricula-c"></div>
+                </div>
+                <div class="edit-group" id="grp-titulo-c" style="display:none;">
+                    <div class="edit-label">Título</div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="titulo" id="f-titulo-c"></div>
+                </div>
+                <div class="edit-group full" id="grp-especialidad-c" style="display:none;">
+                    <div class="edit-label">Especialidad</div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="especialidad" id="f-especialidad-c"></div>
+                </div>
+                <div class="edit-group full" id="grp-descripcion-c" style="display:none;">
+                    <div class="edit-label">Descripción</div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="descripcion" id="f-descripcion-c"></div>
+                </div>
+                <div class="edit-group" id="grp-instagram-c" style="display:none;">
+                    <div class="edit-label">Instagram</div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="instagram" id="f-instagram-c"></div>
+                </div>
+                <div class="edit-group" id="grp-foto-c" style="display:none;">
+                    <div class="edit-label">Foto</div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="foto" id="f-foto-c"></div>
+                </div>
+                <div class="edit-group" id="grp-orden-c" style="display:none;">
+                    <div class="edit-label">Orden</div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="number" name="orden" id="f-orden-c" min="0"></div>
                 </div>
             </div>
             <div class="edit-footer">
@@ -293,6 +449,7 @@ require __DIR__ . '/../includes/portal_header.php';
             <input type="hidden" name="accion" value="editar">
             <input type="hidden" name="id" id="f-id">
             <div class="edit-grid">
+                <!-- Campos universales -->
                 <div class="edit-group">
                     <div class="edit-label">Nombre *</div>
                     <div class="edit-input-wrap"><input class="edit-input" type="text" name="nombre" id="f-nombre"
@@ -320,9 +477,10 @@ require __DIR__ . '/../includes/portal_header.php';
                 <div class="edit-group">
                     <div class="edit-label">Rol *</div>
                     <div class="edit-input-wrap">
-                        <select class="edit-input" name="rol" id="f-rol" required>
+                        <select class="edit-input" name="rol" id="f-rol" required onchange="toggleRolFields()">
                             <option value="paciente">Paciente</option>
                             <option value="profesional">Profesional</option>
+                            <option value="admin">Admin</option>
                         </select>
                     </div>
                 </div>
@@ -330,6 +488,75 @@ require __DIR__ . '/../includes/portal_header.php';
                     <div class="edit-label">Contraseña (dejar vacío para no cambiar)</div>
                     <div class="edit-input-wrap"><input class="edit-input" type="password" name="password"
                             id="f-password" placeholder="Dejar vacío para mantener la actual"></div>
+                </div>
+
+                <!-- Campos específicos Paciente -->
+                <div class="edit-group-separator" id="sep-paciente" style="display:none;">
+                    <div class="edit-label-section">Datos de Paciente</div>
+                </div>
+                <div class="edit-group" id="grp-fecha-nacimiento" style="display:none;">
+                    <div class="edit-label">Fecha de nacimiento</div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="date" name="fecha_nacimiento" id="f-fecha-nacimiento"></div>
+                </div>
+                <div class="edit-group full" id="grp-obra-social" style="display:none;">
+                    <div class="edit-label">Obra Social</div>
+                    <div class="edit-input-wrap">
+                        <select class="edit-input" name="obra_social_id" id="f-obra-social">
+                            <option value="">-- Seleccionar --</option>
+                            <?php
+                            $obras = obras_sociales_todas();
+                            foreach ($obras as $o):
+                            ?>
+                                <option value="<?= $o['id'] ?>"><?= htmlspecialchars($o['nombre']) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Campos específicos Profesional -->
+                <div class="edit-group-separator" id="sep-profesional" style="display:none;">
+                    <div class="edit-label-section">Datos de Profesional</div>
+                </div>
+                <div class="edit-group" id="grp-area" style="display:none;">
+                    <div class="edit-label">Área</div>
+                    <div class="edit-input-wrap">
+                        <select class="edit-input" name="area" id="f-area">
+                            <option value="">-- Seleccionar --</option>
+                            <option value="audiologia">Audiología</option>
+                            <option value="hiperbarica">Medicina Hiperbárica</option>
+                            <option value="nutricion">Nutrición</option>
+                            <option value="ortopedia">Ortopedia y Rehabilitación</option>
+                            <option value="equipamiento">Equipamiento Médico</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="edit-group" id="grp-matricula" style="display:none;">
+                    <div class="edit-label">Matrícula</div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="matricula" id="f-matricula"></div>
+                </div>
+                <div class="edit-group" id="grp-titulo" style="display:none;">
+                    <div class="edit-label">Título</div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="titulo" id="f-titulo"></div>
+                </div>
+                <div class="edit-group full" id="grp-especialidad" style="display:none;">
+                    <div class="edit-label">Especialidad</div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="especialidad" id="f-especialidad"></div>
+                </div>
+                <div class="edit-group full" id="grp-descripcion" style="display:none;">
+                    <div class="edit-label">Descripción</div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="descripcion" id="f-descripcion"></div>
+                </div>
+                <div class="edit-group" id="grp-instagram" style="display:none;">
+                    <div class="edit-label">Instagram</div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="instagram" id="f-instagram"></div>
+                </div>
+                <div class="edit-group" id="grp-foto" style="display:none;">
+                    <div class="edit-label">Foto</div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="foto" id="f-foto"></div>
+                </div>
+                <div class="edit-group" id="grp-orden" style="display:none;">
+                    <div class="edit-label">Orden</div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="number" name="orden" id="f-orden" min="0"></div>
                 </div>
             </div>
             <div class="edit-footer">
@@ -409,8 +636,53 @@ function openEdit(d) {
             rolSelect.value = 'paciente';
         }
     }
+    // Limpiar campos específicos
+    document.getElementById('f-fecha-nacimiento').value = d.fecha_nacimiento || '';
+    document.getElementById('f-obra-social').value = d.obra_social_id || '';
+    document.getElementById('f-area').value = d.area || '';
+    document.getElementById('f-matricula').value = d.matricula || '';
+    document.getElementById('f-titulo').value = d.titulo || '';
+    document.getElementById('f-especialidad').value = d.especialidad || '';
+    document.getElementById('f-descripcion').value = d.descripcion || '';
+    document.getElementById('f-instagram').value = d.instagram || '';
+    document.getElementById('f-foto').value = d.foto || '';
+    document.getElementById('f-orden').value = d.orden || 0;
     document.getElementById('f-password').value = '';
+    // Mostrar/ocultar secciones según rol
+    toggleRolFields();
     document.getElementById('modalEditar').classList.add('open');
+}
+
+function toggleRolFields() {
+    var rol = document.getElementById('f-rol').value;
+    toggleSecciones(rol, '');
+}
+function toggleRolFieldsCrear() {
+    var rol = document.getElementById('f-rol').value;
+    toggleSecciones(rol, '-c');
+}
+function toggleSecciones(rol, sufijo) {
+    var pacienteSections = ['sep-paciente', 'grp-fecha-nacimiento', 'grp-obra-social'];
+    var profesionalSections = ['sep-profesional', 'grp-area', 'grp-matricula', 'grp-titulo', 'grp-especialidad', 'grp-descripcion', 'grp-instagram', 'grp-foto', 'grp-orden'];
+    pacienteSections.forEach(function(id) {
+        var el = document.getElementById(id + sufijo);
+        if (el) el.style.display = 'none';
+    });
+    profesionalSections.forEach(function(id) {
+        var el = document.getElementById(id + sufijo);
+        if (el) el.style.display = 'none';
+    });
+    if (rol === 'paciente') {
+        pacienteSections.forEach(function(id) {
+            var el = document.getElementById(id + sufijo);
+            if (el) el.style.display = '';
+        });
+    } else if (rol === 'profesional') {
+        profesionalSections.forEach(function(id) {
+            var el = document.getElementById(id + sufijo);
+            if (el) el.style.display = '';
+        });
+    }
 }
 function openPass(id) {
     document.getElementById('f-pass-id').value = id;
