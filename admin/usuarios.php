@@ -231,7 +231,7 @@ require __DIR__ . '/../includes/portal_header.php';
                 <input type="text" id="searchInput" placeholder="Buscar…" style="width:220px;">
             </div>
             <button class="btn-action btn-save" style="padding:7px 14px;text-decoration:none;" onclick="openModal()">
-                ➕ Nuevo usuario
+                Nuevo usuario
             </button>
         </div>
     </div>
@@ -275,17 +275,24 @@ require __DIR__ . '/../includes/portal_header.php';
                                     style="width:100%;"
                                     onclick="<?= $esAdmin ? "mostrarConfirmacion('form-toggle-" . $u['id'] . "', '" . ($u['activo'] == 1 ? 'Desactivar' : 'Activar') . " este usuario')" : "mostrarSinPermiso(); false" ?>">
                                     <?php if ($u['activo'] == 1): ?>
-                                    <svg fill="#f5f1f1" width="16px" height="16px" viewBox="-2 0 19 19" xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg"><path d="M7.498 17.1a7.128 7.128 0 0 1-.98-.068 7.455 7.455 0 0 1-1.795-.483 7.26 7.26 0 0 1-3.028-2.332A7.188 7.188 0 0 1 .73 12.52a7.304 7.304 0 0 1 .972-7.128 7.221 7.221 0 0 1 1.387-1.385 1.03 1.03 0 0 1 1.247 1.638 5.176 5.176 0 0 0-.993.989 5.313 5.313 0 0 0-.678 1.181 5.23 5.23 0 0 0-.348 1.292 5.22 5.22 0 0 0 .326 2.653 5.139 5.139 0 0 0 .69 1.212 5.205 5.205 0 0 0 .992.996 5.257 5.257 0 0 0 1.178.677 5.37 5.37 0 0 0 1.297.35 5.075 5.075 0 0 0 1.332.008 5.406 5.406 0 0 0 1.32-.343 5.289 5.289 0 0 0 2.211-1.682 5.18 5.18 0 0 0 1.02-2.465 5.2 5.2 0 0 0 .01-1.336 5.315 5.315 0 0 0-.343-1.318 5.195 5.195 0 0 0-.695-1.222 5.134 5.134 0 0 0-.987-.989 1.03 1.03 0 1 1 1.24-1.643 7.186 7.186 0 0 1 1.384 1.386 7.259 7.259 0 0 1 .97 1.706 7.413 7.413 0 0 1 .473 1.827 7.296 7.296 0 0 1-4.522 7.65 7.476 7.476 0 0 1-1.825.471 7.203 7.203 0 0 1-.89.056zM7.5 9.613a1.03 1.03 0 0 1-1.03-1.029V2.522a1.03 1.03 0 0 1 2.06 0v6.062a1.03 1.03 0 0 1-1.03 1.03z"/></svg>
+                                    <svg fill="#f5f1f1" width="16px" height="16px" viewBox="-2 0 19 19"
+                                        xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg">
+                                        <path
+                                            d="M7.498 17.1a7.128 7.128 0 0 1-.98-.068 7.455 7.455 0 0 1-1.795-.483 7.26 7.26 0 0 1-3.028-2.332A7.188 7.188 0 0 1 .73 12.52a7.304 7.304 0 0 1 .972-7.128 7.221 7.221 0 0 1 1.387-1.385 1.03 1.03 0 0 1 1.247 1.638 5.176 5.176 0 0 0-.993.989 5.313 5.313 0 0 0-.678 1.181 5.23 5.23 0 0 0-.348 1.292 5.22 5.22 0 0 0 .326 2.653 5.139 5.139 0 0 0 .69 1.212 5.205 5.205 0 0 0 .992.996 5.257 5.257 0 0 0 1.178.677 5.37 5.37 0 0 0 1.297.35 5.075 5.075 0 0 0 1.332.008 5.406 5.406 0 0 0 1.32-.343 5.289 5.289 0 0 0 2.211-1.682 5.18 5.18 0 0 0 1.02-2.465 5.2 5.2 0 0 0 .01-1.336 5.315 5.315 0 0 0-.343-1.318 5.195 5.195 0 0 0-.695-1.222 5.134 5.134 0 0 0-.987-.989 1.03 1.03 0 1 1 1.24-1.643 7.186 7.186 0 0 1 1.384 1.386 7.259 7.259 0 0 1 .97 1.706 7.413 7.413 0 0 1 .473 1.827 7.296 7.296 0 0 1-4.522 7.65 7.476 7.476 0 0 1-1.825.471 7.203 7.203 0 0 1-.89.056zM7.5 9.613a1.03 1.03 0 0 1-1.03-1.029V2.522a1.03 1.03 0 0 1 2.06 0v6.062a1.03 1.03 0 0 1-1.03 1.03z" />
+                                    </svg>
                                     <?php else: ?>
-                                     <svg fill="#f5f1f1" width="16px" height="16px" viewBox="-2 0 19 19" xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg"><path d="M7.498 17.1a7.128 7.128 0 0 1-.98-.068 7.455 7.455 0 0 1-1.795-.483 7.26 7.26 0 0 1-3.028-2.332A7.188 7.188 0 0 1 .73 12.52a7.304 7.304 0 0 1 .972-7.128 7.221 7.221 0 0 1 1.387-1.385 1.03 1.03 0 0 1 1.247 1.638 5.176 5.176 0 0 0-.993.989 5.313 5.313 0 0 0-.678 1.181 5.23 5.23 0 0 0-.348 1.292 5.22 5.22 0 0 0 .326 2.653 5.139 5.139 0 0 0 .69 1.212 5.205 5.205 0 0 0 .992.996 5.257 5.257 0 0 0 1.178.677 5.37 5.37 0 0 0 1.297.35 5.075 5.075 0 0 0 1.332.008 5.406 5.406 0 0 0 1.32-.343 5.289 5.289 0 0 0 2.211-1.682 5.18 5.18 0 0 0 1.02-2.465 5.2 5.2 0 0 0 .01-1.336 5.315 5.315 0 0 0-.343-1.318 5.195 5.195 0 0 0-.695-1.222 5.134 5.134 0 0 0-.987-.989 1.03 1.03 0 1 1 1.24-1.643 7.186 7.186 0 0 1 1.384 1.386 7.259 7.259 0 0 1 .97 1.706 7.413 7.413 0 0 1 .473 1.827 7.296 7.296 0 0 1-4.522 7.65 7.476 7.476 0 0 1-1.825.471 7.203 7.203 0 0 1-.89.056zM7.5 9.613a1.03 1.03 0 0 1-1.03-1.029V2.522a1.03 1.03 0 0 1 2.06 0v6.062a1.03 1.03 0 0 1-1.03 1.03z"/></svg>
+                                    <svg fill="#f5f1f1" width="16px" height="16px" viewBox="-2 0 19 19"
+                                        xmlns="http://www.w3.org/2000/svg" class="cf-icon-svg">
+                                        <path
+                                            d="M7.498 17.1a7.128 7.128 0 0 1-.98-.068 7.455 7.455 0 0 1-1.795-.483 7.26 7.26 0 0 1-3.028-2.332A7.188 7.188 0 0 1 .73 12.52a7.304 7.304 0 0 1 .972-7.128 7.221 7.221 0 0 1 1.387-1.385 1.03 1.03 0 0 1 1.247 1.638 5.176 5.176 0 0 0-.993.989 5.313 5.313 0 0 0-.678 1.181 5.23 5.23 0 0 0-.348 1.292 5.22 5.22 0 0 0 .326 2.653 5.139 5.139 0 0 0 .69 1.212 5.205 5.205 0 0 0 .992.996 5.257 5.257 0 0 0 1.178.677 5.37 5.37 0 0 0 1.297.35 5.075 5.075 0 0 0 1.332.008 5.406 5.406 0 0 0 1.32-.343 5.289 5.289 0 0 0 2.211-1.682 5.18 5.18 0 0 0 1.02-2.465 5.2 5.2 0 0 0 .01-1.336 5.315 5.315 0 0 0-.343-1.318 5.195 5.195 0 0 0-.695-1.222 5.134 5.134 0 0 0-.987-.989 1.03 1.03 0 1 1 1.24-1.643 7.186 7.186 0 0 1 1.384 1.386 7.259 7.259 0 0 1 .97 1.706 7.413 7.413 0 0 1 .473 1.827 7.296 7.296 0 0 1-4.522 7.65 7.476 7.476 0 0 1-1.825.471 7.203 7.203 0 0 1-.89.056zM7.5 9.613a1.03 1.03 0 0 1-1.03-1.029V2.522a1.03 1.03 0 0 1 2.06 0v6.062a1.03 1.03 0 0 1-1.03 1.03z" />
+                                    </svg>
                                     <?php endif; ?>
                                 </button>
                             </form>
 
                             <!-- Editar -->
                             <button class="btn-action btn-mod" data-tooltip="Editar" style="padding:7px 1px;"
-                                onclick='<?= $esAdmin ? "openEdit(" . json_encode($u, JSON_UNESCAPED_UNICODE) . ")" : 'mostrarSinPermiso()' ?>'
-                                >
+                                onclick='<?= $esAdmin ? "openEdit(" . json_encode($u, JSON_UNESCAPED_UNICODE) . ")" : 'mostrarSinPermiso()' ?>'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-pencil-fill" viewBox="0 0 16 16">
                                     <path
@@ -294,8 +301,8 @@ require __DIR__ . '/../includes/portal_header.php';
                             </button>
 
                             <!-- Resetear contraseña (admin siempre) -->
-                            <button class="btn-action btn-print-turn" data-tooltip="Resetear contraseña" style="padding:7px 1px;"
-                                onclick="openPass(<?= $u['id'] ?>)">
+                            <button class="btn-action btn-print-turn" data-tooltip="Resetear contraseña"
+                                style="padding:7px 1px;" onclick="openPass(<?= $u['id'] ?>)">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-key-fill" viewBox="0 0 16 16">
                                     <path
@@ -321,8 +328,17 @@ require __DIR__ . '/../includes/portal_header.php';
 <div class="edit-modal-overlay" id="modalCrear">
     <div class="edit-modal">
         <div class="edit-modal-header">
-            <div class="edit-modal-title">➕ Nuevo usuario</div>
-            <button class="edit-modal-close" onclick="closeModal('modalCrear')" style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;padding:4px;">✕</button>
+            <div class="edit-modal-title"> Nuevo usuario</div>
+            <button class="edit-modal-close" onclick="closeModal('modalCrear')"
+                style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;padding:4px;"><svg height="26" width="26" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
+                    <circle style="fill:#FF6643;" cx="256" cy="256" r="256" />
+                    <path style="fill:#FF6643;" d="M256,0v512c141.385,0,256-114.615,256-256S397.385,0,256,0z" />
+                    <polygon style="fill:#ffffff;" points="365.904,184.885 327.115,146.096 256,217.211 184.885,146.096 146.096,184.885 217.211,256 
+	146.096,327.115 184.885,365.904 256,294.789 327.115,365.904 365.904,327.115 294.789,256 " />
+                    <polygon style="fill:#ffffff;" points="365.904,184.885 327.115,146.096 256,217.211 256,294.789 327.115,365.904 365.904,327.115 
+	294.789,256 " />
+                </svg></button>
         </div>
         <form action="<?= b('/admin/usuarios.php') ?>" method="post">
             <input type="hidden" name="accion" value="crear">
@@ -369,7 +385,8 @@ require __DIR__ . '/../includes/portal_header.php';
                 </div>
                 <div class="edit-group" id="grp-fecha-nacimiento-c" style="display:none;">
                     <div class="edit-label">Fecha de nacimiento</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="date" name="fecha_nacimiento" id="f-fecha-nacimiento-c"></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="date" name="fecha_nacimiento"
+                            id="f-fecha-nacimiento-c"></div>
                 </div>
                 <div class="edit-group full" id="grp-obra-social-c" style="display:none;">
                     <div class="edit-label">Obra Social</div>
@@ -380,7 +397,7 @@ require __DIR__ . '/../includes/portal_header.php';
                             $obras = obras_sociales_todas();
                             foreach ($obras as $o):
                             ?>
-                                <option value="<?= $o['id'] ?>"><?= htmlspecialchars($o['nombre']) ?></option>
+                            <option value="<?= $o['id'] ?>"><?= htmlspecialchars($o['nombre']) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -405,23 +422,28 @@ require __DIR__ . '/../includes/portal_header.php';
                 </div>
                 <div class="edit-group" id="grp-matricula-c" style="display:none;">
                     <div class="edit-label">Matrícula</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="matricula" id="f-matricula-c"></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="matricula"
+                            id="f-matricula-c"></div>
                 </div>
                 <div class="edit-group" id="grp-titulo-c" style="display:none;">
                     <div class="edit-label">Título</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="titulo" id="f-titulo-c"></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="titulo" id="f-titulo-c">
+                    </div>
                 </div>
                 <div class="edit-group full" id="grp-especialidad-c" style="display:none;">
                     <div class="edit-label">Especialidad</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="especialidad" id="f-especialidad-c"></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="especialidad"
+                            id="f-especialidad-c"></div>
                 </div>
                 <div class="edit-group full" id="grp-descripcion-c" style="display:none;">
                     <div class="edit-label">Descripción</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="descripcion" id="f-descripcion-c"></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="descripcion"
+                            id="f-descripcion-c"></div>
                 </div>
                 <div class="edit-group" id="grp-instagram-c" style="display:none;">
                     <div class="edit-label">Instagram</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="instagram" id="f-instagram-c"></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="instagram"
+                            id="f-instagram-c"></div>
                 </div>
                 <div class="edit-group" id="grp-foto-c" style="display:none;">
                     <div class="edit-label">Foto</div>
@@ -429,7 +451,8 @@ require __DIR__ . '/../includes/portal_header.php';
                 </div>
                 <div class="edit-group" id="grp-orden-c" style="display:none;">
                     <div class="edit-label">Orden</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="number" name="orden" id="f-orden-c" min="0"></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="number" name="orden" id="f-orden-c"
+                            min="0"></div>
                 </div>
             </div>
             <div class="edit-footer">
@@ -444,8 +467,20 @@ require __DIR__ . '/../includes/portal_header.php';
 <div class="edit-modal-overlay" id="modalEditar">
     <div class="edit-modal">
         <div class="edit-modal-header">
-            <div class="edit-modal-title">✏️ Editar usuario</div>
-            <button class="edit-modal-close" onclick="closeModal('modalEditar')" style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;padding:4px;">✕</button>
+            <div class="edit-modal-title"> Editar usuario</div>
+            <button class="edit-modal-close"
+                style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;padding:4px;"
+                onclick="closeModal('modalEditar')">
+                <svg height="26" width="26" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
+                    <circle style="fill:#FF6643;" cx="256" cy="256" r="256" />
+                    <path style="fill:#FF6643;" d="M256,0v512c141.385,0,256-114.615,256-256S397.385,0,256,0z" />
+                    <polygon style="fill:#ffffff;" points="365.904,184.885 327.115,146.096 256,217.211 184.885,146.096 146.096,184.885 217.211,256 
+	146.096,327.115 184.885,365.904 256,294.789 327.115,365.904 365.904,327.115 294.789,256 " />
+                    <polygon style="fill:#ffffff;" points="365.904,184.885 327.115,146.096 256,217.211 256,294.789 327.115,365.904 365.904,327.115 
+	294.789,256 " />
+                </svg>
+            </button>
         </div>
         <form action="<?= b('/admin/usuarios.php') ?>" method="post">
             <input type="hidden" name="accion" value="editar">
@@ -498,7 +533,8 @@ require __DIR__ . '/../includes/portal_header.php';
                 </div>
                 <div class="edit-group" id="grp-fecha-nacimiento" style="display:none;">
                     <div class="edit-label">Fecha de nacimiento</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="date" name="fecha_nacimiento" id="f-fecha-nacimiento"></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="date" name="fecha_nacimiento"
+                            id="f-fecha-nacimiento"></div>
                 </div>
                 <div class="edit-group full" id="grp-obra-social" style="display:none;">
                     <div class="edit-label">Obra Social</div>
@@ -509,7 +545,7 @@ require __DIR__ . '/../includes/portal_header.php';
                             $obras = obras_sociales_todas();
                             foreach ($obras as $o):
                             ?>
-                                <option value="<?= $o['id'] ?>"><?= htmlspecialchars($o['nombre']) ?></option>
+                            <option value="<?= $o['id'] ?>"><?= htmlspecialchars($o['nombre']) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -534,23 +570,28 @@ require __DIR__ . '/../includes/portal_header.php';
                 </div>
                 <div class="edit-group" id="grp-matricula" style="display:none;">
                     <div class="edit-label">Matrícula</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="matricula" id="f-matricula"></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="matricula"
+                            id="f-matricula"></div>
                 </div>
                 <div class="edit-group" id="grp-titulo" style="display:none;">
                     <div class="edit-label">Título</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="titulo" id="f-titulo"></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="titulo" id="f-titulo">
+                    </div>
                 </div>
                 <div class="edit-group full" id="grp-especialidad" style="display:none;">
                     <div class="edit-label">Especialidad</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="especialidad" id="f-especialidad"></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="especialidad"
+                            id="f-especialidad"></div>
                 </div>
                 <div class="edit-group full" id="grp-descripcion" style="display:none;">
                     <div class="edit-label">Descripción</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="descripcion" id="f-descripcion"></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="descripcion"
+                            id="f-descripcion"></div>
                 </div>
                 <div class="edit-group" id="grp-instagram" style="display:none;">
                     <div class="edit-label">Instagram</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="instagram" id="f-instagram"></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="text" name="instagram"
+                            id="f-instagram"></div>
                 </div>
                 <div class="edit-group" id="grp-foto" style="display:none;">
                     <div class="edit-label">Foto</div>
@@ -558,7 +599,8 @@ require __DIR__ . '/../includes/portal_header.php';
                 </div>
                 <div class="edit-group" id="grp-orden" style="display:none;">
                     <div class="edit-label">Orden</div>
-                    <div class="edit-input-wrap"><input class="edit-input" type="number" name="orden" id="f-orden" min="0"></div>
+                    <div class="edit-input-wrap"><input class="edit-input" type="number" name="orden" id="f-orden"
+                            min="0"></div>
                 </div>
             </div>
             <div class="edit-footer">
@@ -587,7 +629,16 @@ require __DIR__ . '/../includes/portal_header.php';
     <div class="edit-modal" style="max-width:420px;">
         <div class="edit-modal-header">
             <div class="edit-modal-title">🔑 Nueva contraseña</div>
-            <button class="edit-modal-close" onclick="closeModal('modalPass')" style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;padding:4px;">✕</button>
+            <button class="edit-modal-close" onclick="closeModal('modalPass')"
+                style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;padding:4px;"><svg height="26" width="26" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
+                    <circle style="fill:#FF6643;" cx="256" cy="256" r="256" />
+                    <path style="fill:#FF6643;" d="M256,0v512c141.385,0,256-114.615,256-256S397.385,0,256,0z" />
+                    <polygon style="fill:#ffffff;" points="365.904,184.885 327.115,146.096 256,217.211 184.885,146.096 146.096,184.885 217.211,256 
+	146.096,327.115 184.885,365.904 256,294.789 327.115,365.904 365.904,327.115 294.789,256 " />
+                    <polygon style="fill:#ffffff;" points="365.904,184.885 327.115,146.096 256,217.211 256,294.789 327.115,365.904 365.904,327.115 
+	294.789,256 " />
+                </svg></button>
         </div>
         <form action="<?= b('/admin/usuarios.php') ?>" method="post">
             <input type="hidden" name="accion" value="password">
@@ -619,9 +670,11 @@ var formIdActual = null;
 function openModal() {
     document.getElementById('modalCrear').classList.add('open');
 }
+
 function closeModal(id) {
     document.getElementById(id).classList.remove('open');
 }
+
 function openEdit(d) {
     document.getElementById('f-id').value = d.id;
     document.getElementById('f-nombre').value = d.nombre || '';
@@ -659,13 +712,17 @@ function toggleRolFields() {
     var rol = document.getElementById('f-rol').value;
     toggleSecciones(rol, '');
 }
+
 function toggleRolFieldsCrear() {
     var rol = document.getElementById('f-rol').value;
     toggleSecciones(rol, '-c');
 }
+
 function toggleSecciones(rol, sufijo) {
     var pacienteSections = ['sep-paciente', 'grp-fecha-nacimiento', 'grp-obra-social'];
-    var profesionalSections = ['sep-profesional', 'grp-area', 'grp-matricula', 'grp-titulo', 'grp-especialidad', 'grp-descripcion', 'grp-instagram', 'grp-foto', 'grp-orden'];
+    var profesionalSections = ['sep-profesional', 'grp-area', 'grp-matricula', 'grp-titulo', 'grp-especialidad',
+        'grp-descripcion', 'grp-instagram', 'grp-foto', 'grp-orden'
+    ];
     pacienteSections.forEach(function(id) {
         var el = document.getElementById(id + sufijo);
         if (el) el.style.display = 'none';
@@ -686,10 +743,12 @@ function toggleSecciones(rol, sufijo) {
         });
     }
 }
+
 function openPass(id) {
     document.getElementById('f-pass-id').value = id;
     document.getElementById('modalPass').classList.add('open');
 }
+
 function mostrarConfirmacion(formId, mensaje) {
     formIdActual = formId;
     var overlay = document.getElementById('confirmOverlay');
@@ -704,38 +763,56 @@ function mostrarConfirmacion(formId, mensaje) {
 
     if (mensaje.indexOf('Desactivar') === 0) {
         titleEl.textContent = 'Desactivar usuario';
-        iconEl.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/></svg>';
+        iconEl.innerHTML =
+            '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/></svg>';
         iconEl.className = 'confirm-icon warn';
         btnEl.textContent = 'Desactivar';
         btnEl.className = 'btn-confirm danger';
     } else {
         titleEl.textContent = 'Activar usuario';
-        iconEl.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16"><path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0"/><path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/></svg>';
+        iconEl.innerHTML =
+            '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16"><path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0"/><path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/></svg>';
         iconEl.className = 'confirm-icon success';
         btnEl.textContent = 'Activar';
         btnEl.className = 'btn-confirm success';
     }
     overlay.style.display = 'flex';
 }
+
 function cerrarConfirmacion() {
     var overlay = document.getElementById('confirmOverlay');
     if (overlay) overlay.style.display = 'none';
     formIdActual = null;
 }
+
 function ejecutarConfirmacion() {
     if (formIdActual) {
         var form = document.getElementById(formIdActual);
         if (form) form.submit();
     }
 }
+
 function mostrarSinPermiso() {
     var t = document.getElementById('toast-error');
-    if (t) { t.textContent = '⚠️ No tiene permiso para esta acción.'; t.style.display = 'block'; setTimeout(function() { t.style.display = 'none'; }, 4000); }
+    if (t) {
+        t.textContent = '⚠️ No tiene permiso para esta acción.';
+        t.style.display = 'block';
+        setTimeout(function() {
+            t.style.display = 'none';
+        }, 4000);
+    }
     return false;
 }
+
 function mostrarSinPermisoSinConfirm() {
     var t = document.getElementById('toast-error');
-    if (t) { t.textContent = '⚠️ No tiene permiso para esta acción.'; t.style.display = 'block'; setTimeout(function() { t.style.display = 'none'; }, 4000); }
+    if (t) {
+        t.textContent = '⚠️ No tiene permiso para esta acción.';
+        t.style.display = 'block';
+        setTimeout(function() {
+            t.style.display = 'none';
+        }, 4000);
+    }
     return true;
 }
 
@@ -744,11 +821,24 @@ document.addEventListener('DOMContentLoaded', function() {
     var params = new URLSearchParams(location.search);
     if (params.get('ok') === '1') {
         var t = document.getElementById('toast-ok');
-        if (t) { t.classList.add('show'); setTimeout(function() { t.classList.remove('show'); history.replaceState({}, '', location.pathname); }, 3000); }
+        if (t) {
+            t.classList.add('show');
+            setTimeout(function() {
+                t.classList.remove('show');
+                history.replaceState({}, '', location.pathname);
+            }, 3000);
+        }
     }
     if (params.get('error') === 'email_duplicado') {
         var t = document.getElementById('toast-error');
-        if (t) { t.textContent = '⚠️ El email ya está en uso.'; t.style.display = 'block'; setTimeout(function() { t.style.display = 'none'; history.replaceState({}, '', location.pathname); }, 4000); }
+        if (t) {
+            t.textContent = '⚠️ El email ya está en uso.';
+            t.style.display = 'block';
+            setTimeout(function() {
+                t.style.display = 'none';
+                history.replaceState({}, '', location.pathname);
+            }, 4000);
+        }
     }
 
     // Buscador
@@ -763,22 +853,37 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Ordenamiento
-    var sortState = { col: -1, dir: 'asc' };
+    var sortState = {
+        col: -1,
+        dir: 'asc'
+    };
     document.querySelectorAll('th.sortable').forEach(function(th) {
         th.addEventListener('click', function() {
             var col = parseInt(th.dataset.col);
             var dir = (sortState.col === col && sortState.dir === 'asc') ? 'desc' : 'asc';
-            sortState = { col: col, dir: dir };
-            document.querySelectorAll('th.sortable').forEach(function(h) { h.classList.remove('asc', 'desc'); });
+            sortState = {
+                col: col,
+                dir: dir
+            };
+            document.querySelectorAll('th.sortable').forEach(function(h) {
+                h.classList.remove('asc', 'desc');
+            });
             th.classList.add(dir);
             var tbody = document.querySelector('#mainTable tbody');
             var rows = Array.from(tbody.querySelectorAll('tr'));
             rows.sort(function(a, b) {
-                var aVal = (a.querySelectorAll('td')[col] || { textContent: '' }).textContent.trim().toLowerCase();
-                var bVal = (b.querySelectorAll('td')[col] || { textContent: '' }).textContent.trim().toLowerCase();
-                return (aVal < bVal ? -1 : aVal > bVal ? 1 : 0) * (dir === 'asc' ? 1 : -1);
+                var aVal = (a.querySelectorAll('td')[col] || {
+                    textContent: ''
+                }).textContent.trim().toLowerCase();
+                var bVal = (b.querySelectorAll('td')[col] || {
+                    textContent: ''
+                }).textContent.trim().toLowerCase();
+                return (aVal < bVal ? -1 : aVal > bVal ? 1 : 0) * (dir === 'asc' ? 1 : -
+                    1);
             });
-            rows.forEach(function(r) { tbody.appendChild(r); });
+            rows.forEach(function(r) {
+                tbody.appendChild(r);
+            });
         });
     });
 
@@ -797,7 +902,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Cerrar modales al hacer clic fuera
     ['modalCrear', 'modalEditar', 'modalPass'].forEach(function(id) {
         var m = document.getElementById(id);
-        if (m) m.addEventListener('click', function(e) { if (e.target === this) closeModal(id); });
+        if (m) m.addEventListener('click', function(e) {
+            if (e.target === this) closeModal(id);
+        });
     });
 
     // Escape para cerrar
@@ -815,7 +922,10 @@ document.addEventListener('DOMContentLoaded', function() {
         r.style.opacity = '0';
         r.style.transform = 'translateX(-10px)';
         r.style.transition = 'opacity .35s ease, transform .35s ease';
-        setTimeout(function() { r.style.opacity = '1'; r.style.transform = 'translateX(0)'; }, 80 + i * 40);
+        setTimeout(function() {
+            r.style.opacity = '1';
+            r.style.transform = 'translateX(0)';
+        }, 80 + i * 40);
     });
 });
 </script>

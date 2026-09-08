@@ -402,6 +402,13 @@ table.portal-table th {
   filter: none;
   align-items: flex-end;
 }
+.icon-image-cerrar {
+  width:20px;
+  height: 20px;
+  object-fit:none;
+  filter: none;
+  align-items: flex-end;
+}
 
 .tablero-title {
   font-family: "Poppins", sans-serif;

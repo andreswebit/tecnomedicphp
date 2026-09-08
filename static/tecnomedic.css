@@ -559,12 +559,13 @@ input[type="email"],
 input[type="date"],
 input[type="time"] {
   width: 100%;
-  background: var(--g300, 0.15);
+  background: var(--g300, 0.12);
   border: 1px solid var(--green);
   border-radius: 10px;
-  padding: 12px 14px 12px 42px;
-  font-family: "Montserrat bold", sans-serif;
+  padding: 10px 12px 10px 38px;
+  font-family: "Montserrat", sans-serif;
   font-size: 14px;
+  font-weight: 500;
   color: var(--g800);
   outline: none;
   transition:
@@ -575,8 +576,8 @@ input[type="time"] {
   -webkit-appearance: none;
 }
 input:focus {
-  border-color: var(--green-dk);
-  background: var(--green-dk);
+  border-color: var(--g50);
+  background: var(--g300);
   box-shadow: 0 0 1px 1px rgba(--green-dk, 0.973);
 }
 
@@ -887,6 +888,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   
   
 }
+
 
 /* ── Errores ─────────────────────────────────────────── */
 .form-error {
@@ -2068,7 +2070,6 @@ tbody td {
   display: none;  
   position: fixed;
   inset: 0;
-  background: var(--g300);
   z-index: 300;
   align-items: center;
   justify-content: center;
@@ -2116,13 +2117,13 @@ tbody td {
 
 .edit-input {
   width: 100%;
-  background:var(--green-dk);
+  background:var(--g300);
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 11px 10px 10px 10px;
   font-family: "Montserrat", "Montserrat", sans-serif;
   font-size: 14px;
-  color: var(--g100);
+  color: var(--g800);
   outline: none;
   transition:
     border-color 0.2s,
@@ -2131,9 +2132,9 @@ tbody td {
 }
 .edit-input:focus {
   border-color: var(--border);
-  background: rgb(rgba(122, 173, 46, 0.295));
+  background: var(--g100);
   box-shadow: 0 0 1px 1px rgba(246, 248, 248, 0.5);
-  color: var(--g100);
+  color: var(--g800);
   font-weight: 500;
   letter-spacing: 1px;
   
