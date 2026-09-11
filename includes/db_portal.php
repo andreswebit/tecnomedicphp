@@ -266,7 +266,12 @@ function pacientes_de_profesional(int $profesionalId): array {
 
 function pacientes_todos_activos(): array {
     $r = db()->query(
-        "SELECT * FROM tm_usuarios WHERE rol='paciente' AND activo=1 ORDER BY apellido, nombre"
+        "SELECT u.*, pp.obra_social_id, pp.fecha_nacimiento, o.nombre AS obra_social_nombre
+         FROM tm_usuarios u
+         LEFT JOIN tm_perfiles_paciente pp ON pp.usuario_id = u.id
+         LEFT JOIN tm_obras_sociales o ON o.id = pp.obra_social_id
+         WHERE u.rol='paciente' AND u.activo=1
+         ORDER BY u.apellido, u.nombre"
     );
     return $r ? $r->fetch_all(MYSQLI_ASSOC) : [];
 }

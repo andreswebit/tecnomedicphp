@@ -44,6 +44,7 @@
   --border: hsla(84, 58%, 43%, 0.733);
   --card-bg: rgba(13, 26, 52, 0.72);
   --muted: #8aada9;
+  --green-soft: #93eb81be;
 }
 
 /* ─── 2. RESET & BASE ───────────────────────────────────────── */
@@ -562,7 +563,7 @@ input[type="time"] {
   background: var(--g300, 0.12);
   border: 1px solid var(--green);
   border-radius: 10px;
-  padding: 10px 12px 10px 38px;
+  padding: 5px 10px 5px 35px;
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -2067,22 +2068,20 @@ tbody td {
 
 /* ── Edit modal  ── */
 .edit-modal-overlay {
-  display: none;  
+  display: none;
   position: fixed;
   inset: 0;
-  z-index: 300;
+  z-index: 1100;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(8px);
+  background: rgba(13, 27, 42, 0.55);
+  backdrop-filter: blur(6px);
 }
 .edit-modal-overlay.open {
-  display: flex;
-  
-  
-  
+  display: flex !important;
 }
 .edit-modal {
-  background: #4B5669;
+  background: #4b5669b7;
   border: 1px solid var(--border);
   border-radius: 22px;
   padding: 40px;
@@ -2090,16 +2089,23 @@ tbody td {
   max-width: 500px;
   max-height: 99vh;
   overflow-y: auto;
+  /* Ocultar scrollbar pero seguir desplazando */
+  scrollbar-width: none;
+  scrollbar-color: transparent;
+  -ms-overflow-style: none;
   animation: modalIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow:
     0 30px 60px rgba(0, 0, 0, 0.4),
     0 0 0 1px rgba(26, 165, 165, 0.1);
 }
+.edit-modal::-webkit-scrollbar {
+  display: none;
+}
 .edit-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 1px;
   padding-bottom: 10px;
   border-bottom: 1.5px solid var(--green-dk);
 }
@@ -2155,7 +2161,9 @@ tbody td {
 /* } */
 
 .edit-input option {
-  background: var(--border);
+  background: var(--g400);
+  border-radius: 10px;
+  
 }
 .btn-edit-save {
   flex: 2;
@@ -2184,7 +2192,7 @@ tbody td {
   
 }
 .edit-input-wrap{
-  padding: 5px;
+  padding: 2px;
   }
 
 /* ── Ticket de impresión individual ── */
