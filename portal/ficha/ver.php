@@ -191,7 +191,7 @@ if (!$esModal) {
                 <div class="ficha-card-icon green">📋</div>
                 <div class="ficha-card-title">Historia clínica</div>
                 <?php if ($puedeEditar): ?>
-                <button type="submit" class="ficha-btn ficha-btn-xs ficha-btn-outline" id="btnEditarHistoria"
+                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-outline" id="btnEditarHistoria"
                     onclick="abrirEdicionHistoria()">
                     Modificar</button>
                     
@@ -204,7 +204,6 @@ if (!$esModal) {
                     <div class="historia-fila" style="background:#fff;border:1px solid #e2e8e6;border-radius:8px;padding:10px;box-shadow:0 1px 4px rgba(13,27,42,.05)" data-id="<?= $h['id'] ?? 0 ?>" id="filaHist<?= $h['id'] ?? 0 ?>">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;border-bottom:1px solid #e2e8e6;padding-bottom:6px">
                             <span style="font-weight:600;color:#0d1b2a;font-size:.85rem">📅 <?= htmlspecialchars($h['fecha_fmt'] ?? '-') ?></span>
-                            <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-outline" onclick="editarFilaHistoria(<?= $h['id'] ?? 0 ?>)">✏️ Modificar</button>
                         </div>
                         <div style="display:flex;gap:10px;flex-wrap:wrap">
                             <div style="flex:1 1 160px;min-width:130px">
@@ -670,8 +669,29 @@ function guardarPersona(e) {
         });
 }
 
-function abrirModalHistoria() {
-    alert('Modal de edición de historia - Por implementar');
+function abrirEdicionHistoria() {
+    const view = document.getElementById('historiaView');
+    const form = document.getElementById('historiaEdit');
+    const btn = document.getElementById('btnEditarHistoria');
+
+    const editing = form.style.display === 'block';
+    view.style.display = editing ? 'block' : 'none';
+    form.style.display = editing ? 'none' : 'block';
+    btn.textContent = editing ? 'Modificar' : '❌ Cancelar';
+
+    // Si vamos a mostrar el formulario, también mostrar todas las filas editables
+    if (!editing) {
+        document.querySelectorAll('.historia-fila').forEach(fila => {
+            if (!fila.id.startsWith('filaNueva')) {
+                fila.style.display = 'none';
+            }
+        });
+        document.getElementById('filaNueva').style.display = 'block';
+    } else {
+        document.querySelectorAll('.historia-fila').forEach(fila => {
+            fila.style.display = 'block';
+        });
+    }
 }
 
 function abrirModalTratamiento() {
