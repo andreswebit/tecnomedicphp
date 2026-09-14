@@ -30,7 +30,7 @@ $etiquetaRol = [
 
 <body class="portal"
     style="background: var(--g300) url('<?= b('/static/img/fondo/fondo1.jfif') ?>');background-repeat: repeat; background-blend-mode: soft-light; background-size: contain;">
-    
+
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
     <div class="wrapper">
         <aside class="sidebar" id="sidebar">
@@ -102,9 +102,15 @@ $etiquetaRol = [
                 <a href="<?= b('/logout.php') ?>"
                     style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--g100);text-decoration:none;transition:color .2s;"
                     onmouseover="this.style.color='var(--amber)'" onmouseout="this.style.color='var(--g100)'">
-                    <span><img
-                        class="tm-thumb" src="<?= $base ?>/static/img/icons/boton.ico"
-                        alt="" /></span><span>Cerrar sesión</span>
+                    <span><svg height="16" width="16" version="1.1" id="Layer_1"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                    <circle style="fill:#FF6643;" cx="256" cy="256" r="256" />
+                                    <path style="fill:#FF6643;"
+                                        d="M256,0v512c141.385,0,256-114.615,256-256S397.385,0,256,0z" />
+                                    <polygon style="fill:#ffffff;"
+                                        points="365.904,184.885 327.115,146.096 256,217.211 184.885,146.096 146.096,184.885 217.211,256
+                            146.096,327.115 184.885,365.904 256,294.789 327.115,365.904 365.904,327.115 294.789,256 " />
+                                </svg></span><span>Cerrar sesión</span>
                 </a>
             </div>
         </aside>
@@ -125,7 +131,17 @@ $etiquetaRol = [
                     <div class="ficha-modal">
                         <div class="ficha-modal-header">
                             <strong>Ficha médica</strong>
-                            <button type="button" class="ficha-modal-close" onclick="cerrarFicha()">✕</button>
+                            <button type="button" class="ficha-modal-close" onclick="cerrarFicha()">
+                                <svg height="26" width="26" version="1.1" id="Layer_1"
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                    <circle style="fill:#FF6643;" cx="256" cy="256" r="256" />
+                                    <path style="fill:#FF6643;"
+                                        d="M256,0v512c141.385,0,256-114.615,256-256S397.385,0,256,0z" />
+                                    <polygon style="fill:#ffffff;"
+                                        points="365.904,184.885 327.115,146.096 256,217.211 184.885,146.096 146.096,184.885 217.211,256
+                            146.096,327.115 184.885,365.904 256,294.789 327.115,365.904 365.904,327.115 294.789,256 " />
+                                </svg>
+                            </button>
                         </div>
                         <div class="ficha-modal-body" id="fichaModalBody">Cargando…</div>
                     </div>
@@ -153,6 +169,59 @@ $etiquetaRol = [
 
                 function cerrarFicha() {
                     document.getElementById('fichaModalOverlay').classList.remove('open');
+                }
+
+                // Puente para que la ficha médica (cargada por fetch dentro del modal)
+                // pueda abrir el modal global de edición de admin/pacientes.php.
+                function abrirEdicionPaciente() {
+                    var ficha = document.querySelector('.ficha-medica');
+                    var pid = ficha ? (ficha.dataset.pacienteId || ficha.getAttribute('data-paciente-id')) : null;
+                    // Si openEdit admin existe (modal admin en la pág), abrirlo con datos de los inputs
+                    if (typeof openEdit === 'function') {
+                        if (document.getElementById('formDatos') && document.getElementById('inp_nombre')) {
+                            openEdit({
+                                id: pid || 0,
+                                nombre: document.getElementById('inp_nombre').value || '',
+                                apellido: document.getElementById('inp_apellido').value || '',
+                                dni: document.getElementById('inp_dni').value || '',
+                                telefono: document.getElementById('inp_telefono').value || '',
+                                email: document.getElementById('inp_email').value || '',
+                                fecha_nacimiento: document.getElementById('inp_nac').value || '',
+                                obra_social_id: document.getElementById('inp_obra').value || ''
+                            });
+                        }
+                        return;
+                    }
+                    // Contexto ficha (fetch): toggle edición inline usando clases CSS
+                    var view = document.getElementById('datosView');
+                    var form = document.getElementById('formDatos');
+                    var btn = document.getElementById('btnEditarDatos');
+                    if (!view || !form) return;
+                    // Alternar modo edición
+                    if (form.classList.contains('editing-mode')) {
+                        // SALIR modo edición - quitar clase y volver a state inicial
+                        form.classList.remove('editing-mode');
+                        // Re-aplicar readonly/default a los inputs para que no sean editables
+                        var inputs = form.querySelectorAll('input, select');
+                        inputs.forEach(function(inp) {
+                            inp.removeAttribute('readonly');
+                            inp.style.pointerEvents = '';
+                        });
+                        view.style.display = 'grid';
+                        form.style.display = 'none';
+                        btn.textContent = 'Editar';
+                    } else {
+                        // ENTRAR modo edición - agregar clase y quitar readonly/pointer-events
+                        form.classList.add('editing-mode');
+                        var inputs = form.querySelectorAll('input, select');
+                        inputs.forEach(function(inp) {
+                            inp.removeAttribute('readonly');
+                            inp.style.pointerEvents = 'auto';
+                        });
+                        view.style.display = 'none';
+                        form.style.display = 'block';
+                        btn.textContent = '❌ Cancelar';
+                    }
                 }
 
                 function bindFichaForms(pacienteId) {
@@ -185,6 +254,82 @@ $etiquetaRol = [
                 document.addEventListener('keydown', function(e) {
                     if (e.key === 'Escape') cerrarFicha();
                 });
+
+                // Historia clínica — alternar edición (botón verde "Guardar" al activar)
+                function abrirEdicionHistoria() {
+                    if (typeof toggleEdicionHistoria === 'function') {
+                        toggleEdicionHistoria();
+                    }
+                }
+
+                function toggleEdicionHistoria() {
+                    var view = document.getElementById('historiaView');
+                    var form = document.getElementById('historiaEdit');
+                    var btn = document.getElementById('btnEditarHistoria');
+                    if (!view || !form) return;
+                    var editing = form.classList.contains('editing-mode');
+                    if (editing) {
+                        // Salir modo edición
+                        form.classList.remove('editing-mode');
+                        view.style.display = 'block';
+                        form.style.display = 'none';
+                        if (btn) {
+                            btn.textContent = '✏️ Modificar';
+                            btn.classList.add('ficha-btn-outline');
+                            btn.classList.remove('ficha-btn-primary');
+                        }
+                    } else {
+                        // Entrar modo edición — botón verde "Guardar"
+                        form.classList.add('editing-mode');
+                        view.style.display = 'none';
+                        form.style.display = 'block';
+                        if (btn) {
+                            btn.textContent = '💾 Guardar';
+                            btn.classList.add('ficha-btn-primary');
+                            btn.classList.remove('ficha-btn-outline');
+                        }
+                    }
+                }
+
+                // Guardar historia clínica (vive aquí porque ver.php carga por fetch y sus scripts no se ejecutan)
+                function guardarHistoria(e) {
+                    if (e && e.preventDefault) e.preventDefault();
+                    var formContainer = document.getElementById('historiaEdit');
+                    if (!formContainer) return false;
+                    var form = formContainer.querySelector('form');
+                    if (!form) return false;
+                    var data = new FormData(form);
+                    // Botón único de la cabecera (el form ya no tiene botón submit)
+                    var btn = document.getElementById('btnEditarHistoria');
+                    if (btn) { btn.disabled = true; btn.textContent = 'Guardando...'; }
+                    fetch(form.action, { method: 'POST', body: data })
+                        .then(function(r) { return r.text(); })
+                        .then(function(txt) {
+                            if (txt.trim() === 'ok') {
+                                // Actualizar vistas
+                                var vAnt = document.getElementById('view_antecedentes');
+                                var vDia = document.getElementById('view_diagnostico');
+                                var vObs = document.getElementById('view_observaciones');
+                                if (vAnt) vAnt.innerHTML = (data.get('antecedentes') || '').replace(/\n/g, '<br>') || 'Sin datos cargados.';
+                                if (vDia) vDia.innerHTML = (data.get('diagnostico') || '').replace(/\n/g, '<br>') || '-';
+                                if (vObs) vObs.innerHTML = '<p>' + (data.get('observaciones') || '').replace(/\n/g, '<br>') + '</p>';
+                                form.classList.remove('editing-mode');
+                                var view = document.getElementById('historiaView');
+                                if (view) view.style.display = 'block';
+                                form.style.display = 'none';
+                                if (btn) { btn.disabled = false; btn.textContent = '✏️ Modificar'; btn.classList.add('ficha-btn-outline'); btn.classList.remove('ficha-btn-primary'); }
+                                toastFicha('✅ Historia clínica guardada');
+                            } else {
+                                toastFicha('⚠️ Error al guardar: ' + txt);
+                                if (btn) { btn.disabled = false; btn.textContent = ' Guardar'; }
+                            }
+                        })
+                        .catch(function() {
+                            toastFicha('⚠️ Error de conexión');
+                            if (btn) { btn.disabled = false; btn.textContent = '💾 Guardar'; }
+                        });
+                    return false;
+                }
 
                 function toggleSidebar() {
                     document.getElementById('sidebar').classList.toggle('open');

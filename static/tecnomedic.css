@@ -2466,12 +2466,16 @@ th.sortable:not(.asc):not(.desc) .sort-icon::after {
     visibility: hidden;
     transition: .2s;
     pointer-events: none;
-    z-index: 999;
+    z-index: 1;
 }
 
 .btn-action:hover::after{
     opacity: 1;
     visibility: visible;
+}
+
+.btn-no-tooltip::after{
+    content: none !important;
 }
 
 /* ── Botón actualizar tabla ────────────────────────── */

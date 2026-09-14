@@ -38,22 +38,18 @@ function ficha_puede_editar(int $pacienteId): bool {
 
 // ── Historia clínica (resumen) ───────────────────────────────────
 
-function historia_clinica_get(int $pacienteId): ?array {
-    $st = db()->prepare("SELECT * FROM tm_historia_clinica WHERE paciente_id=?");
+function historia_clinica_get(int $pacienteId): array {
+    $st = db()->prepare("SELECT *, DATE_FORMAT(fecha, '%d/%m/%Y') AS fecha_fmt FROM tm_historia_clinica WHERE paciente_id=? ORDER BY fecha DESC, id DESC");
     $st->bind_param('i', $pacienteId);
     $st->execute();
-    return $st->get_result()->fetch_assoc() ?: null;
+    return $st->get_result()->fetch_all(MYSQLI_ASSOC);
 }
 
 function historia_clinica_guardar(int $pacienteId, string $antecedentes, string $diagnostico, string $observaciones, int $actualizadoPor): void {
+    // Insertar nueva fila con fecha actual
     $st = db()->prepare(
-        "INSERT INTO tm_historia_clinica (paciente_id, antecedentes, diagnostico, observaciones, actualizado_por)
-         VALUES (?,?,?,?,?)
-         ON DUPLICATE KEY UPDATE
-            antecedentes=VALUES(antecedentes),
-            diagnostico=VALUES(diagnostico),
-            observaciones=VALUES(observaciones),
-            actualizado_por=VALUES(actualizado_por)"
+        "INSERT INTO tm_historia_clinica (paciente_id, fecha, antecedentes, diagnostico, observaciones, actualizado_por)
+         VALUES (?, CURDATE(), ?, ?, ?, ?)"
     );
     $st->bind_param('isssi', $pacienteId, $antecedentes, $diagnostico, $observaciones, $actualizadoPor);
     $st->execute();

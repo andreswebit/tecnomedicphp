@@ -48,14 +48,17 @@ require __DIR__ . '/../includes/portal_header.php';
                     <input type="text" id="searchInput" placeholder="Buscar paciente…">
                 </div>
                 <button class="btn-refresh" id="btnRefrescar" onclick="refrescarTurnos()" title="Refrescar tabla">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z" />
+                        <path
+                            d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z" />
                     </svg>
                     Refrescar
                 </button>
-                <a href="<?= b('/turnos.php') ?>" class="btn-action btn-save" style="padding:7px 14px;text-decoration:none;">
-                    ➕ Nuevo turno
+                <a href="<?= b('/turnos.php') ?>" class="btn-action btn-save"
+                    style="padding:7px 14px;text-decoration:none;">
+                    Nuevo turno
                 </a>
             </div>
         </div>
@@ -91,7 +94,8 @@ require __DIR__ . '/../includes/portal_header.php';
                                 'equipamiento' => 'Equipamiento',
                             ];
                             ?>
-                            <div class="pac-os">🩺 <?= htmlspecialchars($areasNombres[$t['area']] ?? $t['area'] ?? '-') ?></div>
+                            <div class="pac-os">🩺
+                                <?= htmlspecialchars($areasNombres[$t['area']] ?? $t['area'] ?? '-') ?></div>
                         </td>
 
                         <!-- DNI -->
@@ -120,8 +124,8 @@ require __DIR__ . '/../includes/portal_header.php';
                             <div class="btn-actions">
 
                                 <!-- Guardar estado -->
-                                <form action="<?= $base ?>/admin/actualizar.php" method="post"
-                                    style="flex:1;" id="form-estado-<?= $t['id'] ?>">
+                                <form action="<?= $base ?>/admin/actualizar.php" method="post" style="flex:1;"
+                                    id="form-estado-<?= $t['id'] ?>">
                                     <input type="hidden" name="id" value="<?= $t['id'] ?>">
                                     <input type="hidden" name="estado" id="hidden-estado-<?= $t['id'] ?>"
                                         value="<?= htmlspecialchars($t['estado']) ?>">
@@ -129,8 +133,7 @@ require __DIR__ . '/../includes/portal_header.php';
                                         data-tooltip="Guardar y notificar "
                                         onclick="document.getElementById('hidden-estado-<?= $t['id'] ?>').value=document.getElementById('estado-<?= $t['id'] ?>').value">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-floppy2-fill"
-                                            viewBox="0 0 16 16">
+                                            fill="currentColor" class="bi bi-floppy2-fill" viewBox="0 0 16 16">
                                             <path d="M12 2h-2v3h2z" />
                                             <path
                                                 d="M1.5 0A1.5 1.5 0 0 0 0 1.5v13A1.5 1.5 0 0 0 1.5 16h13a1.5 1.5 0 0 0 1.5-1.5V2.914a1.5 1.5 0 0 0-.44-1.06L14.147.439A1.5 1.5 0 0 0 13.086 0zM4 6a1 1 0 0 1-1-1V1h10v4a1 1 0 0 1-1 1zM3 9h10a1 1 0 0 1 1 1v5H2v-5a1 1 0 0 1 1-1" />
@@ -152,8 +155,8 @@ require __DIR__ . '/../includes/portal_header.php';
                                         '<?= htmlspecialchars($t['estado'], ENT_QUOTES) ?>',
                                         '<?= htmlspecialchars($t['area'] ?? 'hiperbarica', ENT_QUOTES) ?>'
                                     )">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-pencil-fill" viewBox="0 0 16 16">
                                         <path
                                             d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
                                     </svg>
@@ -168,8 +171,8 @@ require __DIR__ . '/../includes/portal_header.php';
                                         '<?= htmlspecialchars($t['hora'], ENT_QUOTES) ?>',
                                         '<?= htmlspecialchars($t['estado'], ENT_QUOTES) ?>'
                                     )">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                        fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-printer-fill" viewBox="0 0 16 16">
                                         <path
                                             d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1" />
                                         <path
@@ -247,8 +250,8 @@ require __DIR__ . '/../includes/portal_header.php';
 
 <!-- Ticket impresión individual -->
 <div id="turnTicket">
-    <img src="<?= $base ?>/static/img/tecno-logo.jpeg"
-        style="height:44px;width:auto;margin-bottom:6px;display:block;" alt="TECNOMEDIC">
+    <img src="<?= $base ?>/static/img/tecno-logo.jpeg" style="height:44px;width:auto;margin-bottom:6px;display:block;"
+        alt="TECNOMEDIC">
     <div class="ticket-sub">Centro de Salud · Cámara Hiperbárica</div>
     <div class="ticket-title">Comprobante de Turno</div>
     <div class="ticket-grid">
@@ -266,36 +269,46 @@ require __DIR__ . '/../includes/portal_header.php';
 <div class="edit-modal-overlay" id="editModal" onclick="closeEditBg(event)">
     <div class="edit-modal">
         <div class="edit-modal-header">
-            <div class="edit-modal-title">✏️ <span>Modificar</span> turno</div>
-            <button class="edit-modal-close" onclick="closeEdit()">
-                <img class="tm-thumb" src="<?= $base ?>/static/img/icons/boton.ico" data-tooltip="Cerrar" /></button>
+            <div class="edit-modal-title"> <span>Modificar</span> turno</div>
+            <button class="edit-modal-close" onclick="closeEdit()"
+                style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;padding:1px;"><svg
+                    height="26" width="26" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
+                    <circle style="fill:#FF6643;" cx="256" cy="256" r="256" />
+                    <path style="fill:#FF6643;" d="M256,0v512c141.385,0,256-114.615,256-256S397.385,0,256,0z" />
+                    <polygon style="fill:#ffffff;" points="365.904,184.885 327.115,146.096 256,217.211 184.885,146.096 146.096,184.885 217.211,256 
+	146.096,327.115 184.885,365.904 256,294.789 327.115,365.904 365.904,327.115 294.789,256 " />
+                    <polygon style="fill:#ffffff;" points="365.904,184.885 327.115,146.096 256,217.211 256,294.789 327.115,365.904 365.904,327.115 
+	294.789,256 " />
+                </svg>
+            </button>
         </div>
         <form action="<?= $base ?>/admin/modificar.php" method="post">
             <input type="hidden" name="id" id="edit-row">
             <div class="edit-grid">
                 <div class="edit-group">
-                    <div class="edit-label">👤 Nombre</div>
+                    <div class="edit-label">Nombre</div>
                     <div class="edit-input-wrap">
                         <input class="edit-input" type="text" name="nombre" id="edit-nombre" required>
                     </div>
                 </div>
                 <div class="edit-group">
-                    <div class="edit-label"> 👤 Apellido</div>
+                    <div class="edit-label">Apellido</div>
                     <div class="edit-input-wrap">
                         <input class="edit-input" type="text" name="apellido" id="edit-apellido" required>
                     </div>
                 </div>
                 <div class="edit-group">
-                    <div class="edit-label">🪪 DNI <span style="font-size:10px;color:var(--muted)">(opcional)</span>
+                    <div class="edit-label">DNI <span style="font-size:10px;color:var(--muted)">(opcional)</span>
                     </div>
                     <div class="edit-input-wrap">
                         <input class="edit-input" type="text" name="dni" id="edit-dni">
                     </div>
                 </div>
                 <div class="edit-group">
-                    <div class="edit-label">🩺 Especialidad</div>
+                    <div class="edit-label">Especialidad</div>
                     <select class="edit-input" name="area" id="edit-area" required
-                        style="padding:12px 14px;cursor:pointer;background:var(--green-dk);color:#fff; font-weight:600; letter-spacing: 1px">
+                        style="padding:7px 10px 7px 35px;cursor:pointer;background:var(--green-soft);color:#fff; font-weight:400; letter-spacing: 1px">
                         <option value="audiologia">Audiología</option>
                         <option value="hiperbarica">Medicina Hiperbárica</option>
                         <option value="nutricion">Nutrición</option>
@@ -306,7 +319,7 @@ require __DIR__ . '/../includes/portal_header.php';
                 <div class="edit-group">
                     <div class="edit-label">Obra social</div>
                     <select class="edit-input" name="obra_social" id="edit-os"
-                        style="padding:12px 14px;cursor:pointer;background:var(--green-dk);color:#fff; font-weight:600; letter-spacing: 1px">
+                        style="padding:7px 10px 7px 35px;cursor:pointer;background:var(--green-soft);color:#fff; font-weight:400; letter-spacing: 1px">
                         <option value="">-- Seleccioná --</option>
                         <option value="Particular">Particular</option>
                         <option value="PAMI">PAMI</option>
@@ -322,25 +335,25 @@ require __DIR__ . '/../includes/portal_header.php';
                     </select>
                 </div>
                 <div class="edit-group">
-                    <div class="edit-label"> 📱 Teléfono</div>
+                    <div class="edit-label">  Teléfono</div>
                     <div class="edit-input-wrap">
                         <input class="edit-input" type="tel" name="telefono" id="edit-telefono" required>
                     </div>
                 </div>
                 <div class="edit-group">
-                    <div class="edit-label">✉ Email</div>
+                    <div class="edit-label"> Email</div>
                     <div class="edit-input-wrap">
                         <input class="edit-input" type="email" name="email" id="edit-email" required>
                     </div>
                 </div>
                 <div class="edit-group">
-                    <div class="edit-label"> 📅 Fecha</div>
+                    <div class="edit-label">Fecha</div>
                     <div class="edit-input-wrap">
                         <input class="edit-input" type="date" name="fecha" id="edit-fecha" required>
                     </div>
                 </div>
                 <div class="edit-group">
-                    <div class="edit-label">🕐 Hora</div>
+                    <div class="edit-label">Hora</div>
                     <div class="edit-input-wrap">
                         <select class="edit-input" name="hora" id="edit-hora" required>
                             <option value="">Elegí una fecha primero</option>
@@ -470,8 +483,7 @@ require __DIR__ . '/../includes/portal_header.php';
     <div class="modal">
         <div class="modal-header">
             <div class="modal-title" id="modalTitle"></div>
-            <button class="modal-close"
-                onclick="document.getElementById('modal').classList.remove('open')">✕</button>
+            <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">✕</button>
         </div>
         <div id="modalBody"></div>
     </div>
@@ -480,7 +492,9 @@ require __DIR__ . '/../includes/portal_header.php';
 <!-- Toast guardado -->
 <div id="toast-ok">✅ &nbsp;Guardado exitosamente</div>
 <!-- Toast error -->
-<div id="toast-error" style="display:none;position:fixed;bottom:24px;right:24px;background:#c94f4f;color:#fff;padding:14px 22px;border-radius:10px;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2);"></div>
+<div id="toast-error"
+    style="display:none;position:fixed;bottom:24px;right:24px;background:#c94f4f;color:#fff;padding:14px 22px;border-radius:10px;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2);">
+</div>
 
 <script>
 // ── Datos para el calendario ──────────────────────────────────
@@ -575,7 +589,9 @@ function cargarHorariosEdit(fechaISO) {
     }
     sel.innerHTML = '<option value="">Cargando horarios…</option>';
     fetch('<?= $base ?>/api/horarios.php?fecha=' + fechaISO + '&area=' + encodeURIComponent(area))
-        .then(function(r) { return r.json(); })
+        .then(function(r) {
+            return r.json();
+        })
         .then(function(data) {
             sel.innerHTML = '';
             if (!data.slots) {
@@ -695,7 +711,9 @@ function cargarHorariosCreate(fecha) {
     var select = document.getElementById('create-hora');
     select.innerHTML = '<option value="">Cargando horarios…</option>';
     fetch('<?= $base ?>/api/horarios.php?fecha=' + encodeURIComponent(fecha) + '&area=' + encodeURIComponent(area))
-        .then(function(r) { return r.json(); })
+        .then(function(r) {
+            return r.json();
+        })
         .then(function(data) {
             select.innerHTML = '<option value="">-- Seleccioná --</option>';
             if (data.horarios && data.horarios.length) {
@@ -905,7 +923,9 @@ function refrescarTurnos() {
         var te = document.getElementById('toast-error');
         te.textContent = mensajes[err] || '⚠️ No se pudo guardar el cambio.';
         te.style.display = 'block';
-        setTimeout(function() { te.style.display = 'none'; }, 4000);
+        setTimeout(function() {
+            te.style.display = 'none';
+        }, 4000);
         history.replaceState({}, '', window.location.pathname);
     }
 })();

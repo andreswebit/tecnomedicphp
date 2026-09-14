@@ -45,6 +45,7 @@
   --border: hsla(84, 58%, 43%, 0.733);
   --card-bg: rgba(13, 26, 52, 0.72);
   --muted: #8aada9;
+  --green-soft: #7aad2e6b;
 }
 
 body.portal {
@@ -276,6 +277,12 @@ table.portal-table th {
   color: #fff;
   font-size: 1.1rem;
   cursor: pointer;
+  transform: translateY(0.7px);
+}
+.ficha-modal-close:hover {
+  transform: translateY(-0.5px ) ;
+  filter: brightness(1.2);
+  
 }
 
 .btn-cerrar-rojo {

@@ -144,18 +144,18 @@ tecnomedic_php/
 
 ---
 
-## 5. Roadmap del Portal ("Mi Portal")
+## 5. Roadmap del Portal ("Mi Portal") — actualizado 13/09/2026
 
 | Fase | Contenido | Estado |
 |------|-----------|--------|
-| **A** | Cuentas y roles, login unificado, aprobación de pacientes, asignación paciente↔profesional, catálogo de obras sociales, padrón único por DNI (`tm_personas`) | ✅ Hecho |
-| **B** | Portal paciente: dashboard con datos propios y turnos, edición de perfil | ✅ Hecho |
-| **C** | Portal profesional: ver solo los pacientes asignados | ✅ Hecho |
-| **D** | **Ficha médica**: historia clínica, tratamientos, carga/descarga de estudios (PDF/imagen) en modal pop-up | ✅ Hecho |
-| **E** | **Registro alimentario** (nutrición): objetivo nutricional, mediciones (peso/altura/IMC), comidas por día | ✅ Hecho |
+| **A** | Login unificado, roles, aprobación, asignaciones, obras sociales, padrón (`tm_personas`) | ✅ Hecho |
+| **B** | Portal paciente: datos + turnos | ✅ Hecho |
+| **C** | Portal profesional: solo asignados | ✅ Hecho |
+| **D** | Ficha médica (historia clínica **cronológica** con columna `fecha`, tratamientos, estudios, modal pop-up) | ✅ Hecho — historia clínica ahora es historial (cada modificación inserta fila con `CURDATE()`; `tm_historia_clinica.fecha` creado vía SQL) |
+| **E** | Registro alimentario (nutrición) | ✅ Hecho |
 | **F** | Recursos / formularios descargables | ⏳ Pendiente |
-| **G** | Pulido general (UX, validaciones, responsive) | ⏳ Pendiente |
-| **H** | Módulo de Presupuestos (panel tipo turnos + PDF adjunto + integración con el bot) | ⏳ Pendiente |
+| **G** | Pulido general (UX, responsive, validaciones) | ⏳ Pendiente |
+| **H** | Módulo Presupuestos (panel + PDF + bot) | ⏳ Pendiente |
 
 ### Permisos por rol (Fase D — Ficha médica)
 | | Paciente | Profesional | Admin |
@@ -226,6 +226,18 @@ gitignoreado). Admins adicionales: desde `admin/usuarios.php`.
 - Link roto a `nutreando.com` en el Home (quedó de cuando se usó como referencia de diseño) → reemplazado por el login propio
 - Archivos huérfanos/inseguros eliminados: `admin/config_mail.php` (duplicado roto), `admin/test_mail.php` (sin autenticación), `static/portal.css` (copia vieja)
 - `pendiente.php` tenía rutas rotas que tiraban error fatal a cualquier paciente recién registrado
+
+---
+
+### Funcionalidades confirmadas (ya operativas — no pendientes)
+- ✅ Botón **Editar** ficha médica → abre modal global `admin/pacientes.php` (`openEdit`) con datos pre-cargados
+- ✅ Tooltip eliminado en botón **Nuevo paciente** (`btn-no-tooltip`)
+- ✅ Historia clínica: **Modificar** → **Guardar** (botón verde, único), fondo editable `#fff`, toast `✅ Historia clínica guardada`, scroll pestañas `ficha-tabs`
+- ✅ Edición inline datos personales (`toggleEdicionDatos`) con formulario oculto/visible y cancelación
+- ✅ Modal ficha médica (`abrirFicha`) carga `ver.php` vía `fetch`; botón **Editar** delega a `abrirEdicionPaciente()`; puente funciona con `portal_header.php`
+- ✅ Botón **Modificar** historia alterna modos (`abrirEdicionHistoria`/`toggleEdicionHistoria`) y guarda vía `guardarHistoria()` (fetch `guardar_historia.php`)
+- ✅ Ficha médica no aparece vacía tras migración DB (`fecha` columna creada, índice aplicado, `INSERT` con `CURDATE()`)
+- ✅ `db_ficha.php`: `historia_clinica_get()` ahora devuelve `array` ordenado `fecha DESC`; `historia_clinica_guardar()` inserta fila nueva (cronológico)
 
 ---
 

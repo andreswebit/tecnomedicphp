@@ -1,0 +1,545 @@
+/* TECNOMEDIC — Portal (paciente/profesional/admin) */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Montserrat:wght@400;500&display=swap");
+
+
+/* ─── 1. VARIABLES ─────────────────────────────────────────── */
+:root {
+    /* ── Paleta de marca TECNOMEDIC ── */
+    --green: #98c544;
+    /* Lima – color "MEDIC" del logo */
+    --green-dk: #7aad2e;
+    /* Lima oscuro */
+    --teal: #1aa5a5;
+    /* Teal – color secundario de marca */
+    --teal-dk: #148080;
+    /* Teal oscuro */
+    --navy: #0d1b2a;
+    /* Dark background */
+    --navy-mid: #1a3354;
+    --text: #454545;
+    /* Texto oscuro de marca */
+    --bg-light: #edf1f0;
+    /* Fondo claro de marca */
+    --amber: #f59e0b;
+    --amber-dk: #d97706;
+    --white: #ffffff;
+    --g50: #edf1f0;
+    /* usa el bg-light de marca */
+    --g100: #e2e8e6;
+    --g300: #b0bfbc;
+    --g400: #8a9e9b;
+    --g600: #555f5e;
+    --g800: #333a39;
+    --r: 12px;
+    --sh: 0 8px 24px rgba(0, 0, 0, 0.1);
+    --shl: 0 20px 60px rgba(0, 0, 0, 0.16);
+
+    /* ── Alias de compatibilidad (usados en form/login/admin) ── */
+    --teal-bright: #30c5c5;
+    --teal-glow: rgba(26, 165, 165, 0.12);
+    --green-glow: rgba(152, 197, 68, 0.12);
+    --border: hsla(84, 58%, 43%, 0.733);
+    --card-bg: rgba(13, 26, 52, 0.72);
+    --muted: #8aada9;
+    --green-soft: #93eb81be;
+}
+
+.ficha-medica {
+    font-family: 'Montserrat', sans-serif;
+    background: #edf1f0;
+    color: #333a39;
+    min-height: 100vh
+}
+
+.ficha-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #0d1b2a;
+    color: #fff;
+    padding: 14px 20px
+}
+
+.ficha-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #30c5c5, #98c544);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    flex-shrink: 0
+}
+
+.ficha-paciente {
+    flex: 1
+}
+
+.ficha-paciente-nombre {
+    font-size: .95rem;
+    font-weight: 600;
+    margin-bottom: 3px
+}
+
+.ficha-paciente-meta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: .72rem;
+    opacity: .85
+}
+
+.ficha-badge {
+    background: rgba(152, 197, 68, .18);
+    color: #7aad2e;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: .68rem;
+    font-weight: 600;
+    border: 1px solid rgba(152, 197, 68, .3)
+}
+
+.ficha-tabs {
+    display: flex;
+    background: #fff;
+    border-bottom: 1px solid #e2e8e6
+}
+
+.ficha-tab {
+    padding: 9px 14px;
+    border: none;
+    background: transparent;
+    color: #555f5e;
+    font-size: .78rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px
+}
+
+.ficha-tab.active {
+    color: #30c5c5;
+    border-bottom: 2px solid #30c5c5
+}
+
+.ficha-card {
+    background: #b0bfbc;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 6px rgba(13, 27, 42, .07)
+}
+
+.ficha-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #e2e8e6
+}
+
+.ficha-card-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .85rem;
+    flex-shrink: 0
+}
+
+.ficha-card-icon.blue {
+    background: rgba(26, 165, 165, .12);
+    color: #30c5c5
+}
+
+.ficha-card-icon.green {
+    background: rgba(152, 197, 68, .12);
+    color: #7aad2e
+}
+
+.ficha-card-icon.amber {
+    background: rgba(245, 158, 11, .12);
+    color: #d97706
+}
+
+.ficha-card-icon.red {
+    background: rgba(224, 85, 85, .12);
+    color: #e05555
+}
+
+.ficha-card-icon.purple {
+    background: rgba(139, 92, 246, .12);
+    color: #7c3aed
+}
+
+.ficha-card-title {
+    font-size: .88rem;
+    font-weight: 600;
+    color: #0d1b2a;
+    flex: 1
+}
+
+.ficha-card-body {
+    padding: 10px 12px
+}
+
+.kv-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 8px
+}
+
+.kv-item {
+    background: #edf1f0;
+    padding: 8px;
+    border-radius: 6px
+}
+
+.kv-label {
+    font-size: .65rem;
+    font-weight: 600;
+    color: #8aada9;
+    text-transform: uppercase;
+    margin-bottom: 2px
+}
+
+.kv-value {
+    font-size: .82rem;
+    color: #333a39
+}
+
+.ficha-field {
+    margin-bottom: 10px
+}
+
+.ficha-field-label {
+    font-size: .68rem;
+    font-weight: 600;
+    color: #555f5e;
+    margin-bottom: 3px
+}
+
+.ficha-textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #e2e8e6;
+    border-radius: 6px;
+    font-size: .78rem;
+    background: var(--g100);
+    color: #333a39;
+    resize: vertical;
+    min-height: 55px
+}
+
+.ficha-textarea:focus {
+    outline: none;
+    border-color: #30c5c5;
+    box-shadow: 0 0 0 2px rgba(26, 165, 165, .15);
+    background: #fff
+}
+
+.ficha-textarea.editing {
+    background: #fff !important;
+}
+
+/* Dentro de modo edición, todos los campos se vuelven editables */
+.editing-mode .ficha-textarea,
+.editing-mode .ficha-textarea.editing {
+    background: #fff !important;
+}
+.editing-mode input,
+.editing-mode select,
+.editing-mode textarea {
+    pointer-events: auto;
+}
+
+.ficha-toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #7aad2e;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: .8rem;
+    font-weight: 600;
+    z-index: 9999;
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+    transition: opacity .3s ease, transform .3s ease;
+    pointer-events: none;
+}
+
+.ficha-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+.ficha-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .76rem
+}
+
+.ficha-table th {
+    padding: 7px 9px;
+    text-align: left;
+    color: #8aada9;
+    border-bottom: 1px solid #e2e8e6;
+    white-space: nowrap;
+    font-weight: 500
+}
+
+.ficha-table td {
+    padding: 7px 9px;
+    border-bottom: 1px solid #e2e8e6;
+    vertical-align: middle
+}
+
+.ficha-table tr:last-child td {
+    border-bottom: none
+}
+
+.ficha-table tr:hover td {
+    background: rgba(237, 241, 240, .5)
+}
+
+.badge-area {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-size: .68rem;
+    font-weight: 600
+}
+
+.badge-area.hiperbarica {
+    background: rgba(26, 165, 165, .12);
+    color: #148080
+}
+
+.badge-area.nutricion {
+    background: rgba(152, 197, 68, .12);
+    color: #7aad2e
+}
+
+.badge-estado {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: .68rem;
+    font-weight: 600
+}
+
+.badge-estado.activo {
+    background: rgba(152, 197, 68, .12);
+    color: #7aad2e
+}
+
+.badge-estado.suspendido {
+    background: rgba(245, 158, 11, .12);
+    color: #d97706
+}
+
+.badge-estado.finalizado {
+    background: rgba(138, 138, 138, .12);
+    color: #888
+}
+
+.ficha-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 7px;
+    font-family: 'Poppins', sans-serif;
+    font-size: .75rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all .15s;
+    white-space: nowrap
+}
+
+.ficha-btn-primary {
+    background: #7aad2e;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(152, 197, 68, .25)
+}
+
+.ficha-btn-primary:hover {
+    background: #98c544;
+    transform: translateY(-1px)
+}
+
+.ficha-btn-outline {
+    background: #1a3354;
+    color: #fff;
+    border: 1px solid #3b3b3b;
+}
+
+.ficha-btn-outline:hover {
+
+    transform: translateY(-1px);
+    background: #244672;
+}
+
+.ficha-btn-teal {
+    background: #148080;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(92, 110, 110, 0.25)
+}
+
+.ficha-btn-teal:hover {
+    background: #1a9999;
+    transform: translateY(-1px)
+}
+
+.ficha-btn-sm {
+    padding: 5px 9px;
+    font-size: .7rem
+}
+
+.ficha-btn-xs {
+    padding: 3px 7px;
+    font-size: .68rem;
+    border-radius: 5px
+}
+
+.ficha-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-top: 1px solid #e2e8e6;
+    font-size: .7rem
+}
+
+.ficha-card-footer .date {
+    color: #8aada9
+}
+
+.lista-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid #e2e8e6
+}
+
+.lista-item:last-child {
+    border-bottom: none
+}
+
+.lista-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .85rem;
+    flex-shrink: 0
+}
+
+.lista-icon.blue {
+    background: rgba(26, 165, 165, .1);
+    color: #30c5c5
+}
+
+.lista-icon.purple {
+    background: rgba(139, 92, 246, .1);
+    color: #7c3aed
+}
+
+.lista-icon.green {
+    background: rgba(152, 197, 68, .1);
+    color: #7aad2e
+}
+
+.lista-info {
+    flex: 1;
+    min-width: 0
+}
+
+.lista-nombre {
+    font-size: .8rem;
+    font-weight: 600;
+    color: #0d1b2a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+.lista-meta {
+    font-size: .7rem;
+    color: #555f5e;
+    margin-top: 1px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap
+}
+
+.historia-registro {
+    display: flex;
+    gap: 10px;
+    background: #fff;
+    border: 1px solid #e2e8e6;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    box-shadow: 0 1px 4px rgba(13,27,42,.05);
+    flex-wrap: wrap;
+}
+.historia-col {
+    flex: 1 1 160px;
+    min-width: 140px;
+}
+.historia-col label {
+    font-size: .65rem;
+    font-weight: 600;
+    color: #8aada9;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 3px;
+}
+.historia-col .valor {
+    font-size: .88rem;
+    color: #333a39;
+    background: #edf1f0;
+    padding: 6px 8px;
+    border-radius: 6px;
+    min-height: 48px;
+    white-space: pre-wrap;
+}
+.lista-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0
+}
+
+.ficha-empty {
+    text-align: center;
+    padding: 24px 16px;
+    color: #8aada9
+}
+
+.ficha-empty-icon {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+    opacity: .7
+}
+
+.ficha-empty-text {
+    font-size: .8rem;
+    font-weight: 500;
+    margin-bottom: 12px
+}

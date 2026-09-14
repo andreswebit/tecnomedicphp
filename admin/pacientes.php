@@ -194,7 +194,7 @@ require __DIR__ . '/../includes/portal_header.php';
                 <span class="search-icon">🔍</span>
                 <input type="text" id="searchActivos" placeholder="Buscar…" style="width:220px ;">
             </div>
-            <button class="btn-action btn-save" style="padding:7px 14px;text-decoration:none;" onclick="openModal()">
+            <button class="btn-action btn-save btn-no-tooltip" style="padding:7px 14px;text-decoration:none;" onclick="openModal()">
                 Nuevo paciente
             </button>
         </div>
@@ -453,7 +453,7 @@ require __DIR__ . '/../includes/portal_header.php';
     </div>
 </div>
 
-<div id="toast-ok">✅ Acción realizada</div>
+<div id="toast-ok">✅ Guardado con Exito</div>
 <div id="toast-error" style="display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#f44336;color:#fff;padding:12px 24px;border-radius:8px;z-index:2000;"></div>
 
 <script>
