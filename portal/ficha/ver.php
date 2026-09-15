@@ -190,34 +190,32 @@ if (!$esModal) {
             <div class="ficha-card-header">
                 <div class="ficha-card-icon green">📋</div>
                 <div class="ficha-card-title">Historia clínica</div>
-                <?php if ($puedeEditar): ?>
-                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-outline" id="btnEditarHistoria"
-                    onclick="abrirEdicionHistoria()">
-                    Modificar</button>
-                    
-                <?php endif; ?>
             </div>
             <div class="ficha-card-body">
                 <?php if ($puedeEditar): ?>
                 <div id="historiaView" style="display:flex;flex-direction:column;gap:6px;font-size:.85rem">
                     <?php foreach ($historiaRegistros as $h): ?>
-                    <div class="historia-fila" style="background:#fff;border:1px solid #e2e8e6;border-radius:8px;padding:10px;box-shadow:0 1px 4px rgba(13,27,42,.05)" data-id="<?= $h['id'] ?? 0 ?>" id="filaHist<?= $h['id'] ?? 0 ?>">
+                    <div class="historia-fila" id="filaHist<?= (int)($h['id'] ?? 0) ?>" style="background:#fff;border:1px solid #e2e8e6;border-radius:8px;padding:10px;box-shadow:0 1px 4px rgba(13,27,42,.05)" data-id="<?= (int)($h['id'] ?? 0) ?>">
                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;border-bottom:1px solid #e2e8e6;padding-bottom:6px">
                             <span style="font-weight:600;color:#0d1b2a;font-size:.85rem">📅 <?= htmlspecialchars($h['fecha_fmt'] ?? '-') ?></span>
+                            <div style="display:flex;gap:6px">
+                                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-outline" onclick="editarFilaHistoria(<?= (int)($h['id'] ?? 0) ?>)" title="Editar registro">✏️</button>
+                                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-outline" onclick="eliminarFilaHistoria(<?= (int)($h['id'] ?? 0) ?>)" title="Eliminar registro" style="border-color:#dc2626;color:#dc2626">🗑️</button>
+                            </div>
                         </div>
                         <div style="display:flex;gap:10px;flex-wrap:wrap">
                             <div style="flex:1 1 160px;min-width:130px">
                                 <div style="font-size:.65rem;font-weight:600;color:#8aada9;text-transform:uppercase">Antecedentes</div>
-                                <div style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px" data-ante="<?= htmlspecialchars($h['antecedentes'] ?? '-') ?>"> <?= nl2br(htmlspecialchars($h['antecedentes'] ?? '-')) ?> </div>
+                                <div style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px" data-ante="<?= htmlspecialchars($h['antecedentes'] ?? '') ?>"><?= nl2br(htmlspecialchars($h['antecedentes'] ?? '-')) ?></div>
                             </div>
                             <div style="flex:1 1 160px;min-width:130px">
                                 <div style="font-size:.65rem;font-weight:600;color:#8aada9;text-transform:uppercase">Diagnóstico</div>
-                                <div style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px" data-dia="<?= htmlspecialchars($h['diagnostico'] ?? '-') ?>"> <?= nl2br(htmlspecialchars($h['diagnostico'] ?? '-')) ?> </div>
+                                <div style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px" data-dia="<?= htmlspecialchars($h['diagnostico'] ?? '') ?>"><?= nl2br(htmlspecialchars($h['diagnostico'] ?? '-')) ?></div>
                             </div>
                         </div>
                         <div style="margin-top:6px">
                             <div style="font-size:.65rem;font-weight:600;color:#8aada9;text-transform:uppercase">Observaciones</div>
-                            <div style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px" data-obs="<?= htmlspecialchars($h['observaciones'] ?? '-') ?>"> <?= nl2br(htmlspecialchars($h['observaciones'] ?? '-')) ?> </div>
+                            <div style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px" data-obs="<?= htmlspecialchars($h['observaciones'] ?? '') ?>"><?= nl2br(htmlspecialchars($h['observaciones'] ?? '-')) ?></div>
                         </div>
                     </div>
                     <?php endforeach; ?>
@@ -241,33 +239,6 @@ if (!$esModal) {
                         </div>
                     </div>
                     <?php if (empty($historiaRegistros)): ?><div class="ficha-empty"><div class="ficha-empty-text">Sin registros aún.</div></div><?php endif; ?>
-                </div>
-                <div id="historiaEdit" style="display:none">
-                    <form data-ficha-form method="post" action="<?= b('/portal/ficha/guardar_historia.php') ?>"
-                        onsubmit="return guardarHistoria(event)">
-                        <input type="hidden" name="paciente_id" value="<?= $pacienteId ?>">
-                        <div class="ficha-field">
-                            <label class="ficha-field-label">Antecedentes</label>
-                            <textarea name="antecedentes" rows="2" id="inp_antecedentes"
-                                class="ficha-textarea editing"><?= htmlspecialchars($historia['antecedentes'] ?? '') ?></textarea>
-                        </div>
-                        <div class="ficha-field">
-                            <label class="ficha-field-label">Diagnóstico</label>
-                            <textarea name="diagnostico" rows="2" id="inp_diagnostico"
-                                class="ficha-textarea editing"><?= htmlspecialchars($historia['diagnostico'] ?? '') ?></textarea>
-                        </div>
-                        <div class="ficha-field">
-                            <label class="ficha-field-label">Observaciones</label>
-                            <textarea name="observaciones" rows="2" id="inp_observaciones"
-                                class="ficha-textarea editing"><?= htmlspecialchars($historia['observaciones'] ?? '') ?></textarea>
-                        </div>
-                        <div style="display:flex;gap:8px;margin-top:6px">
-                            <button type="submit" class="ficha-btn ficha-btn-sm ficha-btn-primary">💾 Guardar</button>
-                        </div>
-                        <div class="ficha-card-footer" style="margin-top:4px">
-                            <span class="date">Última: <?= !empty($historia['actualizado_en']) ? date('d/m/Y', strtotime($historia['actualizado_en'])) : '-' ?></span>
-                        </div>
-                    </form>
                 </div>
                 <?php else: ?>
                 <div class="kv-grid" style="grid-template-columns:1fr 1fr">
@@ -466,7 +437,7 @@ document.querySelectorAll('.ficha-tab').forEach(tab => {
     });
 });
 
-Funciones de edición inline
+// Funciones de edición inline
 function abrirEdicionPaciente() {
     if (typeof openEdit === 'function') {
         openEdit({
@@ -591,40 +562,33 @@ function openEdit(d) {
 
 function guardarHistoria(e) {
     e.preventDefault();
-    const form = document.getElementById('historiaEdit').querySelector('form');
+    const form = e.target && e.target.closest ? e.target.closest('form') : null;
+    if (!form) return;
     const data = new FormData(form);
     const btn = form.querySelector('button[type="submit"]');
+    if (!btn) return;
+
+    const ante = (data.get('antecedentes') || '').toString().trim();
+    const dia  = (data.get('diagnostico') || '').toString().trim();
+    const obs  = (data.get('observaciones') || '').toString().trim();
+    if (!ante && !dia && !obs) {
+        toastFicha('⚠️ Al menos un campo es obligatorio.');
+        return;
+    }
+
     btn.disabled = true;
     btn.textContent = 'Guardando...';
     fetch(form.action, {
             method: 'POST',
             body: data
         })
-        .then(r => r.text())
-        .then(txt => {
-            if (txt.trim() === 'ok') {
-                // Actualizar los valores de vista con los datos enviados
-                document.getElementById('view_antecedentes').innerHTML = data.get('antecedentes') ? nl2br(data.get(
-                    'antecedentes')) : 'Sin datos cargados.';
-                document.getElementById('view_diagnostico').innerHTML = data.get('diagnostico') ? nl2br(data.get(
-                    'diagnostico')) : '-';
-                const obsDiv = document.getElementById('view_observaciones');
-                if (obsDiv) obsDiv.innerHTML = '<p>' + nl2br(data.get('observaciones')) + '</p>';
-                // Quitar el fondo blanco (editing) de los textareas -> volver a g100
-                form.querySelectorAll('.ficha-textarea').forEach(function(ta) {
-                    ta.classList.remove('editing');
-                });
-                // Volver a la vista
-                const view = document.getElementById('historiaView');
-                form.style.display = 'none';
-                view.style.display = 'block';
-                // Restaurar botón a "Modificar"
-                const btnEdit = document.getElementById('btnEditarHistoria');
-                if (btnEdit) btnEdit.textContent = '✏️ Modificar';
-                // Toast de éxito
-                toastFicha('✅ Historia clínica guardada');
+        .then(r => r.json())
+        .then(res => {
+            if (res.ok) {
+                toastFicha('✅ ' + (res.message || 'Historia clínica guardada'));
+                setTimeout(() => location.reload(), 600);
             } else {
-                toastFicha('⚠️ Error al guardar: ' + txt);
+                toastFicha('⚠️ Error al guardar: ' + (res.error || 'Error desconocido'));
                 btn.disabled = false;
                 btn.textContent = '💾 Guardar';
             }
@@ -670,28 +634,7 @@ function guardarPersona(e) {
 }
 
 function abrirEdicionHistoria() {
-    const view = document.getElementById('historiaView');
-    const form = document.getElementById('historiaEdit');
-    const btn = document.getElementById('btnEditarHistoria');
-
-    const editing = form.style.display === 'block';
-    view.style.display = editing ? 'block' : 'none';
-    form.style.display = editing ? 'none' : 'block';
-    btn.textContent = editing ? 'Modificar' : '❌ Cancelar';
-
-    // Si vamos a mostrar el formulario, también mostrar todas las filas editables
-    if (!editing) {
-        document.querySelectorAll('.historia-fila').forEach(fila => {
-            if (!fila.id.startsWith('filaNueva')) {
-                fila.style.display = 'none';
-            }
-        });
-        document.getElementById('filaNueva').style.display = 'block';
-    } else {
-        document.querySelectorAll('.historia-fila').forEach(fila => {
-            fila.style.display = 'block';
-        });
-    }
+    return false;
 }
 
 function abrirModalTratamiento() {
@@ -711,11 +654,32 @@ function eliminarEstudio(id) {
     alert('Estudio eliminado - Por implementar la lógica real');
 }
 
+function eliminarFilaHistoria(id) {
+    if (!confirm('¿Eliminar este registro de la historia clínica?')) return;
+
+    fetch('<?= b('/portal/ficha/eliminar_historia.php') ?>', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: 'id=' + encodeURIComponent(id)
+    })
+    .then(r => r.json())
+    .then(res => {
+        if (res.ok) {
+            toastFicha('✅ ' + (res.message || 'Registro eliminado'));
+            setTimeout(() => location.reload(), 600);
+        } else {
+            toastFicha('⚠️ Error: ' + (res.error || 'No se pudo eliminar'));
+        }
+    })
+    .catch(() => {
+        toastFicha('⚠️ Error de conexión');
+    });
+}
+
 function editarFilaHistoria(id) {
     const fila = document.getElementById('filaHist' + id);
     if (!fila) return;
 
-    // Obtener datos actuales (o desde los data-attributes)
     const anteDiv = fila.querySelector('[data-ante]');
     const diaDiv = fila.querySelector('[data-dia]');
     const obsDiv = fila.querySelector('[data-obs]');
@@ -723,98 +687,130 @@ function editarFilaHistoria(id) {
     const dia  = diaDiv ? (diaDiv.getAttribute('data-dia') || '') : '';
     const obs  = obsDiv ? (obsDiv.getAttribute('data-obs') || '') : '';
 
-    // Reemplazar contenido con textareas editables
     fila.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;border-bottom:1px solid #e2e8e6;padding-bottom:6px">
             <span style="font-weight:600;color:#0d1b2a;font-size:.85rem">📅 Editando registro #` + id + `</span>
-            <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-primary" onclick="guardarFilaHistoria(` + id + `, this)">💾 Guardar</button>
+            <div style="display:flex;gap:6px">
+                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-primary" onclick="guardarFilaHistoria(` + id + `, this)">💾 Guardar</button>
+                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-outline" onclick="location.reload()">Cancelar</button>
+            </div>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
             <div style="flex:1 1 160px;min-width:130px">
                 <label style="font-size:.65rem;font-weight:600;color:#8aada9;text-transform:uppercase;display:block;margin-bottom:3px">Antecedentes</label>
-                <textarea id="fila_ante_` + id + `" rows="2" class="ficha-textarea editing" style="font-size:.82rem;min-height:48px">` + ante.replace(/</g, '&lt;').replace(/>/g, '&gt;') + `</textarea>
+                <textarea id="fila_ante_` + id + `" rows="2" class="ficha-textarea editing" style="font-size:.82rem;min-height:48px"></textarea>
             </div>
             <div style="flex:1 1 160px;min-width:130px">
                 <label style="font-size:.65rem;font-weight:600;color:#8aada9;text-transform:uppercase;display:block;margin-bottom:3px">Diagnóstico</label>
-                <textarea id="fila_dia_` + id + `" rows="2" class="ficha-textarea editing" style="font-size:.82rem;min-height:48px">` + dia.replace(/</g, '&lt;').replace(/>/g, '&gt;') + `</textarea>
+                <textarea id="fila_dia_` + id + `" rows="2" class="ficha-textarea editing" style="font-size:.82rem;min-height:48px"></textarea>
             </div>
         </div>
         <div style="margin-top:6px">
             <label style="font-size:.65rem;font-weight:600;color:#8aada9;text-transform:uppercase;display:block;margin-bottom:3px">Observaciones</label>
-            <textarea id="fila_obs_` + id + `" rows="2" class="ficha-textarea editing" style="font-size:.82rem;min-height:48px">` + obs.replace(/</g, '&lt;').replace(/>/g, '&gt;') + `</textarea>
+            <textarea id="fila_obs_` + id + `" rows="2" class="ficha-textarea editing" style="font-size:.82rem;min-height:48px"></textarea>
         </div>
     `;
+
+    document.getElementById('fila_ante_' + id).value = ante;
+    document.getElementById('fila_dia_' + id).value = dia;
+    document.getElementById('fila_obs_' + id).value = obs;
 }
 
 function guardarFilaHistoria(id, btn) {
-    const ante = document.getElementById('fila_ante_' + id).value;
-    const dia  = document.getElementById('fila_dia_' + id).value;
-    const obs  = document.getElementById('fila_obs_' + id).value;
+    const ante = (document.getElementById('fila_ante_' + id)?.value || '').trim();
+    const dia  = (document.getElementById('fila_dia_' + id)?.value || '').trim();
+    const obs  = (document.getElementById('fila_obs_' + id)?.value || '').trim();
 
-    btn.disabled = true;
-    btn.textContent = 'Guardando...';
+    if (!ante && !dia && !obs) {
+        toastFicha('⚠️ Al menos un campo es obligatorio.');
+        return;
+    }
+
+    if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Guardando...';
+    }
 
     fetch('<?= b('/portal/ficha/guardar_historia_fila.php') ?>', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: 'id=' + encodeURIComponent(id) + '&antecedentes=' + encodeURIComponent(ante) + '&diagnostico=' + encodeURIComponent(dia) + '&observaciones=' + encodeURIComponent(obs)
     })
-    .then(r => r.text())
-    .then(txt => {
-        if (txt.trim() === 'ok') {
-            toastFicha('✅ Historia actualizada');
-            // Recargar página para reflejar cambios (o reconstruir fila)
+    .then(r => r.json())
+    .then(res => {
+        if (res.ok) {
+            toastFicha('✅ ' + (res.message || 'Historia actualizada'));
             setTimeout(() => location.reload(), 800);
         } else {
-            toastFicha('⚠️ Error: ' + txt);
-            btn.disabled = false;
-            btn.textContent = '💾 Guardar';
+            toastFicha('⚠️ Error: ' + (res.error || 'No se pudo actualizar'));
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = '💾 Guardar';
+            }
         }
     })
     .catch(() => {
         toastFicha('⚠️ Error de conexión');
-        btn.disabled = false;
-        btn.textContent = '💾 Guardar';
+        if (btn) {
+            btn.disabled = false;
+            btn.textContent = '💾 Guardar';
+        }
     });
 }
 
 function guardarNuevaHistoria() {
-    const ante = document.getElementById('new_ante').value;
-    const dia  = document.getElementById('new_dia').value;
-    const obs  = document.getElementById('new_obs').value;
-    const btn = document.querySelector('#filaNueva button[type="button"]');
-    if (!btn) return;
+    const ante = (document.getElementById('new_ante')?.value || '').trim();
+    const dia  = (document.getElementById('new_dia')?.value || '').trim();
+    const obs  = (document.getElementById('new_obs')?.value || '').trim();
 
-    btn.disabled = true;
-    btn.textContent = 'Guardando...';
+    if (!ante && !dia && !obs) {
+        toastFicha('⚠️ Al menos un campo es obligatorio.');
+        return;
+    }
+
+    const btn = document.querySelector('#filaNueva button.ficha-btn-primary') || document.querySelector('#filaNueva button[type="button"]');
+    if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Guardando...';
+    }
 
     fetch('<?= b('/portal/ficha/guardar_historia.php') ?>', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: 'paciente_id=<?= $pacienteId ?>&antecedentes=' + encodeURIComponent(ante) + '&diagnostico=' + encodeURIComponent(dia) + '&observaciones=' + encodeURIComponent(obs)
     })
-    .then(r => r.text())
-    .then(txt => {
-        if (txt.trim() === 'ok') {
-            toastFicha('✅ Historia guardada');
+    .then(r => r.json())
+    .then(res => {
+        if (res.ok) {
+            toastFicha('✅ ' + (res.message || 'Historia guardada'));
+            limpiarNuevaHistoria();
             setTimeout(() => location.reload(), 800);
         } else {
-            toastFicha('⚠️ Error: ' + txt);
-            btn.disabled = false;
-            btn.textContent = '💾 Guardar';
+            toastFicha('⚠️ Error: ' + (res.error || 'No se pudo guardar'));
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = '💾 Guardar';
+            }
         }
     })
     .catch(() => {
         toastFicha('⚠️ Error de conexión');
-        btn.disabled = false;
-        btn.textContent = '💾 Guardar';
+        if (btn) {
+            btn.disabled = false;
+            btn.textContent = '💾 Guardar';
+        }
     });
 }
 
 function limpiarNuevaHistoria() {
-    document.getElementById('new_ante').value = '';
-    document.getElementById('new_dia').value = '';
-    document.getElementById('new_obs').value = '';
+    const ante = document.getElementById('new_ante');
+    const dia  = document.getElementById('new_dia');
+    const obs  = document.getElementById('new_obs');
+    if (ante) ante.value = '';
+    if (dia) dia.value = '';
+    if (obs) obs.value = '';
 }
+
+
 </script>
 <?php require __DIR__ . '/../../includes/portal_footer.php'; ?>

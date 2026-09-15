@@ -152,7 +152,7 @@ $etiquetaRol = [
                 function abrirFicha(pacienteId) {
                     var overlay = document.getElementById('fichaModalOverlay');
                     var body = document.getElementById('fichaModalBody');
-                    body.innerHTML = 'Cargando…';
+                    body.innerHTML = '<div style="padding:40px;text-align:center;color:#666;">Cargando ficha médica…</div>';
                     overlay.classList.add('open');
                     fetch(TM_BASE + '/portal/ficha/ver.php?modal=1&paciente_id=' + pacienteId)
                         .then(function(r) {
@@ -160,6 +160,15 @@ $etiquetaRol = [
                         })
                         .then(function(html) {
                             body.innerHTML = html;
+                            var scripts = body.querySelectorAll('script');
+                            scripts.forEach(function(oldScript) {
+                                var newScript = document.createElement('script');
+                                Array.from(oldScript.attributes).forEach(function(attr) {
+                                    newScript.setAttribute(attr.name, attr.value);
+                                });
+                                newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                                oldScript.parentNode.replaceChild(newScript, oldScript);
+                            });
                             bindFichaForms(pacienteId);
                         })
                         .catch(function() {

@@ -55,6 +55,20 @@ function historia_clinica_guardar(int $pacienteId, string $antecedentes, string 
     $st->execute();
 }
 
+function historia_clinica_actualizar(int $id, string $antecedentes, string $diagnostico, string $observaciones, int $actualizadoPor): void {
+    $st = db()->prepare(
+        "UPDATE tm_historia_clinica SET antecedentes = ?, diagnostico = ?, observaciones = ?, actualizado_por = ? WHERE id = ?"
+    );
+    $st->bind_param('sssii', $antecedentes, $diagnostico, $observaciones, $actualizadoPor, $id);
+    $st->execute();
+}
+
+function historia_clinica_eliminar(int $id): void {
+    $st = db()->prepare("DELETE FROM tm_historia_clinica WHERE id = ?");
+    $st->bind_param('i', $id);
+    $st->execute();
+}
+
 // ── Tratamientos ──────────────────────────────────────────────────
 
 function tratamientos_listar(int $pacienteId): array {

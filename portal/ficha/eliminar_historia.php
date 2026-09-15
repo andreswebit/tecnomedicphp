@@ -18,18 +18,7 @@ if (!$id) {
     exit;
 }
 
-$ante = trim($_POST['antecedentes'] ?? '');
-$dia  = trim($_POST['diagnostico'] ?? '');
-$obs  = trim($_POST['observaciones'] ?? '');
-
-if ($ante === '' && $dia === '' && $obs === '') {
-    http_response_code(400);
-    echo json_encode(['ok' => false, 'error' => 'Al menos un campo es obligatorio.']);
-    exit;
-}
-
 try {
-    // Verificar que el registro exista y que el usuario pueda editar el paciente asociado
     $st = db()->prepare("SELECT paciente_id FROM tm_historia_clinica WHERE id = ?");
     $st->bind_param('i', $id);
     $st->execute();
@@ -42,15 +31,14 @@ try {
 
     if (!ficha_puede_editar((int)$row['paciente_id'])) {
         http_response_code(403);
-        echo json_encode(['ok' => false, 'error' => 'No tenés permiso para editar esta ficha.']);
+        echo json_encode(['ok' => false, 'error' => 'No tenés permiso para eliminar este registro.']);
         exit;
     }
 
-    $actualizadoPor = (int)($_SESSION['portal_uid'] ?? 0);
-    historia_clinica_actualizar($id, $ante, $dia, $obs, $actualizadoPor);
+    historia_clinica_eliminar($id);
 
-    echo json_encode(['ok' => true, 'message' => 'Historia actualizada correctamente.']);
+    echo json_encode(['ok' => true, 'message' => 'Registro eliminado correctamente.']);
 } catch (Throwable $e) {
     http_response_code(500);
-    echo json_encode(['ok' => false, 'error' => 'Error al actualizar en base de datos: ' . $e->getMessage()]);
+    echo json_encode(['ok' => false, 'error' => 'Error al eliminar en base de datos: ' . $e->getMessage()]);
 }
