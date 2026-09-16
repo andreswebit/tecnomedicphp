@@ -86,15 +86,14 @@ if (!$esModal) {
 
     <div style="padding:10px">
 
-        <!-- CARD 1: Datos personales   cambiar si no funciona onclick="abrirEdicionPaciente()" -->
+        <!-- CARD 1: Datos personales -->
         <div class="ficha-card" data-card="datos">
             <div class="ficha-card-header">
                 <div class="ficha-card-icon blue">👤</div>
                 <div class="ficha-card-title">Datos</div>
                 <?php if ($puedeEditar): ?>
                 <button class="ficha-btn ficha-btn-xs ficha-btn-outline" id="btnEditarDatos"
-                    onclick="abrirEdicionPaciente()"
-                    >Editar</button>
+                    onclick="toggleEdicionDatos()">Editar</button>
                 <?php endif; ?>
             </div>
             <div class="ficha-card-body" id="datosBody">
@@ -191,54 +190,89 @@ if (!$esModal) {
                 <div class="ficha-card-icon green">📋</div>
                 <div class="ficha-card-title">Historia clínica</div>
             </div>
+            <!-- Fila de agregar nueva información -->
+            <div class="ficha-card-body ">
+                <div
+                style="background:#fff;border:1px solid #e2e8e6;border-radius:8px; padding:10px ;box-shadow:0 1px 4px rgba(13,27,42,.05);gap:8px"
+                id="filaNueva">
+                <div style="font-weight:600;color:#555f5e;font-size:.85rem;margin-bottom:6px">Agregar
+                    (<?= date('d/m/Y') ?>)</div>
+                <div
+                    style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;border-bottom:1px solid #e2e8e6;padding-bottom:6px">
+                    <div style="flex:1 1 160px;min-width:130px; padding-right:6px">
+                        <textarea id="new_ante" rows="2" class="ficha-textarea"
+                            style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px"
+                            placeholder="Antecedentes…"></textarea>
+                    </div>
+                    <div style="flex:1 1 160px;min-width:130px">
+                        <textarea id="new_dia" rows="2" class="ficha-textarea"
+                            style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px"
+                            placeholder="Diagnóstico…"></textarea>
+                    </div>
+                </div>
+                <div style="margin-top:6px">
+                    <textarea id="new_obs" rows="2" class="ficha-textarea"
+                        style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px"
+                        placeholder="Observaciones…"></textarea>
+                </div>
+                <div style="margin-top:8px;display:flex;gap:8px">
+                    <button type="button" class="ficha-btn ficha-btn-sm ficha-btn-primary"
+                        onclick="guardarNuevaHistoria()">💾 Guardar</button>
+                    <button type="button" class="ficha-btn ficha-btn-sm ficha-btn-outline"
+                        onclick="limpiarNuevaHistoria()">Cancelar</button>
+                </div>
+            </div>
+            </div>
+            <!-- registros historial ficha  -->
             <div class="ficha-card-body">
                 <?php if ($puedeEditar): ?>
                 <div id="historiaView" style="display:flex;flex-direction:column;gap:6px;font-size:.85rem">
                     <?php foreach ($historiaRegistros as $h): ?>
-                    <div class="historia-fila" id="filaHist<?= (int)($h['id'] ?? 0) ?>" style="background:#fff;border:1px solid #e2e8e6;border-radius:8px;padding:10px;box-shadow:0 1px 4px rgba(13,27,42,.05)" data-id="<?= (int)($h['id'] ?? 0) ?>">
-                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;border-bottom:1px solid #e2e8e6;padding-bottom:6px">
-                            <span style="font-weight:600;color:#0d1b2a;font-size:.85rem">📅 <?= htmlspecialchars($h['fecha_fmt'] ?? '-') ?></span>
+                    <div class="historia-fila" id="filaHist<?= (int)($h['id'] ?? 0) ?>"
+                        style="background:#fff;border:1px solid #e2e8e6;border-radius:8px;padding:10px;box-shadow:0 1px 4px rgba(13,27,42,.05)"
+                        data-id="<?= (int)($h['id'] ?? 0) ?>">
+                        <div
+                            style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;border-bottom:1px solid #e2e8e6;padding-bottom:6px">
+                            <span style="font-weight:600;color:#0d1b2a;font-size:.85rem">📅
+                                <?= htmlspecialchars($h['fecha_fmt'] ?? '-') ?></span>
                             <div style="display:flex;gap:6px">
-                                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-outline" onclick="editarFilaHistoria(<?= (int)($h['id'] ?? 0) ?>)" title="Editar registro">✏️</button>
-                                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-outline" onclick="eliminarFilaHistoria(<?= (int)($h['id'] ?? 0) ?>)" title="Eliminar registro" style="border-color:#dc2626;color:#dc2626">🗑️</button>
+                                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-outline"
+                                    onclick="editarFilaHistoria(<?= (int)($h['id'] ?? 0) ?>)"
+                                    title="Editar registro">✏️Editar</button>
+                                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-outline"
+                                    onclick="eliminarFilaHistoria(<?= (int)($h['id'] ?? 0) ?>)"
+                                    title="Eliminar registro" style="border-color:#dc2626;color:#dc2626">🗑️Eliminar</button>
                             </div>
                         </div>
                         <div style="display:flex;gap:10px;flex-wrap:wrap">
                             <div style="flex:1 1 160px;min-width:130px">
-                                <div style="font-size:.65rem;font-weight:600;color:#8aada9;text-transform:uppercase">Antecedentes</div>
-                                <div style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px" data-ante="<?= htmlspecialchars($h['antecedentes'] ?? '') ?>"><?= nl2br(htmlspecialchars($h['antecedentes'] ?? '-')) ?></div>
+                                <div style="font-size:.65rem;font-weight:600;color:#8aada9;text-transform:uppercase">
+                                    Antecedentes</div>
+                                <div style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px"
+                                    data-ante="<?= htmlspecialchars($h['antecedentes'] ?? '') ?>">
+                                    <?= nl2br(htmlspecialchars($h['antecedentes'] ?? '-')) ?></div>
                             </div>
                             <div style="flex:1 1 160px;min-width:130px">
-                                <div style="font-size:.65rem;font-weight:600;color:#8aada9;text-transform:uppercase">Diagnóstico</div>
-                                <div style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px" data-dia="<?= htmlspecialchars($h['diagnostico'] ?? '') ?>"><?= nl2br(htmlspecialchars($h['diagnostico'] ?? '-')) ?></div>
+                                <div style="font-size:.65rem;font-weight:600;color:#8aada9;text-transform:uppercase">
+                                    Diagnóstico</div>
+                                <div style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px"
+                                    data-dia="<?= htmlspecialchars($h['diagnostico'] ?? '') ?>">
+                                    <?= nl2br(htmlspecialchars($h['diagnostico'] ?? '-')) ?></div>
                             </div>
                         </div>
                         <div style="margin-top:6px">
-                            <div style="font-size:.65rem;font-weight:600;color:#8aada9;text-transform:uppercase">Observaciones</div>
-                            <div style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px" data-obs="<?= htmlspecialchars($h['observaciones'] ?? '') ?>"><?= nl2br(htmlspecialchars($h['observaciones'] ?? '-')) ?></div>
+                            <div style="font-size:.65rem;font-weight:600;color:#8aada9;text-transform:uppercase">
+                                Observaciones</div>
+                            <div style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px"
+                                data-obs="<?= htmlspecialchars($h['observaciones'] ?? '') ?>">
+                                <?= nl2br(htmlspecialchars($h['observaciones'] ?? '-')) ?></div>
                         </div>
                     </div>
                     <?php endforeach; ?>
-                    <!-- Fila de agregar nueva información -->
-                    <div class="historia-fila" style="background:#e2e8e6;border:2px dashed #8aada9;border-radius:8px;padding:10px" id="filaNueva">
-                        <div style="font-weight:600;color:#555f5e;font-size:.85rem;margin-bottom:6px">➕ Nueva entrada (<?= date('d/m/Y') ?>)</div>
-                        <div style="display:flex;gap:10px;flex-wrap:wrap">
-                            <div style="flex:1 1 160px;min-width:130px">
-                                <textarea id="new_ante" rows="2" class="ficha-textarea" style="font-size:.82rem;min-height:48px" placeholder="Antecedentes…"></textarea>
-                            </div>
-                            <div style="flex:1 1 160px;min-width:130px">
-                                <textarea id="new_dia" rows="2" class="ficha-textarea" style="font-size:.82rem;min-height:48px" placeholder="Diagnóstico…"></textarea>
-                            </div>
-                        </div>
-                        <div style="margin-top:6px">
-                            <textarea id="new_obs" rows="2" class="ficha-textarea" style="font-size:.82rem;min-height:48px" placeholder="Observaciones…"></textarea>
-                        </div>
-                        <div style="margin-top:8px;display:flex;gap:8px">
-                            <button type="button" class="ficha-btn ficha-btn-sm ficha-btn-primary" onclick="guardarNuevaHistoria()">💾 Guardar</button>
-                            <button type="button" class="ficha-btn ficha-btn-sm ficha-btn-outline" onclick="limpiarNuevaHistoria()">Cancelar</button>
-                        </div>
-                    </div>
-                    <?php if (empty($historiaRegistros)): ?><div class="ficha-empty"><div class="ficha-empty-text">Sin registros aún.</div></div><?php endif; ?>
+
+                    <?php if (empty($historiaRegistros)): ?><div class="ficha-empty">
+                        <div class="ficha-empty-text">Sin registros aún.</div>
+                    </div><?php endif; ?>
                 </div>
                 <?php else: ?>
                 <div class="kv-grid" style="grid-template-columns:1fr 1fr">
@@ -266,7 +300,7 @@ if (!$esModal) {
                 <div class="ficha-card-icon amber">💉</div>
                 <div class="ficha-card-title">Tratamientos</div>
                 <?php if ($puedeCargarTratamiento && $puedeEditar): ?>
-                <button class="ficha-btn ficha-btn-xs ficha-btn-outline" onclick="abrirModalTratamiento()">➕</button>
+                <button class="ficha-btn ficha-btn-xs ficha-btn-teal" onclick="abrirModalTratamiento()">➕ Agregar</button>
                 <?php endif; ?>
             </div>
             <div class="ficha-card-body">
@@ -283,6 +317,9 @@ if (!$esModal) {
                             <th>Área</th>
                             <th>Profesional</th>
                             <th>Descripción</th>
+                            <?php if ($puedeCargarTratamiento && $puedeEditar): ?>
+                            <th style="width:40px;text-align:right">Acciones</th>
+                            <?php endif; ?>
                         </tr>
                     </thead>
                     <tbody>
@@ -297,6 +334,13 @@ if (!$esModal) {
                             <td><?= htmlspecialchars($t['profesional_apellido'] . ', ' . $t['profesional_nombre']) ?>
                             </td>
                             <td><?= nl2br(htmlspecialchars($t['descripcion'])) ?></td>
+                            <?php if ($puedeCargarTratamiento && $puedeEditar): ?>
+                            <td style="text-align:right">
+                                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-outline"
+                                    onclick="eliminarTratamiento(<?= (int)$t['id'] ?>)" title="Eliminar tratamiento"
+                                    style="border-color:#dc2626;color:#dc2626">🗑️Eliminar</button>
+                            </td>
+                            <?php endif; ?>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -310,7 +354,7 @@ if (!$esModal) {
             <div class="ficha-card-header">
                 <div class="ficha-card-icon purple">💊</div>
                 <div class="ficha-card-title">Medicamentos recetados</div>
-                <?php if ($puedeGestionarMedicamentos): ?>
+                <?php if ($puedeGestionarMedicamentos && $puedeEditar): ?>
                 <button class="ficha-btn ficha-btn-xs ficha-btn-teal" onclick="abrirModalMedicamento()">➕
                     Agregar</button>
                 <?php endif; ?>
@@ -323,14 +367,17 @@ if (!$esModal) {
                 </div>
                 <?php else: ?>
                 <table class="ficha-table">
-                    <thead>
-                        <tr>
+                    <thead >
+                        <tr >
                             <th>Medicamento</th>
                             <th>Droga</th>
                             <th>Dosis</th>
                             <th>Frecuencia</th>
                             <th>Vía</th>
                             <th>Estado</th>
+                            <?php if ($puedeGestionarMedicamentos && $puedeEditar): ?>
+                            <th style="width:40px;text-align:right">Acciones</th>
+                            <?php endif; ?>
                         </tr>
                     </thead>
                     <tbody>
@@ -346,6 +393,13 @@ if (!$esModal) {
                                     ● <?= ucfirst(htmlspecialchars($m['estado'] ?? 'activo')) ?>
                                 </span>
                             </td>
+                            <?php if ($puedeGestionarMedicamentos && $puedeEditar): ?>
+                            <td style="text-align:right">
+                                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-outline"
+                                    onclick="eliminarMedicamento(<?= (int)$m['id'] ?>)" title="Eliminar medicamento"
+                                    style="border-color:#dc2626;color:#dc2626">🗑️Eliminar</button>
+                            </td>
+                            <?php endif; ?>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -383,10 +437,10 @@ if (!$esModal) {
                     </div>
                     <div class="lista-actions">
                         <a href="<?= b('/portal/ficha/descargar_estudio.php?id=' . $e['id']) ?>" target="_blank"
-                            class="ficha-btn ficha-btn-xs ficha-btn-outline" title="Descargar">⬇️</a>
+                             class="ficha-btn ficha-btn-xs ficha-btn-teal" style="text-decoration: none" title="Descargar">⬇️ Descargar</a>
                         <?php if ($puedeEditar): ?>
-                        <button class="ficha-btn ficha-btn-xs ficha-btn-outline"
-                            onclick="eliminarEstudio(<?= $e['id'] ?>)" title="Eliminar">🗑️</button>
+                        <button class="ficha-btn ficha-btn-xs ficha-btn-outline" style="border-color:#dc2626;color:#dc2626"
+                            onclick="eliminarEstudio(<?= $e['id'] ?>)" title="Eliminar">🗑️Eliminar</button>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -396,13 +450,166 @@ if (!$esModal) {
         </div>
 
     </div><!-- /padding -->
+
+    <!-- ── SUBMODAL: TRATAMIENTO ── -->
+    <div id="submodalTratamiento" class="ficha-submodal-overlay"
+        onclick="if(event.target===this)cerrarSubmodal('submodalTratamiento')">
+        <div class="ficha-submodal">
+            <div class="ficha-submodal-header">
+                <span>💉 Registrar Tratamiento</span>
+                <button type="button" class="ficha-submodal-close"
+                    onclick="cerrarSubmodal('submodalTratamiento')">&times;</button>
+            </div>
+            <form id="formTratamiento" action="<?= b('/portal/ficha/agregar_tratamiento.php') ?>" method="post"
+                onsubmit="return guardarTratamiento(event)">
+                <input type="hidden" name="paciente_id" value="<?= $pacienteId ?>">
+                <div class="ficha-submodal-body">
+                    <div class="form-group-ficha">
+                        <label for="trat_fecha">Fecha</label>
+                        <input type="date" id="trat_fecha" name="fecha" value="<?= date('Y-m-d') ?>" required>
+                    </div>
+                    <div class="form-group-ficha">
+                        <label for="trat_area">Área / Especialidad</label>
+                        <select id="trat_area" name="area" required>
+                            <option value="audiologia">Audiología</option>
+                            <option value="hiperbarica">Medicina Hiperbárica</option>
+                            <option value="nutricion">Nutrición</option>
+                            <option value="ortopedia">Ortopedia y Rehabilitación</option>
+                            <option value="equipamiento">Equipamiento Médico</option>
+                            <option value="general">Clínica / General</option>
+                        </select>
+                    </div>
+                    <div class="form-group-ficha">
+                        <label for="trat_descripcion">Descripción / Evolución</label>
+                        <textarea id="trat_descripcion" name="descripcion" rows="4"
+                            placeholder="Detalle de la sesión o indicación terapéutica..." required></textarea>
+                    </div>
+                </div>
+                <div class="ficha-submodal-footer">
+                    <button type="button" class="ficha-btn ficha-btn-sm ficha-btn-outline"
+                        onclick="cerrarSubmodal('submodalTratamiento')">Cancelar</button>
+                    <button type="submit" class="ficha-btn ficha-btn-sm ficha-btn-primary">💾 Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ── SUBMODAL: MEDICAMENTO ── -->
+    <div id="submodalMedicamento" class="ficha-submodal-overlay"
+        onclick="if(event.target===this)cerrarSubmodal('submodalMedicamento')">
+        <div class="ficha-submodal">
+            <div class="ficha-submodal-header">
+                <span>💊 Recetar Medicamento</span>
+                <button type="button" class="ficha-submodal-close"
+                    onclick="cerrarSubmodal('submodalMedicamento')">&times;</button>
+            </div>
+            <form id="formMedicamento" action="<?= b('/portal/ficha/agregar_medicamento.php') ?>" method="post"
+                onsubmit="return guardarMedicamento(event)">
+                <input type="hidden" name="paciente_id" value="<?= $pacienteId ?>">
+                <div class="ficha-submodal-body">
+                    <div class="form-group-ficha">
+                        <label for="med_nombre">Nombre Comercial / Medicamento *</label>
+                        <input type="text" id="med_nombre" name="nombre_comercial"
+                            placeholder="Ej: Paracetamol / Tafirol" required>
+                    </div>
+                    <div class="form-group-ficha">
+                        <label for="med_droga">Principio Activo / Droga</label>
+                        <input type="text" id="med_droga" name="principio_activo" placeholder="Ej: Paracetamol">
+                    </div>
+                    <div style="display:flex;gap:10px">
+                        <div class="form-group-ficha" style="flex:1">
+                            <label for="med_dosis">Dosis</label>
+                            <input type="text" id="med_dosis" name="dosis" placeholder="Ej: 500 mg / 1 comp.">
+                        </div>
+                        <div class="form-group-ficha" style="flex:1">
+                            <label for="med_frecuencia">Frecuencia</label>
+                            <input type="text" id="med_frecuencia" name="frecuencia" placeholder="Ej: Cada 8 hs">
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:10px">
+                        <div class="form-group-ficha" style="flex:1">
+                            <label for="med_via">Vía de administración</label>
+                            <select id="med_via" name="via_administracion">
+                                <option value="Oral">Oral</option>
+                                <option value="Sublingual">Sublingual</option>
+                                <option value="Tópica">Tópica</option>
+                                <option value="Inhalatoria">Inhalatoria</option>
+                                <option value="Intramuscular">Intramuscular</option>
+                                <option value="Intravenosa">Intravenosa</option>
+                                <option value="Oftálmica">Oftálmica</option>
+                                <option value="Ótica">Ótica</option>
+                                <option value="Otra">Otra</option>
+                            </select>
+                        </div>
+                        <div class="form-group-ficha" style="flex:1">
+                            <label for="med_estado">Estado</label>
+                            <select id="med_estado" name="estado">
+                                <option value="activo" selected>Activo</option>
+                                <option value="suspendido">Suspendido</option>
+                                <option value="finalizado">Finalizado</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="ficha-submodal-footer">
+                    <button type="button" class="ficha-btn ficha-btn-sm ficha-btn-outline"
+                        onclick="cerrarSubmodal('submodalMedicamento')">Cancelar</button>
+                    <button type="submit" class="ficha-btn ficha-btn-sm ficha-btn-teal">💾 Recetar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ── SUBMODAL: ESTUDIO ── -->
+    <div id="submodalEstudio" class="ficha-submodal-overlay"
+        onclick="if(event.target===this)cerrarSubmodal('submodalEstudio')">
+        <div class="ficha-submodal">
+            <div class="ficha-submodal-header">
+                <span>🧪 Subir Estudio Médico</span>
+                <button type="button" class="ficha-submodal-close"
+                    onclick="cerrarSubmodal('submodalEstudio')">&times;</button>
+            </div>
+            <form id="formEstudio" action="<?= b('/portal/ficha/subir_estudio.php') ?>" method="post"
+                enctype="multipart/form-data" onsubmit="return guardarEstudio(event)">
+                <input type="hidden" name="paciente_id" value="<?= $pacienteId ?>">
+                <div class="ficha-submodal-body">
+                    <div class="form-group-ficha">
+                        <label for="est_archivo">Archivo (PDF, JPG, PNG - Máx. 10MB) *</label>
+                        <input type="file" id="est_archivo" name="archivo" accept=".pdf,.jpg,.jpeg,.png" required>
+                    </div>
+                    <div class="form-group-ficha">
+                        <label for="est_tipo">Tipo de estudio</label>
+                        <select id="est_tipo" name="tipo">
+                            <option value="Audiometría">Audiometría</option>
+                            <option value="Laboratorio">Laboratorio / Análisis Clínicos</option>
+                            <option value="Resonancia">Resonancia Magnética</option>
+                            <option value="Tomografía">Tomografía Computada</option>
+                            <option value="Radiografía">Radiografía</option>
+                            <option value="Ecografía">Ecografía</option>
+                            <option value="Informe">Informe Médico</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-group-ficha">
+                        <label for="est_fecha">Fecha del estudio</label>
+                        <input type="date" id="est_fecha" name="fecha_estudio" value="<?= date('Y-m-d') ?>">
+                    </div>
+                    <div class="form-group-ficha">
+                        <label for="est_notas">Notas / Observaciones</label>
+                        <textarea id="est_notas" name="notas" rows="3"
+                            placeholder="Diagnóstico, conclusiones o notas relevantes..."></textarea>
+                    </div>
+                </div>
+                <div class="ficha-submodal-footer">
+                    <button type="button" class="ficha-btn ficha-btn-sm ficha-btn-outline"
+                        onclick="cerrarSubmodal('submodalEstudio')">Cancelar</button>
+                    <button type="submit" class="ficha-btn ficha-btn-sm ficha-btn-primary">⬆️ Subir Archivo</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div><!-- /.ficha-medica -->
 
-<?php
-if (!$esModal) {
-    require __DIR__ . '/../../includes/portal_footer.php';
-}
-?>
 <script>
 window.pacienteFichaData = {
     id: <?= $pacienteId ?>,
@@ -414,8 +621,16 @@ window.pacienteFichaData = {
     fecha_nacimiento: <?= json_encode($perfil['fecha_nacimiento'] ?? '') ?>,
     obra_social_id: <?= json_encode($perfil['obra_social_id'] ?? '') ?>
 };
-</script>
-<script>
+
+function recargarFichaActual() {
+    var pid = <?= (int)$pacienteId ?>;
+    if (typeof window.abrirFicha === 'function') {
+        window.abrirFicha(pid);
+    } else {
+        location.reload();
+    }
+}
+
 // Tab switching - muestra solo el card seleccionado y hace scroll hasta él
 document.querySelectorAll('.ficha-tab').forEach(tab => {
     tab.addEventListener('click', () => {
@@ -439,34 +654,19 @@ document.querySelectorAll('.ficha-tab').forEach(tab => {
 
 // Funciones de edición inline
 function abrirEdicionPaciente() {
-    if (typeof openEdit === 'function') {
-        openEdit({
-            id: <?= $pacienteId ?>,
-            nombre: <?= json_encode($paciente['nombre']) ?>,
-            apellido: <?= json_encode($paciente['apellido']) ?>,
-            dni: <?= json_encode($paciente['dni']) ?>,
-            telefono: <?= json_encode($paciente['telefono'] ?: '') ?>,
-            email: <?= json_encode($paciente['email'] ?: '') ?>,
-            fecha_nacimiento: <?= json_encode($perfil['fecha_nacimiento'] ?: '') ?>,
-            obra_social_id: <?= json_encode($perfil['obra_social_id'] ?: '') ?>
-        });
-    } else {
-        toggleEdicionDatos();
-    }
+    toggleEdicionDatos();
 }
-
-
 
 function toggleEdicionDatos() {
     const view = document.getElementById('datosView');
     const form = document.getElementById('formDatos');
     const btn = document.getElementById('btnEditarDatos');
+    if (!view || !form) return;
     const editing = form.style.display === 'block';
     view.style.display = editing ? 'grid' : 'none';
     form.style.display = editing ? 'none' : 'block';
-    btn.textContent = editing ? 'Editar' : '❌ Cancelar';
+    if (btn) btn.textContent = editing ? 'Editar' : '❌ Cancelar';
 }
-
 
 function toastFicha(msj) {
     let t = document.getElementById('fichaToast');
@@ -483,37 +683,26 @@ function toastFicha(msj) {
     }, 3000);
 }
 
-// Función openEdit: abre el modal de edición de paciente en el contexto de la ficha médica.
-// Llama al openEdit de admin/pacientes.php si está disponible (contexto admin),
-// de lo contrario, muestra el formulario inline de la ficha pre-cargado con los datos.
 function openEdit(d) {
-    // Si estamos en contexto admin (openEdit ya definido globalmente), delegamos ahí
-    if (typeof openEdit === 'function' && typeof modalEditar !== 'undefined') {
-        // Ya existe el openEdit global - el puente en portal_header.php lo llamó,
-        // pero como openEdit admin ya existe, lo re-ejecutamos con los datos de la ficha
-        // para que el modal admin se abra con esos datos. Si el admin tiene su propio
-        // modal, este es un fallback; si no, continuamos abajo.
-        if (document.getElementById('modalEditar')) {
-            document.getElementById('f-id').value = d.id;
-            document.getElementById('f-nombre').value = d.nombre || '';
-            document.getElementById('f-apellido').value = d.apellido || '';
-            document.getElementById('f-dni').value = d.dni || '';
-            document.getElementById('f-telefono').value = d.telefono || '';
-            document.getElementById('f-email').value = d.email || '';
-            document.getElementById('f-fecha-nacimiento').value = d.fecha_nacimiento || '';
-            var obraSocialSelect = document.getElementById('f-obra-social');
-            if (obraSocialSelect) {
-                obraSocialSelect.value = d.obra_social_id || '';
-                Array.prototype.forEach.call(obraSocialSelect.options, function(option) {
-                    option.selected = option.value === (d.obra_social_id || '');
-                });
-            }
-            document.getElementById('modalEditar').classList.add('open');
-            return;
+    if (document.getElementById('modalEditar')) {
+        document.getElementById('f-id').value = d.id;
+        document.getElementById('f-nombre').value = d.nombre || '';
+        document.getElementById('f-apellido').value = d.apellido || '';
+        document.getElementById('f-dni').value = d.dni || '';
+        document.getElementById('f-telefono').value = d.telefono || '';
+        document.getElementById('f-email').value = d.email || '';
+        document.getElementById('f-fecha-nacimiento').value = d.fecha_nacimiento || '';
+        var obraSocialSelect = document.getElementById('f-obra-social');
+        if (obraSocialSelect) {
+            obraSocialSelect.value = d.obra_social_id || '';
+            Array.prototype.forEach.call(obraSocialSelect.options, function(option) {
+                option.selected = option.value === (d.obra_social_id || '');
+            });
         }
+        document.getElementById('modalEditar').classList.add('open');
+        return;
     }
 
-    // Contexto ficha médica (portal): muestra el formulario inline pre-cargado
     const view = document.getElementById('datosView');
     const form = document.getElementById('formDatos');
     const btn = document.getElementById('btnEditarDatos');
@@ -523,7 +712,6 @@ function openEdit(d) {
         return;
     }
 
-    // Pre-cargar los datos del paciente en los campos del formulario
     const inp_nombre = document.getElementById('inp_nombre');
     const inp_apellido = document.getElementById('inp_apellido');
     const inp_dni = document.getElementById('inp_dni');
@@ -539,14 +727,12 @@ function openEdit(d) {
     if (inp_email) inp_email.value = d.email || '';
     if (inp_nac) inp_nac.value = d.fecha_nacimiento || '';
 
-    // Seleccionar obra social si existe
     if (inp_obra) {
         inp_obra.value = d.obra_social_id || '';
-        // Buscar y seleccionar el option correspondiente
-        const obraSelect = inp_obra; // el select ya está en el DOM
+        const obraSelect = inp_obra;
         if (obraSelect.options) {
             for (let i = 0; i < obraSelect.options.length; i++) {
-                if (obraSelect.options[i].value === d.obra_social_id || '') {
+                if (obraSelect.options[i].value === (d.obra_social_id || '')) {
                     obraSelect.selectedIndex = i;
                     break;
                 }
@@ -554,26 +740,24 @@ function openEdit(d) {
         }
     }
 
-    // Mostrar formulario y ocultar vista
     toggleEdicionDatos();
-    // Asegurar que el botón diga "❌ Cancelar"
     if (btn) btn.textContent = '❌ Cancelar';
 }
 
 function guardarHistoria(e) {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     const form = e.target && e.target.closest ? e.target.closest('form') : null;
-    if (!form) return;
+    if (!form) return false;
     const data = new FormData(form);
     const btn = form.querySelector('button[type="submit"]');
-    if (!btn) return;
+    if (!btn) return false;
 
     const ante = (data.get('antecedentes') || '').toString().trim();
-    const dia  = (data.get('diagnostico') || '').toString().trim();
-    const obs  = (data.get('observaciones') || '').toString().trim();
+    const dia = (data.get('diagnostico') || '').toString().trim();
+    const obs = (data.get('observaciones') || '').toString().trim();
     if (!ante && !dia && !obs) {
         toastFicha('⚠️ Al menos un campo es obligatorio.');
-        return;
+        return false;
     }
 
     btn.disabled = true;
@@ -586,7 +770,7 @@ function guardarHistoria(e) {
         .then(res => {
             if (res.ok) {
                 toastFicha('✅ ' + (res.message || 'Historia clínica guardada'));
-                setTimeout(() => location.reload(), 600);
+                setTimeout(() => recargarFichaActual(), 600);
             } else {
                 toastFicha('⚠️ Error al guardar: ' + (res.error || 'Error desconocido'));
                 btn.disabled = false;
@@ -598,6 +782,7 @@ function guardarHistoria(e) {
             btn.disabled = false;
             btn.textContent = '💾 Guardar';
         });
+    return false;
 }
 
 function nl2br(str) {
@@ -606,12 +791,15 @@ function nl2br(str) {
 }
 
 function guardarPersona(e) {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     const form = document.getElementById('formDatos');
+    if (!form) return false;
     const data = new FormData(form);
     const btn = form.querySelector('button[type="submit"]');
-    btn.disabled = true;
-    btn.textContent = 'Guardando...';
+    if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Guardando...';
+    }
     fetch(form.action, {
             method: 'POST',
             body: data
@@ -619,61 +807,265 @@ function guardarPersona(e) {
         .then(r => r.json())
         .then(r => {
             if (r.ok) {
-                location.reload();
+                toastFicha('✅ ' + (r.message || 'Datos actualizados'));
+                setTimeout(() => recargarFichaActual(), 600);
             } else {
-                alert(r.error || 'Error al guardar');
-                btn.disabled = false;
-                btn.textContent = '💾 Guardar';
+                toastFicha('⚠️ ' + (r.error || 'Error al guardar'));
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = '💾 Guardar';
+                }
             }
         })
         .catch(() => {
-            alert('Error de conexión');
-            btn.disabled = false;
-            btn.textContent = '💾 Guardar';
+            toastFicha('⚠️ Error de conexión');
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = '💾 Guardar';
+            }
         });
+    return false;
 }
 
 function abrirEdicionHistoria() {
     return false;
 }
 
+function cerrarSubmodal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+    modal.classList.remove('open');
+    const form = modal.querySelector('form');
+    if (form) form.reset();
+}
+
 function abrirModalTratamiento() {
-    alert('Modal de nuevo tratamiento - Por implementar');
+    const modal = document.getElementById('submodalTratamiento');
+    if (modal) modal.classList.add('open');
+}
+
+function guardarTratamiento(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const form = document.getElementById('formTratamiento');
+    if (!form) return false;
+    const btn = form.querySelector('button[type="submit"]');
+    if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Guardando...';
+    }
+    const data = new FormData(form);
+    fetch(form.action, {
+            method: 'POST',
+            body: data
+        })
+        .then(r => r.json())
+        .then(res => {
+            if (res.ok) {
+                toastFicha('✅ ' + (res.message || 'Tratamiento guardado'));
+                cerrarSubmodal('submodalTratamiento');
+                setTimeout(() => recargarFichaActual(), 600);
+            } else {
+                toastFicha('⚠️ Error: ' + (res.error || 'No se pudo guardar el tratamiento'));
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = '💾 Guardar';
+                }
+            }
+        })
+        .catch(() => {
+            toastFicha('⚠️ Error de conexión');
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = '💾 Guardar';
+            }
+        });
+    return false;
+}
+
+function eliminarTratamiento(id) {
+    if (!confirm('¿Eliminar este tratamiento?')) return;
+    fetch('<?= b('/portal/ficha/eliminar_tratamiento.php') ?>', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'id=' + encodeURIComponent(id)
+        })
+        .then(r => r.json())
+        .then(res => {
+            if (res.ok) {
+                toastFicha('✅ ' + (res.message || 'Tratamiento eliminado'));
+                setTimeout(() => recargarFichaActual(), 600);
+            } else {
+                toastFicha('⚠️ Error: ' + (res.error || 'No se pudo eliminar el tratamiento'));
+            }
+        })
+        .catch(() => {
+            toastFicha('⚠️ Error de conexión');
+        });
 }
 
 function abrirModalMedicamento() {
-    alert('Modal de nuevo medicamento - Por implementar');
+    const modal = document.getElementById('submodalMedicamento');
+    if (modal) modal.classList.add('open');
+}
+
+function guardarMedicamento(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const form = document.getElementById('formMedicamento');
+    if (!form) return false;
+    const btn = form.querySelector('button[type="submit"]');
+    if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Guardando...';
+    }
+    const data = new FormData(form);
+    fetch(form.action, {
+            method: 'POST',
+            body: data
+        })
+        .then(r => r.json())
+        .then(res => {
+            if (res.ok) {
+                toastFicha('✅ ' + (res.message || 'Medicamento guardado'));
+                cerrarSubmodal('submodalMedicamento');
+                setTimeout(() => recargarFichaActual(), 600);
+            } else {
+                toastFicha('⚠️ Error: ' + (res.error || 'No se pudo recetar el medicamento'));
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = '💾 Recetar';
+                }
+            }
+        })
+        .catch(() => {
+            toastFicha('⚠️ Error de conexión');
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = '💾 Recetar';
+            }
+        });
+    return false;
+}
+
+function eliminarMedicamento(id) {
+    if (!confirm('¿Eliminar este medicamento recetado?')) return;
+    fetch('<?= b('/portal/ficha/eliminar_medicamento.php') ?>', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'id=' + encodeURIComponent(id)
+        })
+        .then(r => r.json())
+        .then(res => {
+            if (res.ok) {
+                toastFicha('✅ ' + (res.message || 'Medicamento eliminado'));
+                setTimeout(() => recargarFichaActual(), 600);
+            } else {
+                toastFicha('⚠️ Error: ' + (res.error || 'No se pudo eliminar el medicamento'));
+            }
+        })
+        .catch(() => {
+            toastFicha('⚠️ Error de conexión');
+        });
 }
 
 function abrirModalEstudio() {
-    alert('Modal de nuevo estudio - Por implementar');
+    const modal = document.getElementById('submodalEstudio');
+    if (modal) modal.classList.add('open');
+}
+
+function guardarEstudio(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const form = document.getElementById('formEstudio');
+    if (!form) return false;
+    const fileInp = document.getElementById('est_archivo');
+    if (fileInp && fileInp.files && fileInp.files[0]) {
+        if (fileInp.files[0].size > 10 * 1024 * 1024) {
+            toastFicha('⚠️ El archivo supera el límite de 10 MB.');
+            return false;
+        }
+    }
+    const btn = form.querySelector('button[type="submit"]');
+    if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Subiendo...';
+    }
+    const data = new FormData(form);
+    fetch(form.action, {
+            method: 'POST',
+            body: data
+        })
+        .then(r => r.json())
+        .then(res => {
+            if (res.ok) {
+                toastFicha('✅ ' + (res.message || 'Estudio subido'));
+                cerrarSubmodal('submodalEstudio');
+                setTimeout(() => recargarFichaActual(), 600);
+            } else {
+                toastFicha('⚠️ Error: ' + (res.error || 'No se pudo subir el estudio'));
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = '💾 Subir';
+                }
+            }
+        })
+        .catch(() => {
+            toastFicha('⚠️ Error de conexión');
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = '💾 Subir';
+            }
+        });
+    return false;
 }
 
 function eliminarEstudio(id) {
-    if (!confirm('¿Eliminar este estudio?')) return;
-    alert('Estudio eliminado - Por implementar la lógica real');
+    if (!confirm('¿Eliminar este estudio y su archivo adjunto?')) return;
+    fetch('<?= b('/portal/ficha/eliminar_estudio.php') ?>', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'id=' + encodeURIComponent(id)
+        })
+        .then(r => r.json())
+        .then(res => {
+            if (res.ok) {
+                toastFicha('✅ ' + (res.message || 'Estudio eliminado'));
+                setTimeout(() => recargarFichaActual(), 600);
+            } else {
+                toastFicha('⚠️ Error: ' + (res.error || 'No se pudo eliminar el estudio'));
+            }
+        })
+        .catch(() => {
+            toastFicha('⚠️ Error de conexión');
+        });
 }
 
 function eliminarFilaHistoria(id) {
     if (!confirm('¿Eliminar este registro de la historia clínica?')) return;
 
     fetch('<?= b('/portal/ficha/eliminar_historia.php') ?>', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: 'id=' + encodeURIComponent(id)
-    })
-    .then(r => r.json())
-    .then(res => {
-        if (res.ok) {
-            toastFicha('✅ ' + (res.message || 'Registro eliminado'));
-            setTimeout(() => location.reload(), 600);
-        } else {
-            toastFicha('⚠️ Error: ' + (res.error || 'No se pudo eliminar'));
-        }
-    })
-    .catch(() => {
-        toastFicha('⚠️ Error de conexión');
-    });
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'id=' + encodeURIComponent(id)
+        })
+        .then(r => r.json())
+        .then(res => {
+            if (res.ok) {
+                toastFicha('✅ ' + (res.message || 'Registro eliminado'));
+                setTimeout(() => recargarFichaActual(), 600);
+            } else {
+                toastFicha('⚠️ Error: ' + (res.error || 'No se pudo eliminar'));
+            }
+        })
+        .catch(() => {
+            toastFicha('⚠️ Error de conexión');
+        });
 }
 
 function editarFilaHistoria(id) {
@@ -684,15 +1076,16 @@ function editarFilaHistoria(id) {
     const diaDiv = fila.querySelector('[data-dia]');
     const obsDiv = fila.querySelector('[data-obs]');
     const ante = anteDiv ? (anteDiv.getAttribute('data-ante') || '') : '';
-    const dia  = diaDiv ? (diaDiv.getAttribute('data-dia') || '') : '';
-    const obs  = obsDiv ? (obsDiv.getAttribute('data-obs') || '') : '';
+    const dia = diaDiv ? (diaDiv.getAttribute('data-dia') || '') : '';
+    const obs = obsDiv ? (obsDiv.getAttribute('data-obs') || '') : '';
 
     fila.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;border-bottom:1px solid #e2e8e6;padding-bottom:6px">
             <span style="font-weight:600;color:#0d1b2a;font-size:.85rem">📅 Editando registro #` + id + `</span>
             <div style="display:flex;gap:6px">
-                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-primary" onclick="guardarFilaHistoria(` + id + `, this)">💾 Guardar</button>
-                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-outline" onclick="location.reload()">Cancelar</button>
+                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-primary" onclick="guardarFilaHistoria(` +
+        id + `, this)">💾 Guardar</button>
+                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-outline" onclick="recargarFichaActual()">Cancelar</button>
             </div>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
@@ -718,8 +1111,8 @@ function editarFilaHistoria(id) {
 
 function guardarFilaHistoria(id, btn) {
     const ante = (document.getElementById('fila_ante_' + id)?.value || '').trim();
-    const dia  = (document.getElementById('fila_dia_' + id)?.value || '').trim();
-    const obs  = (document.getElementById('fila_obs_' + id)?.value || '').trim();
+    const dia = (document.getElementById('fila_dia_' + id)?.value || '').trim();
+    const obs = (document.getElementById('fila_obs_' + id)?.value || '').trim();
 
     if (!ante && !dia && !obs) {
         toastFicha('⚠️ Al menos un campo es obligatorio.');
@@ -732,85 +1125,119 @@ function guardarFilaHistoria(id, btn) {
     }
 
     fetch('<?= b('/portal/ficha/guardar_historia_fila.php') ?>', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: 'id=' + encodeURIComponent(id) + '&antecedentes=' + encodeURIComponent(ante) + '&diagnostico=' + encodeURIComponent(dia) + '&observaciones=' + encodeURIComponent(obs)
-    })
-    .then(r => r.json())
-    .then(res => {
-        if (res.ok) {
-            toastFicha('✅ ' + (res.message || 'Historia actualizada'));
-            setTimeout(() => location.reload(), 800);
-        } else {
-            toastFicha('⚠️ Error: ' + (res.error || 'No se pudo actualizar'));
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'id=' + encodeURIComponent(id) + '&antecedentes=' + encodeURIComponent(ante) + '&diagnostico=' +
+                encodeURIComponent(dia) + '&observaciones=' + encodeURIComponent(obs)
+        })
+        .then(r => r.json())
+        .then(res => {
+            if (res.ok) {
+                toastFicha('✅ ' + (res.message || 'Historia actualizada'));
+                setTimeout(() => recargarFichaActual(), 600);
+            } else {
+                toastFicha('⚠️ Error: ' + (res.error || 'No se pudo actualizar'));
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = '💾 Guardar';
+                }
+            }
+        })
+        .catch(() => {
+            toastFicha('⚠️ Error de conexión');
             if (btn) {
                 btn.disabled = false;
                 btn.textContent = '💾 Guardar';
             }
-        }
-    })
-    .catch(() => {
-        toastFicha('⚠️ Error de conexión');
-        if (btn) {
-            btn.disabled = false;
-            btn.textContent = '💾 Guardar';
-        }
-    });
+        });
 }
 
 function guardarNuevaHistoria() {
     const ante = (document.getElementById('new_ante')?.value || '').trim();
-    const dia  = (document.getElementById('new_dia')?.value || '').trim();
-    const obs  = (document.getElementById('new_obs')?.value || '').trim();
+    const dia = (document.getElementById('new_dia')?.value || '').trim();
+    const obs = (document.getElementById('new_obs')?.value || '').trim();
 
     if (!ante && !dia && !obs) {
         toastFicha('⚠️ Al menos un campo es obligatorio.');
         return;
     }
 
-    const btn = document.querySelector('#filaNueva button.ficha-btn-primary') || document.querySelector('#filaNueva button[type="button"]');
+    const btn = document.querySelector('#filaNueva button.ficha-btn-primary') || document.querySelector(
+        '#filaNueva button[type="button"]');
     if (btn) {
         btn.disabled = true;
         btn.textContent = 'Guardando...';
     }
 
     fetch('<?= b('/portal/ficha/guardar_historia.php') ?>', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: 'paciente_id=<?= $pacienteId ?>&antecedentes=' + encodeURIComponent(ante) + '&diagnostico=' + encodeURIComponent(dia) + '&observaciones=' + encodeURIComponent(obs)
-    })
-    .then(r => r.json())
-    .then(res => {
-        if (res.ok) {
-            toastFicha('✅ ' + (res.message || 'Historia guardada'));
-            limpiarNuevaHistoria();
-            setTimeout(() => location.reload(), 800);
-        } else {
-            toastFicha('⚠️ Error: ' + (res.error || 'No se pudo guardar'));
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'paciente_id=<?= $pacienteId ?>&antecedentes=' + encodeURIComponent(ante) + '&diagnostico=' +
+                encodeURIComponent(dia) + '&observaciones=' + encodeURIComponent(obs)
+        })
+        .then(r => r.json())
+        .then(res => {
+            if (res.ok) {
+                toastFicha('✅ ' + (res.message || 'Historia guardada'));
+                limpiarNuevaHistoria();
+                setTimeout(() => recargarFichaActual(), 600);
+            } else {
+                toastFicha('⚠️ Error: ' + (res.error || 'No se pudo guardar'));
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = '💾 Guardar';
+                }
+            }
+        })
+        .catch(() => {
+            toastFicha('⚠️ Error de conexión');
             if (btn) {
                 btn.disabled = false;
                 btn.textContent = '💾 Guardar';
             }
-        }
-    })
-    .catch(() => {
-        toastFicha('⚠️ Error de conexión');
-        if (btn) {
-            btn.disabled = false;
-            btn.textContent = '💾 Guardar';
-        }
-    });
+        });
 }
 
 function limpiarNuevaHistoria() {
     const ante = document.getElementById('new_ante');
-    const dia  = document.getElementById('new_dia');
-    const obs  = document.getElementById('new_obs');
+    const dia = document.getElementById('new_dia');
+    const obs = document.getElementById('new_obs');
     if (ante) ante.value = '';
     if (dia) dia.value = '';
     if (obs) obs.value = '';
 }
 
-
+// Exponer todas las funciones en el ámbito global window para manejadores inline
+window.recargarFichaActual = recargarFichaActual;
+window.abrirEdicionPaciente = abrirEdicionPaciente;
+window.toggleEdicionDatos = toggleEdicionDatos;
+window.toastFicha = toastFicha;
+window.openEdit = openEdit;
+window.guardarHistoria = guardarHistoria;
+window.guardarPersona = guardarPersona;
+window.abrirEdicionHistoria = abrirEdicionHistoria;
+window.cerrarSubmodal = cerrarSubmodal;
+window.abrirModalTratamiento = abrirModalTratamiento;
+window.guardarTratamiento = guardarTratamiento;
+window.eliminarTratamiento = eliminarTratamiento;
+window.abrirModalMedicamento = abrirModalMedicamento;
+window.guardarMedicamento = guardarMedicamento;
+window.eliminarMedicamento = eliminarMedicamento;
+window.abrirModalEstudio = abrirModalEstudio;
+window.guardarEstudio = guardarEstudio;
+window.eliminarEstudio = eliminarEstudio;
+window.eliminarFilaHistoria = eliminarFilaHistoria;
+window.editarFilaHistoria = editarFilaHistoria;
+window.guardarFilaHistoria = guardarFilaHistoria;
+window.guardarNuevaHistoria = guardarNuevaHistoria;
+window.limpiarNuevaHistoria = limpiarNuevaHistoria;
 </script>
-<?php require __DIR__ . '/../../includes/portal_footer.php'; ?>
+<?php
+if (!$esModal) {
+    require __DIR__ . '/../../includes/portal_footer.php';
+}
+?>

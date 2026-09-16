@@ -94,6 +94,19 @@ function tratamiento_crear(int $pacienteId, int $profesionalId, string $area, st
     $st->execute();
 }
 
+function tratamiento_get(int $id): ?array {
+    $st = db()->prepare("SELECT * FROM tm_tratamientos WHERE id = ?");
+    $st->bind_param('i', $id);
+    $st->execute();
+    return $st->get_result()->fetch_assoc() ?: null;
+}
+
+function tratamiento_eliminar(int $id): bool {
+    $st = db()->prepare("DELETE FROM tm_tratamientos WHERE id = ?");
+    $st->bind_param('i', $id);
+    return $st->execute();
+}
+
 // ── Estudios (archivos) ────────────────────────────────────────────
 
 function estudios_listar(int $pacienteId): array {
@@ -173,4 +186,23 @@ function medicamento_crear(
     $st->bind_param('issssss', $pacienteId, $nombreComercial, $principioActivo, $dosis, $frecuencia, $viaAdministracion, $estado);
     $st->execute();
     return db()->insert_id;
+}
+
+function medicamento_get(int $id): ?array {
+    $result = db()->query("SHOW TABLES LIKE 'tm_medicamentos_recetados'");
+    if ($result->num_rows === 0) return null;
+
+    $st = db()->prepare("SELECT * FROM tm_medicamentos_recetados WHERE id = ?");
+    $st->bind_param('i', $id);
+    $st->execute();
+    return $st->get_result()->fetch_assoc() ?: null;
+}
+
+function medicamento_eliminar(int $id): bool {
+    $result = db()->query("SHOW TABLES LIKE 'tm_medicamentos_recetados'");
+    if ($result->num_rows === 0) return false;
+
+    $st = db()->prepare("DELETE FROM tm_medicamentos_recetados WHERE id = ?");
+    $st->bind_param('i', $id);
+    return $st->execute();
 }

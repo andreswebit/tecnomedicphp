@@ -284,13 +284,14 @@
 .ficha-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: .76rem
+    font-size: .76rem;
+    color:#0d1b2a;
 }
 
 .ficha-table th {
     padding: 7px 9px;
     text-align: left;
-    color: #8aada9;
+    color:#0d1b2a;
     border-bottom: 1px solid #e2e8e6;
     white-space: nowrap;
     font-weight: 500
@@ -309,7 +310,10 @@
 .ficha-table tr:hover td {
     background: rgba(237, 241, 240, .5)
 }
-
+.ficha-table th {
+    color: var(--navy);
+    font-weight: 800;
+}
 .badge-area {
     display: inline-flex;
     align-items: center;
@@ -542,4 +546,119 @@
     font-size: .8rem;
     font-weight: 500;
     margin-bottom: 12px
+}
+
+/* ─── Sub-modales de acción en Ficha Médica ─────────────────────── */
+.ficha-submodal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(13, 27, 42, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 10001;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+}
+
+.ficha-submodal-overlay.open {
+    display: flex;
+}
+
+.ficha-submodal {
+    background: #ffffff;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+    overflow: hidden;
+    animation: fichaPopIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+@keyframes fichaPopIn {
+    from { opacity: 0; transform: scale(0.94) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.ficha-submodal-header {
+    background: #0d1b2a;
+    color: #ffffff;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.ficha-submodal-close {
+    background: none;
+    border: none;
+    color: #b0bfbc;
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+}
+
+.ficha-submodal-close:hover {
+    color: #ff6b6b;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.ficha-submodal-body {
+    padding: 16px 18px;
+    max-height: 75vh;
+    overflow-y: auto;
+}
+
+.ficha-submodal-footer {
+    padding: 12px 18px;
+    border-top: 1px solid #e2e8e6;
+    background: #edf1f0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.form-group-ficha {
+    margin-bottom: 12px;
+}
+
+.form-group-ficha label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #555f5e;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+.form-group-ficha input,
+.form-group-ficha select,
+.form-group-ficha textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #c8d3d1;
+    border-radius: 6px;
+    font-size: 0.84rem;
+    font-family: 'Montserrat', sans-serif;
+    background: #fff;
+    color: #333a39;
+    box-sizing: border-box;
+}
+
+.form-group-ficha input:focus,
+.form-group-ficha select:focus,
+.form-group-ficha textarea:focus {
+    outline: none;
+    border-color: #1aa5a5;
+    box-shadow: 0 0 0 2px rgba(26, 165, 165, 0.15);
 }
