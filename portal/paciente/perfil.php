@@ -60,7 +60,8 @@ require __DIR__ . '/../../includes/portal_header.php';
         <label>Repetir nueva contraseña</label>
         <input type="password" name="nueva_password2">
 
-        <button type="submit" class="portal-btn">Guardar cambios</button>
+        <button type="submit" class="portal-btn" style="background-color: #28a745;">Guardar</button>
+        <button type="button" class="portal-btn" style="background-color: #6c757d;" onclick="window.location.href='<?= b('/portal/paciente/dashboard.php') ?>';">Volver</button>
     </form>
 </div>
 <?php require __DIR__ . '/../../includes/portal_footer.php'; ?>

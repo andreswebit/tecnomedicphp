@@ -70,7 +70,7 @@ require __DIR__ . '/../../includes/portal_header.php';
             'telefono' => $user['telefono'] ?? '',
             'email' => $user['email'] ?? '',
             'obra_social' => $perfil['obra_social_nombre'] ?? '',
-        ])) ?>">＋ Agregar turno</a>
+        ])) ?>">Agregar turno</a>
     </div>
 
     <?php if (!$turnos): ?>
