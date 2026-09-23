@@ -53,7 +53,7 @@ body.portal {
   min-height: 100vh;
   font-family: "Montserrat", sans-serif;
   background-color: var(--tm-bg);
-  color: var(--g50);
+  color: var(--tm-navy);
 }
 
 .portal-nav {
@@ -96,6 +96,7 @@ body.portal {
   padding: 24px;
   margin-bottom: 20px;
   box-shadow: 0 2px 10px rgba(13, 27, 42, 0.06);
+  color: var(--tm-navy);
 }
 
 .portal-card h2 {
@@ -348,7 +349,14 @@ table.portal-table th {
   text-align: center;
   border: 1px solid rgba(26, 165, 165, 0.12);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
+  z-index: 1;
+}
+
+.tablero-title[data-tooltip] {
+  position: relative;
+  display: inline-block;
+  z-index: 2;
 }
 
 .tablero-tile::before {
@@ -365,14 +373,12 @@ table.portal-table th {
 }
 
 .tablero-tile:hover {
-  transform: translateY(-4px);
+  transform: translateY(-4px); 
   box-shadow: 0 3px 15px var(--g400);
-  border-color: var(--green); ;
+  border-color: var(--green); 
 }
 
-.tablero-tile:hover::before {
-  opacity: 1;
-}
+
 
 .tablero-tile.disabled {
   opacity: 0.5;
@@ -423,6 +429,39 @@ table.portal-table th {
   font-weight: 600;
   font-size: 1.05rem;
   margin-bottom: 4px;
+}
+
+/* Tooltip para el tablero (usa data-tooltip) */
+.tablero-title[data-tooltip] {
+  position: relative;
+  display: inline-block;
+}
+
+.tablero-title[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+
+  background: #222;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.2s;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.tablero-tile:hover .tablero-title[data-tooltip]::after,
+.tablero-tile:focus-within .tablero-title[data-tooltip]::after {
+  opacity: 1;
+  visibility: visible;
 }
 
 .tablero-desc {

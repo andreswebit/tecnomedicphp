@@ -107,7 +107,7 @@ require __DIR__ . '/../includes/portal_header.php';
                     <td class="actions-col">
                         <div class="btn-actions">
                             <?php if ($p['destacado']): ?>
-                            <form method="post" style="flex:1;" onsubmit="return confirm('¿Quitar este producto de destacados?');">
+                            <form method="post" style="flex:1;" onsubmit="return tmConfirmSubmit(this,'¿Quitar este producto de destacados?');">
                                 <input type="hidden" name="id" value="<?= $p['id'] ?>">
                                 <input type="hidden" name="destacado" value="0">
                                 <button type="submit" class="btn-action btn-del" data-tooltip="Quitar destacado" style="width:100%;">

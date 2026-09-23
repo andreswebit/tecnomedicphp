@@ -170,7 +170,7 @@ require __DIR__ . '/../includes/portal_header.php';
                                     style="width:100%;">✅ Aprobar</button>
                             </form>
                             <form method="post" style="flex:1;"
-                                onsubmit="return confirm('¿Rechazar y eliminar esta solicitud?');">
+                                onsubmit="return tmConfirmSubmit(this,'¿Rechazar y eliminar esta solicitud?');">
                                 <input type="hidden" name="accion" value="rechazar">
                                 <input type="hidden" name="id" value="<?= $p['id'] ?>">
                                 <button type="submit" class="btn-action btn-del" data-tooltip="Rechazar"
@@ -276,7 +276,7 @@ require __DIR__ . '/../includes/portal_header.php';
 
                             <!-- Eliminar -->
                             <form method="post" style="flex:1;"
-                                onsubmit="return confirm('¿Eliminar este paciente?\nEsta acción no se puede deshacer.');">
+                                onsubmit="return tmConfirmSubmit(this,'¿Eliminar este paciente?\nEsta acción no se puede deshacer.');">
                                 <input type="hidden" name="accion" value="eliminar">
                                 <input type="hidden" name="id" value="<?= $p['id'] ?>">
                                 <button type="submit" class="btn-action btn-del" data-tooltip="Eliminar"

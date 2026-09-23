@@ -36,8 +36,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 );
                 $st->bind_param('sssssss', $nombre, $apellido, $email, $hash, $dni, $telefono, $rol);
             }
-            $st->execute();
-            $id = db()->insert_id;
+            try {
+                $st->execute();
+                $id = db()->insert_id;
+            } catch (mysqli_sql_exception $e) {
+                // Manejo de duplicados (ej: email/dni) para no romper con Fatal error
+                if ((int)$e->getCode() === 1062) {
+                    // Duplicado: informamos al usuario cuál campo falló (si el mensaje lo trae)
+                    $msg = strtolower($e->getMessage());
+                    if (strpos($msg, "for key 'email'") !== false || strpos($msg, 'key \'email\'') !== false) {
+                        header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?') . '?error=email_registrado');
+                    } elseif (strpos($msg, "for key 'dni'") !== false || strpos($msg, 'key \'dni\'') !== false) {
+                        header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?') . '?error=dni_registrado');
+                    } else {
+                        header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?') . '?error=usuario_registrado');
+                    }
+                    exit;
+                    exit;
+                }
+
+                // Cualquier otro error: no ocultarlo silenciosamente
+                throw $e;
+            }
 
             // Crear perfil según rol
             if ($rol === 'paciente') {
@@ -170,6 +190,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $st->execute();
         header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?') . '?ok=1');
         exit;
+    } elseif ($accion === 'eliminar') {
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id > 0) {
+            $stRol = db()->prepare("SELECT rol FROM tm_usuarios WHERE id=?");
+            $stRol->bind_param('i', $id);
+            $stRol->execute();
+            $rolRow = $stRol->get_result()->fetch_assoc();
+            $rol = $rolRow['rol'] ?? '';
+
+            // No permitir eliminar admins
+            if ($rol !== 'admin') {
+                $st = db()->prepare("DELETE FROM tm_usuarios WHERE id=?");
+                $st->bind_param('i', $id);
+                $st->execute();
+            }
+        }
+        header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?') . '?ok=1');
+        exit;
     }
 }
 
@@ -180,7 +218,6 @@ try {
          FROM tm_usuarios u
          LEFT JOIN tm_perfiles_paciente pp ON pp.usuario_id = u.id
          LEFT JOIN tm_perfiles_profesional pf ON pf.usuario_id = u.id
-         WHERE u.rol != 'admin'
          ORDER BY u.activo ASC, u.apellido, u.nombre"
     )->fetch_all(MYSQLI_ASSOC);
 } catch (Throwable $e) {
@@ -222,15 +259,15 @@ require __DIR__ . '/../includes/portal_header.php';
     <div class="page-title">Usuarios</div>
 </div>
 
-<div class="table-card" style="margin:0 28px 28px;">
-    <div class="table-header">
-        <div class="table-title"><?= $total ?> usuario<?= $total !== 1 ? 's' : '' ?></div>
-        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+<div class="table-card" style="margin:10px 20px 20px 5px;">
+    <div class="table-header" >
+        <div class="table-title"style="margin-top:15px"><?= $total ?> usuario<?= $total !== 1 ? 's' : '' ?></div>
+        <div style="display:flex ;gap:10px;align-items: center ;flex-wrap:wrap;">
             <div class="search-wrap">
                 <span class="search-icon">🔍</span>
                 <input type="text" id="searchInput" placeholder="Buscar…" style="width:220px;">
             </div>
-            <button class="btn-action btn-save" style="padding:7px 14px;text-decoration:none;" onclick="openModal()">
+            <button class="btn-action btn-save" style="padding:7px 12px;text-decoration:none;" data-tooltip="agregar" onclick="openModal()">
                 Nuevo usuario
             </button>
         </div>
@@ -309,6 +346,23 @@ require __DIR__ . '/../includes/portal_header.php';
                                         d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2M2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
                                 </svg>
                             </button>
+
+                            <!-- Eliminar usuario -->
+                            <form method="post" style="flex:1;" id="form-eliminar-<?= $u['id'] ?>">
+                                <input type="hidden" name="accion" value="eliminar">
+                                <input type="hidden" name="id" value="<?= $u['id'] ?>">
+                                <button type="button" class="btn-action btn-del" data-tooltip="Eliminar"
+                                    style="width:100%"
+                                    onclick="<?= $esAdmin ? "mostrarConfirmacion('form-eliminar-" . $u['id'] . "', 'Eliminar este usuario')" : "mostrarSinPermiso(); false" ?>">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                        <path
+                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                    </svg>
+                                </button>
+                            </form>
                         </div>
                     </td>
                 </tr>
@@ -768,6 +822,13 @@ function mostrarConfirmacion(formId, mensaje) {
         iconEl.className = 'confirm-icon warn';
         btnEl.textContent = 'Desactivar';
         btnEl.className = 'btn-confirm danger';
+    } else if (mensaje.indexOf('Eliminar') === 0) {
+        titleEl.textContent = 'Eliminar usuario';
+        iconEl.innerHTML =
+            '<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/></svg>';
+        iconEl.className = 'confirm-icon warn';
+        btnEl.textContent = 'Eliminar';
+        btnEl.className = 'btn-confirm danger';
     } else {
         titleEl.textContent = 'Activar usuario';
         iconEl.innerHTML =
@@ -833,6 +894,42 @@ document.addEventListener('DOMContentLoaded', function() {
         var t = document.getElementById('toast-error');
         if (t) {
             t.textContent = '⚠️ El email ya está en uso.';
+            t.style.display = 'block';
+            setTimeout(function() {
+                t.style.display = 'none';
+                history.replaceState({}, '', location.pathname);
+            }, 4000);
+        }
+    }
+
+    if (params.get('error') === 'email_registrado') {
+        var t = document.getElementById('toast-error');
+        if (t) {
+            t.textContent = '⚠️ El email ya está registrado.';
+            t.style.display = 'block';
+            setTimeout(function() {
+                t.style.display = 'none';
+                history.replaceState({}, '', location.pathname);
+            }, 4000);
+        }
+    }
+
+    if (params.get('error') === 'dni_registrado') {
+        var t = document.getElementById('toast-error');
+        if (t) {
+            t.textContent = '⚠️ El DNI ya está registrado.';
+            t.style.display = 'block';
+            setTimeout(function() {
+                t.style.display = 'none';
+                history.replaceState({}, '', location.pathname);
+            }, 4000);
+        }
+    }
+
+    if (params.get('error') === 'usuario_registrado') {
+        var t = document.getElementById('toast-error');
+        if (t) {
+            t.textContent = '⚠️ Usuario ya registrado. Verificá los datos (email/DNI).';
             t.style.display = 'block';
             setTimeout(function() {
                 t.style.display = 'none';

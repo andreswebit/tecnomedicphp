@@ -291,9 +291,15 @@ function obras_sociales_todas(): array {
 // Crea o actualiza la fila del padrón para ese DNI. Se llama automáticamente
 // al registrar un paciente o editar su perfil. También se puede llamar desde
 // la creación de turnos (ver nota en crear_turno más abajo).
-function persona_upsert(string $dni, string $nombre, string $apellido, string $telefono, string $email, ?int $obraSocialId = null): void {
+
+// function persona_upsert(int $dni, string $nombre, string $apellido, string $telefono, string $email, ?int $obraSocialId): void {
+function persona_upsert(string $dni, string $nombre, string $apellido, ?string $telefono, ?string $email, ?int $obraSocialId = null): void {
     $dni = preg_replace('/\D/', '', $dni);
     if (!$dni) return;
+
+    // Evita errores de tipado cuando algunos campos vienen NULL desde la BD
+    $telefono = (string)($telefono ?? '');
+    $email = (string)($email ?? '');
     $st = db()->prepare(
         "INSERT INTO tm_personas (dni, nombre, apellido, telefono, email, obra_social_id)
          VALUES (?,?,?,?,?,?)

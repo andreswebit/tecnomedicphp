@@ -105,6 +105,22 @@ $portal_activo = 'profesionales';
 require __DIR__ . '/../includes/portal_header.php';
 ?>
 
+<style>
+    /* Reduce alto de filas en tablas para mejorar densidad visual */
+    #tablaProfs tbody td,
+    #tablaAsig tbody td {
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+        vertical-align: middle;
+        line-height: 1.2;
+    }
+
+    #tablaProfs tbody tr,
+    #tablaAsig tbody tr {
+        min-height: 46px;
+    }
+</style>
+
 <div class="stats" style="margin:28px 28px 0;">
     <div class="stat-card blue">
         <div class="stat-label">Profesionales</div>
@@ -129,10 +145,12 @@ require __DIR__ . '/../includes/portal_header.php';
             <div class="page-title">Profesionales</div>
         </div>
         <div style="display:flex;gap:8px;">
-            <button class="btn-action btn-save" style="padding:9px 18px;font-size:13px;" onclick="openModal('prof')">
+            <button class="btn-action btn-save btn-no-tooltip" style="padding:9px 18px;font-size:13px;"
+                onclick="openModal('prof')">
                 ➕ Nuevo profesional
             </button>
-            <button class="btn-action btn-save" style="padding:9px 18px;font-size:13px;" onclick="openModal('asig')">
+            <button class="btn-action btn-save btn-no-tooltip" style="padding:9px 18px;font-size:13px;"
+                onclick="openModal('modalAsig')">
                 🔗 Nueva asignación
             </button>
         </div>
@@ -141,7 +159,8 @@ require __DIR__ . '/../includes/portal_header.php';
 
 <div class="table-card" style="margin:0 28px 28px;">
     <div class="table-header">
-        <div class="table-title">👨‍⚕️ <?= count($profesionales) ?> profesional<?= count($profesionales) !== 1 ? 'es' : '' ?></div>
+        <div class="table-title">👨‍⚕️ <?= count($profesionales) ?>
+            profesional<?= count($profesionales) !== 1 ? 'es' : '' ?></div>
         <div class="search-wrap">
             <span class="search-icon">🔍</span>
             <input type="text" id="searchProfs" placeholder="Buscar…" style="width:200px;">
@@ -171,15 +190,27 @@ require __DIR__ . '/../includes/portal_header.php';
                     </td>
                     <td class="actions-col">
                         <div class="btn-actions">
-                                <button class="btn-action btn-mod" data-tooltip="Editar"
+                            <button class="btn-action btn-mod" data-tooltip="Editar"
                                 onclick='openModal("editar", <?= json_encode($pr, JSON_UNESCAPED_UNICODE) ?>)'>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
+                                </svg>
                             </button>
-                            <form method="post" style="flex:1;" onsubmit="return confirm('¿Eliminar este profesional?');">
+                            <form method="post" style="flex:1;"
+                                onsubmit="return tmConfirmSubmit(this,'¿Eliminar este profesional?');">
                                 <input type="hidden" name="accion" value="eliminar">
                                 <input type="hidden" name="id" value="<?= $pr['id'] ?>">
-                                <button type="submit" class="btn-action btn-del" data-tooltip="Eliminar" style="width:100%;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/><path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/></svg>
+                                <button type="submit" class="btn-action btn-del" data-tooltip="Eliminar"
+                                    >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                        <path
+                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                    </svg>
                                 </button>
                             </form>
                         </div>
@@ -199,7 +230,8 @@ require __DIR__ . '/../includes/portal_header.php';
 
 <div class="table-card" style="margin:0 28px 28px;">
     <div class="table-header">
-        <div class="table-title">🔗 <?= count($asignaciones) ?> asignación<?= count($asignaciones) !== 1 ? 'es' : '' ?> activas</div>
+        <div class="table-title">🔗 <?= count($asignaciones) ?> asignación<?= count($asignaciones) !== 1 ? 'es' : '' ?>
+            activas</div>
         <div class="search-wrap">
             <span class="search-icon">🔍</span>
             <input type="text" id="searchAsig" placeholder="Buscar…" style="width:200px;">
@@ -219,15 +251,24 @@ require __DIR__ . '/../includes/portal_header.php';
             <tbody>
                 <?php foreach ($asignaciones as $a): ?>
                 <tr>
-                    <td><strong><?= htmlspecialchars($a['paciente_apellido'] . ', ' . $a['paciente_nombre']) ?></strong></td>
+                    <td><strong><?= htmlspecialchars($a['paciente_apellido'] . ', ' . $a['paciente_nombre']) ?></strong>
+                    </td>
                     <td><?= htmlspecialchars($a['profesional_apellido'] . ', ' . $a['profesional_nombre']) ?></td>
                     <td><span class="badge"><?= htmlspecialchars(ucfirst($a['area'])) ?></span></td>
                     <td><?= htmlspecialchars(date('d/m/Y', strtotime($a['fecha_asignacion']))) ?></td>
                     <td class="actions-col">
-                        <form method="post" onsubmit="return confirm('¿Desasignar este paciente?');">
+                        <form method="post" onsubmit="return tmConfirmSubmit(this,'¿Desasignar este paciente?');">
                             <input type="hidden" name="accion" value="desasignar">
                             <input type="hidden" name="id" value="<?= $a['id'] ?>">
-                            <button type="submit" class="btn-action btn-del" data-tooltip="Desasignar" style="width:100%;">🔓 Desasignar</button>
+                            <button type="submit" class="btn-actions btn-action btn-del" data-tooltip="Desasignar">
+                                <svg fill="#fcf8f8" height="16px" width="16px" version="1.1" id="Capa_1"
+                                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    viewBox="0 0 177.055 177.055" xml:space="preserve">
+                                    <path d="M0.001,88.527c0,48.814,39.713,88.527,88.527,88.527c48.813,0,88.526-39.713,88.526-88.527S137.341,0,88.528,0
+	C39.714,0,0.001,39.713,0.001,88.527z M88.528,24.304c35.413,0,64.224,28.811,64.224,64.224c0,13.324-4.081,25.712-11.055,35.983
+	L52.544,35.359C62.816,28.385,75.204,24.304,88.528,24.304z M124.511,141.696c-10.272,6.974-22.659,11.055-35.983,11.055
+	c-35.413,0-64.223-28.811-64.223-64.224c0-13.324,4.081-25.711,11.054-35.983L124.511,141.696z" />
+                                </svg> </button>
                         </form>
                     </td>
                 </tr>
@@ -297,8 +338,20 @@ require __DIR__ . '/../includes/portal_header.php';
 <div class="edit-modal-overlay" id="editModal">
     <div class="edit-modal">
         <div class="edit-modal-header">
-            <div class="edit-modal-title" id="modalTitle">➕ Agregar miembro</div>
-            <button class="edit-modal-close" onclick="closeModal()">✕</button>
+            <div class="edit-modal-title" id="modalTitle">Agregar Profesional</div>
+            <button class="edit-modal-close"
+                style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;padding:4px;"
+                onclick="closeModal()">
+                <svg height="26" width="26" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 512 512">
+                    <circle style="fill:#FF6643;" cx="256" cy="256" r="256" />
+                    <path style="fill:#FF6643;" d="M256,0v512c141.385,0,256-114.615,256-256S397.385,0,256,0z" />
+                    <polygon style="fill:#ffffff;"
+                        points="365.904,184.885 327.115,146.096 256,217.211 184.885,146.096 146.096,184.885 217.211,256
+                            146.096,327.115 184.885,365.904 256,294.789 327.115,365.904 365.904,327.115 294.789,256 " />
+                </svg>
+            </button>
+            </button>
         </div>
         <form action="<?= b('/admin/staff.php') ?>" method="post" enctype="multipart/form-data" id="modalForm">
             <input type="hidden" name="accion" id="modalAccion" value="crear">
@@ -320,19 +373,22 @@ require __DIR__ . '/../includes/portal_header.php';
                 <div class="edit-group">
                     <div class="edit-label">Título profesional</div>
                     <div class="edit-input-wrap">
-                        <input class="edit-input" type="text" name="titulo" id="f-titulo" placeholder="Ej: Dra., Lic., Dr.">
+                        <input class="edit-input" type="text" name="titulo" id="f-titulo"
+                            placeholder="Ej: Dra., Lic., Dr.">
                     </div>
                 </div>
                 <div class="edit-group">
                     <div class="edit-label">Especialidad</div>
                     <div class="edit-input-wrap">
-                        <input class="edit-input" type="text" name="especialidad" id="f-especialidad" placeholder="Ej: Audiometría, Nutrición…">
+                        <input class="edit-input" type="text" name="especialidad" id="f-especialidad"
+                            placeholder="Ej: Audiometría, Nutrición…">
                     </div>
                 </div>
                 <div class="edit-group full">
                     <div class="edit-label">Descripción</div>
                     <div class="edit-input-wrap">
-                        <textarea class="edit-input" name="descripcion" id="f-descripcion" rows="3" placeholder="Breve descripción del profesional…"></textarea>
+                        <textarea class="edit-input" name="descripcion" id="f-descripcion" rows="3"
+                            placeholder="Breve descripción del profesional…"></textarea>
                     </div>
                 </div>
                 <div class="edit-group">
@@ -353,7 +409,8 @@ require __DIR__ . '/../includes/portal_header.php';
                         <img id="imgPreview" src="" style="max-height:80px;border-radius:50%;object-fit:cover;">
                     </div>
                     <input class="edit-input" type="file" name="foto" accept=".jpg,.jpeg,.png,.webp">
-                    <small style="color:#94a3b8;font-size:11px;">JPG, PNG — máx. 3MB. Dejá vacío para no cambiar.</small>
+                    <small style="color:#94a3b8;font-size:11px;">JPG, PNG — máx. 3MB. Dejá vacío para no
+                        cambiar.</small>
                 </div>
                 <div class="edit-group full">
                     <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
@@ -376,8 +433,19 @@ require __DIR__ . '/../includes/portal_header.php';
 <div class="edit-modal-overlay" id="modalAsig">
     <div class="edit-modal">
         <div class="edit-modal-header">
-            <div class="edit-modal-title">🔗 Nueva asignación</div>
-            <button class="edit-modal-close" onclick="closeModal('modalAsig')">✕</button>
+            <div class="edit-modal-title"> Nueva asignación</div>
+            <button class="edit-modal-close"
+                style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;padding:4px;"
+                onclick="closeModal('modalAsig')">
+
+                <svg height="26" width="26" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 512 512">
+                    <circle style="fill:#FF6643;" cx="256" cy="256" r="256" />
+                    <path style="fill:#FF6643;" d="M256,0v512c141.385,0,256-114.615,256-256S397.385,0,256,0z" />
+                    <polygon style="fill:#ffffff;"
+                        points="365.904,184.885 327.115,146.096 256,217.211 184.885,146.096 146.096,184.885 217.211,256
+                            146.096,327.115 184.885,365.904 256,294.789 327.115,365.904 365.904,327.115 294.789,256 " />
+                </svg></button>
         </div>
         <form action="<?= b('/admin/profesionales.php') ?>" method="post">
             <input type="hidden" name="accion" value="asignar">
@@ -388,7 +456,9 @@ require __DIR__ . '/../includes/portal_header.php';
                         <select class="edit-input" name="paciente_id" required>
                             <option value="">— Seleccionar paciente —</option>
                             <?php foreach ($pacientes as $p): ?>
-                            <option value="<?= $p['id'] ?>"><?= htmlspecialchars($p['apellido'] . ', ' . $p['nombre'] . ' (' . $p['dni'] . ')') ?></option>
+                            <option value="<?= $p['id'] ?>">
+                                <?= htmlspecialchars($p['apellido'] . ', ' . $p['nombre'] . ' (' . $p['dni'] . ')') ?>
+                            </option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -399,7 +469,8 @@ require __DIR__ . '/../includes/portal_header.php';
                         <select class="edit-input" name="profesional_id" required>
                             <option value="">— Seleccionar profesional —</option>
                             <?php foreach ($profesionales as $pr): ?>
-                            <option value="<?= $pr['id'] ?>"><?= htmlspecialchars($pr['apellido'] . ', ' . $pr['nombre']) ?></option>
+                            <option value="<?= $pr['id'] ?>">
+                                <?= htmlspecialchars($pr['apellido'] . ', ' . $pr['nombre']) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -447,7 +518,10 @@ require __DIR__ . '/../includes/portal_header.php';
     if (new URLSearchParams(location.search).get('ok') === '1') {
         var t = document.getElementById('toast-ok');
         t.classList.add('show');
-        setTimeout(function() { t.classList.remove('show'); history.replaceState({}, '', location.pathname); }, 3000);
+        setTimeout(function() {
+            t.classList.remove('show');
+            history.replaceState({}, '', location.pathname);
+        }, 3000);
     }
 
     function setupTable(tableId, searchId) {
@@ -460,13 +534,21 @@ require __DIR__ . '/../includes/portal_header.php';
             });
         });
 
-        var sortState = { col: -1, dir: 'asc' };
+        var sortState = {
+            col: -1,
+            dir: 'asc'
+        };
         document.querySelectorAll('#' + tableId + ' th.sortable').forEach(function(th) {
             th.addEventListener('click', function() {
                 var col = parseInt(th.dataset.col);
                 var dir = (sortState.col === col && sortState.dir === 'asc') ? 'desc' : 'asc';
-                sortState = { col: col, dir: dir };
-                document.querySelectorAll('#' + tableId + ' th.sortable').forEach(function(h) { h.classList.remove('asc','desc'); });
+                sortState = {
+                    col: col,
+                    dir: dir
+                };
+                document.querySelectorAll('#' + tableId + ' th.sortable').forEach(function(h) {
+                    h.classList.remove('asc', 'desc');
+                });
                 th.classList.add(dir);
                 sortTable(tableId, col, dir);
             });
@@ -477,13 +559,19 @@ require __DIR__ . '/../includes/portal_header.php';
         var tbody = document.querySelector('#' + tableId + ' tbody');
         var rows = Array.from(tbody.querySelectorAll('tr'));
         rows.sort(function(a, b) {
-            var aVal = (a.querySelectorAll('td')[col] || {textContent:''}).textContent.trim().toLowerCase();
-            var bVal = (b.querySelectorAll('td')[col] || {textContent:''}).textContent.trim().toLowerCase();
+            var aVal = (a.querySelectorAll('td')[col] || {
+                textContent: ''
+            }).textContent.trim().toLowerCase();
+            var bVal = (b.querySelectorAll('td')[col] || {
+                textContent: ''
+            }).textContent.trim().toLowerCase();
             if (aVal < bVal) return dir === 'asc' ? -1 : 1;
             if (aVal > bVal) return dir === 'asc' ? 1 : -1;
             return 0;
         });
-        rows.forEach(function(r) { tbody.appendChild(r); });
+        rows.forEach(function(r) {
+            tbody.appendChild(r);
+        });
     }
 
     setupTable('tablaProfs', 'searchProfs');
@@ -565,12 +653,20 @@ require __DIR__ . '/../includes/portal_header.php';
     // });
 
     window.openModal = function(mode, data) {
+        if (mode === 'modalAsig') {
+            document.getElementById('modalAsig').classList.add('open');
+            return;
+        }
+
         document.getElementById('modalAccion').value = mode === 'editar' ? 'editar' : 'crear';
         document.getElementById('modalId').value = data && data.id ? data.id : '';
-        document.getElementById('modalTitle').textContent = mode === 'editar' ? '✏️ Editar miembro' : '➕ Agregar miembro';
-        document.getElementById('modalSubmitBtn').textContent = mode === 'editar' ? '💾 Guardar cambios' : '💾 Crear';
+        document.getElementById('modalTitle').textContent = mode === 'editar' ? '✏️ Editar miembro' :
+            'Agregar Profesional';
+        document.getElementById('modalSubmitBtn').textContent = mode === 'editar' ? '💾 Guardar cambios' :
+            '💾 Crear';
 
-        ['nombre','apellido','titulo','especialidad','descripcion','instagram','orden'].forEach(function(f) {
+        ['nombre', 'apellido', 'titulo', 'especialidad', 'descripcion', 'instagram', 'orden'].forEach(function(
+            f) {
             document.getElementById('f-' + f).value = data && data[f] ? data[f] : '';
         });
         document.getElementById('f-orden').value = data && data.orden ? data.orden : 0;
@@ -585,16 +681,22 @@ require __DIR__ . '/../includes/portal_header.php';
         document.getElementById('editModal').classList.add('open');
     };
 
-    window.closeModal = function() {
-        document.getElementById('editModal').classList.remove('open');
+    window.closeModal = function(id) {
+        document.getElementById(id || 'editModal').classList.remove('open');
     };
 
     document.getElementById('editModal').addEventListener('click', function(e) {
         if (e.target === this) closeModal();
     });
+    document.getElementById('modalAsig').addEventListener('click', function(e) {
+        if (e.target === this) closeModal('modalAsig');
+    });
 
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') closeModal();
+        if (e.key === 'Escape') {
+            closeModal();
+            closeModal('modalAsig');
+        }
     });
 
 })();

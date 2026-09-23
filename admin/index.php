@@ -182,7 +182,7 @@ require __DIR__ . '/../includes/portal_header.php';
 
                                 <!-- Eliminar -->
                                 <form action="<?= $base ?>/admin/eliminar.php" method="post" style="flex:1;"
-                                    onsubmit="return confirm('¿Eliminar este turno?\nEsta acción no se puede deshacer.')">
+                                    onsubmit="return tmConfirmSubmit(this,'¿Eliminar este turno?\nEsta acción no se puede deshacer.')">
                                     <input type="hidden" name="id" value="<?= $t['id'] ?>">
                                     <button type="submit" class="btn-action btn-del" data-tooltip="Eliminar"
                                         style="width:100%;">

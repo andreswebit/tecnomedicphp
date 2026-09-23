@@ -113,7 +113,7 @@ require __DIR__ . '/../includes/portal_header.php';
                                 <button type="submit" class="btn-action btn-save" data-tooltip="Marcar atendido" style="width:100%;">✔ Atender</button>
                             </form>
                             <?php endif; ?>
-                            <form method="post" style="flex:1;" onsubmit="return confirm('¿Eliminar este mensaje?');">
+                            <form method="post" style="flex:1;" onsubmit="return tmConfirmSubmit(this,'¿Eliminar este mensaje?');">
                                 <input type="hidden" name="accion" value="eliminar">
                                 <input type="hidden" name="id" value="<?= $c['id'] ?>">
                                 <button type="submit" class="btn-action btn-del" data-tooltip="Eliminar" style="width:100%;">

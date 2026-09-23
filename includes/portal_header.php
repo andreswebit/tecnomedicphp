@@ -74,7 +74,7 @@ $etiquetaRol = [
                         src="<?= $base ?>/static/img/icons/doctor.ico" alt="" /></span><span>Profesionales</span></a>
             <a href="<?= b('/admin/usuarios.php') ?>"
                 class="nav-item <?= $activo === 'usuarios' ? 'active' : '' ?>"><span><img class="tm-thumb"
-                        src="<?= $base ?>/static/img/icons/personas.ico" alt="" /></span><span>Usuarios</span></a>
+                        src="<?= $base ?>/static/img/icons/usuarios.ico" alt="" /></span><span>Usuarios</span></a>
             <a href="<?= b('/admin/presupuestos.php') ?>"
                 class="nav-item <?= $activo === 'presupuestos' ? 'active' : '' ?>"><span><img class="tm-thumb"
                         src="<?= $base ?>/static/img/icons/calculadora.ico"
@@ -82,12 +82,16 @@ $etiquetaRol = [
             <a href="<?= b('/admin/recursos.php') ?>"
                 class="nav-item <?= $activo === 'recursos' ? 'active' : '' ?>"><span><img class="tm-thumb"
                         src="<?= $base ?>/static/img/icons/carpeta.ico" alt="" /></span><span>Recursos</span></a>
-            <a href="<?= b('/admin/contactos.php') ?>"
-                class="nav-item <?= $activo === 'contactos' ? 'active' : '' ?>"><span><img class="tm-thumb"
+            <a href="<?= b('/admin/mensajes.php') ?>"
+                class="nav-item <?= $activo === 'mensajes' ? 'active' : '' ?>"><span><img class="tm-thumb"
                         src="<?= $base ?>/static/img/icons/email.ico" alt="" /></span><span>Mensajes</span></a>
             <a href="<?= b('/admin/consultar_dni.php') ?>"
                 class="nav-item <?= $activo === 'dni' ? 'active' : '' ?>"><span><img class="tm-thumb"
                         src="<?= $base ?>/static/img/icons/lupa.ico" alt="" /></span><span>Consultar DNI</span></a>
+            <a href="<?= $base ?>/tienda/"
+                class="nav-item <?= $activo === 'tienda' ? 'active' : '' ?>"><span><img class="tm-thumb"
+                        src="<?= $base ?>/static/img/icons/tienda.ico"
+                        alt="" /></span><span>Tienda</span></a>
             <a href="<?= b('/admin/multimedia.php') ?>"
                 class="nav-item <?= $activo === 'multimedia' || in_array($activo, ['novedades','staff','testimonios','destacados','config']) ? 'active' : '' ?>"><span><img
                         class="tm-thumb" src="<?= $base ?>/static/img/icons/multimedia.ico"
@@ -125,6 +129,23 @@ $etiquetaRol = [
                 </div>
             </div>
             <div class="portal-container" style="padding:0;max-width:none;margin:0;">
+
+                <!-- Modal Confirmación Genérica (reemplaza confirm nativo) -->
+                <div class="confirm-overlay" id="tmConfirmOverlay" style="display:none;" aria-hidden="true">
+                    <div class="confirm-box">
+                        <div class="confirm-icon warn" id="tmConfirmIcon" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                            </svg>
+                        </div>
+                        <div class="confirm-title" id="tmConfirmTitle">Confirmar</div>
+                        <div class="confirm-message" id="tmConfirmMessage"></div>
+                        <div class="confirm-actions">
+                            <button type="button" class="btn btn-outline" id="tmConfirmCancel">Cancelar</button>
+                            <button type="button" class="btn-confirm danger" id="tmConfirmBtn">Confirmar</button>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Modal Ficha Médica (Fase D) -->
                 <div class="ficha-modal-overlay" id="fichaModalOverlay" onclick="if(event.target===this) cerrarFicha()">
@@ -344,6 +365,84 @@ $etiquetaRol = [
                     document.getElementById('sidebar').classList.toggle('open');
                     document.getElementById('sidebarOverlay').classList.toggle('open');
                 }
+
+                var tmConfirmForm = null;
+                var tmConfirmCallback = null;
+
+                function tmConfirmCerrar() {
+                    tmConfirmForm = null;
+                    tmConfirmCallback = null;
+                    var overlay = document.getElementById('tmConfirmOverlay');
+                    if (overlay) {
+                        overlay.style.display = 'none';
+                        overlay.setAttribute('aria-hidden', 'true');
+                    }
+                }
+
+                function tmConfirmSubmit(formEl, mensaje) {
+                    tmConfirmForm = formEl;
+                    tmConfirmCallback = null;
+                    var overlay = document.getElementById('tmConfirmOverlay');
+                    var msgEl = document.getElementById('tmConfirmMessage');
+                    var titleEl = document.getElementById('tmConfirmTitle');
+                    if (msgEl) msgEl.textContent = mensaje;
+                    if (titleEl) titleEl.textContent = 'Confirmar';
+
+                    if (overlay) {
+                        overlay.style.display = 'flex';
+                        overlay.setAttribute('aria-hidden', 'false');
+                    }
+                    return false;
+                }
+
+                // Variante para confirmar y ejecutar un callback (si en algún lugar
+                // necesitás evitar submit directo).
+                function tmConfirmExec(callback, mensaje) {
+                    tmConfirmForm = null;
+                    tmConfirmCallback = callback;
+
+                    var overlay = document.getElementById('tmConfirmOverlay');
+                    var msgEl = document.getElementById('tmConfirmMessage');
+                    var titleEl = document.getElementById('tmConfirmTitle');
+                    if (msgEl) msgEl.textContent = mensaje;
+                    if (titleEl) titleEl.textContent = 'Confirmar';
+
+                    if (overlay) {
+                        overlay.style.display = 'flex';
+                        overlay.setAttribute('aria-hidden', 'false');
+                    }
+                    return false;
+                }
+
+                (function() {
+                    var overlay = document.getElementById('tmConfirmOverlay');
+                    var btnOk = document.getElementById('tmConfirmBtn');
+                    var btnCancel = document.getElementById('tmConfirmCancel');
+
+                    if (!overlay || !btnOk || !btnCancel) return;
+
+                    btnOk.addEventListener('click', function() {
+                        try {
+                            if (tmConfirmCallback && typeof tmConfirmCallback === 'function') {
+                                tmConfirmCallback();
+                            } else if (tmConfirmForm && tmConfirmForm.submit) {
+                                tmConfirmForm.submit();
+                            }
+                        } finally {
+                            tmConfirmCerrar();
+                        }
+                    });
+
+                    btnCancel.addEventListener('click', tmConfirmCerrar);
+
+                    overlay.addEventListener('click', function(e) {
+                        if (e.target === overlay) tmConfirmCerrar();
+                    });
+
+                    document.addEventListener('keydown', function(e) {
+                        if (e.key === 'Escape') tmConfirmCerrar();
+                    });
+                })();
 
                 function closeSidebar() {
                     document.getElementById('sidebar').classList.remove('open');

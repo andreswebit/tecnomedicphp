@@ -129,7 +129,7 @@ require __DIR__ . '/../includes/portal_header.php';
                             <a href="<?= b('/recursos_descargar.php?id=' . $r['id']) ?>" target="_blank" class="btn-action btn-print-turn" data-tooltip="Descargar" style="padding:7px 12px;display:flex;align-items:center;">
                                 ⬇ Descargar
                             </a>
-                            <form method="post" style="flex:1;" onsubmit="return confirm('¿Eliminar este recurso?');">
+                            <form method="post" style="flex:1;" onsubmit="return tmConfirmSubmit(this,'¿Eliminar este recurso?');">
                                 <input type="hidden" name="accion" value="eliminar">
                                 <input type="hidden" name="id" value="<?= $r['id'] ?>">
                                 <button type="submit" class="btn-action btn-del" data-tooltip="Eliminar" style="width:100%;">

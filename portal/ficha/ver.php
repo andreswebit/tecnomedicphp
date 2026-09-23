@@ -55,6 +55,8 @@ if (!$esModal) {
 }
 ?>
 <link rel="stylesheet" href="<?= b('/portal/css/ficha.css') ?>">
+<link rel="stylesheet" href="<?= b('/static/tecnomedic.css') ?>">
+
 <div class="ficha-medica" data-paciente-id="<?= $pacienteId ?>">
 
     <!-- Header compacto -->
@@ -92,8 +94,15 @@ if (!$esModal) {
                 <div class="ficha-card-icon blue">👤</div>
                 <div class="ficha-card-title">Datos</div>
                 <?php if ($puedeEditar): ?>
-                <button class="ficha-btn ficha-btn-xs ficha-btn-outline" id="btnEditarDatos"
-                    onclick="toggleEdicionDatos()">Editar</button>
+                <button class="btn-actions btn-action btn-mod ficha-btn-xs" data-tooltip="Editar"
+                    onclick="toggleEdicionDatos()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
+                    </svg>
+
+                </button>
                 <?php endif; ?>
             </div>
             <div class="ficha-card-body" id="datosBody">
@@ -192,36 +201,35 @@ if (!$esModal) {
             </div>
             <!-- Fila de agregar nueva información -->
             <div class="ficha-card-body ">
-                <div
-                style="background:#fff;border:1px solid #e2e8e6;border-radius:8px; padding:10px ;box-shadow:0 1px 4px rgba(13,27,42,.05);gap:8px"
-                id="filaNueva">
-                <div style="font-weight:600;color:#555f5e;font-size:.85rem;margin-bottom:6px">Agregar
-                    (<?= date('d/m/Y') ?>)</div>
-                <div
-                    style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;border-bottom:1px solid #e2e8e6;padding-bottom:6px">
-                    <div style="flex:1 1 160px;min-width:130px; padding-right:6px">
-                        <textarea id="new_ante" rows="2" class="ficha-textarea"
-                            style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px"
-                            placeholder="Antecedentes…"></textarea>
+                <div style="background:#fff;border:1px solid #e2e8e6;border-radius:8px; padding:10px ;box-shadow:0 1px 4px rgba(13,27,42,.05);gap:8px"
+                    id="filaNueva">
+                    <div style="font-weight:600;color:#555f5e;font-size:.85rem;margin-bottom:6px">Agregar
+                        (<?= date('d/m/Y') ?>)</div>
+                    <div
+                        style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;border-bottom:1px solid #e2e8e6;padding-bottom:6px">
+                        <div style="flex:1 1 160px;min-width:130px; padding-right:6px">
+                            <textarea id="new_ante" rows="2" class="ficha-textarea"
+                                style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px"
+                                placeholder="Antecedentes…"></textarea>
+                        </div>
+                        <div style="flex:1 1 160px;min-width:130px">
+                            <textarea id="new_dia" rows="2" class="ficha-textarea"
+                                style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px"
+                                placeholder="Diagnóstico…"></textarea>
+                        </div>
                     </div>
-                    <div style="flex:1 1 160px;min-width:130px">
-                        <textarea id="new_dia" rows="2" class="ficha-textarea"
+                    <div style="margin-top:6px">
+                        <textarea id="new_obs" rows="2" class="ficha-textarea"
                             style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px"
-                            placeholder="Diagnóstico…"></textarea>
+                            placeholder="Observaciones…"></textarea>
+                    </div>
+                    <div style="margin-top:8px;display:flex;gap:8px">
+                        <button type="button" class="ficha-btn ficha-btn-sm ficha-btn-primary"
+                            onclick="guardarNuevaHistoria()">💾 Guardar</button>
+                        <button type="button" class="ficha-btn ficha-btn-sm ficha-btn-outline"
+                            onclick="limpiarNuevaHistoria()">Cancelar</button>
                     </div>
                 </div>
-                <div style="margin-top:6px">
-                    <textarea id="new_obs" rows="2" class="ficha-textarea"
-                        style="font-size:.82rem;color:#333;background:#edf1f0;padding:6px 8px;border-radius:6px"
-                        placeholder="Observaciones…"></textarea>
-                </div>
-                <div style="margin-top:8px;display:flex;gap:8px">
-                    <button type="button" class="ficha-btn ficha-btn-sm ficha-btn-primary"
-                        onclick="guardarNuevaHistoria()">💾 Guardar</button>
-                    <button type="button" class="ficha-btn ficha-btn-sm ficha-btn-outline"
-                        onclick="limpiarNuevaHistoria()">Cancelar</button>
-                </div>
-            </div>
             </div>
             <!-- registros historial ficha  -->
             <div class="ficha-card-body">
@@ -236,12 +244,26 @@ if (!$esModal) {
                             <span style="font-weight:600;color:#0d1b2a;font-size:.85rem">📅
                                 <?= htmlspecialchars($h['fecha_fmt'] ?? '-') ?></span>
                             <div style="display:flex;gap:6px">
-                                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-outline"
-                                    onclick="editarFilaHistoria(<?= (int)($h['id'] ?? 0) ?>)"
-                                    title="Editar registro">✏️Editar</button>
-                                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-outline"
+                                <button type="button" class="btn-actions btn-action btn-mod ficha-btn-xs"
+                                    data-tooltip="Editar" onclick="editarFilaHistoria(<?= (int)($h['id'] ?? 0) ?>)"
+                                    title="Editar registro">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
+                                    </svg>
+                                </button>
+                                <button type="button" class="btn-action btn-del" data-tooltip="Eliminar"
                                     onclick="eliminarFilaHistoria(<?= (int)($h['id'] ?? 0) ?>)"
-                                    title="Eliminar registro" style="border-color:#dc2626;color:#dc2626">🗑️Eliminar</button>
+                                    title="Eliminar registro" style="border-color:#ffff">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                        <path
+                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                         <div style="display:flex;gap:10px;flex-wrap:wrap">
@@ -300,7 +322,14 @@ if (!$esModal) {
                 <div class="ficha-card-icon amber">💉</div>
                 <div class="ficha-card-title">Tratamientos</div>
                 <?php if ($puedeCargarTratamiento && $puedeEditar): ?>
-                <button class="ficha-btn ficha-btn-xs ficha-btn-teal" onclick="abrirModalTratamiento()">➕ Agregar</button>
+                <button class="btn-actions btn-action btn-mod ficha-btn-xs" data-tooltip="Agregar"
+                    style="background:var(--green-dk)" onclick="abrirModalTratamiento()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
+                    </svg>
+                </button>
                 <?php endif; ?>
             </div>
             <div class="ficha-card-body">
@@ -333,12 +362,22 @@ if (!$esModal) {
                             </td>
                             <td><?= htmlspecialchars($t['profesional_apellido'] . ', ' . $t['profesional_nombre']) ?>
                             </td>
-                            <td><?= nl2br(htmlspecialchars($t['descripcion'])) ?></td>
+                            <td style="white-space:normal;word-break:break-word;overflow-wrap:anywhere;max-width:520px;">
+                                <?= nl2br(htmlspecialchars($t['descripcion'])) ?>
+                            </td>
                             <?php if ($puedeCargarTratamiento && $puedeEditar): ?>
                             <td style="text-align:right">
-                                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-outline"
+                                <button type="button" class="btn-action btn-del" data-tooltip="Eliminar"
                                     onclick="eliminarTratamiento(<?= (int)$t['id'] ?>)" title="Eliminar tratamiento"
-                                    style="border-color:#dc2626;color:#dc2626">🗑️Eliminar</button>
+                                    style="border-color:#ffff">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                        <path
+                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                    </svg>
+                                </button>
                             </td>
                             <?php endif; ?>
                         </tr>
@@ -355,8 +394,14 @@ if (!$esModal) {
                 <div class="ficha-card-icon purple">💊</div>
                 <div class="ficha-card-title">Medicamentos recetados</div>
                 <?php if ($puedeGestionarMedicamentos && $puedeEditar): ?>
-                <button class="ficha-btn ficha-btn-xs ficha-btn-teal" onclick="abrirModalMedicamento()">➕
-                    Agregar</button>
+                <button class="btn-actions btn-action btn-mod ficha-btn-xs" data-tooltip="Agregar"
+                    style="background:var(--green-dk)" onclick="abrirModalMedicamento()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
+                    </svg>
+                </button>
                 <?php endif; ?>
             </div>
             <div class="ficha-card-body">
@@ -367,8 +412,8 @@ if (!$esModal) {
                 </div>
                 <?php else: ?>
                 <table class="ficha-table">
-                    <thead >
-                        <tr >
+                    <thead>
+                        <tr>
                             <th>Medicamento</th>
                             <th>Droga</th>
                             <th>Dosis</th>
@@ -376,7 +421,7 @@ if (!$esModal) {
                             <th>Vía</th>
                             <th>Estado</th>
                             <?php if ($puedeGestionarMedicamentos && $puedeEditar): ?>
-                            <th style="width:40px;text-align:right">Acciones</th>
+                            <th style="width:30px;text-align:right">Acciones</th>
                             <?php endif; ?>
                         </tr>
                     </thead>
@@ -395,9 +440,16 @@ if (!$esModal) {
                             </td>
                             <?php if ($puedeGestionarMedicamentos && $puedeEditar): ?>
                             <td style="text-align:right">
-                                <button type="button" class="ficha-btn ficha-btn-xs ficha-btn-outline"
+                                <button type="button" class="btn-action btn-del" data-tooltip="Eliminar"
                                     onclick="eliminarMedicamento(<?= (int)$m['id'] ?>)" title="Eliminar medicamento"
-                                    style="border-color:#dc2626;color:#dc2626">🗑️Eliminar</button>
+                                    style="border-color:#ffff"> <svg xmlns="http://www.w3.org/2000/svg"
+                                        width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path
+                                            d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                        <path
+                                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                    </svg>
+                                </button>
                             </td>
                             <?php endif; ?>
                         </tr>
@@ -414,7 +466,11 @@ if (!$esModal) {
                 <div class="ficha-card-icon red">🧪</div>
                 <div class="ficha-card-title">Estudios</div>
                 <?php if ($puedeEditar): ?>
-                <button class="ficha-btn ficha-btn-xs ficha-btn-primary" onclick="abrirModalEstudio()">⬆️ Subir</button>
+                <button class="btn-action btn-mod" data-tooltip="Subir estudio" style="background:blue ;border-color:#ffff" onclick="abrirModalEstudio()">
+                    <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 15C3 17.8284 3 19.2426 3.87868 20.1213C4.75736 21 6.17157 21 9 21H15C17.8284 21 19.2426 21 20.1213 20.1213C21 19.2426 21 17.8284 21 15" stroke="#ffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 16V3M12 3L16 7.375M12 3L8 7.375" stroke="#ffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></button>
                 <?php endif; ?>
             </div>
             <div class="ficha-card-body">
@@ -437,10 +493,19 @@ if (!$esModal) {
                     </div>
                     <div class="lista-actions">
                         <a href="<?= b('/portal/ficha/descargar_estudio.php?id=' . $e['id']) ?>" target="_blank"
-                             class="ficha-btn ficha-btn-xs ficha-btn-teal" style="text-decoration: none" title="Descargar">⬇️ Descargar</a>
+                            class="ficha-btn ficha-btn-xs ficha-btn-teal" style="text-decoration: none"
+                            title="Descargar">⬇️ Descargar</a>
                         <?php if ($puedeEditar): ?>
-                        <button class="ficha-btn ficha-btn-xs ficha-btn-outline" style="border-color:#dc2626;color:#dc2626"
-                            onclick="eliminarEstudio(<?= $e['id'] ?>)" title="Eliminar">🗑️Eliminar</button>
+                        <button class="btn-action btn-del" data-tooltip="Eliminar" style="border-color:#ffff"
+                            onclick="eliminarEstudio(<?= $e['id'] ?>)" title="Eliminar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                viewBox="0 0 16 16">
+                                <path
+                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                <path
+                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                            </svg>
+                        </button>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -450,6 +515,8 @@ if (!$esModal) {
         </div>
 
     </div><!-- /padding -->
+
+    <?php if ($puedeEditar): ?>
 
     <!-- ── SUBMODAL: TRATAMIENTO ── -->
     <div id="submodalTratamiento" class="ficha-submodal-overlay"
@@ -493,6 +560,10 @@ if (!$esModal) {
             </form>
         </div>
     </div>
+
+    <?php endif; ?>
+
+    <?php if ($puedeEditar): ?>
 
     <!-- ── SUBMODAL: MEDICAMENTO ── -->
     <div id="submodalMedicamento" class="ficha-submodal-overlay"
@@ -560,6 +631,10 @@ if (!$esModal) {
         </div>
     </div>
 
+    <?php endif; ?>
+
+    <?php if ($puedeEditar): ?>
+
     <!-- ── SUBMODAL: ESTUDIO ── -->
     <div id="submodalEstudio" class="ficha-submodal-overlay"
         onclick="if(event.target===this)cerrarSubmodal('submodalEstudio')">
@@ -608,6 +683,8 @@ if (!$esModal) {
             </form>
         </div>
     </div>
+
+    <?php endif; ?>
 </div><!-- /.ficha-medica -->
 
 <script>

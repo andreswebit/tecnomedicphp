@@ -1,7 +1,9 @@
 <?php require_once __DIR__ . '/includes/db.php'; $base = BASE_URL; ?>
 <?php require_once __DIR__ . '/includes/db.php'; ?>
 <?php ini_set('display_errors', 1);
-error_reporting(E_ALL); ?>
+error_reporting(E_ALL);
+$values = array_merge($_GET, $_POST);
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -70,19 +72,19 @@ error_reporting(E_ALL); ?>
                                         <select name="area" id="areaSelect" class="obra-select" required>
                                             <option value="">— Seleccioná —</option>
                                             <option value="audiologia"
-                                                <?= ($_POST['area'] ?? '') === 'audiologia' ? 'selected' : '' ?>>
+                                                <?= ($values['area'] ?? '') === 'audiologia' ? 'selected' : '' ?>>
                                                 Audiología</option>
                                             <option value="hiperbarica"
-                                                <?= ($_POST['area'] ?? '') === 'hiperbarica' ? 'selected' : '' ?>>
+                                                <?= ($values['area'] ?? '') === 'hiperbarica' ? 'selected' : '' ?>>
                                                 Medicina Hiperbárica</option>
                                             <option value="nutricion"
-                                                <?= ($_POST['area'] ?? '') === 'nutricion' ? 'selected' : '' ?>>
+                                                <?= ($values['area'] ?? '') === 'nutricion' ? 'selected' : '' ?>>
                                                 Nutrición</option>
                                             <option value="ortopedia"
-                                                <?= ($_POST['area'] ?? '') === 'ortopedia' ? 'selected' : '' ?>>
+                                                <?= ($values['area'] ?? '') === 'ortopedia' ? 'selected' : '' ?>>
                                                 Ortopedia y Rehabilitación</option>
                                             <option value="equipamiento"
-                                                <?= ($_POST['area'] ?? '') === 'equipamiento' ? 'selected' : '' ?>>
+                                                <?= ($values['area'] ?? '') === 'equipamiento' ? 'selected' : '' ?>>
                                                 Equipamiento Médico y Quirúrgico</option>
                                         </select>
                                     </div>
@@ -93,7 +95,7 @@ error_reporting(E_ALL); ?>
                                     <div class="input-wrap">
                                         <input type="text" name="nombre" placeholder="Tu nombre" required
                                             autocomplete="given-name"
-                                            value="<?= htmlspecialchars($_POST['nombre'] ?? '') ?>">
+                                            value="<?= htmlspecialchars($values['nombre'] ?? '') ?>">
                                         <span class="input-icon">👤</span>
                                     </div>
                                 </div>
@@ -103,7 +105,7 @@ error_reporting(E_ALL); ?>
                                     <div class="input-wrap">
                                         <input type="text" name="apellido" placeholder="Tu apellido" required
                                             autocomplete="family-name"
-                                            value="<?= htmlspecialchars($_POST['apellido'] ?? '') ?>">
+                                            value="<?= htmlspecialchars($values['apellido'] ?? '') ?>">
                                         <span class="input-icon">👤</span>
                                     </div>
                                 </div>
@@ -113,7 +115,7 @@ error_reporting(E_ALL); ?>
                                             style="color:var(--muted);font-size:10px;">(opcional)</span></label>
                                     <div class="input-wrap">
                                         <input type="text" name="dni" placeholder="Ej: 30.123.456" inputmode="numeric"
-                                            pattern="[\d\.\-]*" value="<?= htmlspecialchars($_POST['dni'] ?? '') ?>">
+                                            pattern="[\d\.\-]*" value="<?= htmlspecialchars($values['dni'] ?? '') ?>">
                                         <span class="input-icon">🪪</span>
                                     </div>
                                 </div>
@@ -127,7 +129,7 @@ error_reporting(E_ALL); ?>
                                             <option value="">— Seleccioná —</option>
                                             <?php
                                         $obras = ['Particular','PAMI','IOSCOR','OSDE','Swiss Medical','Galeno','Medifé','OSECAC','OSPAT','IOMA','Otra'];
-                                        $sel   = $_POST['obra_social'] ?? '';
+                                        $sel   = $values['obra_social'] ?? '';
                                         foreach ($obras as $o):
                                         ?>
                                             <option value="<?= $o ?>" <?= $sel===$o?'selected':'' ?>>
@@ -142,7 +144,7 @@ error_reporting(E_ALL); ?>
                                     <div class="input-wrap">
                                         <input type="tel" name="telefono" placeholder="+54 9 3794 …" required
                                             autocomplete="tel"
-                                            value="<?= htmlspecialchars($_POST['telefono'] ?? '') ?>">
+                                            value="<?= htmlspecialchars($values['telefono'] ?? '') ?>">
                                         <span class="input-icon">📱</span>
                                     </div>
                                 </div>
@@ -151,7 +153,7 @@ error_reporting(E_ALL); ?>
                                     <label>Email <span style="color:#f87171">*</span></label>
                                     <div class="input-wrap">
                                         <input type="email" name="email" placeholder="correo@mail.com" required
-                                            autocomplete="email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+                                            autocomplete="email" value="<?= htmlspecialchars($values['email'] ?? '') ?>">
                                         <span class="input-icon">✉</span>
                                     </div>
                                 </div>

@@ -1464,14 +1464,14 @@ body.login-box {
   object-fit: contain;
 }
 .nav-item .tm-thumb {
-  filter:  brightness(0) saturate(100%) invert(100%) opacity(0.6);
+  filter: grayscale(90%);
   transition: opacity 0.2s ease, filter 0.2s ease;
   
 }
 .nav-item:hover .tm-thumb,
 .nav-item.active .tm-thumb {
   opacity: 1;
-  filter: brightness(0) saturate(100%) invert(100%) opacity(1);
+  /* filter: brightness(0) saturate(100%) invert(100%) opacity(1); */
 }
 .sidebar-footer {
   margin-top: fit-content;
@@ -1674,7 +1674,7 @@ body.login-box {
   text-align: right;
   font-size: 14px;
   font-weight: 800;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   color: var(--g300);
   /* border: 1px solid; */
   /* border-radius: 10px; */
@@ -2314,7 +2314,7 @@ th.sortable.desc .sort-icon::after {
 }
 
 th.sortable:not(.asc):not(.desc) .sort-icon::after {
-  content: " ⇅";
+  content: "⇅";
 }
 
 /* ── Columna Estado ────────────────────────────────── */
@@ -2381,6 +2381,29 @@ th.sortable:not(.asc):not(.desc) .sort-icon::after {
   min-width: 200px;
 }
 
+
+/* Acciones compactas: botones cuadrados con esquinas suavemente redondeadas. */
+.btn-actions .btn-action {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    max-width: 30px;
+    padding: 0 !important;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-actions form {
+    flex: 0 0 auto !important;
+}
+
+.actions-col>form .btn-action {
+    border-radius: 8px;
+}
+
+
 .btn-actions {
   display: flex;
   flex-direction: row;
@@ -2389,10 +2412,13 @@ th.sortable:not(.asc):not(.desc) .sort-icon::after {
 }
 
 .btn-action {
-  flex: 1;
-  padding: 6px 4px;
+  flex: none;
+  padding: 6px 6px;
   border-radius: 8px;
   border: none;
+  /* Asegura que el tooltip (pseudo-elemento ::after) se posicione delante y no detrás */
+  position: relative;
+  z-index: 1;
   font-size: 10.5px;
   font-family: "Poppins", sans-serif;
   font-weight: 500;
@@ -3071,7 +3097,7 @@ th.sortable:not(.asc):not(.desc) .sort-icon::after {
     border: none;
     display: flex;
     align-items: flex-start;
-    gap: 8px;
+    gap: 5px;
   }
 
   /* Etiqueta generada desde data-label */

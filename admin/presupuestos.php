@@ -66,12 +66,19 @@ require __DIR__ . '/../includes/portal_header.php';
 
 <div class="table-card" style="margin:0 28px 28px;">
     <div class="table-header">
-        <div class="table-title"><?= $total ?> presupuesto<?= $total !== 1 ? 's' : '' ?></div>
-        <div class="search-wrap">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="searchInput" placeholder="Buscar…" style="width:220px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+            <div>
+                <div class="table-title"><?= $total ?> presupuesto<?= $total !== 1 ? 's' : '' ?></div>
+            </div>
+            <div class="search-wrap">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Buscar…" style="width:220px;">
+            </div>
         </div>
     </div>
+
+    <div id="whatsapp" style="height:1px;"></div>
+    <div id="email" style="height:1px;"></div>
     <div class="table-wrap">
         <table id="mainTable">
             <thead>
@@ -108,7 +115,7 @@ require __DIR__ . '/../includes/portal_header.php';
                             <button class="btn-action btn-save" style="padding:7px 12px;" onclick='verDetalle(<?= json_encode($p, JSON_UNESCAPED_UNICODE) ?>)'>
                                 👁 Ver
                             </button>
-                            <form method="post" onsubmit="return confirm('¿Eliminar este presupuesto?');" style="flex:1;">
+                            <form method="post" onsubmit="return tmConfirmSubmit(this,'¿Eliminar este presupuesto?');" style="flex:1;">
                                 <input type="hidden" name="accion" value="eliminar">
                                 <input type="hidden" name="id" value="<?= $p['id'] ?>">
                                 <button type="submit" class="btn-action btn-del" data-tooltip="Eliminar" style="width:100%;">
