@@ -86,21 +86,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="login-label">Contraseña</div>
                     <div class="login-input-wrap">
                         <span class="login-input-icon">🔑</span>
-                        <input class="login-input" type="password" name="password" placeholder="••••••••" required>
+                        <input class="login-input" type="password" name="password" placeholder="Ingresá tu contraseña" required>
                     </div>
                 </div>
 
                 <div class="login-divider"></div>
 
-                <button type="submit" class="login-btn">
-                    Ingresar →
-                </button>
-                <div class="login-divider"></div>
+                <div class="login-actions">
+                    <button type="submit" class="login-btn">
+                        Ingresar →
+                    </button>
 
-
-                <button type="button" class="login-btn" onclick="window.location.href='<?= HOME_URL ?>/'">
-                    ⮌ &nbsp; Volver a Inicio
-                </button>
+                    <button type="button" class="login-btn login-btn-volver" onclick="window.location.href='<?= portal_dashboard_url() ?>'">
+                        ⮌ &nbsp; Volver
+                    </button>
+                </div>
             </form>
         </div>
         <p style="margin-top:16px;font-size:0.88rem;">

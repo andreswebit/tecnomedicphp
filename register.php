@@ -70,6 +70,7 @@ require __DIR__ . '/includes/portal_header.php';
         <label>Repetir contraseña*</label>
         <input type="password" name="password2" required>
         <button type="submit" class="portal-btn">Crear cuenta</button>
+        <button type="button" class="portal-btn" style="background-color: #6c757d;" onclick="window.location.href='<?= b() ?>';">Volver</button>
     </form>
     <p style="margin-top:16px;font-size:0.88rem;">
         ¿Ya tenés cuenta? <a href="<?= b('/login.php') ?>">Iniciá sesión</a>

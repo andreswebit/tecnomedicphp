@@ -152,7 +152,10 @@ body.portal {
 }
 
 .portal-btn:hover {
-  background: var(--tm-navy);
+  /* background: var(--tm-navy); */
+  transform: translateY(-1px);
+  filter: brightness(1.2);
+  
 }
 
 .portal-btn.secundario {

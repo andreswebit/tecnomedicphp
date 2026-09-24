@@ -13,6 +13,7 @@ $areasNombres = [
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>TECNOMEDIC – Recursos y formularios</title>
@@ -39,7 +40,9 @@ $areasNombres = [
                         <img src="<?= $base ?>/static/img/tecno-logo.jpeg" alt="TECNOMEDIC" class="logo-img">
                     </a>
                 </div>
-                <div><p style="color:transparent;">.....</p></div>
+                <div>
+                    <p style="color:transparent;">.....</p>
+                </div>
                 <div class="header-badge">
                     <div class="badge-dot"></div>
                     Descarga directa, sin registro
@@ -57,29 +60,38 @@ $areasNombres = [
                     </p>
 
                     <?php if (!$recursos): ?>
-                        <div class="form-card">
-                            <p style="color:#64748b;">Todavía no hay recursos públicos cargados.</p>
-                        </div>
+                    <div class="form-card">
+                        <p style="color:#64748b;">Todavía no hay recursos públicos cargados.</p>
+                    </div>
                     <?php else: ?>
-                        <?php foreach ($recursos as $r): ?>
-                        <div class="form-card" style="margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;">
-                            <div>
-                                <h3 style="margin:0 0 4px;"><?= htmlspecialchars($r['titulo']) ?></h3>
-                                <?php if ($r['descripcion']): ?>
-                                    <p style="margin:0 0 6px;color:#64748b;font-size:0.9rem;"><?= htmlspecialchars($r['descripcion']) ?></p>
-                                <?php endif; ?>
-                                <span style="font-size:0.78rem;color:#94a3b8;">
-                                    <?= htmlspecialchars($r['tipo']) ?><?= $r['area'] ? ' · ' . htmlspecialchars($areasNombres[$r['area']] ?? $r['area']) : '' ?>
-                                </span>
-                            </div>
-                            <a href="<?= $base ?>/recursos_descargar.php?id=<?= $r['id'] ?>" target="_blank" class="submit-btn" style="text-decoration:none;display:inline-block;white-space:nowrap;">⬇ Descargar</a>
+                    <?php foreach ($recursos as $r): ?>
+                    <div class="form-card"
+                        style="margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;">
+                        <div>
+                            <h3 style="margin:0 0 4px;"><?= htmlspecialchars($r['titulo']) ?></h3>
+                            <?php if ($r['descripcion']): ?>
+                            <p style="margin:0 0 6px;color:#64748b;font-size:0.9rem;">
+                                <?= htmlspecialchars($r['descripcion']) ?></p>
+                            <?php endif; ?>
+                            <span style="font-size:0.78rem;color:#94a3b8;">
+                                <?= htmlspecialchars($r['tipo']) ?><?= $r['area'] ? ' · ' . htmlspecialchars($areasNombres[$r['area']] ?? $r['area']) : '' ?>
+                            </span>
                         </div>
-                        <?php endforeach; ?>
+                        <a href="<?= $base ?>/recursos_descargar.php?id=<?= $r['id'] ?>" target="_blank"
+                            class="submit-btn" style="text-decoration:none;display:inline-block;white-space:nowrap;">⬇
+                            Descargar</a>
+                    </div>
+                    <?php endforeach; ?>
                     <?php endif; ?>
+                    <div>
+                        <button type="button" class="portal-btn" onclick="window.history.back()">Volver</button>
+
+                    </div>
                 </div>
             </main>
         </div>
     </div>
 
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/db_contacto.php';
 require_once __DIR__ . '/includes/email.php';
 $base = BASE_URL;
@@ -85,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div style="font-size:2.4rem;margin-bottom:10px;">✅</div>
                             <h2 style="margin:0 0 10px; color:var(--g50);">¡Recibimos tu mensaje!</h2>
                             <p style="color:var(--g100);">Te vamos a responder a la brevedad al email que dejaste.</p>
-                            <a href="<?= HOME_URL ?>/" class="submit-btn" style="display:inline-block;margin-top:16px;text-decoration:none;">Volver al inicio</a>
+                            <a href="<?= portal_dashboard_url() ?>" class="submit-btn" style="display:inline-block;margin-top:16px;text-decoration:none;"><?= (portal_logueado() || esta_logueado()) ? 'Volver al panel' : 'Volver al inicio' ?></a>
                         </div>
                     <?php else: ?>
 
@@ -127,7 +128,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <textarea name="mensaje" rows="5" required style="width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid #d1d5db;font-family:inherit;"><?= htmlspecialchars($_POST['mensaje'] ?? '') ?></textarea>
                         </div>
                         <div class="login-divider"></div>
-                        <button type="submit" class="submit-btn">Enviar mensaje</button>
+                        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                            <a href="<?= portal_dashboard_url() ?>" class="btn btn-outline" style="flex:0 0 auto;">
+                                <span class="ai-undo"></span> Volver
+                            </a>
+                            <button type="submit" class="submit-btn" style="flex:1;">Enviar mensaje</button>
+                        </div>
                     </form>
 
                     <?php endif; ?>

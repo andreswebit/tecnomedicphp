@@ -87,3 +87,17 @@ function portal_require_role(array $rolesPermitidos): void {
         die('No tenés permiso para ver esta página.');
     }
 }
+
+function portal_dashboard_url(): string {
+    if (portal_logueado()) {
+        switch (portal_rol()) {
+            case 'paciente':    return b('/portal/paciente/dashboard.php');
+            case 'profesional': return b('/portal/profesional/dashboard.php');
+            case 'admin':       return b('/admin/tablero.php');
+        }
+    }
+    if (esta_logueado()) {
+        return b('/admin/index.php');
+    }
+    return HOME_URL . '/';
+}

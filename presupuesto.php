@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/db_presupuestos.php';
 require_once __DIR__ . '/includes/email.php';
 $base = BASE_URL;
@@ -82,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div style="font-size:2.4rem;margin-bottom:10px;">✅</div>
                             <h2 style="margin:0 0 10px;">¡Recibimos tu solicitud!</h2>
                             <p style="color:#64748b;">Te vamos a enviar el presupuesto por email a la brevedad.</p>
-                            <a href="<?= HOME_URL ?>/" class="submit-btn" style="display:inline-block;margin-top:16px;text-decoration:none;">Volver al inicio</a>
+                            <a href="<?= portal_dashboard_url() ?>" class="submit-btn" style="display:inline-block;margin-top:16px;text-decoration:none;"><?= (portal_logueado() || esta_logueado()) ? 'Volver al panel' : 'Volver al inicio' ?></a>
                         </div>
                     <?php else: ?>
 
@@ -135,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="form-divider" style="margin-top:24px;"></div>
                         <button type="submit" class="submit-btn">Solicitar presupuesto</button>
                         <div class="form-divider" style="margin-top:24px;"></div>
-                            <a href="<?= HOME_URL ?>/" class="btn btn-outline" style="flex:0 0 auto;">
+                            <a href="<?= portal_dashboard_url() ?>" class="btn btn-outline" style="flex:0 0 auto;">
                                     <span class="ai-undo"></span> Volver
                             </a>
                         

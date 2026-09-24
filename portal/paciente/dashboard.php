@@ -82,7 +82,7 @@ require __DIR__ . '/../../includes/portal_header.php';
             <?php foreach ($turnos as $t): ?>
                 <tr>
                     <td><?= htmlspecialchars($t['fecha']) ?></td>
-                    <td><?= htmlspecialchars($t['hora']) ?></td>
+                    <td><?= htmlspecialchars(substr((string)($t['hora'] ?? ''), 0, 5)) ?></td>
                     <td><?= htmlspecialchars($t['estado']) ?></td>
                 </tr>
             <?php endforeach; ?>

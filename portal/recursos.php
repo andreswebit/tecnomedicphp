@@ -17,24 +17,41 @@ require __DIR__ . '/../includes/portal_header.php';
 <div class="portal-card">
     <h2>📚 Recursos y formularios</h2>
     <?php if (!$recursos): ?>
-        <p>Todavía no hay recursos cargados.</p>
+    <p>Todavía no hay recursos cargados.</p>
     <?php else: ?>
-        <table class="portal-table">
-            <thead><tr><th>Título</th><th>Área</th><th>Tipo</th><th></th></tr></thead>
-            <tbody>
+    <table class="portal-table">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Área</th>
+                <th>Tipo</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
             <?php foreach ($recursos as $r): ?>
-                <tr>
-                    <td>
-                        <?= htmlspecialchars($r['titulo']) ?>
-                        <?php if ($r['descripcion']): ?><br><small style="color:#64748b;"><?= htmlspecialchars($r['descripcion']) ?></small><?php endif; ?>
-                    </td>
-                    <td><?= htmlspecialchars($r['area'] ? ($areasNombres[$r['area']] ?? $r['area']) : 'General') ?></td>
-                    <td><?= htmlspecialchars($r['tipo']) ?></td>
-                    <td><a href="<?= b('/recursos_descargar.php?id=' . $r['id']) ?>" target="_blank" class="portal-btn secundario" style="padding:5px 12px;margin:0;">⬇ Descargar</a></td>
-                </tr>
+            <tr>
+                <td>
+                    <?= htmlspecialchars($r['titulo']) ?>
+                    <?php if ($r['descripcion']): ?><br><small
+                        style="color:#64748b;"><?= htmlspecialchars($r['descripcion']) ?></small><?php endif; ?>
+                </td>
+                <td><?= htmlspecialchars($r['area'] ? ($areasNombres[$r['area']] ?? $r['area']) : 'General') ?></td>
+                <td><?= htmlspecialchars($r['tipo']) ?></td>
+                <td><a href="<?= b('/recursos_descargar.php?id=' . $r['id']) ?>" target="_blank"
+                        class="ficha-btn ficha-btn-xs ficha-btn-teal"
+                        style="padding:5px 12px;margin:0; text-decoration: none" title="Descargar">⬇️ Descargar</a></td>
+
+            </tr>
+
             <?php endforeach; ?>
-            </tbody>
-        </table>
+        </tbody>
+    </table>
+
     <?php endif; ?>
+    <div>
+        <button type="button" class="portal-btn" onclick="window.history.back()">Volver</button>
+
+    </div>
 </div>
 <?php require __DIR__ . '/../includes/portal_footer.php'; ?>

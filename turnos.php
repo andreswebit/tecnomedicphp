@@ -1,6 +1,8 @@
-<?php require_once __DIR__ . '/includes/db.php'; $base = BASE_URL; ?>
-<?php require_once __DIR__ . '/includes/db.php'; ?>
-<?php ini_set('display_errors', 1);
+<?php
+require_once __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/includes/auth.php';
+$base = BASE_URL;
+ini_set('display_errors', 1);
 error_reporting(E_ALL);
 $values = array_merge($_GET, $_POST);
 ?>
@@ -178,7 +180,7 @@ $values = array_merge($_GET, $_POST);
                             <div class="form-divider" style="margin-top:24px;"></div>
 
                             <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                                <a href="<?= HOME_URL ?>/" class="btn btn-outline" style="flex:0 0 auto color: yellow; background: rgba(245, 245, 6, 0.56); border: 1px solid yellow; color: #f8f4f4;">
+                                <a href="<?= portal_dashboard_url() ?>" class="btn btn-outline" style="flex:0 0 auto; color: yellow; background: rgba(245, 245, 6, 0.56); border: 1px solid yellow; color: #f8f4f4;">
                                     <span class="ai-undo"></span> Volver
                                 </a>
                                 <button type="submit" class="submit-btn" id="submitBtn" disabled style="flex:1;">

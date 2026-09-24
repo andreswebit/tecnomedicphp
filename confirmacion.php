@@ -108,8 +108,8 @@ if (!isset($turno) || empty($turno)) {
         <!-- Botones: solo Imprimir y Volver -->
         <div class="btn-group">
             <button onclick="window.print()" class="btn btn-outline">🖨 Imprimir</button>
-            <?php if (esta_logueado()): ?>
-            <a href="<?= $base ?>/admin/index.php" class="btn btn-outpanel">← Volver</a>
+            <?php if (portal_logueado() || esta_logueado()): ?>
+            <a href="<?= portal_dashboard_url() ?>" class="btn btn-outpanel">← Volver al panel</a>
             <?php else: ?>
             <a href="<?= HOME_URL ?>/" class="btn btn-primary">Inicio</a>
             <?php endif; ?>

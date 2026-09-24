@@ -1202,6 +1202,7 @@ body.login-box {
   flex-direction: column;
   gap: 6px;
   margin-bottom: 16px;
+  
 }
 
 .login-label {
@@ -1209,6 +1210,7 @@ body.login-box {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted);
+  
 }
 
 .login-input-wrap {
@@ -1216,6 +1218,7 @@ body.login-box {
   color: var(--g600);
   font-weight: 600;
   letter-spacing: 0.05rem;
+  
 }
 
 .login-input-icon {
@@ -1226,11 +1229,13 @@ body.login-box {
   font-size: 15px;
   color: var(--muted);
   pointer-events: none;
+  
 }
 
 .login-input {
   width: 100%;
-  background: var(--g300);
+  height: 2rem;
+  background: var(--g400);
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 12px 14px 12px 42px;
@@ -1248,9 +1253,11 @@ body.login-box {
 
 .login-input:focus {
   border-color: var(--border);
-  background: rgb(186, 205, 206);
+  background: var(--g300);
   box-shadow: 0 0 1px 1px var(--border);
   font-weight: 700;
+  font-size: 14px;
+ 
   
 }
 
@@ -1260,12 +1267,23 @@ body.login-box {
   margin: 22px 0;
 }
 
+.login-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .login-btn {
-  width: 100%;
-  padding: 14px;
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.6rem;
+  padding: 10px 14px;
   background: linear-gradient(135deg, var(--green-dk), var(--green-dk));
   border: none;
-  border-radius: 11px;
+  border-radius: 10px;
   font-family: "Montserrat", sans-serif;
   font-size: 14.5px;
   font-weight: 500;
@@ -1273,13 +1291,18 @@ body.login-box {
   cursor: pointer;
   transition:
     transform 0.2s,
-    box-shadow 0.2s;
+    box-shadow 0.2s,
+    filter 0.2s;
   box-shadow: 0 1px 1px rgba(13, 14, 14, 0.3);
 }
 
+.login-btn-volver {
+  background: linear-gradient(135deg, var(--g400), var(--g300));
+}
+
 .login-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 1px 8px rgba(43, 156, 43, 0.42)
+  transform: translateY(-1px);
+  filter: brightness(1.2);
 }
 
 .login-error {
@@ -2448,6 +2471,18 @@ th.sortable:not(.asc):not(.desc) .sort-icon::after {
   opacity: 0.85;
   transform: translateY(-1px);
 }
+.btn-action.btn-descarga {
+  background: rgb(21, 5, 248);
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.733);
+}
+
+.btn-action.btn-descarga:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+
 
 .btn-action.btn-print-turn {
   opacity: 0.85;
