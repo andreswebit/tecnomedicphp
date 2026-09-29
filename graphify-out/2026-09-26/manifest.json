@@ -1,0 +1,1207 @@
+{
+  "admin/actualizar.php": {
+    "mtime": 1786407602.0,
+    "ast_hash": "813c6354ae79676557318f2191ef70af",
+    "semantic_hash": ""
+  },
+  "admin/config_sitio.php": {
+    "mtime": 1787959323.2382176,
+    "ast_hash": "3019cccf2f703c6bdcb2349cf207ceaf",
+    "semantic_hash": ""
+  },
+  "admin/consultar_dni.php": {
+    "mtime": 1787952974.3625803,
+    "ast_hash": "803e141c10cf003204196c5e7529b30f",
+    "semantic_hash": ""
+  },
+  "admin/contactos.php": {
+    "mtime": 1787952290.8658354,
+    "ast_hash": "797bca6b4603c2e1e6422ef1dc329402",
+    "semantic_hash": ""
+  },
+  "admin/eliminar.php": {
+    "mtime": 1786407602.0,
+    "ast_hash": "f43fb0295e28278c33731591d483c089",
+    "semantic_hash": ""
+  },
+  "admin/index.php": {
+    "mtime": 1788997369.1479363,
+    "ast_hash": "082fadcc25d228c35fe349e13ef7a239",
+    "semantic_hash": ""
+  },
+  "admin/login.php": {
+    "mtime": 1786407602.0,
+    "ast_hash": "8c27c682b92b4a68500dccf8238a4401",
+    "semantic_hash": ""
+  },
+  "admin/logout.php": {
+    "mtime": 1786400139.6282432,
+    "ast_hash": "15fb181da15fbd174c4fdd3cd21ae33f",
+    "semantic_hash": ""
+  },
+  "admin/modificar.php": {
+    "mtime": 1786407602.0,
+    "ast_hash": "d2a72b9cd49aef0963f54269dc417ba4",
+    "semantic_hash": ""
+  },
+  "admin/multimedia.php": {
+    "mtime": 1788125324.5815063,
+    "ast_hash": "07a2e508f105b043e96f8690c9c8cab0",
+    "semantic_hash": ""
+  },
+  "admin/novedades.php": {
+    "mtime": 1787863164.4453843,
+    "ast_hash": "4d5c9ca16d58d88d5e0f7aa3937c8707",
+    "semantic_hash": ""
+  },
+  "admin/pacientes.php": {
+    "mtime": 1789250093.849771,
+    "ast_hash": "f3fd4538027353c11f33daa5b1dcafec",
+    "semantic_hash": ""
+  },
+  "admin/portal_usuarios.php": {
+    "mtime": 1786645392.0,
+    "ast_hash": "11fe8bce288ddbbe6fb71c6b7088c1bd",
+    "semantic_hash": ""
+  },
+  "admin/presupuestos.php": {
+    "mtime": 1787952117.1230266,
+    "ast_hash": "df99a9ec8e27ebc3c147caefbb627968",
+    "semantic_hash": ""
+  },
+  "admin/presupuestos_descargar.php": {
+    "mtime": 1787420374.0,
+    "ast_hash": "36297890ca8730d139c6172f80eabf9d",
+    "semantic_hash": ""
+  },
+  "admin/productos_destacados.php": {
+    "mtime": 1787863283.9455416,
+    "ast_hash": "1310445373b1e862264f0b52a6b3d53f",
+    "semantic_hash": ""
+  },
+  "admin/profesionales.php": {
+    "mtime": 1788563961.2502367,
+    "ast_hash": "5500e3999bf56ecea37bc85efcca9493",
+    "semantic_hash": ""
+  },
+  "admin/propuesta-ficha-medica.php": {
+    "mtime": 1788474805.2329826,
+    "ast_hash": "83b80dd81c03a2b3d5b53da488fde8c6",
+    "semantic_hash": ""
+  },
+  "admin/recordatorio.php": {
+    "mtime": 1786407602.0,
+    "ast_hash": "50b9e4aa54a49552483ef83268850d2b",
+    "semantic_hash": ""
+  },
+  "admin/recursos.php": {
+    "mtime": 1788213347.7438827,
+    "ast_hash": "829d0b30ec250d14b476b804cda48866",
+    "semantic_hash": ""
+  },
+  "admin/staff.php": {
+    "mtime": 1788732754.5285704,
+    "ast_hash": "8449d474f1be8ee5ad94ab1cdbd050bd",
+    "semantic_hash": ""
+  },
+  "admin/tablero.php": {
+    "mtime": 1788123393.0504713,
+    "ast_hash": "3a93fe26b3d7f969c9bff23247971b8f",
+    "semantic_hash": ""
+  },
+  "admin/test_mail.php": {
+    "mtime": 1786288598.8006463,
+    "ast_hash": "a8ca26d70d080c0a8e1d49f955361e86",
+    "semantic_hash": ""
+  },
+  "admin/testimonios.php": {
+    "mtime": 1787863262.2069895,
+    "ast_hash": "62fe377fcba83b87071b8a2b69bf0bdc",
+    "semantic_hash": ""
+  },
+  "admin/tienda_section.php": {
+    "mtime": 1784675230.919482,
+    "ast_hash": "a2c2a49484fbc43a22f6c9141d4fc0ab",
+    "semantic_hash": ""
+  },
+  "admin/usuarios.php": {
+    "mtime": 1788826920.1352086,
+    "ast_hash": "9dda0e5ed0f97fdfa43a538cd282ff88",
+    "semantic_hash": ""
+  },
+  "api/horarios.php": {
+    "mtime": 1786407602.0,
+    "ast_hash": "d84151157475774fb7066f4c8f965fbb",
+    "semantic_hash": ""
+  },
+  "areas/_template.php": {
+    "mtime": 1784928104.7130737,
+    "ast_hash": "a159b0c951c3e5b64d077b1337fbd900",
+    "semantic_hash": ""
+  },
+  "areas/audiologia.php": {
+    "mtime": 1784597672.0,
+    "ast_hash": "bb023f5185be0df702cbd74050e35ed5",
+    "semantic_hash": ""
+  },
+  "areas/equipamiento-medico.php": {
+    "mtime": 1784597672.0,
+    "ast_hash": "c9e4d22d13c9639be149bba3e0532bf3",
+    "semantic_hash": ""
+  },
+  "areas/medicina-hiperbarica.php": {
+    "mtime": 1784597672.0,
+    "ast_hash": "cb96a12f69e1b6e44d9e4e6422326dd5",
+    "semantic_hash": ""
+  },
+  "areas/nutricion.php": {
+    "mtime": 1784597672.0,
+    "ast_hash": "f440a36507ac212a84582960c769b1f5",
+    "semantic_hash": ""
+  },
+  "areas/ortopedia-rehabilitacion.php": {
+    "mtime": 1784597672.0,
+    "ast_hash": "37788feca56b68ba722d9fd6182164a8",
+    "semantic_hash": ""
+  },
+  "bot/webhook.php": {
+    "mtime": 1784850449.8380005,
+    "ast_hash": "7b0ee282cbd23d9c4afe553e92d8bd42",
+    "semantic_hash": ""
+  },
+  "composer.json": {
+    "mtime": 1786064382.0,
+    "ast_hash": "7644305d63506ba4bdba95096af05502",
+    "semantic_hash": ""
+  },
+  "confirmacion.php": {
+    "mtime": 1784928699.421052,
+    "ast_hash": "f984c0b12b8da591ef2691caf0b8f8fe",
+    "semantic_hash": ""
+  },
+  "contacto.php": {
+    "mtime": 1786491204.307645,
+    "ast_hash": "98889f195d5de5a9c6ee43dddf540b9e",
+    "semantic_hash": ""
+  },
+  "guardar.php": {
+    "mtime": 1786407602.0,
+    "ast_hash": "1829c3e7e8d05b45f9ee9aa0bb00ee76",
+    "semantic_hash": ""
+  },
+  "includes/areas_data.php": {
+    "mtime": 1784597672.0,
+    "ast_hash": "0a4212c2a039cc76b45a49049ad513a8",
+    "semantic_hash": ""
+  },
+  "includes/auth.php": {
+    "mtime": 1785194976.985958,
+    "ast_hash": "3a6e55e839b41e2d6cae78bb55f15474",
+    "semantic_hash": ""
+  },
+  "includes/config_mail.php": {
+    "mtime": 1786201587.8183997,
+    "ast_hash": "a6e3bcc61eb45d2959c89d3332424bbd",
+    "semantic_hash": ""
+  },
+  "includes/db.php": {
+    "mtime": 1788480496.4501128,
+    "ast_hash": "d16457b7f75a7aacd2bb127c8418f6f5",
+    "semantic_hash": ""
+  },
+  "includes/db_config.php": {
+    "mtime": 1787702697.0540583,
+    "ast_hash": "f20c72b2e0025caad7da5e3e7c3ffb23",
+    "semantic_hash": ""
+  },
+  "includes/db_contacto.php": {
+    "mtime": 1786499468.0,
+    "ast_hash": "2a631041d210ff451535ec51cddf1e41",
+    "semantic_hash": ""
+  },
+  "includes/db_ficha.php": {
+    "mtime": 1788476490.4731462,
+    "ast_hash": "a797526b9418c2db4b0f3db94b0c8858",
+    "semantic_hash": ""
+  },
+  "includes/db_novedades.php": {
+    "mtime": 1787702714.6702118,
+    "ast_hash": "1d4d8b219ceb8c73e6b47fbbdaf9c356",
+    "semantic_hash": ""
+  },
+  "includes/db_nutricion.php": {
+    "mtime": 1787100166.0,
+    "ast_hash": "d3829d5afd33526b1370e020da932c01",
+    "semantic_hash": ""
+  },
+  "includes/db_portal.php": {
+    "mtime": 1789138202.7717886,
+    "ast_hash": "eadf8e8573faa50a8cd2910641c495ad",
+    "semantic_hash": ""
+  },
+  "includes/db_presupuestos.php": {
+    "mtime": 1788480510.7118995,
+    "ast_hash": "9af3013275498d1a743d1bc3b3742660",
+    "semantic_hash": ""
+  },
+  "includes/db_recursos.php": {
+    "mtime": 1787100214.0,
+    "ast_hash": "df38d862d59a411b4f3d5d82d9f19a0e",
+    "semantic_hash": ""
+  },
+  "includes/db_testimonios.php": {
+    "mtime": 1787702740.7906623,
+    "ast_hash": "34253bead87ad538bc47058c1725abb4",
+    "semantic_hash": ""
+  },
+  "includes/email.php": {
+    "mtime": 1787420374.0,
+    "ast_hash": "ccdd9b31e31ffa035f4c0924390e155e",
+    "semantic_hash": ""
+  },
+  "includes/env_loader.php": {
+    "mtime": 1785812458.0,
+    "ast_hash": "318f5ceb803db6e95861b87bd4b64fe7",
+    "semantic_hash": ""
+  },
+  "includes/pendiente.php": {
+    "mtime": 1786289049.123799,
+    "ast_hash": "4d6c85909022ffc9b2e36062242f2ab8",
+    "semantic_hash": ""
+  },
+  "includes/portal_footer.php": {
+    "mtime": 1787370880.0,
+    "ast_hash": "ed37ef283a43d14f91ae0a529e24a064",
+    "semantic_hash": ""
+  },
+  "includes/portal_header.php": {
+    "mtime": 1789166820.4022944,
+    "ast_hash": "9051839f96b7be2607b7795f96f4b5e5",
+    "semantic_hash": ""
+  },
+  "includes/tienda.php": {
+    "mtime": 1784932482.1819224,
+    "ast_hash": "c1224118bd14bd4a10bcf655cdf9a531",
+    "semantic_hash": ""
+  },
+  "includes/whatsapp.php": {
+    "mtime": 1784843150.8837442,
+    "ast_hash": "c39398c16ac9c1141010a09913c067a2",
+    "semantic_hash": ""
+  },
+  "index.php": {
+    "mtime": 1788565581.5310514,
+    "ast_hash": "61a00c1cf31a6af86235a7bbde4c82b5",
+    "semantic_hash": ""
+  },
+  "login.php": {
+    "mtime": 1786487350.4514186,
+    "ast_hash": "35b130a26da380e603b70518bf1414fd",
+    "semantic_hash": ""
+  },
+  "loginViejo.php": {
+    "mtime": 1786403544.008072,
+    "ast_hash": "649313925b1a7e2626b67eb0d5ec9c4c",
+    "semantic_hash": ""
+  },
+  "logout.php": {
+    "mtime": 1786400164.576469,
+    "ast_hash": "042187ab6e398e02030da65306046c40",
+    "semantic_hash": ""
+  },
+  "package.json": {
+    "mtime": 1786663532.5669641,
+    "ast_hash": "8a80554c91d9fca8acb82f023de02f11",
+    "semantic_hash": ""
+  },
+  "pendiente.php": {
+    "mtime": 1784996036.6524277,
+    "ast_hash": "af5c215a77af56be364023a37e47ceb6",
+    "semantic_hash": ""
+  },
+  "portal/ficha/agregar_tratamiento.php": {
+    "mtime": 1786296990.0,
+    "ast_hash": "d9917fc24cd960604f2eedcef16055d8",
+    "semantic_hash": ""
+  },
+  "portal/ficha/descargar_estudio.php": {
+    "mtime": 1786296990.0,
+    "ast_hash": "59cf0807140d4861c4bcf6f6dbb93d82",
+    "semantic_hash": ""
+  },
+  "portal/ficha/eliminar_estudio.php": {
+    "mtime": 1786296990.0,
+    "ast_hash": "8bcd2df9f6ff1296ef36d4fe474377f7",
+    "semantic_hash": ""
+  },
+  "portal/ficha/guardar_historia.php": {
+    "mtime": 1786296990.0,
+    "ast_hash": "1e3c00fb01dc8dbab70b1b928d84fb91",
+    "semantic_hash": ""
+  },
+  "portal/ficha/guardar_persona.php": {
+    "mtime": 1788481912.9741535,
+    "ast_hash": "bd12fe1ddba499c52bb862533c1593c4",
+    "semantic_hash": ""
+  },
+  "portal/ficha/subir_estudio.php": {
+    "mtime": 1786296990.0,
+    "ast_hash": "065c4b2b07d8e81f0d7481d40888aa50",
+    "semantic_hash": ""
+  },
+  "portal/ficha/ver.php": {
+    "mtime": 1789247166.5558662,
+    "ast_hash": "90d7c81342ac8727a747d4727e4285cb",
+    "semantic_hash": ""
+  },
+  "portal/nutricion/agregar_comida.php": {
+    "mtime": 1787100166.0,
+    "ast_hash": "75d74563dae67182a100b28eea5fdba2",
+    "semantic_hash": ""
+  },
+  "portal/nutricion/agregar_medicion.php": {
+    "mtime": 1787100166.0,
+    "ast_hash": "444e649ec5972ee1c188a2709fe92391",
+    "semantic_hash": ""
+  },
+  "portal/nutricion/eliminar_comida.php": {
+    "mtime": 1787100166.0,
+    "ast_hash": "9b91b7689f801a36e214bb26cecc6983",
+    "semantic_hash": ""
+  },
+  "portal/nutricion/eliminar_medicion.php": {
+    "mtime": 1787100166.0,
+    "ast_hash": "cef52e8e0b5ca59dc0481e41cf638850",
+    "semantic_hash": ""
+  },
+  "portal/nutricion/guardar_objetivo.php": {
+    "mtime": 1787100166.0,
+    "ast_hash": "d7a1ffbf85f219cb76d5d8fdb553f241",
+    "semantic_hash": ""
+  },
+  "portal/nutricion/registro.php": {
+    "mtime": 1789054029.1157234,
+    "ast_hash": "dbce8f196828ef0cd07fe5bf58e565df",
+    "semantic_hash": ""
+  },
+  "portal/paciente/dashboard.php": {
+    "mtime": 1787369958.0,
+    "ast_hash": "005723d9b319a54d108fffe5323add41",
+    "semantic_hash": ""
+  },
+  "portal/paciente/perfil.php": {
+    "mtime": 1787369958.0,
+    "ast_hash": "08ef164a94ce16f2015be16c8636ccb5",
+    "semantic_hash": ""
+  },
+  "portal/profesional/dashboard.php": {
+    "mtime": 1787370880.0,
+    "ast_hash": "576256c23d30f46b0d8096cf4402b84d",
+    "semantic_hash": ""
+  },
+  "portal/recursos.php": {
+    "mtime": 1787369958.0,
+    "ast_hash": "24af37abd49f7348fd6844f6f01e7ac6",
+    "semantic_hash": ""
+  },
+  "presupuesto.php": {
+    "mtime": 1787434155.4729483,
+    "ast_hash": "43e876c7f74aadccd71752f81fc2bde4",
+    "semantic_hash": ""
+  },
+  "recursos.php": {
+    "mtime": 1787100214.0,
+    "ast_hash": "289f0a8b4fe4b0caff6d99979e78cce7",
+    "semantic_hash": ""
+  },
+  "recursos_descargar.php": {
+    "mtime": 1787100214.0,
+    "ast_hash": "941731b64b93e380a88b08a9c479c513",
+    "semantic_hash": ""
+  },
+  "register.php": {
+    "mtime": 1785034866.0,
+    "ast_hash": "9bd845036fd7e151fe3ea78798e25fc2",
+    "semantic_hash": ""
+  },
+  "tienda/categoria.php": {
+    "mtime": 1784928342.4368405,
+    "ast_hash": "22dad41657b3903059f93188f86849ca",
+    "semantic_hash": ""
+  },
+  "tienda/index.php": {
+    "mtime": 1784928214.3611543,
+    "ast_hash": "b8e2829cd3b8de234b2d66570c1aef68",
+    "semantic_hash": ""
+  },
+  "tienda/producto.php": {
+    "mtime": 1784928391.2409074,
+    "ast_hash": "a50c76a30b7ccd303d55c5ea22d3591c",
+    "semantic_hash": ""
+  },
+  "turnos.php": {
+    "mtime": 1787964111.9380145,
+    "ast_hash": "fc09e24b43c05a6372c1e6ba3bbfe306",
+    "semantic_hash": ""
+  },
+  ".claude/agents/web-code-designer.md": {
+    "mtime": 1789167154.5936232,
+    "ast_hash": "315e1251401108ad547caf4bd177bfd5",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1787100166.0,
+    "ast_hash": "0af46e506b09628ec96a8fa1a0631647",
+    "semantic_hash": ""
+  },
+  "static/img/quienes somos/Rese\u00f1a de TecnoMedic.pdf": {
+    "mtime": 1775142494.0,
+    "ast_hash": "d9c016dfd73e6cf4a6ddc45505938812",
+    "semantic_hash": ""
+  },
+  "storage/estudios/2/estudio_6a84e01a4f756.pdf": {
+    "mtime": 1787093018.2747872,
+    "ast_hash": "14f67099c59d8664bf0b11827fdfee88",
+    "semantic_hash": ""
+  },
+  "storage/estudios/2/estudio_6a84e243ccacf.pdf": {
+    "mtime": 1787093571.8235848,
+    "ast_hash": "14f67099c59d8664bf0b11827fdfee88",
+    "semantic_hash": ""
+  },
+  "storage/recursos/recurso_6a84e9b7b1b01.pdf": {
+    "mtime": 1787095479.7177782,
+    "ast_hash": "cd7876bfca65716284075312e1069fc6",
+    "semantic_hash": ""
+  },
+  "storage/recursos/recurso_6a84e9cf70467.pdf": {
+    "mtime": 1787095503.4527283,
+    "ast_hash": "386a6681dbd995b77a13507b0d80bfcf",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Acompa\u00f1amos tu recuperaci\u00f3n/Mensaje humano-H.jpg": {
+    "mtime": 1769524804.0,
+    "ast_hash": "16011ffa3b1ca282f7543697081ee949",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Acompa\u00f1amos tu recuperaci\u00f3n/Recuperaci\u00f3n H1.jpg": {
+    "mtime": 1769524816.0,
+    "ast_hash": "21275e6a8a121d759f9bdd4cae478f2b",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Acompa\u00f1amos tu recuperaci\u00f3n/Recuperaci\u00f3n H2.jpg": {
+    "mtime": 1769524820.0,
+    "ast_hash": "3fd27bffb36290cffce5fc15ba479dd7",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Acompa\u00f1amos tu recuperaci\u00f3n/Recuperaci\u00f3n H3.jpg": {
+    "mtime": 1769524826.0,
+    "ast_hash": "0d5377531ba67ceedf9a3f7598fcd92d",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Acompa\u00f1amos tu recuperaci\u00f3n/Recuperaci\u00f3n H4.jpg": {
+    "mtime": 1769524824.0,
+    "ast_hash": "1e60f1a2b1420ffe10929475b8fdfd71",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Acompa\u00f1amos tu recuperaci\u00f3n/Recuperaci\u00f3n H5.jpg": {
+    "mtime": 1769524822.0,
+    "ast_hash": "750e3640a0ae64dfe4f7f3b632d72f23",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Audiologia/DESTACADAS AUDIOLOG\u00cdA-1..jpg": {
+    "mtime": 1774865322.0,
+    "ast_hash": "5a8801062a3dd22cca1aacc2b66dd83c",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Audiologia/DESTACADAS AUDIOLOG\u00cdA-2..jpg": {
+    "mtime": 1774865324.0,
+    "ast_hash": "a0eaf4d3b39171819de4ee2e45af693a",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Audiologia/DESTACADAS AUDIOLOG\u00cdA-3..jpg": {
+    "mtime": 1774865326.0,
+    "ast_hash": "979c4af4b034437f9ad0a21a898f46ac",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Audiologia/DESTACADAS AUDIOLOG\u00cdA-4..jpg": {
+    "mtime": 1774865328.0,
+    "ast_hash": "2287c1fc8419fcc21c61d3f5b6bff942",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Audiologia/DESTACADAS AUDIOLOG\u00cdA-5..jpg": {
+    "mtime": 1774865332.0,
+    "ast_hash": "135e1953a390c509b9f6d31c3592ae37",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Audiologia/DESTACADAS AUDIOLOG\u00cdA-6..jpg": {
+    "mtime": 1774865336.0,
+    "ast_hash": "080ccdf075dc5d4957db20b47c9c90ce",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Audiologia/Story \u2013 Audiolog\u00eda - 1.jpg": {
+    "mtime": 1769524790.0,
+    "ast_hash": "0be0930f19c442f60a56e79af9f8fbf4",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Audiologia/Story \u2013 Audiolog\u00eda - 2.jpg": {
+    "mtime": 1769524790.0,
+    "ast_hash": "8bb3948691d2b807b51d89aa03dcd4b5",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/C.Hiperbarica/DESTACADA 2 \u2013 HIPERB\u00c1RICA-1.jpg": {
+    "mtime": 1774865624.0,
+    "ast_hash": "f254c158713357bd7a1d3b3d1ff91ba3",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/C.Hiperbarica/DESTACADA 2 \u2013 HIPERB\u00c1RICA-2.jpg": {
+    "mtime": 1774865626.0,
+    "ast_hash": "17f559948b6a2c760253b7401ce73806",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/C.Hiperbarica/DESTACADA 2 \u2013 HIPERB\u00c1RICA-3.jpg": {
+    "mtime": 1774865628.0,
+    "ast_hash": "1bae60216e543a0f6c5ff71af19d364f",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/C.Hiperbarica/DESTACADA 2 \u2013 HIPERB\u00c1RICA-4.jpg": {
+    "mtime": 1774865630.0,
+    "ast_hash": "772ef356cc1e5f8cccecbfbf705f1fcc",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/C.Hiperbarica/DESTACADA 2 \u2013 HIPERB\u00c1RICA-5.jpg": {
+    "mtime": 1774865632.0,
+    "ast_hash": "9afe5c0d35938b33bf4b765d87f41b6e",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Convenios/Descuento Rugby-2 (1).jpg": {
+    "mtime": 1769449440.0,
+    "ast_hash": "492d017db9bf5b474f8d97d28e53e3ef",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Convenios/Descuento Rugby.jpg": {
+    "mtime": 1769449434.0,
+    "ast_hash": "7e6599f551bed6568eb6c3148f7fa803",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Convenios/Descuento cardiologia-2 (1).jpg": {
+    "mtime": 1769449448.0,
+    "ast_hash": "c6c71e0a752c3808174e14aa1d3b14ed",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Convenios/Descuento cardiologia.jpg": {
+    "mtime": 1769449442.0,
+    "ast_hash": "389059611a50ca417be51dc3c4f25e2b",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Convenios/Sportclub descuento-1 (1).jpg": {
+    "mtime": 1769449436.0,
+    "ast_hash": "714938003c5b36d40713e50c7a9cae22",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Convenios/Sportclub descuento-2 (1).jpg": {
+    "mtime": 1769449444.0,
+    "ast_hash": "9f3ed93350b61823c96388a1f749e9d4",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 1 \u2013 Cabestrillo..png": {
+    "mtime": 1774864324.0,
+    "ast_hash": "93e8d403827a082be232e8d100b38d57",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 10 \u2013 Faja el\u00e1stica.png": {
+    "mtime": 1774864358.0,
+    "ast_hash": "a3798862ac373377ebd9b5b9da61749b",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 11 \u2013 Colch\u00f3n antiescaras.png": {
+    "mtime": 1774864360.0,
+    "ast_hash": "be7460cae2376f64569655bcbd41f4df",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 12\u2013 Tobillera en ocho.png": {
+    "mtime": 1774864366.0,
+    "ast_hash": "bc2219b02cf027396be5f859b379baff",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 13 \u2013 Inmovilizador de dedo individual.png": {
+    "mtime": 1774864370.0,
+    "ast_hash": "d9509b01e9126577bc6dab339434878b",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 14 \u2013 Mu\u00f1equera boomerang dedo libre.png": {
+    "mtime": 1774864372.0,
+    "ast_hash": "6a864022f9c964262afb73eefa0f8974",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 15 \u2013 Rodillera abierta.png": {
+    "mtime": 1774864378.0,
+    "ast_hash": "2b47d4707590f2d8813a34433bc03e57",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 16 \u2013 Corrector postural.png": {
+    "mtime": 1774864382.0,
+    "ast_hash": "fbea114aee676bb5218a90a40daa5dc1",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 17 \u2013 Muletas.png": {
+    "mtime": 1774864384.0,
+    "ast_hash": "0f7eff80de254f1ee2c741a84226915b",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 18 \u2013 Silla de ruedas.png": {
+    "mtime": 1774864386.0,
+    "ast_hash": "1c4a327d76071c5b5f6cfb9a5e6f0957",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 19 \u2013 Bota Walker.png": {
+    "mtime": 1774864388.0,
+    "ast_hash": "f64765c8f79836de31e00ec9c0df22f2",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 2 \u2013 Inmovilizador de mu\u00f1eca..png": {
+    "mtime": 1774864326.0,
+    "ast_hash": "88a3aee6a6b3e7f7fb0478479e95810a",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 20 \u2013 Cuello ortopedico.png": {
+    "mtime": 1774864356.0,
+    "ast_hash": "6582a09acd0b900b0704cdc6b6751aff",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 21 \u2013 Cierre.png": {
+    "mtime": 1774864390.0,
+    "ast_hash": "72ae77b50eabbec760813560dec0a177",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 3 \u2013 Nebulizador Respirex..png": {
+    "mtime": 1774864342.0,
+    "ast_hash": "839b53ba4e0d63c732641a22733a1cb8",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 4 \u2013 Term\u00f3metro digital..png": {
+    "mtime": 1774864340.0,
+    "ast_hash": "6b76b0e88455730488512e03f154ae05",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 5 \u2013 Ox\u00edmetro.png": {
+    "mtime": 1774864344.0,
+    "ast_hash": "a66a2cd86ec5eead4ca79c5d7640d279",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 6 \u2013 Tensi\u00f3metro digital (Drive).png": {
+    "mtime": 1774864346.0,
+    "ast_hash": "c30f7c7aa6af5ed602f43d8c404b8b1b",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 7 \u2013 Tensi\u00f3metro aneroide + estetoscopio (Philco).png": {
+    "mtime": 1774864352.0,
+    "ast_hash": "fdbe99174611ac36871a9c0d9fbeff81",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 8 \u2013 Nebulizador ECAM.png": {
+    "mtime": 1774864354.0,
+    "ast_hash": "ecc04481377c0cc6736cbfa878b2e902",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Ortopedia y equipamiento m\u00e9dico/Historia 9 \u2013 F\u00e9rula de mano.png": {
+    "mtime": 1774864354.0,
+    "ast_hash": "9490d2ceaab082fe471260b9d97d6c2b",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Oxigenoterapia domiciliaria/DESTACADAS OXIGENOTERAPIA DOMICILIARIA-1.jpg": {
+    "mtime": 1774865494.0,
+    "ast_hash": "af0e3d0e29a7864de6b90ed871624615",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Oxigenoterapia domiciliaria/DESTACADAS OXIGENOTERAPIA DOMICILIARIA-2.jpg": {
+    "mtime": 1774865496.0,
+    "ast_hash": "2cd00038f9ce273388a8d320fc4662b0",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Oxigenoterapia domiciliaria/DESTACADAS OXIGENOTERAPIA DOMICILIARIA-3.jpg": {
+    "mtime": 1774865498.0,
+    "ast_hash": "a43fff56ce463d90981ad163a5f18ac6",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Oxigenoterapia domiciliaria/DESTACADAS OXIGENOTERAPIA DOMICILIARIA-4.jpg": {
+    "mtime": 1774865500.0,
+    "ast_hash": "7822d7f9829648bb4898e8132e1874f6",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Suplementos/DESTACADAS SUPLEMENTOS -1.png": {
+    "mtime": 1774865242.0,
+    "ast_hash": "e9e7ad29f547ab065e43606db9135049",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Suplementos/DESTACADAS SUPLEMENTOS -10.png": {
+    "mtime": 1774865234.0,
+    "ast_hash": "79da82990b0c3a9290ebfd61c4fa25bf",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Suplementos/DESTACADAS SUPLEMENTOS -11.png": {
+    "mtime": 1774865232.0,
+    "ast_hash": "df201e53b450cba94f5e402691dfeb98",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Suplementos/DESTACADAS SUPLEMENTOS -12.png": {
+    "mtime": 1774865230.0,
+    "ast_hash": "dd87de13f4d51ecccb5becc6f16a698c",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Suplementos/DESTACADAS SUPLEMENTOS -2.png": {
+    "mtime": 1774865248.0,
+    "ast_hash": "3500cb10efbfdd8c95409cad0e8f32aa",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Suplementos/DESTACADAS SUPLEMENTOS -3.png": {
+    "mtime": 1774865246.0,
+    "ast_hash": "2281058d45ed295b2da235bb92cc7da3",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Suplementos/DESTACADAS SUPLEMENTOS -4.png": {
+    "mtime": 1774865244.0,
+    "ast_hash": "3d11e100efc2422deed356a27b5b5612",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Suplementos/DESTACADAS SUPLEMENTOS -5.png": {
+    "mtime": 1774865228.0,
+    "ast_hash": "c6ca236e253b14685b14b89faf9453a4",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Suplementos/DESTACADAS SUPLEMENTOS -6.png": {
+    "mtime": 1774865226.0,
+    "ast_hash": "a4eb69a47ba08aad9fcc3568c0f112dc",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Suplementos/DESTACADAS SUPLEMENTOS -7.png": {
+    "mtime": 1774865224.0,
+    "ast_hash": "f90a81f18f4b370d82f7603ed8ab0043",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Suplementos/DESTACADAS SUPLEMENTOS -8.png": {
+    "mtime": 1774865240.0,
+    "ast_hash": "5c6c0a0e95fc09a5a5940e18c9c5fd72",
+    "semantic_hash": ""
+  },
+  "static/img/HISTORIAS IG & WPP/Suplementos/DESTACADAS SUPLEMENTOS -9.png": {
+    "mtime": 1774865240.0,
+    "ast_hash": "23d7696fab424f03ab8509194ca8570f",
+    "semantic_hash": ""
+  },
+  "static/img/Logos Convenios/AU sonova c\u00e1psula.png": {
+    "mtime": 1778083164.0,
+    "ast_hash": "c08d145ea0d9d98cbc052a6cd5732166",
+    "semantic_hash": ""
+  },
+  "static/img/Logos Convenios/AU sonova.png": {
+    "mtime": 1778083014.0,
+    "ast_hash": "47658bfe54ee8efc26e91cf22ac60c76",
+    "semantic_hash": ""
+  },
+  "static/img/Logos Convenios/Logo Ce.R.Ki.De C\u00e1psula.png": {
+    "mtime": 1778081836.0,
+    "ast_hash": "db1e8cd5d5d7567a1350378c36f7a49b",
+    "semantic_hash": ""
+  },
+  "static/img/Logos Convenios/Logo Ce.R.Ki.De.png": {
+    "mtime": 1778081836.0,
+    "ast_hash": "6070352c1bc17385821705e5de36661f",
+    "semantic_hash": ""
+  },
+  "static/img/Logos Convenios/Logo Kenesis c\u00e1psula.png": {
+    "mtime": 1778082248.0,
+    "ast_hash": "dcbeeac3900eb29237bc8c46eb0b16e4",
+    "semantic_hash": ""
+  },
+  "static/img/Logos Convenios/Logo Rugy Club.png": {
+    "mtime": 1778081836.0,
+    "ast_hash": "75837cca090070081b2d9456ff4b6026",
+    "semantic_hash": ""
+  },
+  "static/img/Logos Convenios/Logo SportClub c\u00e1psula.png": {
+    "mtime": 1778081836.0,
+    "ast_hash": "01a77bb1808c84e99ee936fd4dd90b5a",
+    "semantic_hash": ""
+  },
+  "static/img/Logos Convenios/Logo Sportclub.png": {
+    "mtime": 1778081836.0,
+    "ast_hash": "d5b3556d639307d1059a3b37cb343e01",
+    "semantic_hash": ""
+  },
+  "static/img/Logos Convenios/Logo cardiologia.png": {
+    "mtime": 1778081836.0,
+    "ast_hash": "3bd9427d7b7a2b934f270e70b741c0a7",
+    "semantic_hash": ""
+  },
+  "static/img/Logos Convenios/Logo caridologia C\u00e1psula.png": {
+    "mtime": 1778081836.0,
+    "ast_hash": "42fee1110990ed1adbb18e344a893fab",
+    "semantic_hash": ""
+  },
+  "static/img/Logos Convenios/imagotipo kenesis.png": {
+    "mtime": 1778082248.0,
+    "ast_hash": "2a381536346f825beffdb447828e507e",
+    "semantic_hash": ""
+  },
+  "static/img/areas/Recuperaci\u00f3n H1.JPG": {
+    "mtime": 1787180774.228099,
+    "ast_hash": "80e57fa29d759d19be0cecd10e69a934",
+    "semantic_hash": ""
+  },
+  "static/img/areas/audiologia.jpg": {
+    "mtime": 1787180821.045675,
+    "ast_hash": "b6e25f6deb772dd4a221476a21c19ea2",
+    "semantic_hash": ""
+  },
+  "static/img/areas/hiperbarica.jpg": {
+    "mtime": 1787181781.0535927,
+    "ast_hash": "8a7633e29d373dbd83b988541dbdba34",
+    "semantic_hash": ""
+  },
+  "static/img/areas/insumos.jpg": {
+    "mtime": 1787181708.7032793,
+    "ast_hash": "676b2355e5b6b675ba1fb1d792edb519",
+    "semantic_hash": ""
+  },
+  "static/img/areas/insumos.webp": {
+    "mtime": 1787181523.2941422,
+    "ast_hash": "25d07d39f713debebac1a8f8838b9808",
+    "semantic_hash": ""
+  },
+  "static/img/areas/insumos2.jpg": {
+    "mtime": 1787181658.9609158,
+    "ast_hash": "011f67e7e88dc3365136cac917d46311",
+    "semantic_hash": ""
+  },
+  "static/img/areas/nutricion.jpg": {
+    "mtime": 1787180744.9809425,
+    "ast_hash": "3a861621c458dc0328b64e5640e5bd77",
+    "semantic_hash": ""
+  },
+  "static/img/fondo1.JPG": {
+    "mtime": 1775748691.5865293,
+    "ast_hash": "cb538df198be6a6c1a5c510c823a1347",
+    "semantic_hash": ""
+  },
+  "static/img/fondo/decoFondo.jpg": {
+    "mtime": 1737647460.0,
+    "ast_hash": "7569f1763da1cfef0405fa3d6d7affcd",
+    "semantic_hash": ""
+  },
+  "static/img/icons/calculadora.PNG": {
+    "mtime": 1788044643.27432,
+    "ast_hash": "874b130055d1bdc4e35d9d2441f30361",
+    "semantic_hash": ""
+  },
+  "static/img/icons/calendario.PNG": {
+    "mtime": 1788044679.8140461,
+    "ast_hash": "136de88f526f51d796c0c007890abc7d",
+    "semantic_hash": ""
+  },
+  "static/img/icons/calendario2.png": {
+    "mtime": 1788044766.71389,
+    "ast_hash": "5c5edad463d2f9d717af79a9ae3985e1",
+    "semantic_hash": ""
+  },
+  "static/img/icons/calendario3.png": {
+    "mtime": 1788045893.8494556,
+    "ast_hash": "203381f0562282a81ab9d2a7b3916859",
+    "semantic_hash": ""
+  },
+  "static/img/icons/carpeta.PNG": {
+    "mtime": 1788044864.2172437,
+    "ast_hash": "34b350ca2cb37b86d4908b2cf4d5b7a5",
+    "semantic_hash": ""
+  },
+  "static/img/icons/carpeta1.png": {
+    "mtime": 1788044897.242504,
+    "ast_hash": "fcd5da90f92bba89e60d51dd9264c1f7",
+    "semantic_hash": ""
+  },
+  "static/img/icons/doctor.png": {
+    "mtime": 1788043965.9968603,
+    "ast_hash": "cc0b49971094e7ba376e16f4082978bc",
+    "semantic_hash": ""
+  },
+  "static/img/icons/doctor111111.png": {
+    "mtime": 1788045863.958405,
+    "ast_hash": "7bfff4f298564e78b39785d028f1e162",
+    "semantic_hash": ""
+  },
+  "static/img/icons/email.png": {
+    "mtime": 1788044982.4060063,
+    "ast_hash": "ef41b4c2be6d2691637feffd45da31d8",
+    "semantic_hash": ""
+  },
+  "static/img/icons/estrella.png": {
+    "mtime": 1788124753.741365,
+    "ast_hash": "526459318629aeb995831475c32748fd",
+    "semantic_hash": ""
+  },
+  "static/img/icons/home.png": {
+    "mtime": 1788045014.8723414,
+    "ast_hash": "e41ae301fa9f819c383b022de6cc0839",
+    "semantic_hash": ""
+  },
+  "static/img/icons/lupa.png": {
+    "mtime": 1788045042.269276,
+    "ast_hash": "92692bd5a9fa6a18850c2826ae6d81dc",
+    "semantic_hash": ""
+  },
+  "static/img/icons/mensaje.PNG": {
+    "mtime": 1788045070.5479126,
+    "ast_hash": "81b7c1f11bb0b377ce5e2d14aa7f8f33",
+    "semantic_hash": ""
+  },
+  "static/img/icons/mensaje2.PNG": {
+    "mtime": 1788042650.1737466,
+    "ast_hash": "5c0ae2a53784d1847e1857229897d227",
+    "semantic_hash": ""
+  },
+  "static/img/icons/multimedia.png": {
+    "mtime": 1788045698.3830595,
+    "ast_hash": "8a0947e14308581369c6b858daafa7b4",
+    "semantic_hash": ""
+  },
+  "static/img/icons/pacientes.png": {
+    "mtime": 1788043822.0478237,
+    "ast_hash": "0d7c9be54267b7b232d6de9debfebbc9",
+    "semantic_hash": ""
+  },
+  "static/img/icons/persona.png": {
+    "mtime": 1788045739.4202151,
+    "ast_hash": "3e13727f969ac4343b1798f34e6c5781",
+    "semantic_hash": ""
+  },
+  "static/img/icons/personas.PNG": {
+    "mtime": 1788045663.387252,
+    "ast_hash": "fffaf803ac80b44545b790401925edf2",
+    "semantic_hash": ""
+  },
+  "static/img/icons/reloj.png": {
+    "mtime": 1788045776.8392944,
+    "ast_hash": "dfabedfd50395eee266b967f6fd46953",
+    "semantic_hash": ""
+  },
+  "static/img/icons/tienda.png": {
+    "mtime": 1788045805.1766145,
+    "ast_hash": "32ef60eb6a49ca3fd727e53a820986b2",
+    "semantic_hash": ""
+  },
+  "static/img/icons/usuario.png": {
+    "mtime": 1788045830.831524,
+    "ast_hash": "f7f3632fdd6303aaa1dd14669f6e9d8b",
+    "semantic_hash": ""
+  },
+  "static/img/logos/Isotipo - perfil sin fondo.png": {
+    "mtime": 1741600354.0,
+    "ast_hash": "02c7a97e666ddf8aea3ce70b597b6579",
+    "semantic_hash": ""
+  },
+  "static/img/logos/Logo c\u00e1psula verde petroleo.png": {
+    "mtime": 1750258904.0,
+    "ast_hash": "e43d6b472bd5f4e6d60aa243bf76229d",
+    "semantic_hash": ""
+  },
+  "static/img/logos/Logo c\u00e1psula verde.png": {
+    "mtime": 1750258902.0,
+    "ast_hash": "ae091fd3fab5aaf51760532d6543f24d",
+    "semantic_hash": ""
+  },
+  "static/img/logos/Logotipo - foto perfil - sin fondo.png": {
+    "mtime": 1741600346.0,
+    "ast_hash": "014e9e91a9e40ca027a1ad8096de5a21",
+    "semantic_hash": ""
+  },
+  "static/img/logos/Logotipo - foto perfil.png": {
+    "mtime": 1741600344.0,
+    "ast_hash": "e59a4446149f62c4e9c243e8c4379892",
+    "semantic_hash": ""
+  },
+  "static/img/logos/Logotipo blanco.png": {
+    "mtime": 1741600362.0,
+    "ast_hash": "999fa01f889abdf031cb19d90ae27873",
+    "semantic_hash": ""
+  },
+  "static/img/logos/Logotipo variable con fondo.png": {
+    "mtime": 1741600348.0,
+    "ast_hash": "f0bf284840ecc6947e09acad5a2eea91",
+    "semantic_hash": ""
+  },
+  "static/img/logos/Logotipo variable.png": {
+    "mtime": 1741600350.0,
+    "ast_hash": "5a351fbba338e8c1a5a5e0f0e84990a6",
+    "semantic_hash": ""
+  },
+  "static/img/logos/Logotipo.png": {
+    "mtime": 1741600364.0,
+    "ast_hash": "a83eeee30295372c6bf5090d7f2fb297",
+    "semantic_hash": ""
+  },
+  "static/img/logos/Logotipo2.png": {
+    "mtime": 1737647766.0,
+    "ast_hash": "4f0354adf36e7b4bc8f5d78d41899dae",
+    "semantic_hash": ""
+  },
+  "static/img/logos/logo c\u00e1psula.png": {
+    "mtime": 1750258902.0,
+    "ast_hash": "b88c34fa39981fa33010aaf9369f5185",
+    "semantic_hash": ""
+  },
+  "static/img/logos/logotipo negro.png": {
+    "mtime": 1741600358.0,
+    "ast_hash": "d59187969ed1215d54d3ea3f57ee8a9b",
+    "semantic_hash": ""
+  },
+  "static/img/notice/tec1.png": {
+    "mtime": 1779580363.7429843,
+    "ast_hash": "89243781c187a6265fe12f0c7b7d60ea",
+    "semantic_hash": ""
+  },
+  "static/img/notice/tec10.png": {
+    "mtime": 1779409514.612923,
+    "ast_hash": "c8763f2c986f57ce77842b64a1c7224e",
+    "semantic_hash": ""
+  },
+  "static/img/notice/tec11.png": {
+    "mtime": 1779409535.613135,
+    "ast_hash": "96a3791247407dcdc4b317b490dfa893",
+    "semantic_hash": ""
+  },
+  "static/img/notice/tec2.png": {
+    "mtime": 1779580361.0750403,
+    "ast_hash": "881a598c8a9e932b1e423f39a561b55c",
+    "semantic_hash": ""
+  },
+  "static/img/notice/tec3.png": {
+    "mtime": 1779580358.073839,
+    "ast_hash": "873077eb3911d8f0d6d0bda4cd55891b",
+    "semantic_hash": ""
+  },
+  "static/img/notice/tec4.png": {
+    "mtime": 1779409318.8867793,
+    "ast_hash": "3bac23b79cfcdb407ab0ff755de0f590",
+    "semantic_hash": ""
+  },
+  "static/img/notice/tec5.png": {
+    "mtime": 1779409367.1131835,
+    "ast_hash": "8ee4d0aa178eab601336e07aa72644c1",
+    "semantic_hash": ""
+  },
+  "static/img/notice/tec6.png": {
+    "mtime": 1779409386.1687322,
+    "ast_hash": "9a9769732f8d489c5700c27f9d21b73e",
+    "semantic_hash": ""
+  },
+  "static/img/notice/tec7.png": {
+    "mtime": 1779409455.2935128,
+    "ast_hash": "f99def6f71075a500322facbc91188c6",
+    "semantic_hash": ""
+  },
+  "static/img/notice/tec8.png": {
+    "mtime": 1779409471.989084,
+    "ast_hash": "5fdd04fd9e1e2ff320a86b12b71a50b4",
+    "semantic_hash": ""
+  },
+  "static/img/notice/tec9.png": {
+    "mtime": 1779409497.8653839,
+    "ast_hash": "515614f74ad8aeffeb4b0646d3707f8b",
+    "semantic_hash": ""
+  },
+  "static/img/profesionales/dra repetto.JPG": {
+    "mtime": 1779494879.2829604,
+    "ast_hash": "57906a5b3a10e907fdd22241c3ee99e6",
+    "semantic_hash": ""
+  },
+  "static/img/profesionales/dra repettoL.JPG": {
+    "mtime": 1780611895.059439,
+    "ast_hash": "71e5b69f369e4a9fe84beeb53841f71d",
+    "semantic_hash": ""
+  },
+  "static/img/profesionales/dra unger.jpg": {
+    "mtime": 1779494637.2536373,
+    "ast_hash": "1a5a4d6498301c9c2ba797aa6a798a71",
+    "semantic_hash": ""
+  },
+  "static/img/tecno-logo.jpeg": {
+    "mtime": 1779402533.0129647,
+    "ast_hash": "acb2ba7af317fc3cc1f7760300c999d8",
+    "semantic_hash": ""
+  },
+  "static/img/tecno_logo.png": {
+    "mtime": 1775748413.198874,
+    "ast_hash": "60c7945f097d62c2a2bd471539f8a84b",
+    "semantic_hash": ""
+  },
+  "static/video/deporte1.JPG": {
+    "mtime": 1779920046.325836,
+    "ast_hash": "a387cf9068e39e3ea0044695ffd41886",
+    "semantic_hash": ""
+  },
+  "static/video/deporte2.JPG": {
+    "mtime": 1779920878.9082067,
+    "ast_hash": "3e42d7b8b26774035ed6262314a782f5",
+    "semantic_hash": ""
+  },
+  "storage/staff/staff_6a90570fb48ff.jpg": {
+    "mtime": 1787844367.7295232,
+    "ast_hash": "1a5a4d6498301c9c2ba797aa6a798a71",
+    "semantic_hash": ""
+  },
+  "storage/staff/staff_6a9057597456b.jpg": {
+    "mtime": 1787844441.4699538,
+    "ast_hash": "71e5b69f369e4a9fe84beeb53841f71d",
+    "semantic_hash": ""
+  },
+  "storage/staff/staff_6a909d06adb27.jpg": {
+    "mtime": 1787862278.7027147,
+    "ast_hash": "57906a5b3a10e907fdd22241c3ee99e6",
+    "semantic_hash": ""
+  },
+  "storage/staff/staff_6a9b58f6622a3.jpg": {
+    "mtime": 1788565750.378397,
+    "ast_hash": "57906a5b3a10e907fdd22241c3ee99e6",
+    "semantic_hash": ""
+  },
+  "storage/staff/staff_6a9b5a06463bc.png": {
+    "mtime": 1788566022.25971,
+    "ast_hash": "cc0b49971094e7ba376e16f4082978bc",
+    "semantic_hash": ""
+  },
+  "static/video/Escuchar.mp4": {
+    "mtime": 1779484741.4652257,
+    "ast_hash": "7104320437e24ef4c899985ba8e93700",
+    "semantic_hash": ""
+  },
+  "static/video/Heridas.mp4": {
+    "mtime": 1779491648.041268,
+    "ast_hash": "c2f334baea1f7aa97b252c8faf0c1a01",
+    "semantic_hash": ""
+  },
+  "static/video/PieDiabetico.mp4": {
+    "mtime": 1779484839.0958703,
+    "ast_hash": "1a44b96db8ff3d8c1ddf7a27de8c1b0a",
+    "semantic_hash": ""
+  },
+  "static/video/deporte1.mp4": {
+    "mtime": 1779485169.0344682,
+    "ast_hash": "deeb8a61175e51502be506b587e74da2",
+    "semantic_hash": ""
+  },
+  "static/video/deporte2.mp4": {
+    "mtime": 1779485225.9910896,
+    "ast_hash": "ae3b2090482e6918641b35e61eeeb78d",
+    "semantic_hash": ""
+  },
+  "static/video/sede.mp4": {
+    "mtime": 1779484885.7414017,
+    "ast_hash": "92dbc567ae1ccf5441e94672f6fb1e02",
+    "semantic_hash": ""
+  },
+  "static/video/sesiones.mp4": {
+    "mtime": 1779484707.6863413,
+    "ast_hash": "736d94df1db14226de8bac3c528bf9d4",
+    "semantic_hash": ""
+  }
+}

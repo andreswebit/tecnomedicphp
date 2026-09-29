@@ -9,6 +9,14 @@
       "_origin": "ast"
     },
     {
+      "id": "admin_config_sitio",
+      "label": "config_sitio.php",
+      "file_type": "code",
+      "source_file": "admin/config_sitio.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
       "id": "admin_consultar_dni",
       "label": "consultar_dni.php",
       "file_type": "code",
@@ -57,10 +65,34 @@
       "_origin": "ast"
     },
     {
+      "id": "admin_mensajes",
+      "label": "mensajes.php",
+      "file_type": "code",
+      "source_file": "admin/mensajes.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
       "id": "admin_modificar",
       "label": "modificar.php",
       "file_type": "code",
       "source_file": "admin/modificar.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "admin_multimedia",
+      "label": "multimedia.php",
+      "file_type": "code",
+      "source_file": "admin/multimedia.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "admin_novedades",
+      "label": "novedades.php",
+      "file_type": "code",
+      "source_file": "admin/novedades.php",
       "source_location": "L1",
       "_origin": "ast"
     },
@@ -81,10 +113,42 @@
       "_origin": "ast"
     },
     {
+      "id": "admin_presupuestos",
+      "label": "presupuestos.php",
+      "file_type": "code",
+      "source_file": "admin/presupuestos.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "admin_presupuestos_descargar",
+      "label": "presupuestos_descargar.php",
+      "file_type": "code",
+      "source_file": "admin/presupuestos_descargar.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "admin_productos_destacados",
+      "label": "productos_destacados.php",
+      "file_type": "code",
+      "source_file": "admin/productos_destacados.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
       "id": "admin_profesionales",
       "label": "profesionales.php",
       "file_type": "code",
       "source_file": "admin/profesionales.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "admin_propuesta_ficha_medica",
+      "label": "propuesta-ficha-medica.php",
+      "file_type": "code",
+      "source_file": "admin/propuesta-ficha-medica.php",
       "source_location": "L1",
       "_origin": "ast"
     },
@@ -106,6 +170,22 @@
       "_origin": "ast"
     },
     {
+      "id": "admin_recursos",
+      "label": "recursos.php",
+      "file_type": "code",
+      "source_file": "admin/recursos.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "admin_staff",
+      "label": "staff.php",
+      "file_type": "code",
+      "source_file": "admin/staff.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
       "id": "admin_tablero",
       "label": "tablero.php",
       "file_type": "code",
@@ -118,6 +198,14 @@
       "label": "test_mail.php",
       "file_type": "code",
       "source_file": "admin/test_mail.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "admin_testimonios",
+      "label": "testimonios.php",
+      "file_type": "code",
+      "source_file": "admin/testimonios.php",
       "source_location": "L1",
       "_origin": "ast"
     },
@@ -138,10 +226,91 @@
       "_origin": "ast"
     },
     {
+      "id": "api_delete_email",
+      "label": "delete_email.php",
+      "file_type": "code",
+      "source_file": "api/delete_email.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "api_get_emails",
+      "label": "get_emails.php",
+      "file_type": "code",
+      "source_file": "api/get_emails.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "api_get_emails_emails_list",
+      "label": "_emails_list()",
+      "file_type": "code",
+      "source_file": "api/get_emails.php",
+      "source_location": "L99",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "api_get_emails_php_mysqli",
+      "label": "mysqli",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "api_get_wa_chats",
+      "label": "get_wa_chats.php",
+      "file_type": "code",
+      "source_file": "api/get_wa_chats.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "api_get_wa_messages",
+      "label": "get_wa_messages.php",
+      "file_type": "code",
+      "source_file": "api/get_wa_messages.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
       "id": "api_horarios",
       "label": "horarios.php",
       "file_type": "code",
       "source_file": "api/horarios.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "api_mark_wa_chat_read",
+      "label": "mark_wa_chat_read.php",
+      "file_type": "code",
+      "source_file": "api/mark_wa_chat_read.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "api_send_email",
+      "label": "send_email.php",
+      "file_type": "code",
+      "source_file": "api/send_email.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "api_send_wa_message",
+      "label": "send_wa_message.php",
+      "file_type": "code",
+      "source_file": "api/send_wa_message.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "api_twilio_webhook",
+      "label": "twilio_webhook.php",
+      "file_type": "code",
+      "source_file": "api/twilio_webhook.php",
       "source_location": "L1",
       "_origin": "ast"
     },
@@ -531,6 +700,15 @@
       "_origin": "ast"
     },
     {
+      "id": "includes_auth_portal_dashboard_url",
+      "label": "portal_dashboard_url()",
+      "file_type": "code",
+      "source_file": "includes/auth.php",
+      "source_location": "L91",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
       "id": "includes_config_mail",
       "label": "config_mail.php",
       "file_type": "code",
@@ -573,7 +751,7 @@
       "_origin": "ast"
     },
     {
-      "id": "mysqli",
+      "id": "includes_db_php_mysqli",
       "label": "mysqli",
       "file_type": "code",
       "source_file": "",
@@ -639,7 +817,7 @@
       "label": "eliminar_turno()",
       "file_type": "code",
       "source_file": "includes/db.php",
-      "source_location": "L136",
+      "source_location": "L139",
       "_callable": true,
       "_origin": "ast"
     },
@@ -648,7 +826,7 @@
       "label": "get_ocupados()",
       "file_type": "code",
       "source_file": "includes/db.php",
-      "source_location": "L142",
+      "source_location": "L145",
       "_callable": true,
       "_origin": "ast"
     },
@@ -657,7 +835,7 @@
       "label": "get_ocupados_excluyendo()",
       "file_type": "code",
       "source_file": "includes/db.php",
-      "source_location": "L156",
+      "source_location": "L159",
       "_callable": true,
       "_origin": "ast"
     },
@@ -666,7 +844,7 @@
       "label": "get_sesion()",
       "file_type": "code",
       "source_file": "includes/db.php",
-      "source_location": "L178",
+      "source_location": "L181",
       "_callable": true,
       "_origin": "ast"
     },
@@ -675,7 +853,7 @@
       "label": "nueva_sesion()",
       "file_type": "code",
       "source_file": "includes/db.php",
-      "source_location": "L194",
+      "source_location": "L197",
       "_callable": true,
       "_origin": "ast"
     },
@@ -684,7 +862,7 @@
       "label": "save_sesion()",
       "file_type": "code",
       "source_file": "includes/db.php",
-      "source_location": "L202",
+      "source_location": "L205",
       "_callable": true,
       "_origin": "ast"
     },
@@ -693,7 +871,7 @@
       "label": "reset_sesion()",
       "file_type": "code",
       "source_file": "includes/db.php",
-      "source_location": "L217",
+      "source_location": "L220",
       "_callable": true,
       "_origin": "ast"
     },
@@ -702,7 +880,7 @@
       "label": "buscar_turno_dni()",
       "file_type": "code",
       "source_file": "includes/db.php",
-      "source_location": "L226",
+      "source_location": "L229",
       "_callable": true,
       "_origin": "ast"
     },
@@ -711,7 +889,33 @@
       "label": "b()",
       "file_type": "code",
       "source_file": "includes/db.php",
-      "source_location": "L239",
+      "source_location": "L242",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_config",
+      "label": "db_config.php",
+      "file_type": "code",
+      "source_file": "includes/db_config.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_config_config_get",
+      "label": "config_get()",
+      "file_type": "code",
+      "source_file": "includes/db_config.php",
+      "source_location": "L6",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_config_config_set",
+      "label": "config_set()",
+      "file_type": "code",
+      "source_file": "includes/db_config.php",
+      "source_location": "L14",
       "_callable": true,
       "_origin": "ast"
     },
@@ -795,11 +999,29 @@
       "_origin": "ast"
     },
     {
+      "id": "includes_db_ficha_historia_clinica_actualizar",
+      "label": "historia_clinica_actualizar()",
+      "file_type": "code",
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L58",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_ficha_historia_clinica_eliminar",
+      "label": "historia_clinica_eliminar()",
+      "file_type": "code",
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L66",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
       "id": "includes_db_ficha_tratamientos_listar",
       "label": "tratamientos_listar()",
       "file_type": "code",
       "source_file": "includes/db_ficha.php",
-      "source_location": "L64",
+      "source_location": "L74",
       "_callable": true,
       "_origin": "ast"
     },
@@ -808,7 +1030,25 @@
       "label": "tratamiento_crear()",
       "file_type": "code",
       "source_file": "includes/db_ficha.php",
-      "source_location": "L78",
+      "source_location": "L88",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_ficha_tratamiento_get",
+      "label": "tratamiento_get()",
+      "file_type": "code",
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L97",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_ficha_tratamiento_eliminar",
+      "label": "tratamiento_eliminar()",
+      "file_type": "code",
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L104",
       "_callable": true,
       "_origin": "ast"
     },
@@ -817,7 +1057,7 @@
       "label": "estudios_listar()",
       "file_type": "code",
       "source_file": "includes/db_ficha.php",
-      "source_location": "L89",
+      "source_location": "L112",
       "_callable": true,
       "_origin": "ast"
     },
@@ -826,7 +1066,7 @@
       "label": "estudio_get()",
       "file_type": "code",
       "source_file": "includes/db_ficha.php",
-      "source_location": "L103",
+      "source_location": "L126",
       "_callable": true,
       "_origin": "ast"
     },
@@ -835,7 +1075,7 @@
       "label": "estudio_crear()",
       "file_type": "code",
       "source_file": "includes/db_ficha.php",
-      "source_location": "L110",
+      "source_location": "L133",
       "_callable": true,
       "_origin": "ast"
     },
@@ -844,7 +1084,248 @@
       "label": "estudio_eliminar()",
       "file_type": "code",
       "source_file": "includes/db_ficha.php",
-      "source_location": "L123",
+      "source_location": "L145",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_ficha_medicamentos_listar",
+      "label": "medicamentos_listar()",
+      "file_type": "code",
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L156",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_ficha_medicamento_crear",
+      "label": "medicamento_crear()",
+      "file_type": "code",
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L172",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_ficha_medicamento_get",
+      "label": "medicamento_get()",
+      "file_type": "code",
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L191",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_ficha_medicamento_eliminar",
+      "label": "medicamento_eliminar()",
+      "file_type": "code",
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L201",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_novedades",
+      "label": "db_novedades.php",
+      "file_type": "code",
+      "source_file": "includes/db_novedades.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_novedades_novedades_listar",
+      "label": "novedades_listar()",
+      "file_type": "code",
+      "source_file": "includes/db_novedades.php",
+      "source_location": "L6",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_novedades_novedad_get",
+      "label": "novedad_get()",
+      "file_type": "code",
+      "source_file": "includes/db_novedades.php",
+      "source_location": "L11",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_novedades_novedad_crear",
+      "label": "novedad_crear()",
+      "file_type": "code",
+      "source_file": "includes/db_novedades.php",
+      "source_location": "L18",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_novedades_novedad_editar",
+      "label": "novedad_editar()",
+      "file_type": "code",
+      "source_file": "includes/db_novedades.php",
+      "source_location": "L32",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_novedades_novedad_eliminar",
+      "label": "novedad_eliminar()",
+      "file_type": "code",
+      "source_file": "includes/db_novedades.php",
+      "source_location": "L45",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_novedades_novedad_subir_imagen",
+      "label": "novedad_subir_imagen()",
+      "file_type": "code",
+      "source_file": "includes/db_novedades.php",
+      "source_location": "L51",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_nutricion",
+      "label": "db_nutricion.php",
+      "file_type": "code",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_nutricion_objetivo_nutricional_get",
+      "label": "objetivo_nutricional_get()",
+      "file_type": "code",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L8",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_nutricion_objetivo_nutricional_guardar",
+      "label": "objetivo_nutricional_guardar()",
+      "file_type": "code",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L15",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_nutricion_mediciones_listar",
+      "label": "mediciones_listar()",
+      "file_type": "code",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L21",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_nutricion_medicion_crear",
+      "label": "medicion_crear()",
+      "file_type": "code",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L27",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_nutricion_medicion_eliminar",
+      "label": "medicion_eliminar()",
+      "file_type": "code",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L34",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_nutricion_medicion_get",
+      "label": "medicion_get()",
+      "file_type": "code",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L35",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_nutricion_comidas_listar",
+      "label": "comidas_listar()",
+      "file_type": "code",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L37",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_nutricion_comida_crear",
+      "label": "comida_crear()",
+      "file_type": "code",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L41",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_nutricion_comida_get",
+      "label": "comida_get()",
+      "file_type": "code",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L45",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_nutricion_comida_eliminar",
+      "label": "comida_eliminar()",
+      "file_type": "code",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L46",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_nutricion_nutricion_ficha_get",
+      "label": "nutricion_ficha_get()",
+      "file_type": "code",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L48",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_nutricion_nutricion_ultimo_registro",
+      "label": "nutricion_ultimo_registro()",
+      "file_type": "code",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L52",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_nutricion_nutricion_historial",
+      "label": "nutricion_historial()",
+      "file_type": "code",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L58",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_nutricion_nutricion_ficha_guardar",
+      "label": "nutricion_ficha_guardar()",
+      "file_type": "code",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L64",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_nutricion_nutricion_crear_registro",
+      "label": "nutricion_crear_registro()",
+      "file_type": "code",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L72",
       "_callable": true,
       "_origin": "ast"
     },
@@ -861,7 +1342,7 @@
       "label": "usuario_crear_paciente()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L15",
+      "source_location": "L16",
       "_callable": true,
       "_origin": "ast"
     },
@@ -870,7 +1351,7 @@
       "label": "usuario_crear_profesional()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L39",
+      "source_location": "L40",
       "_callable": true,
       "_origin": "ast"
     },
@@ -879,7 +1360,7 @@
       "label": "usuario_crear_admin()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L60",
+      "source_location": "L61",
       "_callable": true,
       "_origin": "ast"
     },
@@ -888,7 +1369,7 @@
       "label": "usuario_buscar_login()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L77",
+      "source_location": "L78",
       "_callable": true,
       "_origin": "ast"
     },
@@ -897,7 +1378,7 @@
       "label": "usuario_by_id()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L84",
+      "source_location": "L85",
       "_callable": true,
       "_origin": "ast"
     },
@@ -906,7 +1387,7 @@
       "label": "perfil_paciente()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L91",
+      "source_location": "L92",
       "_callable": true,
       "_origin": "ast"
     },
@@ -915,7 +1396,7 @@
       "label": "perfil_profesional()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L103",
+      "source_location": "L104",
       "_callable": true,
       "_origin": "ast"
     },
@@ -924,7 +1405,7 @@
       "label": "perfil_paciente_actualizar()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L110",
+      "source_location": "L111",
       "_callable": true,
       "_origin": "ast"
     },
@@ -933,7 +1414,7 @@
       "label": "usuario_cambiar_password()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L131",
+      "source_location": "L132",
       "_callable": true,
       "_origin": "ast"
     },
@@ -942,7 +1423,7 @@
       "label": "usuarios_pendientes()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L140",
+      "source_location": "L141",
       "_callable": true,
       "_origin": "ast"
     },
@@ -951,7 +1432,7 @@
       "label": "usuario_aprobar()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L147",
+      "source_location": "L148",
       "_callable": true,
       "_origin": "ast"
     },
@@ -960,7 +1441,7 @@
       "label": "usuario_rechazar()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L153",
+      "source_location": "L154",
       "_callable": true,
       "_origin": "ast"
     },
@@ -969,7 +1450,7 @@
       "label": "usuario_crear_paciente_admin()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L161",
+      "source_location": "L162",
       "_callable": true,
       "_origin": "ast"
     },
@@ -978,7 +1459,7 @@
       "label": "usuario_editar()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L184",
+      "source_location": "L185",
       "_callable": true,
       "_origin": "ast"
     },
@@ -987,7 +1468,7 @@
       "label": "usuario_eliminar()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L196",
+      "source_location": "L197",
       "_callable": true,
       "_origin": "ast"
     },
@@ -996,7 +1477,7 @@
       "label": "usuarios_todos()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L202",
+      "source_location": "L203",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1005,7 +1486,7 @@
       "label": "profesionales_todos()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L207",
+      "source_location": "L208",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1014,7 +1495,7 @@
       "label": "asignar_paciente_profesional()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L220",
+      "source_location": "L221",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1023,7 +1504,7 @@
       "label": "desasignar()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L230",
+      "source_location": "L231",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1032,7 +1513,7 @@
       "label": "asignaciones_todas()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L236",
+      "source_location": "L237",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1041,7 +1522,7 @@
       "label": "pacientes_de_profesional()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L251",
+      "source_location": "L252",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1050,7 +1531,7 @@
       "label": "pacientes_todos_activos()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L266",
+      "source_location": "L267",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1059,7 +1540,7 @@
       "label": "obras_sociales_todas()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L275",
+      "source_location": "L281",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1068,7 +1549,7 @@
       "label": "persona_upsert()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L288",
+      "source_location": "L296",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1077,7 +1558,7 @@
       "label": "persona_buscar()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L304",
+      "source_location": "L316",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1086,7 +1567,7 @@
       "label": "persona_estado()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L318",
+      "source_location": "L330",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1095,7 +1576,238 @@
       "label": "turnos_de_paciente()",
       "file_type": "code",
       "source_file": "includes/db_portal.php",
-      "source_location": "L344",
+      "source_location": "L356",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_portal_staff_listar",
+      "label": "staff_listar()",
+      "file_type": "code",
+      "source_file": "includes/db_portal.php",
+      "source_location": "L369",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_portal_staff_get",
+      "label": "staff_get()",
+      "file_type": "code",
+      "source_file": "includes/db_portal.php",
+      "source_location": "L380",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_portal_staff_crear",
+      "label": "staff_crear()",
+      "file_type": "code",
+      "source_file": "includes/db_portal.php",
+      "source_location": "L391",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_portal_staff_editar",
+      "label": "staff_editar()",
+      "file_type": "code",
+      "source_file": "includes/db_portal.php",
+      "source_location": "L429",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_portal_staff_eliminar",
+      "label": "staff_eliminar()",
+      "file_type": "code",
+      "source_file": "includes/db_portal.php",
+      "source_location": "L453",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_portal_staff_subir_foto",
+      "label": "staff_subir_foto()",
+      "file_type": "code",
+      "source_file": "includes/db_portal.php",
+      "source_location": "L459",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_presupuestos",
+      "label": "db_presupuestos.php",
+      "file_type": "code",
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_presupuestos_presupuesto_crear",
+      "label": "presupuesto_crear()",
+      "file_type": "code",
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L7",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_presupuestos_presupuestos_listar",
+      "label": "presupuestos_listar()",
+      "file_type": "code",
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L22",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_presupuestos_presupuesto_get",
+      "label": "presupuesto_get()",
+      "file_type": "code",
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L27",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_presupuestos_presupuesto_buscar_por_dni_cuit",
+      "label": "presupuesto_buscar_por_dni_cuit()",
+      "file_type": "code",
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L35",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_presupuestos_presupuesto_adjuntar_pdf",
+      "label": "presupuesto_adjuntar_pdf()",
+      "file_type": "code",
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L45",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_presupuestos_presupuesto_marcar_enviado",
+      "label": "presupuesto_marcar_enviado()",
+      "file_type": "code",
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L51",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_presupuestos_presupuesto_eliminar",
+      "label": "presupuesto_eliminar()",
+      "file_type": "code",
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L57",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_recursos",
+      "label": "db_recursos.php",
+      "file_type": "code",
+      "source_file": "includes/db_recursos.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_recursos_recursos_listar_publicos",
+      "label": "recursos_listar_publicos()",
+      "file_type": "code",
+      "source_file": "includes/db_recursos.php",
+      "source_location": "L7",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_recursos_recursos_listar_todos",
+      "label": "recursos_listar_todos()",
+      "file_type": "code",
+      "source_file": "includes/db_recursos.php",
+      "source_location": "L15",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_recursos_recurso_get",
+      "label": "recurso_get()",
+      "file_type": "code",
+      "source_file": "includes/db_recursos.php",
+      "source_location": "L25",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_recursos_recurso_crear",
+      "label": "recurso_crear()",
+      "file_type": "code",
+      "source_file": "includes/db_recursos.php",
+      "source_location": "L32",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_recursos_recurso_eliminar",
+      "label": "recurso_eliminar()",
+      "file_type": "code",
+      "source_file": "includes/db_recursos.php",
+      "source_location": "L47",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_testimonios",
+      "label": "db_testimonios.php",
+      "file_type": "code",
+      "source_file": "includes/db_testimonios.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_testimonios_testimonios_listar",
+      "label": "testimonios_listar()",
+      "file_type": "code",
+      "source_file": "includes/db_testimonios.php",
+      "source_location": "L6",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_testimonios_testimonio_get",
+      "label": "testimonio_get()",
+      "file_type": "code",
+      "source_file": "includes/db_testimonios.php",
+      "source_location": "L11",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_testimonios_testimonio_crear",
+      "label": "testimonio_crear()",
+      "file_type": "code",
+      "source_file": "includes/db_testimonios.php",
+      "source_location": "L18",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_testimonios_testimonio_editar",
+      "label": "testimonio_editar()",
+      "file_type": "code",
+      "source_file": "includes/db_testimonios.php",
+      "source_location": "L32",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_db_testimonios_testimonio_eliminar",
+      "label": "testimonio_eliminar()",
+      "file_type": "code",
+      "source_file": "includes/db_testimonios.php",
+      "source_location": "L44",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1121,7 +1833,7 @@
       "label": "_html_email()",
       "file_type": "code",
       "source_file": "includes/email.php",
-      "source_location": "L113",
+      "source_location": "L124",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1130,7 +1842,7 @@
       "label": "_bloque_turno()",
       "file_type": "code",
       "source_file": "includes/email.php",
-      "source_location": "L143",
+      "source_location": "L154",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1139,7 +1851,7 @@
       "label": "_fh()",
       "file_type": "code",
       "source_file": "includes/email.php",
-      "source_location": "L154",
+      "source_location": "L165",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1148,7 +1860,7 @@
       "label": "_nombre_area()",
       "file_type": "code",
       "source_file": "includes/email.php",
-      "source_location": "L160",
+      "source_location": "L171",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1157,7 +1869,7 @@
       "label": "email_solicitud()",
       "file_type": "code",
       "source_file": "includes/email.php",
-      "source_location": "L171",
+      "source_location": "L182",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1166,7 +1878,7 @@
       "label": "email_confirmacion()",
       "file_type": "code",
       "source_file": "includes/email.php",
-      "source_location": "L185",
+      "source_location": "L196",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1175,7 +1887,7 @@
       "label": "email_modificacion()",
       "file_type": "code",
       "source_file": "includes/email.php",
-      "source_location": "L197",
+      "source_location": "L208",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1184,7 +1896,7 @@
       "label": "email_recordatorio()",
       "file_type": "code",
       "source_file": "includes/email.php",
-      "source_location": "L209",
+      "source_location": "L220",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1193,7 +1905,105 @@
       "label": "email_cancelacion()",
       "file_type": "code",
       "source_file": "includes/email.php",
-      "source_location": "L222",
+      "source_location": "L233",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_email_email_presupuesto_solicitud",
+      "label": "email_presupuesto_solicitud()",
+      "file_type": "code",
+      "source_file": "includes/email.php",
+      "source_location": "L247",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_email_email_presupuesto_elaborado",
+      "label": "email_presupuesto_elaborado()",
+      "file_type": "code",
+      "source_file": "includes/email.php",
+      "source_location": "L258",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_email_reader",
+      "label": "email_reader.php",
+      "file_type": "code",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_email_reader_imap_mailbox_prefix_ferozo",
+      "label": "imap_mailbox_prefix_ferozo()",
+      "file_type": "code",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L9",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_email_reader_imap_open_ferozo",
+      "label": "imap_open_ferozo()",
+      "file_type": "code",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L15",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_email_reader_imap_strip_prefix",
+      "label": "imap_strip_prefix()",
+      "file_type": "code",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L39",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_email_reader_imap_list_folders_ferozo",
+      "label": "imap_list_folders_ferozo()",
+      "file_type": "code",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L48",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_email_reader_imap_resolve_folder_name_ferozo",
+      "label": "imap_resolve_folder_name_ferozo()",
+      "file_type": "code",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L78",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_email_reader_imap_create_folder_ferozo",
+      "label": "imap_create_folder_ferozo()",
+      "file_type": "code",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L108",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_email_reader_sync_emails_ferozo",
+      "label": "sync_emails_ferozo()",
+      "file_type": "code",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L146",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "includes_email_reader_decode_imap_body",
+      "label": "decode_imap_body()",
+      "file_type": "code",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L266",
       "_callable": true,
       "_origin": "ast"
     },
@@ -1386,10 +2196,26 @@
       "_origin": "ast"
     },
     {
+      "id": "package",
+      "label": "package.json",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
       "id": "pendiente",
       "label": "pendiente.php",
       "file_type": "code",
       "source_file": "pendiente.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "portal_ficha_agregar_medicamento",
+      "label": "agregar_medicamento.php",
+      "file_type": "code",
+      "source_file": "portal/ficha/agregar_medicamento.php",
       "source_location": "L1",
       "_origin": "ast"
     },
@@ -1418,10 +2244,50 @@
       "_origin": "ast"
     },
     {
+      "id": "portal_ficha_eliminar_historia",
+      "label": "eliminar_historia.php",
+      "file_type": "code",
+      "source_file": "portal/ficha/eliminar_historia.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "portal_ficha_eliminar_medicamento",
+      "label": "eliminar_medicamento.php",
+      "file_type": "code",
+      "source_file": "portal/ficha/eliminar_medicamento.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "portal_ficha_eliminar_tratamiento",
+      "label": "eliminar_tratamiento.php",
+      "file_type": "code",
+      "source_file": "portal/ficha/eliminar_tratamiento.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
       "id": "portal_ficha_guardar_historia",
       "label": "guardar_historia.php",
       "file_type": "code",
       "source_file": "portal/ficha/guardar_historia.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "portal_ficha_guardar_historia_fila",
+      "label": "guardar_historia_fila.php",
+      "file_type": "code",
+      "source_file": "portal/ficha/guardar_historia_fila.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "portal_ficha_guardar_persona",
+      "label": "guardar_persona.php",
+      "file_type": "code",
+      "source_file": "portal/ficha/guardar_persona.php",
       "source_location": "L1",
       "_origin": "ast"
     },
@@ -1439,6 +2305,79 @@
       "file_type": "code",
       "source_file": "portal/ficha/ver.php",
       "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "portal_nutricion_agregar_comida",
+      "label": "agregar_comida.php",
+      "file_type": "code",
+      "source_file": "portal/nutricion/agregar_comida.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "portal_nutricion_agregar_medicion",
+      "label": "agregar_medicion.php",
+      "file_type": "code",
+      "source_file": "portal/nutricion/agregar_medicion.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "portal_nutricion_eliminar_comida",
+      "label": "eliminar_comida.php",
+      "file_type": "code",
+      "source_file": "portal/nutricion/eliminar_comida.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "portal_nutricion_eliminar_medicion",
+      "label": "eliminar_medicion.php",
+      "file_type": "code",
+      "source_file": "portal/nutricion/eliminar_medicion.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "portal_nutricion_guardar_control_profesional",
+      "label": "guardar_control_profesional.php",
+      "file_type": "code",
+      "source_file": "portal/nutricion/guardar_control_profesional.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "portal_nutricion_guardar_ficha_profesional",
+      "label": "guardar_ficha_profesional.php",
+      "file_type": "code",
+      "source_file": "portal/nutricion/guardar_ficha_profesional.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "portal_nutricion_guardar_objetivo",
+      "label": "guardar_objetivo.php",
+      "file_type": "code",
+      "source_file": "portal/nutricion/guardar_objetivo.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "portal_nutricion_registro",
+      "label": "registro.php",
+      "file_type": "code",
+      "source_file": "portal/nutricion/registro.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "portal_nutricion_registro_camponutricion",
+      "label": "campoNutricion()",
+      "file_type": "code",
+      "source_file": "portal/nutricion/registro.php",
+      "source_location": "L54",
+      "_callable": true,
       "_origin": "ast"
     },
     {
@@ -1462,6 +2401,38 @@
       "label": "dashboard.php",
       "file_type": "code",
       "source_file": "portal/profesional/dashboard.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "portal_recursos",
+      "label": "recursos.php",
+      "file_type": "code",
+      "source_file": "portal/recursos.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "presupuesto",
+      "label": "presupuesto.php",
+      "file_type": "code",
+      "source_file": "presupuesto.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "recursos",
+      "label": "recursos.php",
+      "file_type": "code",
+      "source_file": "recursos.php",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "recursos_descargar",
+      "label": "recursos_descargar.php",
+      "file_type": "code",
+      "source_file": "recursos_descargar.php",
       "source_location": "L1",
       "_origin": "ast"
     },
@@ -1498,6 +2469,59 @@
       "_origin": "ast"
     },
     {
+      "id": "tmp_js_check",
+      "label": "tmp_js_check.js",
+      "file_type": "code",
+      "source_file": "tmp_js_check.js",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "tmp_js_check_escapehtml",
+      "label": "escapeHtml()",
+      "file_type": "code",
+      "source_file": "tmp_js_check.js",
+      "source_location": "L3",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "tmp_js_check_nl2br",
+      "label": "nl2br()",
+      "file_type": "code",
+      "source_file": "tmp_js_check.js",
+      "source_location": "L12",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "tmp_js_check_sanitizeemailhtml",
+      "label": "sanitizeEmailHtml()",
+      "file_type": "code",
+      "source_file": "tmp_js_check.js",
+      "source_location": "L184",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "tmp_js_check_renderemailslist",
+      "label": "renderEmailsList()",
+      "file_type": "code",
+      "source_file": "tmp_js_check.js",
+      "source_location": "L205",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
+      "id": "tmp_js_check_refrescaremailslista",
+      "label": "refrescarEmailsLista()",
+      "file_type": "code",
+      "source_file": "tmp_js_check.js",
+      "source_location": "L241",
+      "_callable": true,
+      "_origin": "ast"
+    },
+    {
       "id": "turnos",
       "label": "turnos.php",
       "file_type": "code",
@@ -1531,6 +2555,27 @@
       "source_file": "admin/recordatorio.php",
       "source_location": "L20",
       "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "api_get_emails",
+      "target": "api_get_emails_emails_list",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "api/get_emails.php",
+      "source_location": "L99",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "api_get_emails_emails_list",
+      "target": "api_get_emails_php_mysqli",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "source_file": "api/get_emails.php",
+      "source_location": "L99",
+      "weight": 1.0,
+      "context": "parameter_type",
       "_origin": "ast"
     },
     {
@@ -1986,6 +3031,16 @@
       "_origin": "ast"
     },
     {
+      "source": "includes_auth",
+      "target": "includes_auth_portal_dashboard_url",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/auth.php",
+      "source_location": "L91",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
       "source": "includes_auth_esta_logueado",
       "target": "includes_auth_iniciar_sesion_php",
       "relation": "calls",
@@ -2048,6 +3103,39 @@
       "confidence": "EXTRACTED",
       "source_file": "includes/auth.php",
       "source_location": "L85",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_auth_portal_dashboard_url",
+      "target": "includes_auth_portal_logueado",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/auth.php",
+      "source_location": "L92",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_auth_portal_dashboard_url",
+      "target": "includes_auth_portal_rol",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/auth.php",
+      "source_location": "L93",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_auth_portal_dashboard_url",
+      "target": "includes_auth_esta_logueado",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/auth.php",
+      "source_location": "L99",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2117,7 +3205,7 @@
     },
     {
       "source": "includes_db_db",
-      "target": "mysqli",
+      "target": "includes_db_php_mysqli",
       "relation": "references",
       "confidence": "EXTRACTED",
       "source_file": "includes/db.php",
@@ -2192,7 +3280,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db.php",
-      "source_location": "L136",
+      "source_location": "L139",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2202,7 +3290,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db.php",
-      "source_location": "L142",
+      "source_location": "L145",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2212,7 +3300,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db.php",
-      "source_location": "L156",
+      "source_location": "L159",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2222,7 +3310,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db.php",
-      "source_location": "L178",
+      "source_location": "L181",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2232,7 +3320,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db.php",
-      "source_location": "L194",
+      "source_location": "L197",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2242,7 +3330,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db.php",
-      "source_location": "L202",
+      "source_location": "L205",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2252,7 +3340,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db.php",
-      "source_location": "L217",
+      "source_location": "L220",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2262,7 +3350,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db.php",
-      "source_location": "L226",
+      "source_location": "L229",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2272,7 +3360,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db.php",
-      "source_location": "L239",
+      "source_location": "L242",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2349,7 +3437,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/db.php",
-      "source_location": "L137",
+      "source_location": "L140",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2360,7 +3448,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/db.php",
-      "source_location": "L145",
+      "source_location": "L148",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2371,7 +3459,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/db.php",
-      "source_location": "L160",
+      "source_location": "L163",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2382,7 +3470,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/db.php",
-      "source_location": "L179",
+      "source_location": "L182",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2393,7 +3481,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/db.php",
-      "source_location": "L191",
+      "source_location": "L194",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2404,7 +3492,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/db.php",
-      "source_location": "L204",
+      "source_location": "L207",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2415,7 +3503,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/db.php",
-      "source_location": "L223",
+      "source_location": "L226",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2426,7 +3514,27 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/db.php",
-      "source_location": "L228",
+      "source_location": "L231",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_config",
+      "target": "includes_db_config_config_get",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_config.php",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_config",
+      "target": "includes_db_config_config_set",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_config.php",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2502,11 +3610,31 @@
     },
     {
       "source": "includes_db_ficha",
+      "target": "includes_db_ficha_historia_clinica_actualizar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L58",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_ficha",
+      "target": "includes_db_ficha_historia_clinica_eliminar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L66",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_ficha",
       "target": "includes_db_ficha_tratamientos_listar",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_ficha.php",
-      "source_location": "L64",
+      "source_location": "L74",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2516,7 +3644,27 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_ficha.php",
-      "source_location": "L78",
+      "source_location": "L88",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_ficha",
+      "target": "includes_db_ficha_tratamiento_get",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L97",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_ficha",
+      "target": "includes_db_ficha_tratamiento_eliminar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L104",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2526,7 +3674,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_ficha.php",
-      "source_location": "L89",
+      "source_location": "L112",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2536,7 +3684,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_ficha.php",
-      "source_location": "L103",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2546,7 +3694,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_ficha.php",
-      "source_location": "L110",
+      "source_location": "L133",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2556,7 +3704,47 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_ficha.php",
-      "source_location": "L123",
+      "source_location": "L145",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_ficha",
+      "target": "includes_db_ficha_medicamentos_listar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L156",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_ficha",
+      "target": "includes_db_ficha_medicamento_crear",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L172",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_ficha",
+      "target": "includes_db_ficha_medicamento_get",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L191",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_ficha",
+      "target": "includes_db_ficha_medicamento_eliminar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L201",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2578,7 +3766,228 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_ficha.php",
-      "source_location": "L124",
+      "source_location": "L146",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_novedades",
+      "target": "includes_db_novedades_novedades_listar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_novedades.php",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_novedades",
+      "target": "includes_db_novedades_novedad_get",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_novedades.php",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_novedades",
+      "target": "includes_db_novedades_novedad_crear",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_novedades.php",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_novedades",
+      "target": "includes_db_novedades_novedad_editar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_novedades.php",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_novedades",
+      "target": "includes_db_novedades_novedad_eliminar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_novedades.php",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_novedades",
+      "target": "includes_db_novedades_novedad_subir_imagen",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_novedades.php",
+      "source_location": "L51",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion",
+      "target": "includes_db_nutricion_objetivo_nutricional_get",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion",
+      "target": "includes_db_nutricion_objetivo_nutricional_guardar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion",
+      "target": "includes_db_nutricion_mediciones_listar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion",
+      "target": "includes_db_nutricion_medicion_crear",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion",
+      "target": "includes_db_nutricion_medicion_eliminar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion",
+      "target": "includes_db_nutricion_medicion_get",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L35",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion",
+      "target": "includes_db_nutricion_comidas_listar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion",
+      "target": "includes_db_nutricion_comida_crear",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion",
+      "target": "includes_db_nutricion_comida_get",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion",
+      "target": "includes_db_nutricion_comida_eliminar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L46",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion",
+      "target": "includes_db_nutricion_nutricion_ficha_get",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L48",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion",
+      "target": "includes_db_nutricion_nutricion_ultimo_registro",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L52",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion",
+      "target": "includes_db_nutricion_nutricion_historial",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L58",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion",
+      "target": "includes_db_nutricion_nutricion_ficha_guardar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L64",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion",
+      "target": "includes_db_nutricion_nutricion_crear_registro",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L72",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion_nutricion_ficha_guardar",
+      "target": "includes_db_nutricion_objetivo_nutricional_guardar",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L70",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2588,7 +3997,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L15",
+      "source_location": "L16",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2598,7 +4007,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L39",
+      "source_location": "L40",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2608,7 +4017,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L60",
+      "source_location": "L61",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2618,7 +4027,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L77",
+      "source_location": "L78",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2628,7 +4037,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L84",
+      "source_location": "L85",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2638,7 +4047,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L91",
+      "source_location": "L92",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2648,7 +4057,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L103",
+      "source_location": "L104",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2658,7 +4067,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L110",
+      "source_location": "L111",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2668,7 +4077,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L131",
+      "source_location": "L132",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2678,7 +4087,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L140",
+      "source_location": "L141",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2688,7 +4097,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L147",
+      "source_location": "L148",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2698,7 +4107,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L153",
+      "source_location": "L154",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2708,7 +4117,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L161",
+      "source_location": "L162",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2718,7 +4127,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L184",
+      "source_location": "L185",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2728,7 +4137,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L196",
+      "source_location": "L197",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2738,7 +4147,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L202",
+      "source_location": "L203",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2748,7 +4157,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L207",
+      "source_location": "L208",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2758,7 +4167,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L220",
+      "source_location": "L221",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2768,7 +4177,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L230",
+      "source_location": "L231",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2778,7 +4187,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L236",
+      "source_location": "L237",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2788,7 +4197,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L251",
+      "source_location": "L252",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2798,7 +4207,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L266",
+      "source_location": "L267",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2808,7 +4217,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L275",
+      "source_location": "L281",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2818,7 +4227,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L288",
+      "source_location": "L296",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2828,7 +4237,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L304",
+      "source_location": "L316",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2838,7 +4247,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L318",
+      "source_location": "L330",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2848,7 +4257,67 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L344",
+      "source_location": "L356",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_portal",
+      "target": "includes_db_portal_staff_listar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_portal.php",
+      "source_location": "L369",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_portal",
+      "target": "includes_db_portal_staff_get",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_portal.php",
+      "source_location": "L380",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_portal",
+      "target": "includes_db_portal_staff_crear",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_portal.php",
+      "source_location": "L391",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_portal",
+      "target": "includes_db_portal_staff_editar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_portal.php",
+      "source_location": "L429",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_portal",
+      "target": "includes_db_portal_staff_eliminar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_portal.php",
+      "source_location": "L453",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_portal",
+      "target": "includes_db_portal_staff_subir_foto",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_portal.php",
+      "source_location": "L459",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2859,7 +4328,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L16",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2870,7 +4339,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L33",
+      "source_location": "L34",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2881,7 +4350,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L40",
+      "source_location": "L41",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2892,7 +4361,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L61",
+      "source_location": "L62",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2903,7 +4372,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L125",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2914,7 +4383,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L127",
+      "source_location": "L128",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2925,7 +4394,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L162",
+      "source_location": "L163",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2936,7 +4405,232 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/db_portal.php",
-      "source_location": "L320",
+      "source_location": "L332",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_portal_staff_crear",
+      "target": "includes_db_portal_usuario_buscar_login",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_portal.php",
+      "source_location": "L401",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_portal_staff_crear",
+      "target": "includes_db_portal_persona_upsert",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_portal.php",
+      "source_location": "L424",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_portal_staff_editar",
+      "target": "includes_db_portal_persona_upsert",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_portal.php",
+      "source_location": "L449",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_presupuestos",
+      "target": "includes_db_presupuestos_presupuesto_crear",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_presupuestos",
+      "target": "includes_db_presupuestos_presupuestos_listar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_presupuestos",
+      "target": "includes_db_presupuestos_presupuesto_get",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_presupuestos",
+      "target": "includes_db_presupuestos_presupuesto_buscar_por_dni_cuit",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L35",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_presupuestos",
+      "target": "includes_db_presupuestos_presupuesto_adjuntar_pdf",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_presupuestos",
+      "target": "includes_db_presupuestos_presupuesto_marcar_enviado",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L51",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_presupuestos",
+      "target": "includes_db_presupuestos_presupuesto_eliminar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L57",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_presupuestos_presupuesto_eliminar",
+      "target": "includes_db_presupuestos_presupuesto_get",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L58",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_recursos",
+      "target": "includes_db_recursos_recursos_listar_publicos",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_recursos.php",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_recursos",
+      "target": "includes_db_recursos_recursos_listar_todos",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_recursos.php",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_recursos",
+      "target": "includes_db_recursos_recurso_get",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_recursos.php",
+      "source_location": "L25",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_recursos",
+      "target": "includes_db_recursos_recurso_crear",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_recursos.php",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_recursos",
+      "target": "includes_db_recursos_recurso_eliminar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_recursos.php",
+      "source_location": "L47",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_recursos_recurso_eliminar",
+      "target": "includes_db_recursos_recurso_get",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_recursos.php",
+      "source_location": "L48",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_testimonios",
+      "target": "includes_db_testimonios_testimonios_listar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_testimonios.php",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_testimonios",
+      "target": "includes_db_testimonios_testimonio_get",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_testimonios.php",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_testimonios",
+      "target": "includes_db_testimonios_testimonio_crear",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_testimonios.php",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_testimonios",
+      "target": "includes_db_testimonios_testimonio_editar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_testimonios.php",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_testimonios",
+      "target": "includes_db_testimonios_testimonio_eliminar",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/db_testimonios.php",
+      "source_location": "L44",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -2956,23 +4650,13 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
-      "source_location": "L113",
+      "source_location": "L124",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
       "source": "includes_email",
       "target": "includes_email_bloque_turno",
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "includes/email.php",
-      "source_location": "L143",
-      "weight": 1.0,
-      "_origin": "ast"
-    },
-    {
-      "source": "includes_email",
-      "target": "includes_email_fh",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
@@ -2982,17 +4666,17 @@
     },
     {
       "source": "includes_email",
-      "target": "includes_email_nombre_area",
+      "target": "includes_email_fh",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
-      "source_location": "L160",
+      "source_location": "L165",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
       "source": "includes_email",
-      "target": "includes_email_email_solicitud",
+      "target": "includes_email_nombre_area",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
@@ -3002,11 +4686,21 @@
     },
     {
       "source": "includes_email",
+      "target": "includes_email_email_solicitud",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email.php",
+      "source_location": "L182",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email",
       "target": "includes_email_email_confirmacion",
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
-      "source_location": "L185",
+      "source_location": "L196",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3016,7 +4710,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
-      "source_location": "L197",
+      "source_location": "L208",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3026,7 +4720,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
-      "source_location": "L209",
+      "source_location": "L220",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3036,7 +4730,27 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
-      "source_location": "L222",
+      "source_location": "L233",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email",
+      "target": "includes_email_email_presupuesto_solicitud",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email.php",
+      "source_location": "L247",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email",
+      "target": "includes_email_email_presupuesto_elaborado",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email.php",
+      "source_location": "L258",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3047,7 +4761,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
-      "source_location": "L173",
+      "source_location": "L184",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3058,62 +4772,62 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
-      "source_location": "L175",
-      "weight": 1.0,
-      "_origin": "ast"
-    },
-    {
-      "source": "includes_email_email_solicitud",
-      "target": "includes_email_html_email",
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "includes/email.php",
-      "source_location": "L177",
-      "weight": 1.0,
-      "_origin": "ast"
-    },
-    {
-      "source": "includes_email_email_solicitud",
-      "target": "includes_email_bloque_turno",
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "includes/email.php",
-      "source_location": "L179",
-      "weight": 1.0,
-      "_origin": "ast"
-    },
-    {
-      "source": "includes_email_email_solicitud",
-      "target": "includes_email_enviar_email",
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "includes/email.php",
-      "source_location": "L182",
-      "weight": 1.0,
-      "_origin": "ast"
-    },
-    {
-      "source": "includes_email_email_confirmacion",
-      "target": "includes_email_fh",
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "includes/email.php",
       "source_location": "L186",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
+      "source": "includes_email_email_solicitud",
+      "target": "includes_email_html_email",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email.php",
+      "source_location": "L188",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_email_solicitud",
+      "target": "includes_email_bloque_turno",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email.php",
+      "source_location": "L190",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_email_solicitud",
+      "target": "includes_email_enviar_email",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email.php",
+      "source_location": "L193",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_email_confirmacion",
+      "target": "includes_email_fh",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email.php",
+      "source_location": "L197",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
       "source": "includes_email_email_confirmacion",
       "target": "includes_email_html_email",
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
-      "source_location": "L189",
+      "source_location": "L200",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3124,7 +4838,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
-      "source_location": "L191",
+      "source_location": "L202",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3135,7 +4849,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
-      "source_location": "L194",
+      "source_location": "L205",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3146,7 +4860,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
-      "source_location": "L198",
+      "source_location": "L209",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3157,7 +4871,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
-      "source_location": "L201",
+      "source_location": "L212",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3168,7 +4882,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
-      "source_location": "L203",
+      "source_location": "L214",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3179,7 +4893,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
-      "source_location": "L206",
+      "source_location": "L217",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3190,7 +4904,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
-      "source_location": "L210",
+      "source_location": "L221",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3201,46 +4915,13 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
-      "source_location": "L213",
+      "source_location": "L224",
       "weight": 1.0,
       "_origin": "ast"
     },
     {
       "source": "includes_email_email_recordatorio",
       "target": "includes_email_bloque_turno",
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "includes/email.php",
-      "source_location": "L215",
-      "weight": 1.0,
-      "_origin": "ast"
-    },
-    {
-      "source": "includes_email_email_recordatorio",
-      "target": "includes_email_enviar_email",
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "includes/email.php",
-      "source_location": "L219",
-      "weight": 1.0,
-      "_origin": "ast"
-    },
-    {
-      "source": "includes_email_email_cancelacion",
-      "target": "includes_email_fh",
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "source_file": "includes/email.php",
-      "source_location": "L223",
-      "weight": 1.0,
-      "_origin": "ast"
-    },
-    {
-      "source": "includes_email_email_cancelacion",
-      "target": "includes_email_html_email",
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -3250,13 +4931,46 @@
       "_origin": "ast"
     },
     {
+      "source": "includes_email_email_recordatorio",
+      "target": "includes_email_enviar_email",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email.php",
+      "source_location": "L230",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_email_cancelacion",
+      "target": "includes_email_fh",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email.php",
+      "source_location": "L234",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_email_cancelacion",
+      "target": "includes_email_html_email",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email.php",
+      "source_location": "L237",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
       "source": "includes_email_email_cancelacion",
       "target": "includes_email_bloque_turno",
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
-      "source_location": "L228",
+      "source_location": "L239",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3267,7 +4981,274 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "includes/email.php",
-      "source_location": "L231",
+      "source_location": "L242",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_email_presupuesto_solicitud",
+      "target": "includes_email_html_email",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email.php",
+      "source_location": "L250",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_email_presupuesto_solicitud",
+      "target": "includes_email_enviar_email",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email.php",
+      "source_location": "L255",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_email_presupuesto_elaborado",
+      "target": "includes_email_html_email",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email.php",
+      "source_location": "L260",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_email_presupuesto_elaborado",
+      "target": "includes_email_enviar_email",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email.php",
+      "source_location": "L263",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader",
+      "target": "includes_email_reader_imap_mailbox_prefix_ferozo",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader",
+      "target": "includes_email_reader_imap_open_ferozo",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader",
+      "target": "includes_email_reader_imap_strip_prefix",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L39",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader",
+      "target": "includes_email_reader_imap_list_folders_ferozo",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L48",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader",
+      "target": "includes_email_reader_imap_resolve_folder_name_ferozo",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L78",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader",
+      "target": "includes_email_reader_imap_create_folder_ferozo",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L108",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader",
+      "target": "includes_email_reader_sync_emails_ferozo",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L146",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader",
+      "target": "includes_email_reader_decode_imap_body",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L266",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader_imap_list_folders_ferozo",
+      "target": "includes_email_reader_imap_mailbox_prefix_ferozo",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L49",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader_imap_list_folders_ferozo",
+      "target": "includes_email_reader_imap_open_ferozo",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L52",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader_imap_list_folders_ferozo",
+      "target": "includes_email_reader_imap_strip_prefix",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L67",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader_imap_resolve_folder_name_ferozo",
+      "target": "includes_email_reader_imap_mailbox_prefix_ferozo",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L81",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader_imap_resolve_folder_name_ferozo",
+      "target": "includes_email_reader_imap_open_ferozo",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L83",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader_imap_resolve_folder_name_ferozo",
+      "target": "includes_email_reader_imap_strip_prefix",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L98",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader_imap_create_folder_ferozo",
+      "target": "includes_email_reader_imap_mailbox_prefix_ferozo",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L114",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader_imap_create_folder_ferozo",
+      "target": "includes_email_reader_imap_open_ferozo",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L117",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader_imap_create_folder_ferozo",
+      "target": "includes_email_reader_imap_list_folders_ferozo",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L133",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader_sync_emails_ferozo",
+      "target": "includes_email_reader_imap_resolve_folder_name_ferozo",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L153",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader_sync_emails_ferozo",
+      "target": "includes_email_reader_imap_mailbox_prefix_ferozo",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L154",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader_sync_emails_ferozo",
+      "target": "includes_email_reader_imap_open_ferozo",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L156",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader_sync_emails_ferozo",
+      "target": "includes_email_reader_decode_imap_body",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "includes/email_reader.php",
+      "source_location": "L209",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3421,6 +5402,88 @@
       "confidence": "EXTRACTED",
       "source_file": "includes/whatsapp.php",
       "source_location": "L21",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "portal_nutricion_registro",
+      "target": "portal_nutricion_registro_camponutricion",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "portal/nutricion/registro.php",
+      "source_location": "L54",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tmp_js_check",
+      "target": "tmp_js_check_escapehtml",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tmp_js_check.js",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tmp_js_check",
+      "target": "tmp_js_check_nl2br",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tmp_js_check.js",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tmp_js_check",
+      "target": "tmp_js_check_sanitizeemailhtml",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tmp_js_check.js",
+      "source_location": "L184",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tmp_js_check",
+      "target": "tmp_js_check_renderemailslist",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tmp_js_check.js",
+      "source_location": "L205",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tmp_js_check",
+      "target": "tmp_js_check_refrescaremailslista",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tmp_js_check.js",
+      "source_location": "L241",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tmp_js_check_renderemailslist",
+      "target": "tmp_js_check_escapehtml",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tmp_js_check.js",
+      "source_location": "L230",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "tmp_js_check_refrescaremailslista",
+      "target": "tmp_js_check_renderemailslist",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "tmp_js_check.js",
+      "source_location": "L258",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3605,6 +5668,18 @@
       "_origin": "ast"
     },
     {
+      "source": "includes_auth_portal_dashboard_url",
+      "target": "includes_db_b",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/auth.php",
+      "source_location": "L94",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
       "source": "includes_config_mail_crear_mail",
       "target": "includes_env_loader_env",
       "relation": "calls",
@@ -3625,6 +5700,42 @@
       "confidence_score": 0.8,
       "source_file": "includes/db.php",
       "source_location": "L112",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_modificar_turno",
+      "target": "includes_db_portal_persona_upsert",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db.php",
+      "source_location": "L135",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_config_config_get",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_config.php",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_config_config_set",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_config.php",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3720,7 +5831,31 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_ficha.php",
-      "source_location": "L49",
+      "source_location": "L50",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_ficha_historia_clinica_actualizar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L59",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_ficha_historia_clinica_eliminar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L67",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3732,7 +5867,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_ficha.php",
-      "source_location": "L65",
+      "source_location": "L75",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3744,7 +5879,31 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_ficha.php",
-      "source_location": "L79",
+      "source_location": "L89",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_ficha_tratamiento_get",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L98",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_ficha_tratamiento_eliminar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L105",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3756,7 +5915,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_ficha.php",
-      "source_location": "L90",
+      "source_location": "L113",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3768,7 +5927,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_ficha.php",
-      "source_location": "L104",
+      "source_location": "L127",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3780,7 +5939,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_ficha.php",
-      "source_location": "L112",
+      "source_location": "L136",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3792,7 +5951,295 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_ficha.php",
-      "source_location": "L126",
+      "source_location": "L148",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_ficha_medicamentos_listar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L158",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_ficha_medicamento_crear",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L181",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_ficha_medicamento_get",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L192",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_ficha_medicamento_eliminar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_ficha.php",
+      "source_location": "L202",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_novedades_novedades_listar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_novedades.php",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_novedades_novedad_get",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_novedades.php",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_novedades_novedad_crear",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_novedades.php",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_novedades_novedad_editar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_novedades.php",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_novedades_novedad_eliminar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_novedades.php",
+      "source_location": "L46",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion_objetivo_nutricional_get",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion_objetivo_nutricional_guardar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion_mediciones_listar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion_medicion_crear",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L30",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion_medicion_eliminar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L34",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion_medicion_get",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L35",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion_comidas_listar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L38",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion_comida_crear",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L42",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion_comida_get",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion_comida_eliminar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L46",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion_nutricion_ficha_get",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L49",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion_nutricion_ultimo_registro",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L55",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion_nutricion_historial",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L61",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion_nutricion_ficha_guardar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L68",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_nutricion_nutricion_crear_registro",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_nutricion.php",
+      "source_location": "L85",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3804,7 +6251,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L20",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3816,7 +6263,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L44",
+      "source_location": "L45",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3828,7 +6275,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L65",
+      "source_location": "L66",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3840,7 +6287,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L78",
+      "source_location": "L79",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3852,7 +6299,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L85",
+      "source_location": "L86",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3864,7 +6311,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L92",
+      "source_location": "L93",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3876,7 +6323,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L104",
+      "source_location": "L105",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3888,7 +6335,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L112",
+      "source_location": "L113",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3900,7 +6347,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L133",
+      "source_location": "L134",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3912,7 +6359,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L141",
+      "source_location": "L142",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3924,7 +6371,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L148",
+      "source_location": "L149",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3936,7 +6383,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L154",
+      "source_location": "L155",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3948,7 +6395,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L166",
+      "source_location": "L167",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3960,7 +6407,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L185",
+      "source_location": "L186",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3972,7 +6419,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L197",
+      "source_location": "L198",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3984,7 +6431,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L203",
+      "source_location": "L204",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -3996,7 +6443,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L208",
+      "source_location": "L209",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -4008,7 +6455,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L221",
+      "source_location": "L222",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -4020,7 +6467,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L231",
+      "source_location": "L232",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -4032,7 +6479,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L237",
+      "source_location": "L238",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -4044,7 +6491,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L252",
+      "source_location": "L253",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -4056,7 +6503,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L267",
+      "source_location": "L268",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -4068,7 +6515,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L276",
+      "source_location": "L282",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -4080,7 +6527,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L291",
+      "source_location": "L303",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -4092,7 +6539,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L306",
+      "source_location": "L318",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -4104,7 +6551,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L322",
+      "source_location": "L334",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -4116,7 +6563,283 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/db_portal.php",
-      "source_location": "L345",
+      "source_location": "L357",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_portal_staff_listar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_portal.php",
+      "source_location": "L370",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_portal_staff_get",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_portal.php",
+      "source_location": "L381",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_portal_staff_crear",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_portal.php",
+      "source_location": "L406",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_portal_staff_editar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_portal.php",
+      "source_location": "L430",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_portal_staff_eliminar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_portal.php",
+      "source_location": "L454",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_presupuestos_presupuesto_crear",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_presupuestos_presupuesto_crear",
+      "target": "includes_db_portal_persona_upsert",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L17",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_presupuestos_presupuestos_listar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_presupuestos_presupuesto_get",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_presupuestos_presupuesto_buscar_por_dni_cuit",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L37",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_presupuestos_presupuesto_adjuntar_pdf",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L46",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_presupuestos_presupuesto_marcar_enviado",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L52",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_presupuestos_presupuesto_eliminar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_presupuestos.php",
+      "source_location": "L60",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_recursos_recursos_listar_publicos",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_recursos.php",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_recursos_recursos_listar_todos",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_recursos.php",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_recursos_recurso_get",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_recursos.php",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_recursos_recurso_crear",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_recursos.php",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_recursos_recurso_eliminar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_recursos.php",
+      "source_location": "L50",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_testimonios_testimonios_listar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_testimonios.php",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_testimonios_testimonio_get",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_testimonios.php",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_testimonios_testimonio_crear",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_testimonios.php",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_testimonios_testimonio_editar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_testimonios.php",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_db_testimonios_testimonio_eliminar",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/db_testimonios.php",
+      "source_location": "L45",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -4128,7 +6851,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/email.php",
-      "source_location": "L56",
+      "source_location": "L57",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -4140,7 +6863,43 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "includes/email.php",
-      "source_location": "L77",
+      "source_location": "L82",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader_imap_mailbox_prefix_ferozo",
+      "target": "includes_env_loader_env",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/email_reader.php",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader_imap_open_ferozo",
+      "target": "includes_env_loader_env",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/email_reader.php",
+      "source_location": "L16",
+      "weight": 1.0,
+      "_origin": "ast"
+    },
+    {
+      "source": "includes_email_reader_sync_emails_ferozo",
+      "target": "includes_db_db",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "includes/email_reader.php",
+      "source_location": "L175",
       "weight": 1.0,
       "_origin": "ast"
     },
@@ -4220,14 +6979,28 @@
   "input_tokens": 0,
   "output_tokens": 0,
   "failed_sources": [
-    "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\.claude\\settings.json",
     "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\.claude\\settings.local.json",
+    "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\migration_historia_clinica_cronologica.sql",
+    "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\migration_staff_to_usuarios.sql",
+    "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\schema_agregar_area_turnos.sql",
     "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\schema_contactos.sql",
     "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\schema_fase_a.sql",
     "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\schema_fase_a2_personas.sql",
     "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\schema_fase_d_ficha_medica.sql",
+    "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\schema_fase_e_nutricion.sql",
+    "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\schema_fase_f_recursos.sql",
+    "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\schema_fase_h_presupuestos.sql",
+    "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\schema_fase_i_contenido.sql",
+    "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\schema_mensajeria.sql",
+    "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\seed_comidas.sql",
+    "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\seed_contactos.sql",
+    "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\seed_ficha_medica.sql",
+    "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\seed_mediciones.sql",
     "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\seed_pacientes.sql",
+    "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\seed_presupuestos.sql",
     "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\seed_profesionales.sql",
+    "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\seed_tratamientos.sql",
+    "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\tecnomedic_local (7).sql",
     "D:\\Users\\andresperal\\Documents\\Proyectos Python\\tecnomedic_php\\sql\\tienda_schema.sql"
   ]
 }

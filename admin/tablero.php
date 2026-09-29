@@ -61,7 +61,7 @@ require __DIR__ . '/../includes/portal_header.php';
     
     <a class="tablero-tile" href="<?= b('/admin/mensajes.php') ?>">
         <div class="tablero-icon"><img class="icon-image" src="<?= $base ?>/static/img/icons/mensaje.ico" alt="" /></div>
-        <div class="tablero-title" data-tooltip="WhatsApp - Email -(presupuesto)">Mensajes</div>
+        <div class="tablero-title" data-tooltip="Mensajes Web (Contacto) · Email · WhatsApp">Mensajes</div>
         <div class="tablero-desc"></div>
     </a>
 

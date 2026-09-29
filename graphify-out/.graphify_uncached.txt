@@ -1,0 +1,129 @@
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\.claude\agents\web-code-designer.md
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\README.md
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\tm.txt
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\quienes somos\Reseña de TecnoMedic.pdf
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\storage\estudios\13\estudio_6aaf0fbaee87b.pdf
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\storage\estudios\2\estudio_6a84e01a4f756.pdf
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\storage\estudios\2\estudio_6a84e243ccacf.pdf
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\storage\recursos\recurso_6a84e9b7b1b01.pdf
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\storage\recursos\recurso_6a84e9cf70467.pdf
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Acompañamos tu recuperación\Mensaje humano-H.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Acompañamos tu recuperación\Recuperación H1.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Acompañamos tu recuperación\Recuperación H2.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Acompañamos tu recuperación\Recuperación H3.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Acompañamos tu recuperación\Recuperación H4.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Acompañamos tu recuperación\Recuperación H5.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Audiologia\DESTACADAS AUDIOLOGÍA-1..jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Audiologia\DESTACADAS AUDIOLOGÍA-2..jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Audiologia\DESTACADAS AUDIOLOGÍA-3..jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Audiologia\DESTACADAS AUDIOLOGÍA-4..jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Audiologia\DESTACADAS AUDIOLOGÍA-5..jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Audiologia\DESTACADAS AUDIOLOGÍA-6..jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Audiologia\Story – Audiología - 1.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Audiologia\Story – Audiología - 2.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\C.Hiperbarica\DESTACADA 2 – HIPERBÁRICA-1.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\C.Hiperbarica\DESTACADA 2 – HIPERBÁRICA-2.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\C.Hiperbarica\DESTACADA 2 – HIPERBÁRICA-3.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\C.Hiperbarica\DESTACADA 2 – HIPERBÁRICA-4.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\C.Hiperbarica\DESTACADA 2 – HIPERBÁRICA-5.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Convenios\Descuento Rugby-2 (1).jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Convenios\Descuento Rugby.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Convenios\Descuento cardiologia-2 (1).jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Convenios\Descuento cardiologia.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Convenios\Sportclub descuento-1 (1).jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Convenios\Sportclub descuento-2 (1).jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 1 – Cabestrillo..png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 10 – Faja elástica.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 11 – Colchón antiescaras.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 12– Tobillera en ocho.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 13 – Inmovilizador de dedo individual.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 14 – Muñequera boomerang dedo libre.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 15 – Rodillera abierta.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 16 – Corrector postural.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 17 – Muletas.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 18 – Silla de ruedas.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 19 – Bota Walker.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 2 – Inmovilizador de muñeca..png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 20 – Cuello ortopedico.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 21 – Cierre.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 3 – Nebulizador Respirex..png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 4 – Termómetro digital..png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 5 – Oxímetro.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 6 – Tensiómetro digital (Drive).png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 7 – Tensiómetro aneroide + estetoscopio (Philco).png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 8 – Nebulizador ECAM.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Ortopedia y equipamiento médico\Historia 9 – Férula de mano.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Oxigenoterapia domiciliaria\DESTACADAS OXIGENOTERAPIA DOMICILIARIA-1.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Oxigenoterapia domiciliaria\DESTACADAS OXIGENOTERAPIA DOMICILIARIA-2.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Oxigenoterapia domiciliaria\DESTACADAS OXIGENOTERAPIA DOMICILIARIA-3.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Oxigenoterapia domiciliaria\DESTACADAS OXIGENOTERAPIA DOMICILIARIA-4.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Suplementos\DESTACADAS SUPLEMENTOS -1.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Suplementos\DESTACADAS SUPLEMENTOS -10.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Suplementos\DESTACADAS SUPLEMENTOS -11.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Suplementos\DESTACADAS SUPLEMENTOS -12.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Suplementos\DESTACADAS SUPLEMENTOS -2.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Suplementos\DESTACADAS SUPLEMENTOS -3.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Suplementos\DESTACADAS SUPLEMENTOS -4.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Suplementos\DESTACADAS SUPLEMENTOS -5.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Suplementos\DESTACADAS SUPLEMENTOS -6.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Suplementos\DESTACADAS SUPLEMENTOS -7.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Suplementos\DESTACADAS SUPLEMENTOS -8.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\HISTORIAS IG & WPP\Suplementos\DESTACADAS SUPLEMENTOS -9.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\Logos Convenios\AU sonova cápsula.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\Logos Convenios\AU sonova.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\Logos Convenios\Logo Ce.R.Ki.De Cápsula.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\Logos Convenios\Logo Ce.R.Ki.De.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\Logos Convenios\Logo Kenesis cápsula.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\Logos Convenios\Logo Rugy Club.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\Logos Convenios\Logo SportClub cápsula.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\Logos Convenios\Logo Sportclub.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\Logos Convenios\Logo cardiologia.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\Logos Convenios\Logo caridologia Cápsula.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\Logos Convenios\imagotipo kenesis.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\areas\Recuperación H1.JPG
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\areas\audiologia.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\areas\hiperbarica.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\areas\insumos.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\areas\insumos.webp
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\areas\insumos2.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\areas\nutricion.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\fondo1.JPG
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\fondo\decoFondo.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\icons\mascota tecnomedic.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\logos\Isotipo - perfil sin fondo.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\logos\Logo cápsula verde petroleo.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\logos\Logo cápsula verde.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\logos\Logotipo - foto perfil - sin fondo.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\logos\Logotipo - foto perfil.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\logos\Logotipo blanco.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\logos\Logotipo variable con fondo.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\logos\Logotipo variable.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\logos\Logotipo.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\logos\Logotipo2.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\logos\logo cápsula.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\logos\logotipo negro.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\notice\tec1.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\notice\tec10.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\notice\tec11.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\notice\tec2.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\notice\tec3.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\notice\tec4.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\notice\tec5.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\notice\tec6.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\notice\tec7.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\notice\tec8.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\notice\tec9.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\profesionales\dra repetto.JPG
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\profesionales\dra repettoL.JPG
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\profesionales\dra unger.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\tecno-logo.jpeg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\img\tecno_logo.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\video\deporte1.JPG
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\static\video\deporte2.JPG
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\storage\estudios\16\estudio_6aa9c8fcbdf62.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\storage\staff\staff_6a90570fb48ff.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\storage\staff\staff_6a9057597456b.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\storage\staff\staff_6a909d06adb27.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\storage\staff\staff_6a9b58f6622a3.jpg
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\storage\staff\staff_6a9b5a06463bc.png
+D:\Users\andresperal\Documents\Proyectos Python\tecnomedic_php\storage\staff\staff_6aaf10c698f5a.jpg

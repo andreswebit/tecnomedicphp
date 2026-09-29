@@ -75,10 +75,10 @@ $etiquetaRol = [
             <a href="<?= b('/admin/usuarios.php') ?>"
                 class="nav-item <?= $activo === 'usuarios' ? 'active' : '' ?>"><span><img class="tm-thumb"
                         src="<?= $base ?>/static/img/icons/usuarios.ico" alt="" /></span><span>Usuarios</span></a>
-            <a href="<?= b('/admin/presupuestos.php') ?>"
+            <!-- <a href="<?= b('/admin/presupuestos.php') ?>"
                 class="nav-item <?= $activo === 'presupuestos' ? 'active' : '' ?>"><span><img class="tm-thumb"
                         src="<?= $base ?>/static/img/icons/calculadora.ico"
-                        alt="" /></span><span>Presupuestos</span></a>
+                        alt="" /></span><span>Presupuestos</span></a> -->
             <a href="<?= b('/admin/recursos.php') ?>"
                 class="nav-item <?= $activo === 'recursos' ? 'active' : '' ?>"><span><img class="tm-thumb"
                         src="<?= $base ?>/static/img/icons/carpeta.ico" alt="" /></span><span>Recursos</span></a>

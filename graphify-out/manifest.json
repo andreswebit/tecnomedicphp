@@ -15,8 +15,8 @@
     "semantic_hash": ""
   },
   "admin/contactos.php": {
-    "mtime": 1787952290.8658354,
-    "ast_hash": "797bca6b4603c2e1e6422ef1dc329402",
+    "mtime": 1789667896.7315264,
+    "ast_hash": "1a6a2d934062def36a1866beab1b3f55",
     "semantic_hash": ""
   },
   "admin/eliminar.php": {
@@ -25,8 +25,8 @@
     "semantic_hash": ""
   },
   "admin/index.php": {
-    "mtime": 1788997369.1479363,
-    "ast_hash": "082fadcc25d228c35fe349e13ef7a239",
+    "mtime": 1789667893.3616145,
+    "ast_hash": "7fe8f200446816abc25219ce4431db90",
     "semantic_hash": ""
   },
   "admin/login.php": {
@@ -50,13 +50,13 @@
     "semantic_hash": ""
   },
   "admin/novedades.php": {
-    "mtime": 1787863164.4453843,
-    "ast_hash": "4d5c9ca16d58d88d5e0f7aa3937c8707",
+    "mtime": 1789667901.2264888,
+    "ast_hash": "89f00d368ed2750a763f12c97480d4aa",
     "semantic_hash": ""
   },
   "admin/pacientes.php": {
-    "mtime": 1789250093.849771,
-    "ast_hash": "f3fd4538027353c11f33daa5b1dcafec",
+    "mtime": 1789667892.2363384,
+    "ast_hash": "3c33a64aa05501afaa4ddc24a5623fe6",
     "semantic_hash": ""
   },
   "admin/portal_usuarios.php": {
@@ -65,8 +65,8 @@
     "semantic_hash": ""
   },
   "admin/presupuestos.php": {
-    "mtime": 1787952117.1230266,
-    "ast_hash": "df99a9ec8e27ebc3c147caefbb627968",
+    "mtime": 1789949014.2579715,
+    "ast_hash": "ef44bb68494ab2ebd23811f2c7347687",
     "semantic_hash": ""
   },
   "admin/presupuestos_descargar.php": {
@@ -75,13 +75,13 @@
     "semantic_hash": ""
   },
   "admin/productos_destacados.php": {
-    "mtime": 1787863283.9455416,
-    "ast_hash": "1310445373b1e862264f0b52a6b3d53f",
+    "mtime": 1789667898.9665802,
+    "ast_hash": "d529262c800a04ca2260fc0d4f70b587",
     "semantic_hash": ""
   },
   "admin/profesionales.php": {
-    "mtime": 1788563961.2502367,
-    "ast_hash": "5500e3999bf56ecea37bc85efcca9493",
+    "mtime": 1789688679.0216765,
+    "ast_hash": "b503ba9f2717e82e99053ef5974f8c7c",
     "semantic_hash": ""
   },
   "admin/propuesta-ficha-medica.php": {
@@ -95,18 +95,18 @@
     "semantic_hash": ""
   },
   "admin/recursos.php": {
-    "mtime": 1788213347.7438827,
-    "ast_hash": "829d0b30ec250d14b476b804cda48866",
+    "mtime": 1790292578.0622027,
+    "ast_hash": "a5d67c141ae51615665a223faec341b8",
     "semantic_hash": ""
   },
   "admin/staff.php": {
-    "mtime": 1788732754.5285704,
-    "ast_hash": "8449d474f1be8ee5ad94ab1cdbd050bd",
+    "mtime": 1789667894.48766,
+    "ast_hash": "c15a25644196c2c773332aa5777de76a",
     "semantic_hash": ""
   },
   "admin/tablero.php": {
-    "mtime": 1788123393.0504713,
-    "ast_hash": "3a93fe26b3d7f969c9bff23247971b8f",
+    "mtime": 1790458026.4299607,
+    "ast_hash": "f91f7b5480f3bc06fc26e9f0058fc444",
     "semantic_hash": ""
   },
   "admin/test_mail.php": {
@@ -115,8 +115,8 @@
     "semantic_hash": ""
   },
   "admin/testimonios.php": {
-    "mtime": 1787863262.2069895,
-    "ast_hash": "62fe377fcba83b87071b8a2b69bf0bdc",
+    "mtime": 1789667900.0897703,
+    "ast_hash": "5140e279bd2603da0a309948207d46b3",
     "semantic_hash": ""
   },
   "admin/tienda_section.php": {
@@ -125,8 +125,8 @@
     "semantic_hash": ""
   },
   "admin/usuarios.php": {
-    "mtime": 1788826920.1352086,
-    "ast_hash": "9dda0e5ed0f97fdfa43a538cd282ff88",
+    "mtime": 1789945227.6944356,
+    "ast_hash": "28c9b60f4f8dad3283272c7783394f6d",
     "semantic_hash": ""
   },
   "api/horarios.php": {
@@ -175,13 +175,13 @@
     "semantic_hash": ""
   },
   "confirmacion.php": {
-    "mtime": 1784928699.421052,
-    "ast_hash": "f984c0b12b8da591ef2691caf0b8f8fe",
+    "mtime": 1790259490.1649156,
+    "ast_hash": "910a78616b5874170e10004317a56b57",
     "semantic_hash": ""
   },
   "contacto.php": {
-    "mtime": 1786491204.307645,
-    "ast_hash": "98889f195d5de5a9c6ee43dddf540b9e",
+    "mtime": 1790260203.2979612,
+    "ast_hash": "f4efde1510716817598b0920995ec290",
     "semantic_hash": ""
   },
   "guardar.php": {
@@ -195,8 +195,8 @@
     "semantic_hash": ""
   },
   "includes/auth.php": {
-    "mtime": 1785194976.985958,
-    "ast_hash": "3a6e55e839b41e2d6cae78bb55f15474",
+    "mtime": 1790259309.0080943,
+    "ast_hash": "c2b387ba0c9e47d81359de06aa50d2ca",
     "semantic_hash": ""
   },
   "includes/config_mail.php": {
@@ -220,8 +220,8 @@
     "semantic_hash": ""
   },
   "includes/db_ficha.php": {
-    "mtime": 1788476490.4731462,
-    "ast_hash": "a797526b9418c2db4b0f3db94b0c8858",
+    "mtime": 1789433380.179282,
+    "ast_hash": "1c5df859bc38b5cef806c25106e1d618",
     "semantic_hash": ""
   },
   "includes/db_novedades.php": {
@@ -230,13 +230,13 @@
     "semantic_hash": ""
   },
   "includes/db_nutricion.php": {
-    "mtime": 1787100166.0,
-    "ast_hash": "d3829d5afd33526b1370e020da932c01",
+    "mtime": 1789655588.523954,
+    "ast_hash": "a9403d3d5e2e2829792db63f2ca1d2a5",
     "semantic_hash": ""
   },
   "includes/db_portal.php": {
-    "mtime": 1789138202.7717886,
-    "ast_hash": "eadf8e8573faa50a8cd2910641c495ad",
+    "mtime": 1789858618.0297925,
+    "ast_hash": "97f35cef563ef6b828d7f4e4919fec19",
     "semantic_hash": ""
   },
   "includes/db_presupuestos.php": {
@@ -275,8 +275,8 @@
     "semantic_hash": ""
   },
   "includes/portal_header.php": {
-    "mtime": 1789166820.4022944,
-    "ast_hash": "9051839f96b7be2607b7795f96f4b5e5",
+    "mtime": 1790457793.7079153,
+    "ast_hash": "6841edd5d646abbd2d2c4946c0a90227",
     "semantic_hash": ""
   },
   "includes/tienda.php": {
@@ -295,8 +295,8 @@
     "semantic_hash": ""
   },
   "login.php": {
-    "mtime": 1786487350.4514186,
-    "ast_hash": "35b130a26da380e603b70518bf1414fd",
+    "mtime": 1790288879.175524,
+    "ast_hash": "55ab5246905b8ab1b52e06284c83bd82",
     "semantic_hash": ""
   },
   "loginViejo.php": {
@@ -320,8 +320,8 @@
     "semantic_hash": ""
   },
   "portal/ficha/agregar_tratamiento.php": {
-    "mtime": 1786296990.0,
-    "ast_hash": "d9917fc24cd960604f2eedcef16055d8",
+    "mtime": 1789433444.1741388,
+    "ast_hash": "0520e92b29dc81b284ab4aa7be09d7e4",
     "semantic_hash": ""
   },
   "portal/ficha/descargar_estudio.php": {
@@ -330,13 +330,13 @@
     "semantic_hash": ""
   },
   "portal/ficha/eliminar_estudio.php": {
-    "mtime": 1786296990.0,
-    "ast_hash": "8bcd2df9f6ff1296ef36d4fe474377f7",
+    "mtime": 1789433477.3156314,
+    "ast_hash": "c2cedbf5177357a893623962b282922b",
     "semantic_hash": ""
   },
   "portal/ficha/guardar_historia.php": {
-    "mtime": 1786296990.0,
-    "ast_hash": "1e3c00fb01dc8dbab70b1b928d84fb91",
+    "mtime": 1789431448.3507726,
+    "ast_hash": "01437197525fccfc3944f1151c7d71ab",
     "semantic_hash": ""
   },
   "portal/ficha/guardar_persona.php": {
@@ -345,13 +345,13 @@
     "semantic_hash": ""
   },
   "portal/ficha/subir_estudio.php": {
-    "mtime": 1786296990.0,
-    "ast_hash": "065c4b2b07d8e81f0d7481d40888aa50",
+    "mtime": 1789433466.6875029,
+    "ast_hash": "47875ef4880d8e4bca789064d95a0fd3",
     "semantic_hash": ""
   },
   "portal/ficha/ver.php": {
-    "mtime": 1789247166.5558662,
-    "ast_hash": "90d7c81342ac8727a747d4727e4285cb",
+    "mtime": 1790293287.4865303,
+    "ast_hash": "bff369ea4dfa299e9219b61ae3ab2bee",
     "semantic_hash": ""
   },
   "portal/nutricion/agregar_comida.php": {
@@ -380,18 +380,18 @@
     "semantic_hash": ""
   },
   "portal/nutricion/registro.php": {
-    "mtime": 1789054029.1157234,
-    "ast_hash": "dbce8f196828ef0cd07fe5bf58e565df",
+    "mtime": 1790204956.7961767,
+    "ast_hash": "2457467c37dd26ba2330f4d7b327384d",
     "semantic_hash": ""
   },
   "portal/paciente/dashboard.php": {
-    "mtime": 1787369958.0,
-    "ast_hash": "005723d9b319a54d108fffe5323add41",
+    "mtime": 1790258222.8163166,
+    "ast_hash": "d2f93ce48e4d14c9a9c6dd89ae0dfddb",
     "semantic_hash": ""
   },
   "portal/paciente/perfil.php": {
-    "mtime": 1787369958.0,
-    "ast_hash": "08ef164a94ce16f2015be16c8636ccb5",
+    "mtime": 1790284616.5353677,
+    "ast_hash": "1f0121de19178d425da9577536809769",
     "semantic_hash": ""
   },
   "portal/profesional/dashboard.php": {
@@ -400,18 +400,18 @@
     "semantic_hash": ""
   },
   "portal/recursos.php": {
-    "mtime": 1787369958.0,
-    "ast_hash": "24af37abd49f7348fd6844f6f01e7ac6",
+    "mtime": 1790288648.8477416,
+    "ast_hash": "2ba686d762f697543f1d95fba50cc469",
     "semantic_hash": ""
   },
   "presupuesto.php": {
-    "mtime": 1787434155.4729483,
-    "ast_hash": "43e876c7f74aadccd71752f81fc2bde4",
+    "mtime": 1790260054.3818617,
+    "ast_hash": "d9e3bf3d3942edca638dd328e331102f",
     "semantic_hash": ""
   },
   "recursos.php": {
-    "mtime": 1787100214.0,
-    "ast_hash": "289f0a8b4fe4b0caff6d99979e78cce7",
+    "mtime": 1790288771.5646544,
+    "ast_hash": "1a43121e660478fa0b9fada278ddfccb",
     "semantic_hash": ""
   },
   "recursos_descargar.php": {
@@ -420,8 +420,8 @@
     "semantic_hash": ""
   },
   "register.php": {
-    "mtime": 1785034866.0,
-    "ast_hash": "9bd845036fd7e151fe3ea78798e25fc2",
+    "mtime": 1790285265.6498904,
+    "ast_hash": "bd914e413c1574b54625d0c5edc3c1f0",
     "semantic_hash": ""
   },
   "tienda/categoria.php": {
@@ -440,8 +440,8 @@
     "semantic_hash": ""
   },
   "turnos.php": {
-    "mtime": 1787964111.9380145,
-    "ast_hash": "fc09e24b43c05a6372c1e6ba3bbfe306",
+    "mtime": 1790259434.8893833,
+    "ast_hash": "8e32a22323478723cbfcce52316fe4f3",
     "semantic_hash": ""
   },
   ".claude/agents/web-code-designer.md": {
@@ -450,8 +450,8 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1787100166.0,
-    "ast_hash": "0af46e506b09628ec96a8fa1a0631647",
+    "mtime": 1789313380.9926763,
+    "ast_hash": "1fa04a01905cb9501ab2483a0d0fbba3",
     "semantic_hash": ""
   },
   "static/img/quienes somos/Rese\u00f1a de TecnoMedic.pdf": {
@@ -889,111 +889,6 @@
     "ast_hash": "7569f1763da1cfef0405fa3d6d7affcd",
     "semantic_hash": ""
   },
-  "static/img/icons/calculadora.PNG": {
-    "mtime": 1788044643.27432,
-    "ast_hash": "874b130055d1bdc4e35d9d2441f30361",
-    "semantic_hash": ""
-  },
-  "static/img/icons/calendario.PNG": {
-    "mtime": 1788044679.8140461,
-    "ast_hash": "136de88f526f51d796c0c007890abc7d",
-    "semantic_hash": ""
-  },
-  "static/img/icons/calendario2.png": {
-    "mtime": 1788044766.71389,
-    "ast_hash": "5c5edad463d2f9d717af79a9ae3985e1",
-    "semantic_hash": ""
-  },
-  "static/img/icons/calendario3.png": {
-    "mtime": 1788045893.8494556,
-    "ast_hash": "203381f0562282a81ab9d2a7b3916859",
-    "semantic_hash": ""
-  },
-  "static/img/icons/carpeta.PNG": {
-    "mtime": 1788044864.2172437,
-    "ast_hash": "34b350ca2cb37b86d4908b2cf4d5b7a5",
-    "semantic_hash": ""
-  },
-  "static/img/icons/carpeta1.png": {
-    "mtime": 1788044897.242504,
-    "ast_hash": "fcd5da90f92bba89e60d51dd9264c1f7",
-    "semantic_hash": ""
-  },
-  "static/img/icons/doctor.png": {
-    "mtime": 1788043965.9968603,
-    "ast_hash": "cc0b49971094e7ba376e16f4082978bc",
-    "semantic_hash": ""
-  },
-  "static/img/icons/doctor111111.png": {
-    "mtime": 1788045863.958405,
-    "ast_hash": "7bfff4f298564e78b39785d028f1e162",
-    "semantic_hash": ""
-  },
-  "static/img/icons/email.png": {
-    "mtime": 1788044982.4060063,
-    "ast_hash": "ef41b4c2be6d2691637feffd45da31d8",
-    "semantic_hash": ""
-  },
-  "static/img/icons/estrella.png": {
-    "mtime": 1788124753.741365,
-    "ast_hash": "526459318629aeb995831475c32748fd",
-    "semantic_hash": ""
-  },
-  "static/img/icons/home.png": {
-    "mtime": 1788045014.8723414,
-    "ast_hash": "e41ae301fa9f819c383b022de6cc0839",
-    "semantic_hash": ""
-  },
-  "static/img/icons/lupa.png": {
-    "mtime": 1788045042.269276,
-    "ast_hash": "92692bd5a9fa6a18850c2826ae6d81dc",
-    "semantic_hash": ""
-  },
-  "static/img/icons/mensaje.PNG": {
-    "mtime": 1788045070.5479126,
-    "ast_hash": "81b7c1f11bb0b377ce5e2d14aa7f8f33",
-    "semantic_hash": ""
-  },
-  "static/img/icons/mensaje2.PNG": {
-    "mtime": 1788042650.1737466,
-    "ast_hash": "5c0ae2a53784d1847e1857229897d227",
-    "semantic_hash": ""
-  },
-  "static/img/icons/multimedia.png": {
-    "mtime": 1788045698.3830595,
-    "ast_hash": "8a0947e14308581369c6b858daafa7b4",
-    "semantic_hash": ""
-  },
-  "static/img/icons/pacientes.png": {
-    "mtime": 1788043822.0478237,
-    "ast_hash": "0d7c9be54267b7b232d6de9debfebbc9",
-    "semantic_hash": ""
-  },
-  "static/img/icons/persona.png": {
-    "mtime": 1788045739.4202151,
-    "ast_hash": "3e13727f969ac4343b1798f34e6c5781",
-    "semantic_hash": ""
-  },
-  "static/img/icons/personas.PNG": {
-    "mtime": 1788045663.387252,
-    "ast_hash": "fffaf803ac80b44545b790401925edf2",
-    "semantic_hash": ""
-  },
-  "static/img/icons/reloj.png": {
-    "mtime": 1788045776.8392944,
-    "ast_hash": "dfabedfd50395eee266b967f6fd46953",
-    "semantic_hash": ""
-  },
-  "static/img/icons/tienda.png": {
-    "mtime": 1788045805.1766145,
-    "ast_hash": "32ef60eb6a49ca3fd727e53a820986b2",
-    "semantic_hash": ""
-  },
-  "static/img/icons/usuario.png": {
-    "mtime": 1788045830.831524,
-    "ast_hash": "f7f3632fdd6303aaa1dd14669f6e9d8b",
-    "semantic_hash": ""
-  },
   "static/img/logos/Isotipo - perfil sin fondo.png": {
     "mtime": 1741600354.0,
     "ast_hash": "02c7a97e666ddf8aea3ce70b597b6579",
@@ -1202,6 +1097,116 @@
   "static/video/sesiones.mp4": {
     "mtime": 1779484707.6863413,
     "ast_hash": "736d94df1db14226de8bac3c528bf9d4",
+    "semantic_hash": ""
+  },
+  "admin/mensajes.php": {
+    "mtime": 1790519529.0615675,
+    "ast_hash": "a45acbfeeaab0b3190663644ec04709f",
+    "semantic_hash": ""
+  },
+  "api/delete_email.php": {
+    "mtime": 1790441361.2183778,
+    "ast_hash": "3a5c2ae360bfb9873aa25bf2175d7aeb",
+    "semantic_hash": ""
+  },
+  "api/get_emails.php": {
+    "mtime": 1790381632.3900597,
+    "ast_hash": "10910efe125a83c10ab6a20f221b8ec6",
+    "semantic_hash": ""
+  },
+  "api/get_wa_chats.php": {
+    "mtime": 1790430364.7207398,
+    "ast_hash": "0592a1a26d3ad12f86170b714051535a",
+    "semantic_hash": ""
+  },
+  "api/get_wa_messages.php": {
+    "mtime": 1790382304.7514324,
+    "ast_hash": "a8d6910b6a554b9962a14bc185c42821",
+    "semantic_hash": ""
+  },
+  "api/mark_wa_chat_read.php": {
+    "mtime": 1790430384.4397695,
+    "ast_hash": "689d1bb461bc8df12e7b5ffc085c7ee5",
+    "semantic_hash": ""
+  },
+  "api/send_email.php": {
+    "mtime": 1790382376.4725444,
+    "ast_hash": "daeaa73556e5d050601cfc08051da193",
+    "semantic_hash": ""
+  },
+  "api/send_wa_message.php": {
+    "mtime": 1790382344.61315,
+    "ast_hash": "4dfacc183040c134c3fe87fbfd74b134",
+    "semantic_hash": ""
+  },
+  "api/twilio_webhook.php": {
+    "mtime": 1790380053.0583959,
+    "ast_hash": "0329dc089a1d2ed5a3f593647638bb7f",
+    "semantic_hash": ""
+  },
+  "includes/email_reader.php": {
+    "mtime": 1790438512.5675585,
+    "ast_hash": "70f7812b3fc8e0f95dd2c5c84f4a89ed",
+    "semantic_hash": ""
+  },
+  "portal/ficha/agregar_medicamento.php": {
+    "mtime": 1789433488.7604873,
+    "ast_hash": "eb9b465b70ae330f0a08c4d205a40977",
+    "semantic_hash": ""
+  },
+  "portal/ficha/eliminar_historia.php": {
+    "mtime": 1789431739.922574,
+    "ast_hash": "6c6c5a28e1bdfb368da28e28d3ca8996",
+    "semantic_hash": ""
+  },
+  "portal/ficha/eliminar_medicamento.php": {
+    "mtime": 1789433499.6564841,
+    "ast_hash": "fff43e4447ec0b60ec78ee9cb32a9d61",
+    "semantic_hash": ""
+  },
+  "portal/ficha/eliminar_tratamiento.php": {
+    "mtime": 1789433454.6242456,
+    "ast_hash": "34e17e5f207242596c245893e7bb63c9",
+    "semantic_hash": ""
+  },
+  "portal/ficha/guardar_historia_fila.php": {
+    "mtime": 1789431702.2047749,
+    "ast_hash": "3984f5e13b5c917adb35c27a86fc4325",
+    "semantic_hash": ""
+  },
+  "portal/nutricion/guardar_control_profesional.php": {
+    "mtime": 1789655759.702215,
+    "ast_hash": "b46e33c60390c8743468011411ed5a8e",
+    "semantic_hash": ""
+  },
+  "portal/nutricion/guardar_ficha_profesional.php": {
+    "mtime": 1789655728.4692662,
+    "ast_hash": "86ec82d6b499ceb4c89f947d565adaa8",
+    "semantic_hash": ""
+  },
+  "tm.txt": {
+    "mtime": 1789508834.8180795,
+    "ast_hash": "454e5c5158c229f475689bb17eb50543",
+    "semantic_hash": ""
+  },
+  "storage/estudios/13/estudio_6aaf0fbaee87b.pdf": {
+    "mtime": 1789857722.1769052,
+    "ast_hash": "cd7876bfca65716284075312e1069fc6",
+    "semantic_hash": ""
+  },
+  "storage/estudios/16/estudio_6aa9c8fcbdf62.jpg": {
+    "mtime": 1789511932.6707315,
+    "ast_hash": "e5b7c1bfc050961e9e7a90726ee6a3c8",
+    "semantic_hash": ""
+  },
+  "storage/staff/staff_6aaf10c698f5a.jpg": {
+    "mtime": 1789857990.2789729,
+    "ast_hash": "71e5b69f369e4a9fe84beeb53841f71d",
+    "semantic_hash": ""
+  },
+  "static/img/icons/mascota tecnomedic.png": {
+    "mtime": 1790462732.049437,
+    "ast_hash": "3d398973dee96f7a3819540be9066e2d",
     "semantic_hash": ""
   }
 }

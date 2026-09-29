@@ -1,0 +1,506 @@
+{
+  "communities": {
+    "0": [
+      "includes_db_crear_turno",
+      "includes_db_db",
+      "includes_db_portal",
+      "includes_db_portal_asignaciones_todas",
+      "includes_db_portal_asignar_paciente_profesional",
+      "includes_db_portal_desasignar",
+      "includes_db_portal_obras_sociales_todas",
+      "includes_db_portal_pacientes_de_profesional",
+      "includes_db_portal_pacientes_todos_activos",
+      "includes_db_portal_perfil_paciente",
+      "includes_db_portal_perfil_paciente_actualizar",
+      "includes_db_portal_perfil_profesional",
+      "includes_db_portal_persona_buscar",
+      "includes_db_portal_persona_estado",
+      "includes_db_portal_persona_upsert",
+      "includes_db_portal_profesionales_todos",
+      "includes_db_portal_turnos_de_paciente",
+      "includes_db_portal_usuario_aprobar",
+      "includes_db_portal_usuario_buscar_login",
+      "includes_db_portal_usuario_by_id",
+      "includes_db_portal_usuario_cambiar_password",
+      "includes_db_portal_usuario_crear_admin",
+      "includes_db_portal_usuario_crear_paciente",
+      "includes_db_portal_usuario_crear_paciente_admin",
+      "includes_db_portal_usuario_crear_profesional",
+      "includes_db_portal_usuario_editar",
+      "includes_db_portal_usuario_eliminar",
+      "includes_db_portal_usuario_rechazar",
+      "includes_db_portal_usuarios_pendientes",
+      "includes_db_portal_usuarios_todos",
+      "mysqli"
+    ],
+    "1": [
+      "bot_webhook",
+      "bot_webhook_buscar_turno_dni_bot",
+      "bot_webhook_cancelar_turno_bot",
+      "bot_webhook_fechas_con_slots",
+      "bot_webhook_get_ocupados_todos",
+      "bot_webhook_guardar_turno_bot",
+      "bot_webhook_menu_fechas",
+      "bot_webhook_menu_horarios",
+      "bot_webhook_menu_obras",
+      "bot_webhook_modificar_fecha_hora_bot",
+      "bot_webhook_procesar_bot",
+      "bot_webhook_slots_para_fecha",
+      "bot_webhook_tel_desde_phone",
+      "bot_webhook_wa"
+    ],
+    "2": [
+      "includes_db",
+      "includes_db_actualizar_estado",
+      "includes_db_buscar_turno_dni",
+      "includes_db_eliminar_turno",
+      "includes_db_get_ocupados",
+      "includes_db_get_ocupados_excluyendo",
+      "includes_db_get_sesion",
+      "includes_db_get_turno_by_id",
+      "includes_db_get_turnos_por_fecha",
+      "includes_db_modificar_turno",
+      "includes_db_nueva_sesion",
+      "includes_db_reset_sesion",
+      "includes_db_save_sesion"
+    ],
+    "3": [
+      "includes_auth_portal_rol",
+      "includes_db_ficha",
+      "includes_db_ficha_estudio_crear",
+      "includes_db_ficha_estudio_eliminar",
+      "includes_db_ficha_estudio_get",
+      "includes_db_ficha_estudios_listar",
+      "includes_db_ficha_ficha_puede_editar",
+      "includes_db_ficha_ficha_puede_ver",
+      "includes_db_ficha_historia_clinica_get",
+      "includes_db_ficha_historia_clinica_guardar",
+      "includes_db_ficha_tratamiento_crear",
+      "includes_db_ficha_tratamientos_listar"
+    ],
+    "4": [
+      "includes_auth",
+      "includes_auth_esta_logueado",
+      "includes_auth_iniciar_sesion_php",
+      "includes_auth_portal_current_user",
+      "includes_auth_portal_login",
+      "includes_auth_portal_logout",
+      "includes_auth_portal_logueado",
+      "includes_auth_portal_require_login",
+      "includes_auth_portal_require_role",
+      "includes_auth_requiere_login",
+      "includes_db_b"
+    ],
+    "5": [
+      "includes_email",
+      "includes_email_bloque_turno",
+      "includes_email_email_cancelacion",
+      "includes_email_email_confirmacion",
+      "includes_email_email_modificacion",
+      "includes_email_email_recordatorio",
+      "includes_email_email_solicitud",
+      "includes_email_enviar_email",
+      "includes_email_fh",
+      "includes_email_html_email",
+      "includes_email_nombre_area"
+    ],
+    "6": [
+      "includes_tienda",
+      "includes_tienda_get_categoria_by_slug",
+      "includes_tienda_get_categorias",
+      "includes_tienda_get_familias",
+      "includes_tienda_get_familias_con_productos",
+      "includes_tienda_get_producto",
+      "includes_tienda_get_productos_destacados",
+      "includes_tienda_get_productos_por_familia",
+      "includes_tienda_modalidad_label"
+    ],
+    "7": [
+      "composer",
+      "composer_config",
+      "composer_config_optimize_autoloader",
+      "composer_description",
+      "composer_name",
+      "composer_require",
+      "composer_require_phpmailer_phpmailer",
+      "composer_type"
+    ],
+    "8": [
+      "includes_config_mail",
+      "includes_config_mail_crear_mail",
+      "includes_env_loader",
+      "includes_env_loader_cargar_env",
+      "includes_env_loader_env",
+      "phpmailer",
+      "phpmailer_phpmailer_exception",
+      "phpmailer_phpmailer_phpmailer"
+    ],
+    "9": [
+      "admin_recordatorio",
+      "admin_recordatorio_recordatorio_manana",
+      "includes_db_get_turnos",
+      "includes_whatsapp",
+      "includes_whatsapp_enviar_whatsapp",
+      "includes_whatsapp_formatear_wa"
+    ],
+    "10": [
+      "includes_db_contacto",
+      "includes_db_contacto_contacto_crear",
+      "includes_db_contacto_contacto_marcar_atendido",
+      "includes_db_contacto_contactos_listar"
+    ],
+    "11": [
+      "guardar",
+      "guardar_titulo"
+    ],
+    "12": [
+      "includes_areas_data",
+      "includes_areas_data_get_area"
+    ],
+    "13": [
+      "admin_actualizar"
+    ],
+    "14": [
+      "admin_consultar_dni"
+    ],
+    "15": [
+      "admin_contactos"
+    ],
+    "16": [
+      "admin_eliminar"
+    ],
+    "17": [
+      "admin_index"
+    ],
+    "18": [
+      "admin_login"
+    ],
+    "19": [
+      "admin_logout"
+    ],
+    "20": [
+      "admin_modificar"
+    ],
+    "21": [
+      "admin_pacientes"
+    ],
+    "22": [
+      "admin_portal_usuarios"
+    ],
+    "23": [
+      "admin_profesionales"
+    ],
+    "24": [
+      "admin_tablero"
+    ],
+    "25": [
+      "admin_test_mail"
+    ],
+    "26": [
+      "admin_tienda_section"
+    ],
+    "27": [
+      "admin_usuarios"
+    ],
+    "28": [
+      "api_horarios"
+    ],
+    "29": [
+      "areas_audiologia"
+    ],
+    "30": [
+      "areas_equipamiento_medico"
+    ],
+    "31": [
+      "areas_medicina_hiperbarica"
+    ],
+    "32": [
+      "areas_nutricion"
+    ],
+    "33": [
+      "areas_ortopedia_rehabilitacion"
+    ],
+    "34": [
+      "areas_template"
+    ],
+    "35": [
+      "confirmacion"
+    ],
+    "36": [
+      "contacto"
+    ],
+    "37": [
+      "includes_pendiente"
+    ],
+    "38": [
+      "includes_portal_footer"
+    ],
+    "39": [
+      "includes_portal_header"
+    ],
+    "40": [
+      "index"
+    ],
+    "41": [
+      "login"
+    ],
+    "42": [
+      "loginviejo"
+    ],
+    "43": [
+      "logout"
+    ],
+    "44": [
+      "pendiente"
+    ],
+    "45": [
+      "portal_ficha_agregar_tratamiento"
+    ],
+    "46": [
+      "portal_ficha_descargar_estudio"
+    ],
+    "47": [
+      "portal_ficha_eliminar_estudio"
+    ],
+    "48": [
+      "portal_ficha_guardar_historia"
+    ],
+    "49": [
+      "portal_ficha_subir_estudio"
+    ],
+    "50": [
+      "portal_ficha_ver"
+    ],
+    "51": [
+      "portal_paciente_dashboard"
+    ],
+    "52": [
+      "portal_paciente_perfil"
+    ],
+    "53": [
+      "portal_profesional_dashboard"
+    ],
+    "54": [
+      "register"
+    ],
+    "55": [
+      "tienda_categoria"
+    ],
+    "56": [
+      "tienda_index"
+    ],
+    "57": [
+      "tienda_producto"
+    ],
+    "58": [
+      "turnos"
+    ]
+  },
+  "cohesion": {
+    "0": 0.13978494623655913,
+    "1": 0.27472527472527475,
+    "2": 0.19230769230769232,
+    "3": 0.21212121212121213,
+    "4": 0.2727272727272727,
+    "5": 0.5636363636363636,
+    "6": 0.2777777777777778,
+    "7": 0.25,
+    "8": 0.2857142857142857,
+    "9": 0.4,
+    "10": 0.5,
+    "11": 1.0,
+    "12": 1.0,
+    "13": 1.0,
+    "14": 1.0,
+    "15": 1.0,
+    "16": 1.0,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0,
+    "20": 1.0,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0,
+    "24": 1.0,
+    "25": 1.0,
+    "26": 1.0,
+    "27": 1.0,
+    "28": 1.0,
+    "29": 1.0,
+    "30": 1.0,
+    "31": 1.0,
+    "32": 1.0,
+    "33": 1.0,
+    "34": 1.0,
+    "35": 1.0,
+    "36": 1.0,
+    "37": 1.0,
+    "38": 1.0,
+    "39": 1.0,
+    "40": 1.0,
+    "41": 1.0,
+    "42": 1.0,
+    "43": 1.0,
+    "44": 1.0,
+    "45": 1.0,
+    "46": 1.0,
+    "47": 1.0,
+    "48": 1.0,
+    "49": 1.0,
+    "50": 1.0,
+    "51": 1.0,
+    "52": 1.0,
+    "53": 1.0,
+    "54": 1.0,
+    "55": 1.0,
+    "56": 1.0,
+    "57": 1.0,
+    "58": 1.0
+  },
+  "gods": [
+    {
+      "id": "includes_db_db",
+      "label": "db()",
+      "degree": 63
+    },
+    {
+      "id": "bot_webhook_procesar_bot",
+      "label": "procesar_bot()",
+      "degree": 15
+    },
+    {
+      "id": "includes_email_enviar_email",
+      "label": "enviar_email()",
+      "degree": 8
+    },
+    {
+      "id": "includes_db_portal_usuario_buscar_login",
+      "label": "usuario_buscar_login()",
+      "degree": 7
+    },
+    {
+      "id": "includes_email_html_email",
+      "label": "_html_email()",
+      "degree": 6
+    },
+    {
+      "id": "includes_email_bloque_turno",
+      "label": "_bloque_turno()",
+      "degree": 6
+    },
+    {
+      "id": "includes_email_fh",
+      "label": "_fh()",
+      "degree": 6
+    },
+    {
+      "id": "includes_email_email_solicitud",
+      "label": "email_solicitud()",
+      "degree": 6
+    },
+    {
+      "id": "includes_email_email_recordatorio",
+      "label": "email_recordatorio()",
+      "degree": 6
+    },
+    {
+      "id": "includes_config_mail_crear_mail",
+      "label": "crear_mail()",
+      "degree": 5
+    }
+  ],
+  "surprises": [
+    {
+      "source": "recordatorio_manana()",
+      "target": "email_recordatorio()",
+      "source_files": [
+        "admin/recordatorio.php",
+        "includes/email.php"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "_wa()",
+      "target": "enviar_whatsapp()",
+      "source_files": [
+        "bot/webhook.php",
+        "includes/whatsapp.php"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "_get_ocupados_todos()",
+      "target": "db()",
+      "source_files": [
+        "bot/webhook.php",
+        "includes/db.php"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "_buscar_turno_dni_bot()",
+      "target": "db()",
+      "source_files": [
+        "bot/webhook.php",
+        "includes/db.php"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "_guardar_turno_bot()",
+      "target": "db()",
+      "source_files": [
+        "bot/webhook.php",
+        "includes/db.php"
+      ],
+      "confidence": "INFERRED",
+      "relation": "calls",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories; bridges separate communities"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `db()` connect `Community 0` to `Community 1`, `Community 2`, `Community 3`, `Community 6`, `Community 9`, `Community 10`?",
+      "why": "High betweenness centrality (0.335) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `recordatorio_manana()` connect `Community 9` to `Community 5`?",
+      "why": "High betweenness centrality (0.144) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `get_turnos()` connect `Community 9` to `Community 0`, `Community 2`?",
+      "why": "High betweenness centrality (0.131) - this node is a cross-community bridge."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 50 inferred relationships involving `db()` (e.g. with `_buscar_turno_dni_bot()` and `_cancelar_turno_bot()`) actually correct?",
+      "why": "`db()` has 50 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 3 inferred relationships involving `procesar_bot()` (e.g. with `get_sesion()` and `reset_sesion()`) actually correct?",
+      "why": "`procesar_bot()` has 3 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 2 inferred relationships involving `enviar_email()` (e.g. with `crear_mail()` and `env()`) actually correct?",
+      "why": "`enviar_email()` has 2 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 2 inferred relationships involving `usuario_buscar_login()` (e.g. with `portal_login()` and `db()`) actually correct?",
+      "why": "`usuario_buscar_login()` has 2 INFERRED edges - model-reasoned connections that need verification."
+    }
+  ]
+}
