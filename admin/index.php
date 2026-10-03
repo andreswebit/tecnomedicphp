@@ -17,7 +17,23 @@ $portal_titulo = 'Turnos · Panel Admin';
 $portal_activo = 'turnos';
 require __DIR__ . '/../includes/portal_header.php';
 ?>
+ <!-- Topbar -->
+            <div class="topbar" style="align-items:right;gap:2px;">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <button class="hamburger-btn" onclick="toggleSidebar()">
+                        <span></span><span></span><span></span>
+                    </button>
+                    <div class="page-title">Gestión de <span>Turnos</span></div>
+                    <div class="chip">Camara Hiperbarica</div>
+                </div>
 
+                <div class="view-toggle">
+                    <button class="toggle-btn active" id="btnTable" onclick="switchView('table')">📋 Lista</button>
+                    <button class="toggle-btn" id="btnCal" onclick="switchView('calendar')">📅 Calendario</button>
+                </div>
+                    <button class="btn-print" onclick="printSheet()">🖨 Imprimir</button>
+                </div>
+            </div>
 <!-- Estadísticas -->
 <div class="stats">
     <div class="stat-card blue">
@@ -509,6 +525,16 @@ var TURNOS = <?= json_encode(array_map(function($t) {
     ];
 }, $turnos), JSON_UNESCAPED_UNICODE) ?>;
 
+ // ── Vista toggle tabla / calendario ──────────────────────────
+    function switchView(v) {
+        document.getElementById('tableView').classList.toggle('active', v === 'table');
+        document.getElementById('calendarView').classList.toggle('active', v === 'calendar');
+        document.getElementById('btnTable').classList.toggle('active', v === 'table');
+        document.getElementById('btnCal').classList.toggle('active', v === 'calendar');
+        if (v === 'calendar') renderCalendar();
+    }
+
+
 // ── Búsqueda ──────────────────────────────────────────────────
 document.getElementById('searchInput').addEventListener('input', function() {
     var q = this.value.toLowerCase();
@@ -928,7 +954,10 @@ function refrescarTurnos() {
         }, 4000);
         history.replaceState({}, '', window.location.pathname);
     }
-})();
+})
+
+
+();
 </script>
 
 <?php require __DIR__ . '/../includes/portal_footer.php'; ?>

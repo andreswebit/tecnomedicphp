@@ -15,19 +15,22 @@ function crear_mail(): PHPMailer
 
     $mail->Host       = env('SMTP_HOST');
     $mail->SMTPAuth   = true;
-    $mail->Username   = env('SMTP_USER');
-    $mail->Password   = env('SMTP_PASS');
+    $mail->Username   = env('SMTP_USER', env('MAIL_FROM', 'noreply@tecnomedic.com.ar'));
+    $mail->Password   = env('SMTP_PASS', '');
 
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-
-    $mail->Port       = (int) env('SMTP_PORT',465);
-
-    $mail->CharSet = 'UTF-8';
+    $mail->Port       = (int) env('SMTP_PORT', 465);
+    $mail->CharSet    = 'UTF-8';
 
     $mail->setFrom(
-        env('MAIL_FROM'),
-        env('MAIL_NAME','TECNOMEDIC')
+        env('MAIL_FROM', 'noreply@tecnomedic.com.ar'),
+        env('MAIL_NAME', 'TECNOMEDIC')
     );
+
+    $replyTo = env('MAIL_REPLY_TO', env('MAIL_CONTACTO', 'contacto@tecnomedic.com.ar'));
+    if ($replyTo && filter_var($replyTo, FILTER_VALIDATE_EMAIL)) {
+        $mail->addReplyTo($replyTo, env('MAIL_NAME', 'TECNOMEDIC'));
+    }
 
     return $mail;
 }

@@ -28,10 +28,11 @@ function cargar_env(string $path): void {
             }
         }
 
-        if (getenv($key) === false) {
-            putenv("$key=$value");
-            $_ENV[$key] = $value;
-        }
+        // IMPORTANTE: el último valor definido en .env debe ganar.
+        // Así evitamos que definiciones duplicadas en el archivo rompan la lógica.
+        putenv("$key=$value");
+        $_ENV[$key] = $value;
+        $_SERVER[$key] = $value;
     }
 }
 

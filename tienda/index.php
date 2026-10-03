@@ -57,6 +57,8 @@ $categorias = get_categorias();
             <p>Productos y equipamiento para cada necesidad, organizados por especialidad.</p>
         </div>
     </section>
+    
+
 
     <section class="area-section">
         <div class="container">

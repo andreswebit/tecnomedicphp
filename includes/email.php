@@ -51,8 +51,11 @@ function enviar_email(
     string $asunto,
     string $txt,
     string $html='',
-    array $adjuntos = []   // array de rutas absolutas de archivos a adjuntar
+    array $adjuntos = [],   // array de rutas absolutas de archivos a adjuntar
+    array $opts = []        // cc[], bcc[], reply_to, priority (1-5), receipt (bool)
 ): bool {
+
+    $GLOBALS['__tm_ultimo_mime'] = '';
 
     if (env('MAIL_DRIVER','smtp') == 'log') {
 
@@ -81,7 +84,22 @@ function enviar_email(
 
         $mail = crear_mail();
 
-        $mail->addAddress($dest);
+        // $dest admite varios correos separados por coma o punto y coma
+        foreach (preg_split('/[,;]+/', $dest) as $a) {
+            $a = trim($a);
+            if ($a !== '') $mail->addAddress($a);
+        }
+        foreach (($opts['cc'] ?? []) as $a)  { if ($a) $mail->addCC($a); }
+        foreach (($opts['bcc'] ?? []) as $a) { if ($a) $mail->addBCC($a); }
+        if (!empty($opts['reply_to']) && filter_var($opts['reply_to'], FILTER_VALIDATE_EMAIL)) {
+            $mail->addReplyTo($opts['reply_to']);
+        }
+        $prio = (int)($opts['priority'] ?? 3);
+        if ($prio === 1 || $prio === 2) $mail->Priority = 1;
+        elseif ($prio === 4 || $prio === 5) $mail->Priority = 5;
+        if (!empty($opts['receipt']) && !empty($mail->From)) {
+            $mail->addCustomHeader('Disposition-Notification-To', '<' . $mail->From . '>');
+        }
 
         $mail->Subject = $asunto;
 
@@ -105,11 +123,16 @@ function enviar_email(
 
         $mail->send();
 
+        // Copia cruda del mensaje, para guardarla en Enviados por IMAP
+        if (method_exists($mail, 'getSentMIMEMessage')) {
+            $GLOBALS['__tm_ultimo_mime'] = $mail->getSentMIMEMessage();
+        }
+
         error_log("Email enviado a ".$dest);
 
         return true;
 
-    }catch(Exception $e){
+    }catch(\Throwable $e){
 
         error_log($e->getMessage());
 
@@ -117,6 +140,10 @@ function enviar_email(
 
     }
 
+}
+
+function enviar_email_ultimo_mime(): string {
+    return (string)($GLOBALS['__tm_ultimo_mime'] ?? '');
 }
 
 // ── HTML base ───────────────────────────────────────────────────

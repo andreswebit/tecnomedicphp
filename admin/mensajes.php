@@ -46,6 +46,11 @@ $contactos_pendientes = count(array_filter($contactos, fn($c) => (int)($c['atend
 $contactos_atendidos = $contactos_total - $contactos_pendientes;
 
 // 2) Emails (cache local tm_emails)
+// Cuenta inicial para la vista Webmail (evita warning de variable no definida)
+$cuenta = trim($_GET['cuenta'] ?? 'contacto');
+if (!in_array($cuenta, ['contacto', 'noreply'], true)) {
+    $cuenta = 'contacto';
+}
 $emails = [];
 $emails_sin_leer = 0;
 try {
@@ -79,6 +84,9 @@ require __DIR__ . '/../includes/portal_header.php';
 ?>
 
 <link rel="stylesheet" href="<?= $base ?>/portal/css/mensajes.css">
+<link rel="stylesheet" href="<?= $base ?>/portal/css/mensajes-webmail.css">
+<script>window.WM_API = { get: '<?= b('/api/get_emails.php') ?>', send: '<?= b('/api/send_email.php') ?>', del: '<?= b('/api/delete_email.php') ?>' };</script>
+<script src="<?= $base ?>/portal/js/mensajes-webmail.js"></script>
 
 <div style="padding: 16px 28px 0;">
     <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
@@ -87,7 +95,7 @@ require __DIR__ . '/../includes/portal_header.php';
                 📬 Centro de Comunicaciones
             </h1>
             <p style="font-size:12.5px; color:#64748b; margin:2px 0 0;">
-                Gestión unificada de Mensajes Web (Contacto), Correo (Ferozo) y WhatsApp (Twilio)
+                
             </p>
         </div>
     </div>
@@ -208,139 +216,210 @@ require __DIR__ . '/../includes/portal_header.php';
             </div>
         </div>
 
-        <!-- PANEL 2: EMAIL -->
+        <!-- PANEL 2: EMAIL (estilo Webmail Ferozo) -->
         <div class="msg-panel msg-panel-email" id="panel-email">
 
-            <div class="email-sidebar">
-                <div class="email-sidebar-head">
-                    <div class="account-selector" style="justify-content:space-between; align-items:center;">
-                        <div style="font-size:12px; font-weight:800; color:#0d1b2a;">Cuenta</div>
-                        <div style="display:flex; gap:6px; align-items:center;">
-                            <button class="account-btn active" data-cuenta="contacto">contacto@</button>
-                            <button class="account-btn" onclick="window.actualizarEmailsIMAP()" title="Sincronizar IMAP Ferozo" style="margin-left:auto; padding:5px 8px;">🔄 Sync</button>
-                        </div>
-                    </div>
-
-                    <div class="email-search-wrap">
-                        <span>🔍</span>
-                        <input type="text" id="emailSearchInput" placeholder="Buscar en bandeja…" />
-                    </div>
-
-                    <div class="email-folders" id="emailFoldersBox">
-                        <div class="email-folders-title">📁 Carpetas</div>
-
-                        <div class="email-tree">
-                            <div class="email-tree-section">
-                                <button type="button" class="email-tree-toggle" data-target="#emailTreePredef" aria-expanded="true">
-                                    <span class="email-tree-toggle-icon">📄</span>
-                                    <span class="email-tree-toggle-text">Bandejas</span>
-                                    <span class="email-tree-toggle-caret">▾</span>
-                                </button>
-                                <div class="email-tree-children is-expanded" id="emailTreePredef">
-                                    <div class="email-folder-btns">
-                                        <button type="button" class="email-folder-btn active" data-folder="INBOX" onclick="setEmailFolder('INBOX')">📥 Bandeja</button>
-                                        <button type="button" class="email-folder-btn" data-folder="DELETED" onclick="setEmailFolder('DELETED')">✅ Eliminado</button>
-                                        <button type="button" class="email-folder-btn" data-folder="SPAM" onclick="setEmailFolder('SPAM')">🚫 No deseado</button>
-                                        <button type="button" class="email-folder-btn" data-folder="SENT" onclick="setEmailFolder('SENT')">📤 Enviados</button>
-                                        <button type="button" class="email-folder-btn" data-folder="TRASH" onclick="setEmailFolder('TRASH')">🗑 Papelera</button>
-                                        <button type="button" class="email-folder-btn" data-folder="DRAFTS" onclick="setEmailFolder('DRAFTS')">✍️ Redactar</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="email-tree-section">
-                                <button type="button" class="email-tree-toggle" data-target="#emailTreeCustom" aria-expanded="true">
-                                    <span class="email-tree-toggle-icon">⭐</span>
-                                    <span class="email-tree-toggle-text">Personalizadas</span>
-                                    <span class="email-tree-toggle-caret">▾</span>
-                                </button>
-                                <div class="email-tree-children is-expanded" id="emailTreeCustom">
-                                    <div class="email-folder-btns" id="emailCustomFolders"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="email-folder-create">
-                            <input type="text" id="emailCreateFolderInput" placeholder="Nueva carpeta (ej: FACTURAS)" />
-                            <button type="button" id="emailCreateFolderBtn" onclick="crearCarpetaEmail()">Crear</button>
-                        </div>
-                    </div>
+            <!-- Vista bandeja -->
+            <div class="wm-view active" id="wmViewMail">
+                <div class="wm-toolbar">
+                    <button type="button" class="wm-tb-btn" id="wmBtnRefresh"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg><span>Actualizar</span></button>
+                    <button type="button" class="wm-tb-btn" id="wmBtnCompose"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Redactar</span></button>
+                    <button type="button" class="wm-tb-btn" id="wmBtnReply" disabled><svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 6 6v3"/></svg><span>Responder</span></button>
+                    <button type="button" class="wm-tb-btn" id="wmBtnReplyAll" disabled><svg viewBox="0 0 24 24"><path d="m7 14-5-5 5-5"/><path d="M12 14 7 9l5-5"/><path d="M7 9h9a5 5 0 0 1 5 5v4"/></svg><span>Responder a todos</span></button>
+                    <button type="button" class="wm-tb-btn" id="wmBtnFwd" disabled><svg viewBox="0 0 24 24"><path d="m15 14 5-5-5-5"/><path d="M20 9H10a6 6 0 0 0-6 6v3"/></svg><span>Reenviar</span></button>
+                    <button type="button" class="wm-tb-btn" id="wmBtnDel" disabled><svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="m6 6 1 14h10l1-14"/></svg><span>Eliminar</span></button>
+                    <button type="button" class="wm-tb-btn" id="wmBtnMark" disabled><svg viewBox="0 0 24 24"><path d="M20 12 12 20 3 11V3h8Z"/><circle cx="7.5" cy="7.5" r="1"/></svg><span>Marcar</span></button>
+                    <button type="button" class="wm-tb-btn" id="wmBtnMore"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg><span>Más</span></button>
+                    <div class="wm-tb-sp"></div>
+                    <select class="wm-tb-select" id="wmFilter"><option value="all">Todos</option><option value="unread">No leídos</option><option value="read">Leídos</option></select>
+                    <div class="wm-tb-search">🔍<input type="text" id="wmSearch" placeholder="Buscar..."><button type="button" id="wmSearchClear">✕</button></div>
                 </div>
 
-                <div class="email-list" id="emailList">
-                    <?php if ($emails): ?>
-                        <?php foreach ($emails as $idx => $m): ?>
-                            <div class="email-item <?= $idx === 0 ? 'active' : '' ?> <?= (int)($m['leido'] ?? 0) === 0 ? 'unread' : '' ?>" onclick="cargarEmail(<?= (int)$m['id'] ?>, this)">
-                                <?php if ((int)($m['leido'] ?? 0) === 0): ?><div class="unread-indicator"></div><?php endif; ?>
-                                <div class="email-card-avatar">
-                                    <?= htmlspecialchars(strtoupper(substr($m['remitente_nombre'] ?: $m['remitente_email'], 0, 1)) ?: '?') ?>
-                                </div>
-                                <div class="ei-content">
-                                    <div class="ei-top">
-                                        <span class="ei-from"><?= htmlspecialchars($m['remitente_nombre'] ?: $m['remitente_email']) ?></span>
-                                        <span class="ei-time"><?= htmlspecialchars(date('H:i', strtotime($m['creado_en'] ?? 'now'))) ?></span>
-                                    </div>
-                                    <div class="ei-subject"><?= htmlspecialchars($m['asunto']) ?></div>
-                                    <div class="ei-preview"><?= htmlspecialchars(mb_substr(strip_tags($m['cuerpo_txt'] ?: ($m['cuerpo_html'] ?? '')), 0, 60)) ?>...</div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <div style="padding:24px; text-align:center; color:#94a3b8; font-size:12.5px;">
-                            ✉️ Sin correos en la bandeja.<br>
-                            <small style="color:#cbd5e1;">Presioná <b>Sync</b> para consultar Ferozo IMAP.</small>
+                <div class="wm-mail">
+                    <div class="wm-folders">
+                        <div class="wm-account-box">
+                            <select id="wmAccountSelect" class="wm-account-select" title="Cuenta de correo activa" style="background: #8cb5c9;; border:1px solid #abee7e; border-radius:6px; padding:6px 10px; font-size:13px; font-weight:600; color: #494747; hover:border-color :: before:#8cb5c9: #8cb5c9;">
+                                <option value="contacto" <?= ($cuenta === 'contacto' ? 'selected' : '') ?>>Contacto</option>
+                                <option value="noreply" <?= ($cuenta === 'noreply' ? 'selected' : '') ?>>No Reply</option>
+                            </select>
                         </div>
-                    <?php endif; ?>
+                        <div id="wmFolderList"></div>
+                        <div class="wm-folders-foot">
+                            <input type="text" id="wmNewFolder" placeholder="Nueva carpeta">
+                            <button type="button" id="wmNewFolderBtn">Crear</button>
+                        </div>
+                    </div>
+
+                    <div class="wm-list-col">
+                        <div class="wm-list-head">
+                            <span id="wmCount">Mensajes 0 a 0 de 0</span>
+                            <div class="wm-pager">
+                                <button type="button" id="wmFirst">⏮</button><button type="button" id="wmPrev">◀</button>
+                                <input type="text" id="wmPage" value="1">
+                                <button type="button" id="wmNext">▶</button><button type="button" id="wmLast">⏭</button>
+                            </div>
+                        </div>
+                        <div class="wm-list" id="wmList">
+                            <?php foreach ($emails as $m): ?>
+                                <div class="wm-row <?= (int)($m['leido'] ?? 0) === 0 ? 'unread' : '' ?>" data-id="<?= (int)$m['id'] ?>">
+                                    <div class="wm-av"><?= htmlspecialchars(strtoupper(mb_substr($m['remitente_nombre'] ?: $m['remitente_email'], 0, 1)) ?: '?') ?></div>
+                                    <div class="wm-from"><?= htmlspecialchars($m['remitente_nombre'] ?: $m['remitente_email']) ?></div>
+                                    <div class="wm-date"><?= htmlspecialchars(date('d/m H:i', strtotime($m['creado_en'] ?? 'now'))) ?></div>
+                                    <div class="wm-subj"><?= htmlspecialchars($m['asunto'] ?: '(Sin Asunto)') ?></div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+
+                    <div class="wm-prev" id="emailDetailView">
+                        <div class="wm-prev-head">
+                            <div class="wm-prev-av" id="wmPrevAv"></div>
+                            <div class="wm-prev-info">
+                                <h2 class="wm-prev-subj" id="wmPrevSubj"></h2>
+                                <div class="wm-prev-meta"><span>Remitente <b id="wmPrevFrom"></b></span><span>Fecha <b id="wmPrevDate"></b></span></div>
+                            </div>
+                            <div class="wm-prev-acts">
+                                <button type="button" class="wm-ic" id="wmIcReply" title="Responder">↩</button>
+                                <button type="button" class="wm-ic" id="wmIcReplyAll" title="Responder a todos">↩↩</button>
+                                <button type="button" class="wm-ic" id="wmIcFwd" title="Reenviar">➡</button>
+                                <button type="button" class="wm-ic" id="wmIcPop" title="Abrir en ventana">⧉</button>
+                            </div>
+                        </div>
+                        <div class="wm-prev-body" id="wmPrevBody"></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="email-detail" id="emailDetailView">
-                <?php if ($emails && isset($emails[0])): $m0 = $emails[0]; ?>
-                    <div class="ed-header">
-                        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap;">
-                            <div style="flex:1; min-width:220px;">
-                                <h2 class="ed-subject" id="edSubject"><?= htmlspecialchars($m0['asunto']) ?></h2>
-                                <div class="ed-meta">
-                                    <div class="ed-avatar" id="edAvatar"><?= strtoupper(substr($m0['remitente_nombre'] ?: $m0['remitente_email'], 0, 1)) ?></div>
-                                    <div>
-                                        <div style="font-size:13px; font-weight:600; color:#0d1b2a;" id="edFrom">
-                                            <?= htmlspecialchars($m0['remitente_nombre'] ?: $m0['remitente_email']) ?>
-                                            <span style="font-weight:400; color:#64748b;">&lt;<?= htmlspecialchars($m0['remitente_email']) ?>&gt;</span>
-                                        </div>
-                                        <div style="font-size:11px; color:#94a3b8;" id="edDate">Para: <?= htmlspecialchars($m0['destinatario']) ?> · <?= date('d/m/Y H:i', strtotime($m0['creado_en'])) ?></div>
-                                    </div>
-                                </div>
+            <!-- Vista redactar -->
+            <div class="wm-view" id="wmViewCompose">
+                <div class="wm-toolbar">
+                    <button type="button" class="wm-tb-btn" id="wmCCancel"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m12 8-4 4 4 4"/><path d="M8 12h8"/></svg><span>Cancelar</span></button>
+                    <button type="button" class="wm-tb-btn" id="wmCSend"><svg viewBox="0 0 24 24"><path d="m22 2-11 11"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg><span>Enviar</span></button>
+                    <button type="button" class="wm-tb-btn" id="wmCSave"><svg viewBox="0 0 24 24"><path d="M5 3h12l4 4v14H3V3Z"/><path d="M7 3v6h8V3"/><rect x="7" y="13" width="10" height="8"/></svg><span>Guardar</span></button>
+                    <button type="button" class="wm-tb-btn" id="wmCSpell"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m8 12 3 3 5-6"/></svg><span>Ortografía</span></button>
+                    <button type="button" class="wm-tb-btn" id="wmAttBtn"><svg viewBox="0 0 24 24"><path d="m21 11-9 9a5 5 0 0 1-7-7l9-9a3.5 3.5 0 0 1 5 5l-9 9a2 2 0 0 1-3-3l8-8"/></svg><span>Adjuntar</span></button>
+                    <button type="button" class="wm-tb-btn" id="wmCSign"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M14 4l6 6L9 21H3v-6Z"/></svg><span>Firma</span></button>
+                    <button type="button" class="wm-tb-btn" id="wmCResp"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4Z"/></svg><span>Respuestas</span></button>
+                    <input type="file" id="wmFile" multiple style="display:none">
+                </div>
 
-                                <div id="edActions" class="ed-actions" style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
-                                    <button type="button" class="btn btn-outline" onclick="abrirComposeEmail()">➕ Nuevo</button>
-                                    <button type="button" class="btn btn-primary" onclick="enviarRespuestaEmail()">↩ Responder</button>
-                                    <button type="button" class="btn btn-outpanel" onclick="eliminarEmailActual()">🗑 Eliminar</button>
+                <div class="wm-compose">
+                    <div class="wm-comp-side">
+                        <div class="wm-comp-side-h">Contactos <span>⏮ ◀ ▶ ⏭</span></div>
+                        <div class="wm-comp-side-s"><input type="text" id="wmContactSearch" placeholder="Buscar..."></div>
+                        <div class="wm-contacts" id="wmContacts">
+                            <?php
+                            $wm_contactos = [];
+                            foreach ($contactos as $c) { if (!empty($c['email'])) $wm_contactos[strtolower($c['email'])] = trim(($c['nombre'] ?? '') . ' <' . $c['email'] . '>'); }
+                            foreach ($wm_contactos as $mail => $label): ?>
+                                <div data-m="<?= htmlspecialchars($label) ?>"><?= htmlspecialchars($label) ?></div>
+                            <?php endforeach; ?>
+                        </div>
+                        <div class="wm-comp-side-f"><button type="button" data-t="wmTo">To+</button><button type="button" data-t="wmCc">Cc+</button><button type="button" data-t="wmBcc">Bcc+</button></div>
+                    </div>
+
+                    <div class="wm-comp-main">
+                        <div class="wm-form">
+                            <label>Remitente</label>
+                            <div><select id="wmFrom" style="max-width:320px"><option value="contacto@tecnomedic.com.ar">contacto@tecnomedic.com.ar</option><option value="noreply@tecnomedic.com.ar">noreply@tecnomedic.com.ar</option></select></div>
+                            <label>Destinatario</label>
+                            <input type="text" id="wmTo" autocomplete="off">
+                            <div class="wm-sub"><a data-show="wmCc">Agregar Cc</a><a data-show="wmBcc">Agregar Cco</a><a data-show="wmReplyTo">Agregar respuesta a</a></div>
+                            <label class="wm-hidden" data-for="wmCc">Cc</label><input type="text" id="wmCc" class="wm-hidden" style="grid-column:2">
+                            <label class="wm-hidden" data-for="wmBcc">Cco</label><input type="text" id="wmBcc" class="wm-hidden" style="grid-column:2">
+                            <label class="wm-hidden" data-for="wmReplyTo">Responder a</label><input type="text" id="wmReplyTo" class="wm-hidden" style="grid-column:2">
+                            <label>Asunto</label>
+                            <input type="text" id="wmSubject">
+                        </div>
+
+                        <div class="wm-opts">
+                            <span>Tipo de editor <select id="wmEdType"><option value="html">HTML</option><option value="text">Texto sin formato</option></select></span>
+                            <span>Prioridad <select id="wmPrio"><option value="3">Normal</option><option value="1">Más alta</option><option value="2">Alta</option><option value="4">Baja</option><option value="5">Más baja</option></select></span>
+                            <label class="wm-sw"><input type="checkbox" id="wmReceipt"><i></i>Acuse de recibo</label>
+                            <span>Guardar mensaje enviado en <select id="wmSaveIn"><option value="SENT">Enviados</option><option value="">No guardar</option></select></span>
+                        </div>
+
+                        <div class="wm-edwrap">
+                            <div class="wm-ed-col">
+                                <div class="wm-edtb" id="wmEdTb">
+                                    <button data-cmd="bold" title="Negrita"><b>B</b></button>
+                                    <button data-cmd="italic" title="Cursiva"><i>I</i></button>
+                                    <button data-cmd="underline" title="Subrayado"><u>U</u></button>
+                                    <span class="wm-sep"></span>
+                                    <button data-cmd="justifyLeft" title="Izquierda">≡</button>
+                                    <button data-cmd="justifyCenter" title="Centro">☰</button>
+                                    <button data-cmd="justifyRight" title="Derecha">≣</button>
+                                    <button data-cmd="justifyFull" title="Justificado">▤</button>
+                                    <span class="wm-sep"></span>
+                                    <select id="wmFont"><option>Verdana</option><option>Arial</option><option>Georgia</option><option>Times New Roman</option><option>Courier New</option><option>Tahoma</option><option>Trebuchet MS</option></select>
+                                    <select id="wmSize"><option>8pt</option><option selected>10pt</option><option>12pt</option><option>14pt</option><option>18pt</option><option>24pt</option><option>36pt</option></select>
+                                    <span class="wm-sep"></span>
+                                    <span class="wm-cbtn" title="Color de texto">A<i class="wm-bar" id="wmColorBar" style="color:#000"></i><input type="color" id="wmColor" value="#000000"></span>
+                                    <span class="wm-cbtn" title="Resaltado">🖍<i class="wm-bar" id="wmHiliteBar" style="color:#ffeb3b"></i><input type="color" id="wmHilite" value="#ffeb3b"></span>
+                                    <span class="wm-sep"></span>
+                                    <button data-cmd="insertUnorderedList" title="Viñetas">☷</button>
+                                    <button data-cmd="insertOrderedList" title="Numeración">①</button>
+                                    <button data-cmd="outdent" title="Reducir sangría">⇤</button>
+                                    <button data-cmd="indent" title="Aumentar sangría">⇥</button>
+                                    <button type="button" id="wmLtr" title="Izquierda a derecha">¶</button>
+                                    <button type="button" id="wmRtl" title="Derecha a izquierda">⁋</button>
+                                    <button type="button" id="wmQuote" title="Cita">❞</button>
+                                    <span class="wm-sep"></span>
+                                    <button type="button" id="wmLink" title="Enlace">🔗</button>
+                                    <button type="button" id="wmUnlink" title="Quitar enlace">⛓</button>
+                                    <button type="button" id="wmTable" title="Tabla">▦</button>
+                                    <button type="button" id="wmMoreEd" title="Más">•••</button>
                                 </div>
+                                <div class="wm-edtb" id="wmEdTb2" style="display:none">
+                                    <button data-cmd="strikeThrough" title="Tachado"><s>S</s></button>
+                                    <button data-cmd="subscript" title="Subíndice">x₂</button>
+                                    <button data-cmd="superscript" title="Superíndice">x²</button>
+                                    <button data-cmd="insertHorizontalRule" title="Línea horizontal">―</button>
+                                    <button data-cmd="removeFormat" title="Quitar formato">Tx</button>
+                                    <button data-cmd="undo" title="Deshacer">↶</button>
+                                    <button data-cmd="redo" title="Rehacer">↷</button>
+                                </div>
+                                <div class="wm-edit" id="wmEdit" contenteditable="true" spellcheck="true"></div>
+                                <textarea class="wm-plain" id="wmPlain"></textarea>
                             </div>
-
-                            <div style="min-width:220px; display:flex; flex-direction:column; align-items:flex-end; gap:10px;">
-                                <div id="edBadgeEstado" style="font-size:11px; color:#64748b;"> </div>
+                            <div class="wm-att" id="wmAtt">
+                                <div>La suma de los archivos adjuntos no podrá superar los 50 MB</div>
+                                <button type="button" onclick="document.getElementById('wmFile').click()">Añadir un archivo</button>
+                                <ul class="wm-att-list" id="wmAttList"></ul>
+                                <div class="wm-drop">⬇</div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="ed-body" id="edBody">
-                        <?= nl2br(htmlspecialchars($m0['cuerpo_txt'] ?: strip_tags($m0['cuerpo_html'] ?? ''))) ?>
-                    </div>
-
-                    <div class="ed-reply-bar">
-                        <input type="text" class="ed-reply-input" id="emailReplyInput" placeholder="Escribir respuesta a <?= htmlspecialchars($m0['remitente_email']) ?>…">
-                        <button type="button" class="btn-send-email" onclick="enviarRespuestaEmail()">Responder ➔</button>
-                    </div>
-
-                <?php else: ?>
-                    <div style="display:flex; flex:1; align-items:center; justify-content:center; color:#94a3b8; flex-direction:column; gap:8px; padding:24px;">
-                        <div style="font-size:36px;">📨</div>
-                        <div>Selecciona un correo para leerlo</div>
-                    </div>
-                <?php endif; ?>
+                </div>
             </div>
         </div>
+
+        <style>
+            /* Nuevo chat de WhatsApp (estilos propios, independientes de otros CSS) */
+            #panel-whatsapp .wa-sidebar-head{ position:relative; }
+            #panel-whatsapp .wan-bar{ display:flex; gap:8px; width:100%; align-items:stretch; }
+            #panel-whatsapp .wan-bar > button{ flex:1; white-space:nowrap; margin:0; }
+            #panel-whatsapp .wan-new{ border:1px solid #1fa855; background:#25d366; color:#fff; border-radius:8px; padding:8px 12px; font-size:12px; font-weight:700; cursor:pointer; transition:background .15s; }
+            #panel-whatsapp .wan-new:hover{ background:#1fa855; }
+            #panel-whatsapp .wan-pop{ display:none; position:absolute; left:10px; right:10px; top:calc(100% - 4px); background:#fff; border:1px solid #e2e8f0; border-radius:12px; box-shadow:0 14px 36px rgba(13,27,42,.25); padding:12px; z-index:80; }
+            #panel-whatsapp .wan-pop.open{ display:block; }
+            #panel-whatsapp .wan-pop-head{ display:flex; align-items:center; justify-content:space-between; font-size:13px; font-weight:700; color:#0d1b2a; margin-bottom:8px; }
+            #panel-whatsapp .wan-x{ border:none; background:none; color:#94a3b8; font-size:15px; cursor:pointer; }
+            #panel-whatsapp .wan-x:hover{ color:#0d1b2a; }
+            #panel-whatsapp .wan-in{ width:100%; box-sizing:border-box; border:1px solid #cbd5e1; border-radius:8px; padding:9px 12px; font-size:13px; outline:none; font-family:inherit; }
+            #panel-whatsapp .wan-in:focus{ border-color:#25d366; box-shadow:0 0 0 3px rgba(37,211,102,.15); }
+            #panel-whatsapp .wan-dd{ display:none; margin-top:8px; border:1px solid #e2e8f0; border-radius:8px; max-height:280px; overflow-y:auto; background:#fff; }
+            #panel-whatsapp .wan-dd.show{ display:block; }
+            #panel-whatsapp .wan-row{ display:flex; align-items:center; gap:10px; padding:9px 12px; border-bottom:1px solid #f1f5f9; cursor:pointer; }
+            #panel-whatsapp .wan-row:last-child{ border-bottom:none; }
+            #panel-whatsapp .wan-row:hover, #panel-whatsapp .wan-row.sel{ background:#f0fdf4; }
+            #panel-whatsapp .wan-info{ flex:1; min-width:0; }
+            #panel-whatsapp .wan-name{ font-size:13px; font-weight:600; color:#0d1b2a; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+            #panel-whatsapp .wan-tel{ font-size:11.5px; color:#64748b; }
+            #panel-whatsapp .wan-tag{ font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; background:#e2e8f0; color:#475569; white-space:nowrap; }
+            #panel-whatsapp .wan-empty{ padding:16px; text-align:center; color:#94a3b8; font-size:12.5px; }
+            #panel-whatsapp .wan-hint{ margin-top:10px; font-size:10.5px; color:#94a3b8; line-height:1.45; }
+        </style>
 
         <!-- PANEL 3: WHATSAPP -->
         <div class="msg-panel msg-panel-wa" id="panel-whatsapp">
@@ -351,13 +430,22 @@ require __DIR__ . '/../includes/portal_header.php';
                         <span>🔍</span>
                         <input type="text" id="waSearchInput" placeholder="Buscar chat por nombre o cel…" />
                     </div>
-                    <button class="wa-refresh-btn" id="waRefreshBtn" onclick="refrescarWAChats()" title="Recargar listas desde el backend">🔄 Actualizar</button>
+                    <div class="wan-bar">
+                        <button type="button" class="wan-new" id="waNewChatBtn" onclick="toggleNuevoChatWA(event)" title="Iniciar una conversación nueva">➕ Nuevo chat</button>
+                        <button class="wa-refresh-btn" id="waRefreshBtn" onclick="refrescarWAChats()" title="Recargar listas desde el backend">🔄 Actualizar</button>
+                    </div>
+                    <div class="wan-pop" id="waNewPop">
+                        <div class="wan-pop-head"><span>💬 Nuevo chat de WhatsApp</span><button type="button" class="wan-x" onclick="cerrarNuevoChatWA()" title="Cerrar">✕</button></div>
+                        <input type="text" id="waNcSearch" class="wan-in" placeholder="Buscar contacto o escribir un número…" autocomplete="off">
+                        <div class="wan-dd" id="waNcResults"></div>
+                        <div class="wan-hint">Buscá por nombre, teléfono, DNI o email. Para un número nuevo, escribilo con código de área (ej: 3794123456). WhatsApp solo entrega mensajes libres si el contacto te escribió en las últimas 24 horas.</div>
+                    </div>
                 </div>
 
                 <div class="wa-list" id="waList">
                     <?php if ($wa_chats): ?>
                         <?php foreach ($wa_chats as $idx => $c): ?>
-                            <div class="wa-item <?= $idx === 0 ? 'active' : '' ?>" data-chat-id="<?= (int)$c['id'] ?>" onclick="cargarChatWA(<?= (int)$c['id'] ?>, this)">
+                            <div class="wa-item <?= $idx === 0 ? 'active' : '' ?>" data-chat-id="<?= (int)$c['id'] ?>" data-name="<?= htmlspecialchars($c['nombre_contacto'] ?? '') ?>" data-phone="<?= htmlspecialchars($c['telefono'] ?? '') ?>" onclick="cargarChatWA(<?= (int)$c['id'] ?>, this)">
                                 <div class="wa-avatar"><?= htmlspecialchars(strtoupper(substr($c['nombre_contacto'] ?: ($c['telefono'] ?? ''), 0, 2))) ?></div>
                                 <div class="ei-content">
                                     <div class="ei-top">
@@ -378,34 +466,34 @@ require __DIR__ . '/../includes/portal_header.php';
             </div>
 
             <div class="wa-chat" id="waChatView">
-                <?php if ($wa_chats && isset($wa_chats[0])): $c0 = $wa_chats[0]; ?>
-                    <script>
-                        window.__WA_INIT_CHAT_ID = <?= (int)$c0['id'] ?>;
-                    </script>
-
-                    <div class="wa-chat-head">
-                        <div class="wa-avatar" id="waHeadAvatar"><?= htmlspecialchars(strtoupper(substr($c0['nombre_contacto'] ?: ($c0['telefono'] ?? ''), 0, 2))) ?></div>
-                        <div>
-                            <div style="font-weight:600; font-size:14px; color:#0d1b2a;" id="waHeadName"><?= htmlspecialchars($c0['nombre_contacto'] ?: $c0['telefono']) ?></div>
-                            <div style="font-size:11px; color:#1aa5a5;" id="waHeadPhone"><?= htmlspecialchars($c0['telefono']) ?> · WhatsApp Business</div>
-                        </div>
-                    </div>
-
-                    <div class="wa-messages" id="waMessagesArea">
-                        <div style="text-align:center; font-size:11px; color:#94a3b8; margin:10px 0;">Conversación iniciada vía Twilio</div>
-                    </div>
-
-                    <div class="wa-input-bar">
-                        <input type="text" class="wa-input" id="waInputMsg" placeholder="Escribir mensaje de WhatsApp…" onkeypress="if(event.key==='Enter') enviarMensajeWA()">
-                        <button class="btn-wa-send" onclick="enviarMensajeWA()" title="Enviar">➔</button>
-                    </div>
-
-                <?php else: ?>
-                    <div style="display:flex; flex:1; align-items:center; justify-content:center; color:#94a3b8; flex-direction:column; gap:8px;">
-                        <div style="font-size:40px;">💬</div>
-                        <div>Selecciona un chat para ver la conversación</div>
-                    </div>
+                <?php $c0 = $wa_chats[0] ?? null; ?>
+                <?php if ($c0): ?>
+                    <script>window.__WA_INIT_CHAT_ID = <?= (int)$c0['id'] ?>;</script>
                 <?php endif; ?>
+
+                <div class="wa-chat-head" id="waChatHead" <?= $c0 ? '' : 'style="visibility:hidden"' ?>>
+                    <div class="wa-avatar" id="waHeadAvatar"><?= $c0 ? htmlspecialchars(strtoupper(substr($c0['nombre_contacto'] ?: ($c0['telefono'] ?? ''), 0, 2))) : '' ?></div>
+                    <div>
+                        <div style="font-weight:600; font-size:14px; color:#0d1b2a;" id="waHeadName"><?= $c0 ? htmlspecialchars($c0['nombre_contacto'] ?: $c0['telefono']) : '' ?></div>
+                        <div style="font-size:11px; color:#1aa5a5;" id="waHeadPhone"><?= $c0 ? htmlspecialchars($c0['telefono']) . ' · WhatsApp Business' : '' ?></div>
+                    </div>
+                </div>
+
+                <div class="wa-messages" id="waMessagesArea">
+                    <?php if ($c0): ?>
+                        <div style="text-align:center; font-size:11px; color:#94a3b8; margin:10px 0;">Conversación iniciada vía Twilio</div>
+                    <?php else: ?>
+                        <div style="display:flex; flex:1; align-items:center; justify-content:center; color:#94a3b8; flex-direction:column; gap:8px; margin:auto;">
+                            <div style="font-size:40px;">💬</div>
+                            <div>Seleccioná un chat o iniciá uno con "Nuevo chat"</div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="wa-input-bar">
+                    <input type="text" class="wa-input" id="waInputMsg" placeholder="Escribir mensaje de WhatsApp…" onkeypress="if(event.key==='Enter') enviarMensajeWA()">
+                    <button class="btn-wa-send" onclick="enviarMensajeWA()" title="Enviar">➔</button>
+                </div>
             </div>
 
         </div>
@@ -506,632 +594,21 @@ document.addEventListener('DOMContentLoaded', function() {
         if (btnTabEmail) btnTabEmail.click();
 
         setTimeout(() => {
-            abrirComposeEmail();
-            const toInput = document.getElementById('composeToInput');
-            const subjInput = document.getElementById('composeSubjectInput');
-            const bodyInput = document.getElementById('composeBodyInput');
-
-            if (toInput) toInput.value = toEmail;
-            if (subjInput) subjInput.value = 'Respuesta a tu consulta en TecnoMedic' + (motivo ? ' · ' + motivo : '');
-            if (bodyInput) bodyInput.value = 'Hola ' + (nombre ? nombre : '') + ',\n\nGracias por comunicarte con TecnoMedic.\n\n';
+            const esc = s => String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            abrirComposeEmail({
+                mode: 'new',
+                to: toEmail,
+                subject: 'Respuesta a tu consulta en TecnoMedic' + (motivo ? ' · ' + motivo : ''),
+                bodyHtml: '<p>Hola ' + esc(nombre) + ',</p><p>Gracias por comunicarte con TecnoMedic.</p><p><br></p>'
+            });
         }, 150);
     };
 
-    // ── Email: búsqueda rápida (front-end) ──
-    const emailSearch = document.getElementById('emailSearchInput');
-    if (emailSearch) {
-        emailSearch.addEventListener('input', function() {
-            const q = this.value.toLowerCase();
-            document.querySelectorAll('#emailList .email-item').forEach(item => {
-                const text = item.textContent.toLowerCase();
-                item.style.display = text.includes(q) ? '' : 'none';
-            });
-        });
-    }
-
-    // ── Email: carpetas (árbol) ──
-    window.__EMAIL_CURRENT_FOLDER = 'INBOX';
-
-    const emailFoldersBox = document.getElementById('emailFoldersBox');
-
-    // Collapsible sections (Bandejas / Personalizadas)
-    document.querySelectorAll('.email-tree-toggle[data-target]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const targetSel = btn.getAttribute('data-target');
-            if (!targetSel) return;
-            const child = document.querySelector(targetSel);
-            if (!child) return;
-
-            const isCollapsed = child.classList.contains('is-collapsed');
-            if (isCollapsed) child.classList.remove('is-collapsed');
-            else child.classList.add('is-collapsed');
-
-            btn.setAttribute('aria-expanded', String(!isCollapsed));
-        });
-    });
-
-
-    function _setFolderActiveUI(folder) {
-        if (!emailFoldersBox) return;
-        document.querySelectorAll('#emailFoldersBox .email-folder-btn').forEach(btn => {
-            const f = (btn.dataset.folder || '').toString();
-            if (f === String(folder)) btn.classList.add('active');
-            else btn.classList.remove('active');
-        });
-    }
-
-    window.setEmailFolder = async function(folder) {
-        if (!folder) return;
-        window.__EMAIL_CURRENT_FOLDER = String(folder);
-        _setFolderActiveUI(window.__EMAIL_CURRENT_FOLDER);
-
-        await refrescarEmailsLista(null);
-
-        const firstItem = document.querySelector('#emailList .email-item');
-        if (firstItem) {
-            firstItem.click();
-        } else {
-            window.__EMAIL_CURRENT = null;
-            const subject = document.getElementById('edSubject');
-            const from = document.getElementById('edFrom');
-            const date = document.getElementById('edDate');
-            const avatar = document.getElementById('edAvatar');
-            const body = document.getElementById('edBody');
-            if (subject) subject.textContent = '';
-            if (from) from.innerHTML = '';
-            if (date) date.textContent = '';
-            if (avatar) avatar.textContent = '';
-            if (body) body.innerHTML = '<div style="color:#94a3b8; text-align:center; padding:30px;">Sin correos en esta carpeta</div>';
-        }
-    };
-
-    window.cargarCarpetasEmail = async function() {
-        let cuenta = 'contacto';
-        document.querySelectorAll('.account-btn').forEach(b => {
-            if (b.classList.contains('active')) cuenta = b.dataset.cuenta || 'contacto';
-        });
-
-        try {
-            const url = '<?= b('/api/get_emails.php') ?>?action=folders&cuenta=' + encodeURIComponent(cuenta);
-            const r = await fetch(url, { method: 'GET', credentials: 'include' });
-            const data = await r.json();
-            if (!data.ok) return;
-
-            const customBox = document.getElementById('emailCustomFolders');
-            if (!customBox) return;
-            customBox.innerHTML = '';
-
-            const predef = new Set(['INBOX','DELETED','SPAM','SENT','TRASH','DRAFTS'].map(x => x.toLowerCase()));
-            const folders = (data.folders || []).map(f => String(f)).filter(f => f.trim() !== '');
-
-            // Dejamos solo algunas para que no sature el sidebar
-            const max = 14;
-            let shown = 0;
-
-            folders.forEach(f => {
-                if (shown >= max) return;
-                if (predef.has(String(f).toLowerCase())) return;
-
-                shown++;
-
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.className = 'email-folder-btn';
-                btn.dataset.folder = f;
-
-                const iconMap = {
-                    inbox: '📥',
-                    deleted: '✅',
-                    spam: '🚫',
-                    sent: '📤',
-                    trash: '🗑',
-                    drafts: '✍️'
-                };
-
-                const key = String(f).toLowerCase();
-                const icon = iconMap[key] || '📁';
-                btn.textContent = icon + ' ' + f;
-
-                if (String(window.__EMAIL_CURRENT_FOLDER) === f) btn.classList.add('active');
-
-                btn.addEventListener('click', () => window.setEmailFolder(f));
-                customBox.appendChild(btn);
-            });
-        } catch (e) {
-            console.error(e);
-        }
-    };
-
-    window.crearCarpetaEmail = async function() {
-        const input = document.getElementById('emailCreateFolderInput');
-        if (!input) return;
-        const folderName = String(input.value || '').trim();
-        if (!folderName) {
-            alert('Ingresá el nombre de la carpeta.');
-            return;
-        }
-
-        try {
-            input.disabled = true;
-            const payload = new FormData();
-            payload.append('folder_name', folderName);
-
-            let cuenta = 'contacto';
-            document.querySelectorAll('.account-btn').forEach(b => {
-                if (b.classList.contains('active')) cuenta = b.dataset.cuenta || 'contacto';
-            });
-
-            const url = '<?= b('/api/get_emails.php') ?>?action=create_folder&cuenta=' + encodeURIComponent(cuenta);
-            const r = await fetch(url, { method: 'POST', credentials: 'include', body: payload });
-            const data = await r.json();
-
-            if (!data.ok) {
-                alert('No se pudo crear carpeta: ' + (data.error || 'desconocido'));
-                return;
-            }
-
-            input.value = '';
-            await window.cargarCarpetasEmail();
-            await window.setEmailFolder(data.folder || folderName);
-        } catch (e) {
-            console.error(e);
-            alert('Error al crear carpeta.');
-        } finally {
-            input.disabled = false;
-        }
-    };
-
-    // Inicialización: URL param folder (opcional) + cargar carpetas personalizadas
-    (async function initEmailFolders() {
-        const params = new URLSearchParams(location.search);
-        const f = (params.get('folder') || '').trim();
-        if (f) {
-            window.__EMAIL_CURRENT_FOLDER = f;
-            _setFolderActiveUI(window.__EMAIL_CURRENT_FOLDER);
-        }
-        await window.cargarCarpetasEmail();
-    })();
-
-    // ── Email: cambio de cuenta (contacto / noreply) ──
-    document.querySelectorAll('.account-btn[data-cuenta]').forEach(btn => {
-        btn.addEventListener('click', async function() {
-            document.querySelectorAll('.account-btn[data-cuenta]').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            await refrescarEmailsLista();
-            const firstItem = document.querySelector('#emailList .email-item');
-            if (firstItem) {
-                firstItem.click();
-            } else {
-                window.__EMAIL_CURRENT = null;
-                const subject = document.getElementById('edSubject');
-                const from = document.getElementById('edFrom');
-                const date = document.getElementById('edDate');
-                const avatar = document.getElementById('edAvatar');
-                const body = document.getElementById('edBody');
-                if (subject) subject.textContent = '';
-                if (from) from.innerHTML = '';
-                if (date) date.textContent = '';
-                if (avatar) avatar.textContent = '';
-                if (body) body.innerHTML = '<div style="color:#94a3b8; text-align:center; padding:30px;">(Bandeja vacía en esta cuenta)</div>';
-            }
-        });
-    });
-
-    // ── Email: helpers ──
-    function escapeHtml(s) {
-        return String(s)
-            .replaceAll('&', '&amp;')
-            .replaceAll('<', '&lt;')
-            .replaceAll('>', '&gt;')
-            .replaceAll('"', '&quot;')
-            .replaceAll("'", '&#039;');
-    }
-
-    function nl2br(s) {
-        return String(s).replace(/\n/g, '<br>');
-    }
-
-    function sanitizeEmailHtml(html) {
-        const div = document.createElement('div');
-        div.innerHTML = html;
-
-        const peligrosos = div.querySelectorAll('script, iframe, object, embed');
-        peligrosos.forEach(n => n.remove());
-
-        div.querySelectorAll('*').forEach(el => {
-            [...el.attributes].forEach(attr => {
-                const name = (attr.name || '').toLowerCase();
-                const value = (attr.value || '').toString();
-                if (name.startsWith('on')) el.removeAttribute(attr.name);
-                if ((name === 'href' || name === 'src') && value.trim().toLowerCase().startsWith('javascript:')) {
-                    el.removeAttribute(attr.name);
-                }
-            });
-        });
-
-        return div.innerHTML;
-    }
-
-    function renderEmailsList(emails) {
-        const list = document.getElementById('emailList');
-        if (!list) return;
-
-        if (!emails || !emails.length) {
-            list.innerHTML = '<div style="padding:24px; text-align:center; color:#94a3b8; font-size:12.5px;">✉️ Sin correos en la bandeja.<br><small style="color:#cbd5e1;">Presioná <b>Sync</b> para consultar Ferozo IMAP.</small></div>';
-            return;
-        }
-
-        list.innerHTML = '';
-        emails.forEach((m, idx) => {
-            const unread = String(m.leido) === '0' ? true : false;
-            const cls = 'email-item' + (idx === 0 ? ' active' : '') + (unread ? ' unread' : '');
-            const unreadDot = unread ? '<div class="unread-indicator"></div>' : '';
-            const fromText = (m.remitente_display || m.remitente_email || '').toString();
-            const timeText = m.creado_en ? new Date(m.creado_en).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '';
-            const preview = (m.preview || '').toString();
-            const subject = (m.asunto || '').toString();
-
-            const avatarLetter = fromText ? fromText.substring(0, 1).toUpperCase() : '?';
-            const div = document.createElement('div');
-            div.className = cls;
-            div.setAttribute('onclick', 'cargarEmail(' + m.id + ', this)');
-            div.innerHTML = unreadDot +
-                '<div class="email-card-avatar">' + escapeHtml(avatarLetter) + '</div>' +
-                '<div class="ei-content">' +
-                    '<div class="ei-top">' +
-                        '<span class="ei-from">' + escapeHtml(fromText) + '</span>' +
-                        '<span class="ei-time">' + escapeHtml(timeText) + '</span>' +
-                    '</div>' +
-                    '<div class="ei-subject">' + escapeHtml(subject) + '</div>' +
-                    '<div class="ei-preview">' + escapeHtml(preview) + '</div>' +
-                '</div>';
-
-            list.appendChild(div);
-        });
-    }
-
-    async function refrescarEmailsLista(activeId) {
-        const list = document.getElementById('emailList');
-        if (!list) return;
-
-        let cuenta = 'contacto';
-        document.querySelectorAll('.account-btn').forEach(b => {
-            if (b.classList.contains('active')) cuenta = b.dataset.cuenta || 'contacto';
-        });
-
-        const folder = (window.__EMAIL_CURRENT_FOLDER || 'INBOX');
-        const url = '<?= b('/api/get_emails.php') ?>?action=list&cuenta=' + encodeURIComponent(cuenta) + '&folder=' + encodeURIComponent(folder);
-        try {
-            const r = await fetch(url, { method: 'GET', credentials: 'include' });
-            const data = await r.json();
-            if (!data.ok) return;
-
-            const emails = data.emails || [];
-            const prevActive = activeId ? String(activeId) : null;
-            renderEmailsList(emails);
-
-            if (prevActive) {
-                const next = document.querySelector('.email-item[onclick^="cargarEmail(' + prevActive + '"]');
-                // (fallback) si no coincide por selector, igual no pasa nada.
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-    window.actualizarEmailsIMAP = async function() {
-        const btn = document.querySelector('[data-tab="email"]');
-        try {
-            window.actualizarEmailsIMAP._busy = true;
-            if (btn) btn.disabled = true;
-
-            const accountBtns = document.querySelectorAll('.account-btn');
-            let cuenta = 'contacto';
-            accountBtns.forEach(b => { if (b.classList.contains('active')) cuenta = b.dataset.cuenta || 'contacto'; });
-
-            const folder = (window.__EMAIL_CURRENT_FOLDER || 'INBOX');
-            const url = '<?= b('/api/get_emails.php') ?>?action=sync&cuenta=' + encodeURIComponent(cuenta) + '&folder=' + encodeURIComponent(folder);
-            const r = await fetch(url, { method: 'GET', credentials: 'include' });
-            const data = await r.json();
-
-            if (!data.ok) {
-                alert('Error sync email: ' + (data.error || 'desconocido'));
-                return;
-            }
-
-            if (btn) btn.disabled = false;
-            renderEmailsList(data.emails || []);
-        } catch (e) {
-            console.error(e);
-            alert('No se pudo sincronizar IMAP. Revisa logs / credenciales IMAP.');
-        } finally {
-            window.actualizarEmailsIMAP._busy = false;
-            if (btn) btn.disabled = false;
-        }
-    };
-
-    window.cargarEmail = async function(id, el) {
-        document.querySelectorAll('.email-item').forEach(i => i.classList.remove('active'));
-        if (el) el.classList.add('active');
-
-        const loading = document.getElementById('edBody');
-        if (loading) loading.innerHTML = '<div style="color:#94a3b8;">Cargando…</div>';
-
-        try {
-            const url = '<?= b('/api/get_emails.php') ?>?action=detail&id=' + encodeURIComponent(id);
-            const r = await fetch(url, { method: 'GET', credentials: 'include' });
-            const data = await r.json();
-            if (!data.ok) {
-                alert('No se pudo cargar email: ' + (data.error || 'desconocido'));
-                return;
-            }
-
-            const email = data.email;
-            window.__EMAIL_CURRENT = email;
-
-            const subject = document.getElementById('edSubject');
-            const from = document.getElementById('edFrom');
-            const date = document.getElementById('edDate');
-            const avatar = document.getElementById('edAvatar');
-            const body = document.getElementById('edBody');
-
-            if (subject) subject.textContent = email.asunto || '';
-            if (from) {
-                const name = (email.remitente_nombre || email.remitente_email || '');
-                const mail = email.remitente_email ? (' <span style="font-weight:400; color:#64748b;">&lt;' + escapeHtml(email.remitente_email) + '&gt;</span>') : '';
-                from.innerHTML = escapeHtml(name) + mail;
-            }
-            if (date) {
-                const para = email.destinatario ? escapeHtml(email.destinatario) : '';
-                const dt = email.creado_en ? new Date(email.creado_en) : null;
-                const f = dt ? dt.toLocaleString([], {year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'}) : '';
-                date.textContent = 'Para: ' + para + (f ? ' · ' + f : '');
-            }
-            if (avatar) {
-                const txt = (email.remitente_nombre || email.remitente_email || '?').toString();
-                avatar.textContent = txt.substring(0, 1).toUpperCase();
-            }
-
-            if (body) {
-                if (email.cuerpo_txt && email.cuerpo_txt.trim() !== '') {
-                    body.innerHTML = nl2br(escapeHtml(email.cuerpo_txt));
-                } else if (email.cuerpo_html && email.cuerpo_html.trim() !== '') {
-                    body.innerHTML = sanitizeEmailHtml(email.cuerpo_html);
-                } else {
-                    body.innerHTML = '<div style="color:#94a3b8;">(Sin contenido)</div>';
-                }
-            }
-
-            await refrescarEmailsLista(id);
-        } catch (e) {
-            console.error(e);
-            alert('Error al cargar email.');
-        }
-    };
-
-    // ── Responder (ya existía) ──
-    window.enviarRespuestaEmail = async function() {
-        const input = document.getElementById('emailReplyInput');
-        if (!input || !input.value.trim()) return;
-
-        const email = window.__EMAIL_CURRENT;
-        if (!email || !email.remitente_email) {
-            alert('Seleccioná un email para responder.');
-            return;
-        }
-
-        const to = email.remitente_email;
-        const asuntoBase = (email.asunto || '').toString().trim();
-        const subject = asuntoBase ? ('Re: ' + asuntoBase) : 'Respuesta';
-        const message = input.value.trim();
-
-        input.disabled = true;
-        try {
-            const payload = new FormData();
-            payload.append('to', to);
-            payload.append('subject', subject);
-            payload.append('message', message);
-
-            const r = await fetch('<?= b('/api/send_email.php') ?>', {
-                method: 'POST',
-                credentials: 'include',
-                body: payload
-            });
-            const data = await r.json();
-
-            if (!data.ok) {
-                alert('No se pudo enviar la respuesta: ' + (data.error || 'desconocido'));
-                return;
-            }
-
-            alert('Respuesta enviada ✅');
-            input.value = '';
-        } catch (e) {
-            console.error(e);
-            alert('Error al enviar la respuesta de email.');
-        } finally {
-            input.disabled = false;
-        }
-    };
-
-    // ── UI: Compose (➕ Nuevo) ──
-    window.abrirComposeEmail = function() {
-        let overlay = document.getElementById('modalComposeEmail');
-        if (!overlay) {
-            overlay = document.createElement('div');
-            overlay.id = 'modalComposeEmail';
-            overlay.className = 'edit-modal-overlay';
-            overlay.innerHTML = `
-                <div class="edit-modal" style="max-width:700px;">
-                    <div class="edit-modal-header">
-                        <div class="edit-modal-title">✉️ Nuevo mensaje</div>
-                        <button type="button" class="edit-modal-close" id="composeCloseBtn">✕</button>
-                    </div>
-
-                    <div style="padding-top:10px; padding-bottom:10px;">
-                        <div style="display:flex; gap:12px; flex-wrap:wrap;">
-                            <div style="flex:1; min-width:220px;">
-                                <div style="font-size:12px; font-weight:700; color:#64748b; margin-bottom:6px;">Para</div>
-                                <input id="composeToInput" class="edit-input" type="email" placeholder="email@dominio.com" />
-                            </div>
-                            <div style="flex:1; min-width:220px;">
-                                <div style="font-size:12px; font-weight:700; color:#64748b; margin-bottom:6px;">Asunto</div>
-                                <input id="composeSubjectInput" class="edit-input" type="text" placeholder="Asunto del mensaje" />
-                            </div>
-                        </div>
-
-                        <div style="margin-top:12px;">
-                            <div style="font-size:12px; font-weight:700; color:#64748b; margin-bottom:6px;">Mensaje</div>
-                            <textarea id="composeBodyInput" class="edit-input" rows="8" style="resize:none;" placeholder="Escribí tu mensaje..."></textarea>
-                        </div>
-                    </div>
-
-                    <div style="display:flex; gap:10px; justify-content:flex-end; padding-top:12px; border-top:1px solid rgba(226,232,240,0.9);">
-                        <button type="button" class="btn btn-outline" id="composeCancelBtn">Cancelar</button>
-                        <button type="button" class="btn btn-primary" id="composeSendBtn">Enviar ➔</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(overlay);
-
-            const cancelBtn = document.getElementById('composeCancelBtn');
-            const closeBtn = document.getElementById('composeCloseBtn');
-            if (cancelBtn) cancelBtn.addEventListener('click', () => closeComposeEmail());
-            if (closeBtn) closeBtn.addEventListener('click', () => closeComposeEmail());
-
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) closeComposeEmail();
-            });
-
-            const sendBtn = document.getElementById('composeSendBtn');
-            if (sendBtn) {
-                sendBtn.addEventListener('click', async () => {
-                    await enviarComposeEmail();
-                });
-            }
-        }
-
-        const email = window.__EMAIL_CURRENT;
-        const toInput = document.getElementById('composeToInput');
-        const subjInput = document.getElementById('composeSubjectInput');
-        const bodyInput = document.getElementById('composeBodyInput');
-
-        if (toInput) toInput.value = (email && email.remitente_email) ? email.remitente_email : '';
-        if (subjInput) {
-            if (!subjInput.value.trim()) subjInput.value = (email && email.asunto) ? ('Re: ' + String(email.asunto).trim()) : '';
-        }
-        if (bodyInput) bodyInput.value = '';
-
-        overlay.classList.add('open');
-
-        setTimeout(() => {
-            const input = document.getElementById('composeBodyInput');
-            if (input) input.focus();
-        }, 50);
-    };
-
-    window.enviarComposeEmail = async function() {
-        const overlay = document.getElementById('modalComposeEmail');
-        if (!overlay) return;
-
-        const to = (document.getElementById('composeToInput')?.value || '').trim();
-        const subject = (document.getElementById('composeSubjectInput')?.value || '').trim();
-        const body = (document.getElementById('composeBodyInput')?.value || '').trim();
-
-        if (!to || !subject || !body) {
-            alert('Completá Para, Asunto y Mensaje.');
-            return;
-        }
-
-        const sendBtn = document.getElementById('composeSendBtn');
-        if (sendBtn) sendBtn.disabled = true;
-
-        try {
-            const payload = new FormData();
-            payload.append('to', to);
-            payload.append('subject', subject);
-            payload.append('message', body);
-
-            const r = await fetch('<?= b('/api/send_email.php') ?>', {
-                method: 'POST',
-                credentials: 'include',
-                body: payload
-            });
-            const data = await r.json();
-
-            if (!data.ok) {
-                alert('No se pudo enviar el mensaje: ' + (data.error || 'desconocido'));
-                return;
-            }
-
-            alert('Mensaje enviado ✅');
-            closeComposeEmail();
-        } catch (e) {
-            console.error(e);
-            alert('Error al enviar el mensaje.');
-        } finally {
-            if (sendBtn) sendBtn.disabled = false;
-        }
-    };
-
-    window.closeComposeEmail = function() {
-        const overlay = document.getElementById('modalComposeEmail');
-        if (!overlay) return;
-        overlay.classList.remove('open');
-    };
-
-    // ── UI: Eliminar (🗑) ──
-    window.eliminarEmailActual = async function() {
-        const email = window.__EMAIL_CURRENT;
-        if (!email || !email.id) {
-            alert('Seleccioná un email para eliminar.');
-            return;
-        }
-
-        const ok = confirm('¿Eliminar este correo de la bandeja (cache local)?');
-        if (!ok) return;
-
-        try {
-            const payload = new FormData();
-            payload.append('id', String(email.id));
-
-            const r = await fetch('<?= b('/api/delete_email.php') ?>', {
-                method: 'POST',
-                credentials: 'include',
-                body: payload
-            });
-
-            const data = await r.json();
-            if (!data.ok) {
-                alert('No se pudo eliminar: ' + (data.error || 'desconocido'));
-                return;
-            }
-
-            alert('Correo eliminado ✅');
-            window.__EMAIL_CURRENT = null;
-
-            // Limpia vista
-            const subject = document.getElementById('edSubject');
-            const from = document.getElementById('edFrom');
-            const date = document.getElementById('edDate');
-            const avatar = document.getElementById('edAvatar');
-            const body = document.getElementById('edBody');
-
-            if (subject) subject.textContent = '';
-            if (from) from.innerHTML = '';
-            if (date) date.textContent = '';
-            if (avatar) avatar.textContent = '';
-            if (body) body.innerHTML = '<div style="color:#94a3b8;">Seleccioná un correo para leerlo</div>';
-
-            await refrescarEmailsLista(null);
-        } catch (e) {
-            console.error(e);
-            alert('Error al eliminar el correo.');
-        }
-    };
+    // Email: logica movida a portal/js/mensajes-webmail.js
 
     // ── WhatsApp: refrescar chats ──
-    window.refrescarWAChats = async function() {
+    window.refrescarWAChats = async function(selectId) {
+        if (selectId && typeof selectId === 'object') selectId = null;
         const btn = document.getElementById('waRefreshBtn');
         if (btn) btn.disabled = true;
 
@@ -1159,11 +636,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
+            const targetId = selectId || chats[0].id;
             chats.forEach((c, idx) => {
                 const div = document.createElement('div');
-                div.className = 'wa-item' + (idx === 0 ? ' active' : '');
+                div.className = 'wa-item' + (String(c.id) === String(targetId) ? ' active' : '');
                 div.setAttribute('data-chat-id', c.id);
                 div.setAttribute('onclick', 'cargarChatWA(' + c.id + ', this)');
+                div.dataset.name = c.nombre_contacto || '';
+                div.dataset.phone = c.telefono || '';
 
                 const avatarText = (c.nombre_contacto || c.telefono || '').toString();
                 const avatar = avatarText.length ? avatarText.substring(0, 2).toUpperCase() : '??';
@@ -1184,7 +664,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 waList.appendChild(div);
             });
 
-            const firstId = chats[0].id;
+            const firstId = targetId;
             const firstEl = waList.querySelector('.wa-item[data-chat-id="' + firstId + '"]');
             if (firstEl) window.cargarChatWA(firstId, firstEl);
         } catch (e) {
@@ -1198,7 +678,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // ── WhatsApp: cargar conversación ──
     window.cargarChatWA = async function(id, el) {
         document.querySelectorAll('.wa-item').forEach(i => i.classList.remove('active'));
-        if (el) el.classList.add('active');
+        if (el) {
+            el.classList.add('active');
+            const nm = el.dataset.name || el.dataset.phone || '';
+            const ph = el.dataset.phone || '';
+            const head = document.getElementById('waChatHead');
+            if (head) head.style.visibility = 'visible';
+            const hn = document.getElementById('waHeadName'); if (hn) hn.textContent = nm;
+            const hp = document.getElementById('waHeadPhone'); if (hp) hp.textContent = ph + ' · WhatsApp Business';
+            const ha = document.getElementById('waHeadAvatar'); if (ha) ha.textContent = nm.substring(0, 2).toUpperCase();
+        }
 
         const area = document.getElementById('waMessagesArea');
         if (!area) return;
@@ -1299,6 +788,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 alert('No se pudo enviar el mensaje: ' + (data.error || 'desconocido'));
                 return;
             }
+            if (data.twilio_ok === false) {
+                alert('El mensaje quedó guardado, pero Twilio no pudo entregarlo. Si el contacto no te escribió en las últimas 24 horas, WhatsApp exige una plantilla aprobada. Detalle en api/debug.log.');
+            }
             return window.cargarChatWA(chatIdNum, activeChatEl);
         })
         .catch(err => {
@@ -1310,6 +802,124 @@ document.addEventListener('DOMContentLoaded', function() {
             window.__WA_LAST_SENT_LOCK = false;
         });
     };
+
+    // ── WhatsApp: filtrar lista de chats ──
+    const waSearchEl = document.getElementById('waSearchInput');
+    if (waSearchEl) {
+        waSearchEl.addEventListener('input', () => {
+            const q = waSearchEl.value.trim().toLowerCase();
+            document.querySelectorAll('#waList .wa-item').forEach(el => {
+                const t = ((el.dataset.name || '') + ' ' + (el.dataset.phone || '') + ' ' + el.textContent).toLowerCase();
+                el.style.display = t.includes(q) ? '' : 'none';
+            });
+        });
+    }
+
+    // ── WhatsApp: nuevo chat (desplegable con búsqueda) ──
+    const waNcApi = '<?= b('/api/wa_nuevo_chat.php') ?>';
+    let waNcTimer = null;
+    let waNcSeq = 0;
+
+    function waNcRender(list, q) {
+        const box = document.getElementById('waNcResults');
+        if (!box) return;
+        let html = '';
+        if (/^[\d\s+()-]+$/.test(q) && q.replace(/\D/g, '').length >= 8) {
+            html += '<div class="wan-row" data-tel="' + escapeHtml(q) + '" data-nom="">' +
+                '<div class="wa-avatar">#</div>' +
+                '<div class="wan-info"><div class="wan-name">Iniciar chat con ' + escapeHtml(q) + '</div><div class="wan-tel">Número nuevo</div></div></div>';
+        }
+        html += (list || []).map(c => {
+            const nom = c.nombre || c.telefono;
+            return '<div class="wan-row" data-tel="' + escapeHtml(c.telefono) + '" data-nom="' + escapeHtml(c.nombre || '') + '">' +
+                '<div class="wa-avatar">' + escapeHtml(nom.substring(0, 2).toUpperCase()) + '</div>' +
+                '<div class="wan-info"><div class="wan-name">' + escapeHtml(nom) + '</div><div class="wan-tel">' + escapeHtml(c.telefono) + '</div></div>' +
+                '<span class="wan-tag">' + escapeHtml(c.origen) + '</span></div>';
+        }).join('');
+        if (!html && q) html = '<div class="wan-empty">Sin resultados para "' + escapeHtml(q) + '"</div>';
+        box.innerHTML = html;
+        box.classList.toggle('show', html !== '');
+    }
+
+    window.toggleNuevoChatWA = function(ev) {
+        if (ev) ev.stopPropagation();
+        const pop = document.getElementById('waNewPop');
+        if (!pop) return;
+        if (pop.classList.contains('open')) { window.cerrarNuevoChatWA(); return; }
+        pop.classList.add('open');
+        const q = document.getElementById('waNcSearch');
+        q.value = '';
+        waNcRender([], '');
+        setTimeout(() => q.focus(), 30);
+    };
+
+    window.cerrarNuevoChatWA = function() {
+        const pop = document.getElementById('waNewPop');
+        if (pop) pop.classList.remove('open');
+    };
+
+    async function waNcBuscar(q) {
+        const box = document.getElementById('waNcResults');
+        const my = ++waNcSeq;
+        box.innerHTML = '<div class="wan-empty">Buscando…</div>';
+        box.classList.add('show');
+        try {
+            const r = await fetch(waNcApi + '?action=buscar&q=' + encodeURIComponent(q), { credentials: 'include' });
+            const d = await r.json();
+            if (my !== waNcSeq) return;   // llegó una respuesta vieja
+            if (!d.ok) { box.innerHTML = '<div class="wan-empty">Error: ' + escapeHtml(d.error || 'desconocido') + '</div>'; return; }
+            waNcRender(d.results || [], q);
+        } catch (e) {
+            if (my !== waNcSeq) return;
+            console.error(e);
+            box.innerHTML = '<div class="wan-empty">No se pudo buscar contactos.</div>';
+        }
+    }
+
+    window.iniciarChatWA = async function(tel, nombre) {
+        tel = (tel || '').trim();
+        if (!tel) return;
+        const fd = new FormData();
+        fd.append('action', 'crear');
+        fd.append('telefono', tel);
+        fd.append('nombre', (nombre || '').trim());
+        try {
+            const r = await fetch(waNcApi, { method: 'POST', credentials: 'include', body: fd });
+            const d = await r.json();
+            if (!d.ok) { alert('No se pudo crear el chat: ' + (d.error || 'desconocido')); return; }
+            window.cerrarNuevoChatWA();
+            await window.refrescarWAChats(d.chat.id);
+            const inp = document.getElementById('waInputMsg');
+            if (inp) inp.focus();
+        } catch (e) {
+            console.error(e);
+            alert('Error al crear el chat.');
+        }
+    };
+
+    (function() {
+        const q = document.getElementById('waNcSearch');
+        const box = document.getElementById('waNcResults');
+        if (q) {
+            q.addEventListener('input', () => {
+                clearTimeout(waNcTimer);
+                const v = q.value.trim();
+                if (!v) { waNcSeq++; waNcRender([], ''); return; }
+                waNcTimer = setTimeout(() => waNcBuscar(v), 200);
+            });
+            q.addEventListener('keydown', e => {
+                if (e.key === 'Enter') { const first = box.querySelector('.wan-row'); if (first) first.click(); }
+                if (e.key === 'Escape') window.cerrarNuevoChatWA();
+            });
+        }
+        if (box) box.addEventListener('click', e => {
+            const row = e.target.closest('.wan-row');
+            if (row) window.iniciarChatWA(row.dataset.tel, row.dataset.nom);
+        });
+        document.addEventListener('click', e => {
+            if (!e.target.closest('#waNewPop') && !e.target.closest('#waNewChatBtn')) window.cerrarNuevoChatWA();
+        });
+    })();
 
     // Carga inicial de chat activo
     if (typeof window.__WA_INIT_CHAT_ID !== 'undefined' && window.__WA_INIT_CHAT_ID) {

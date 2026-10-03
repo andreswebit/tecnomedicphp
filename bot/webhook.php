@@ -11,6 +11,7 @@ register_shutdown_function(function() {
 
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/whatsapp.php';
+require_once __DIR__ . '/../includes/wa_hub.php';
 
 
 // ══════════════════════════════════════════════════════════════
@@ -57,13 +58,32 @@ const DESPEDIDA_BOT = "👋 ¡Hasta pronto!\n\nCuando necesites escribinos 😊\
 // HELPERS
 // ══════════════════════════════════════════════════════════════
 function _wa(string $phone, string $msg): void {
-    enviar_whatsapp(str_replace('whatsapp:','',$phone), $msg);
+    $ok = enviar_whatsapp(str_replace('whatsapp:','',$phone), $msg);
+
+    // Si el chat del Hub esta identificado, guardamos la respuesta del bot en el historial
+    $cid = (int)($GLOBALS['WA_CHAT_ID'] ?? 0);
+    if ($cid > 0) {
+        try {
+            $estado = $ok ? 'sent' : 'failed';
+            $st = db()->prepare("INSERT INTO tm_wa_mensajes (chat_id, direccion, mensaje, estado) VALUES (?, 'out', ?, ?)");
+            $st->bind_param('iss', $cid, $msg, $estado);
+            $st->execute();
+            $st->close();
+            $st = db()->prepare("UPDATE tm_wa_chats SET ultimo_mensaje = ?, ultimo_mensaje_at = NOW() WHERE id = ?");
+            $st->bind_param('si', $msg, $cid);
+            $st->execute();
+            $st->close();
+        } catch (Throwable $e) {
+            @file_put_contents(__DIR__ . '/debug.log', date('Y-m-d H:i:s') . " HUB LOG: " . $e->getMessage() . "\n", FILE_APPEND);
+        }
+    }
 }
 
 
 // function _wa(string $phone, string $msg): void {
 //     enviar_whatsapp($phone, $msg);
 // }
+
 
 function _menu_fechas(array $disp): string {
     $nums = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟'];
@@ -440,8 +460,12 @@ function procesar_bot(string $phone, string $msg): void {
     reset_sesion($sess);
     _wa($phone, MENU_BOT);
 }
+// Si lo carga twilio_webhook.php, solo se usan las funciones del bot
+if (defined('WA_BOT_AS_LIB')) { return; }
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405); exit;
+    http_response_code(405);
+    exit('Bot WhatsApp TecnoMedic v2 (guarda en Hub). Usar POST.');
 }
 
 $phone = trim($_POST['From'] ?? '');
@@ -453,6 +477,12 @@ if (!$phone || !$msg) {
 }
 
 error_log("WA recibido de $phone: " . substr($msg, 0, 60));
+wa_hub_log("webhook bot v2 recibio mensaje de $phone");
+
+// Guardar en el Centro de comunicaciones (Hub)
+$__cid = wa_hub_guardar_entrante($phone, $msg, trim($_POST['MessageSid'] ?? ''), trim($_POST['ProfileName'] ?? ''));
+if ($__cid === -1) { header('Content-Type: text/xml'); echo '<Response></Response>'; exit; }
+if ($__cid > 0) $GLOBALS['WA_CHAT_ID'] = $__cid;
 
 procesar_bot($phone, $msg);
 

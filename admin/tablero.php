@@ -65,7 +65,7 @@ require __DIR__ . '/../includes/portal_header.php';
         <div class="tablero-desc"></div>
     </a>
 
-    <a class="tablero-tile" href="<?= b('/tienda/') ?>">
+    <a class="tablero-tile" href="<?= b('/admin/tienda_section.php') ?>">
         <div class="tablero-icon"><img class="icon-image" src="<?= $base ?>/static/img/icons/tienda.ico" alt="" /></div>
         <div class="tablero-title" data-tooltip="Catálogo de productos">Tienda</div>
         <div class="tablero-desc"></div>

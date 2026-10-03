@@ -12,6 +12,25 @@ function imap_mailbox_prefix_ferozo(): string {
     return "{{$server_imap}:{$port_imap}/imap/ssl}";
 }
 
+/**
+ * Mapeo de alias estándar IMAP a nombres reales en Ferozo (que usan INBOX.*)
+ */
+function map_folder_alias_ferozo(string $alias): string {
+    $alias = mb_strtoupper(trim($alias));
+    
+    $mapping = [
+        'INBOX'      => 'INBOX',
+        'DRAFTS'     => 'INBOX.Drafts',
+        'SENT'       => 'INBOX.Sent Items',
+        'SPAM'       => 'INBOX.spam',
+        'TRASH'      => 'INBOX.Trash',
+        'DELETED'    => 'INBOX.Trash',
+        'JUNK'       => 'INBOX.spam',
+    ];
+    
+    return $mapping[$alias] ?? $alias;
+}
+
 function imap_open_ferozo(string $cuenta_name, string $mailbox): array {
     $server_imap = env('IMAP_HOST', 'c1452348.ferozo.com');
     $port_imap   = env('IMAP_PORT', '993');
@@ -150,6 +169,10 @@ function sync_emails_ferozo(string $cuenta_name = 'contacto', string $folder = '
     }
 
     $folder = trim($folder) !== '' ? trim($folder) : 'INBOX';
+    
+    // Mapear alias estándar a nombres reales de Ferozo (DRAFTS → INBOX.Drafts, etc)
+    $folder = map_folder_alias_ferozo($folder);
+    
     $resolvedFolder = imap_resolve_folder_name_ferozo($cuenta_name, $folder);
     $mailboxPrefix = imap_mailbox_prefix_ferozo();
 
@@ -272,4 +295,130 @@ function decode_imap_body($data, $encoding) {
 
     $data = mb_convert_encoding($data, 'UTF-8', 'auto');
     return trim($data);
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+// Funciones agregadas: Enviados/Borradores por IMAP, eliminar mensajes,
+// renombrar y eliminar carpetas.
+// ═══════════════════════════════════════════════════════════════
+
+function imap_normalize_folder_ferozo(string $name): string {
+    $name = trim(str_replace('/', '.', $name));
+    if (stripos($name, 'INBOX.') !== 0 && strcasecmp($name, 'INBOX') !== 0) {
+        $name = 'INBOX.' . $name;
+    }
+    return $name;
+}
+
+function imap_folder_is_system_ferozo(string $name): bool {
+    $n = mb_strtolower(trim($name));
+    $n = preg_replace('/^inbox[.\/]/', '', $n);
+    return in_array($n, ['inbox', 'drafts', 'draft', 'sent', 'sent items', 'trash', 'spam', 'junk', 'deleted items'], true);
+}
+
+function imap_crlf_ferozo(string $raw): string {
+    return str_replace("\n", "\r\n", str_replace("\r\n", "\n", $raw));
+}
+
+/** Agrega un mensaje crudo (RFC822) a una carpeta. $folderAlias: SENT, DRAFTS o nombre real. */
+function imap_append_ferozo(string $cuenta, string $folderAlias, string $raw, string $flags = '\\Seen'): array {
+    if ($raw === '') return ['ok' => false, 'error' => 'mensaje vacio'];
+    $prefix = imap_mailbox_prefix_ferozo();
+    $folder = imap_resolve_folder_name_ferozo($cuenta, map_folder_alias_ferozo($folderAlias));
+
+    $r = imap_open_ferozo($cuenta, $prefix . 'INBOX');
+    if (!$r['ok']) return $r;
+    $imap = $r['inbox'];
+    $ok = @imap_append($imap, $prefix . $folder, imap_crlf_ferozo($raw), $flags);
+    $err = imap_last_error();
+    @imap_close($imap);
+    return $ok ? ['ok' => true, 'folder' => $folder] : ['ok' => false, 'error' => 'imap_append: ' . ($err ?: 'desconocido')];
+}
+
+/** Arma un mensaje RFC822 simple (para borradores). */
+function imap_build_message_ferozo(string $from, string $to, string $cc, string $subject, string $txt, string $html): string {
+    $h  = "From: $from\r\n";
+    if ($to !== '') $h .= "To: $to\r\n";
+    if ($cc !== '') $h .= "Cc: $cc\r\n";
+    $h .= 'Subject: ' . mb_encode_mimeheader($subject, 'UTF-8', 'B', "\r\n") . "\r\n";
+    $h .= 'Date: ' . date('r') . "\r\nMIME-Version: 1.0\r\n";
+    $enc = fn($t) => chunk_split(base64_encode($t), 76, "\r\n");
+
+    if ($html === '') {
+        return $h . "Content-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n" . $enc($txt);
+    }
+    $b = 'tm_' . bin2hex(random_bytes(8));
+    return $h . "Content-Type: multipart/alternative; boundary=\"$b\"\r\n\r\n"
+        . "--$b\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n" . $enc($txt)
+        . "--$b\r\nContent-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n" . $enc($html)
+        . "--$b--\r\n";
+}
+
+/** Elimina un mensaje por UID. Fuera de Papelera lo mueve a Papelera; dentro, lo borra definitivamente. */
+function imap_delete_message_ferozo(string $cuenta, string $folder, int $uid): array {
+    $prefix = imap_mailbox_prefix_ferozo();
+    $r = imap_open_ferozo($cuenta, $prefix . $folder);
+    if (!$r['ok']) return $r;
+    $imap = $r['inbox'];
+
+    $trash = map_folder_alias_ferozo('TRASH');
+    $enPapelera = (strcasecmp($folder, $trash) === 0);
+
+    if ($enPapelera) {
+        $ok = @imap_delete($imap, (string)$uid, FT_UID);
+    } else {
+        $ok = @imap_mail_move($imap, (string)$uid, $trash, CP_UID);
+    }
+    $err = imap_last_error();
+    if ($ok) @imap_expunge($imap);
+    @imap_close($imap);
+    return $ok ? ['ok' => true] : ['ok' => false, 'error' => $err ?: 'no se pudo eliminar en IMAP'];
+}
+
+/** Mueve un mensaje por UID entre carpetas. */
+function imap_move_message_ferozo(string $cuenta, string $srcFolder, string $destFolder, int $uid): array {
+    $prefix = imap_mailbox_prefix_ferozo();
+
+    $r = imap_open_ferozo($cuenta, $prefix . $srcFolder);
+    if (!$r['ok']) return $r;
+    $imap = $r['inbox'];
+
+    $ok = @imap_mail_move($imap, (string)$uid, $destFolder, CP_UID);
+    $err = imap_last_error();
+    if ($ok) @imap_expunge($imap);
+    @imap_close($imap);
+
+    return $ok ? ['ok' => true] : ['ok' => false, 'error' => $err ?: 'no se pudo mover en IMAP'];
+}
+
+function imap_rename_folder_ferozo(string $cuenta, string $old, string $new): array {
+    $old = imap_normalize_folder_ferozo($old);
+    $new = imap_normalize_folder_ferozo($new);
+    if (imap_folder_is_system_ferozo($old) || imap_folder_is_system_ferozo($new)) {
+        return ['ok' => false, 'error' => 'No se pueden renombrar carpetas del sistema'];
+    }
+    $prefix = imap_mailbox_prefix_ferozo();
+    $r = imap_open_ferozo($cuenta, $prefix . 'INBOX');
+    if (!$r['ok']) return $r;
+    $imap = $r['inbox'];
+    $ok = @imap_renamemailbox($imap, $prefix . $old, $prefix . $new);
+    $err = imap_last_error();
+    @imap_close($imap);
+    return $ok ? ['ok' => true, 'folder' => $new] : ['ok' => false, 'error' => 'No se pudo renombrar: ' . ($err ?: 'desconocido')];
+}
+
+function imap_delete_folder_ferozo(string $cuenta, string $name): array {
+    $name = imap_normalize_folder_ferozo($name);
+    if (imap_folder_is_system_ferozo($name)) {
+        return ['ok' => false, 'error' => 'No se pueden eliminar carpetas del sistema'];
+    }
+    $prefix = imap_mailbox_prefix_ferozo();
+    $r = imap_open_ferozo($cuenta, $prefix . 'INBOX');
+    if (!$r['ok']) return $r;
+    $imap = $r['inbox'];
+    $ok = @imap_deletemailbox($imap, $prefix . $name);
+    $err = imap_last_error();
+    @imap_close($imap);
+    return $ok ? ['ok' => true, 'folder' => $name] : ['ok' => false, 'error' => 'No se pudo eliminar: ' . ($err ?: 'desconocido')];
 }

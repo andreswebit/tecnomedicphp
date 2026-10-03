@@ -271,6 +271,8 @@
     <!-- ★★★ FIN del bloque <style> ★★★ -->
 
 
+
+
     <!-- TIENDA ONLINE -->
     <section id="tienda">
         <div class="container">
@@ -279,7 +281,33 @@
             <div class="tn-header">
                 <div>
                     <div class="tn-label">Tienda Online</div>
-                    <div class="tn-title">PRODUCTOS PARA<br>TU RECUPERACIÓN</div>
+                    <div class="tn-title">PRODUCTOS PARA<br>TU RECUPERACIdddddddddddddddddddddÓN</div>
+                    
+    
+<div id="modalMail" style="display:none;position:fixed;inset:3vh 3vw;background:#fff;z-index:9999">
+    emaillllll
+  <button onclick="cerrarMail()">Cerrar</button>
+  <iframe id="frameMail" style="width:100%;height:calc(100% - 40px);border:0"></iframe>
+</div>
+
+<script>
+function abrirMail() {
+  document.getElementById('frameMail').src = 'https://ferozo.email';
+  document.getElementById('modalMail').style.display = 'block';
+}
+function cerrarMail() {
+  document.getElementById('modalMail').style.display = 'none';
+  document.getElementById('frameMail').src = '';
+}
+</script>
+
+
+
+
+
+
+
+
                 </div>
                 <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
                     <!-- Header  // El link "Ver tienda completa" debe apuntar a tu URL real de Tienda Nube (reemplazar el href)//-->

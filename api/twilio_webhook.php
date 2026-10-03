@@ -1,67 +1,60 @@
 <?php
 /**
- * TECNOMEDIC — Webhook de Twilio para recepción de WhatsApp
+ * TECNOMEDIC: Webhook unico de Twilio para WhatsApp.
+ * 1) Guarda el mensaje entrante en el Hub (tm_wa_chats / tm_wa_mensajes).
+ * 2) Ejecuta el bot de turnos (webhook.php) y guarda sus respuestas en el Hub.
+ * En Twilio, "When a message comes in" debe apuntar a ESTE archivo.
  */
 require_once __DIR__ . '/../includes/db.php';
+define('WA_BOT_AS_LIB', true);
+require_once __DIR__ . '/../includes/wa_hub.php';
 
-// Twilio envía datos por POST
+// Ubicar el bot (webhook.php). Se busca junto a este archivo y en carpetas cercanas.
+$__bot = null;
+foreach ([__DIR__ . '/webhook.php', dirname(__DIR__) . '/webhook.php', dirname(__DIR__) . '/whatsapp/webhook.php', dirname(__DIR__) . '/bot/webhook.php', dirname(__DIR__) . '/bot/webkook.php', dirname(__DIR__) . '/webhooks/webhook.php'] as $__c) {
+    if (is_file($__c)) { $__bot = $__c; break; }
+}
+if ($__bot) {
+    require_once $__bot;   // define procesar_bot() y no ejecuta nada mas
+}
+
+function _tw_log(string $m): void {
+    @file_put_contents(__DIR__ . '/debug.log', date('Y-m-d H:i:s') . " TWILIO: $m\n", FILE_APPEND);
+}
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    _tw_log('Peticion no POST: ' . $_SERVER['REQUEST_METHOD'] . ' (revisar redirecciones http/https o www en la URL del webhook)');
     http_response_code(405);
     exit('Method not allowed');
 }
 
-$from = trim($_POST['From'] ?? ''); // ej: whatsapp:+5493794123456
-$body = trim($_POST['Body'] ?? '');
-$sid  = trim($_POST['MessageSid'] ?? '');
+header('Content-Type: text/xml; charset=utf-8');
+
+$from        = trim($_POST['From'] ?? '');          // whatsapp:+549379...
+$body        = trim($_POST['Body'] ?? '');
+$sid         = trim($_POST['MessageSid'] ?? '');
 $profileName = trim($_POST['ProfileName'] ?? '');
 
-if (empty($from) || empty($body)) {
-    http_response_code(400);
-    exit('Bad Request');
+if ($from === '' || $body === '') {
+    echo '<?xml version="1.0" encoding="UTF-8"?><Response></Response>';
+    exit;
 }
 
-// Limpiar prefijo whatsapp: para dejar solo el teléfono
-$telefono = str_replace('whatsapp:', '', $from);
+_tw_log("Entrante de $from: " . mb_substr($body, 0, 60));
 
-$db = db();
+$cid = wa_hub_guardar_entrante($from, $body, $sid, $profileName);
+if ($cid === -1) {  // reintento duplicado de Twilio
+    echo '<?xml version="1.0" encoding="UTF-8"?><Response></Response>';
+    exit;
+}
+if ($cid > 0) $GLOBALS['WA_CHAT_ID'] = $cid;
 
-// 1. Obtener o crear chat
-$stmt = $db->prepare("SELECT id FROM tm_wa_chats WHERE telefono = ?");
-$stmt->bind_param('s', $telefono);
-$stmt->execute();
-$res = $stmt->get_result();
-$chat = $res->fetch_assoc();
-$stmt->close();
-
-$chat_id = 0;
-if ($chat) {
-    $chat_id = $chat['id'];
-    // Actualizar último mensaje y contador
-    $stmtUpd = $db->prepare("UPDATE tm_wa_chats SET ultimo_mensaje = ?, ultimo_mensaje_at = NOW(), mensajes_sin_leer = mensajes_sin_leer + 1 " . ($profileName ? ", nombre_contacto = ?" : "") . " WHERE id = ?");
-    if ($profileName) {
-        $stmtUpd->bind_param('ssi', $body, $profileName, $chat_id);
-    } else {
-        $stmtUpd->bind_param('si', $body, $chat_id);
-    }
-    $stmtUpd->execute();
-    $stmtUpd->close();
-} else {
-    // Crear chat nuevo
-    $stmtIns = $db->prepare("INSERT INTO tm_wa_chats (telefono, nombre_contacto, ultimo_mensaje, mensajes_sin_leer) VALUES (?, ?, ?, 1)");
-    $stmtIns->bind_param('sss', $telefono, $profileName, $body);
-    $stmtIns->execute();
-    $chat_id = $stmtIns->insert_id;
-    $stmtIns->close();
+// 3) Bot de turnos (sus respuestas se guardan en el Hub via _wa())
+try {
+    if (!function_exists('procesar_bot')) throw new Exception('No se encontro webhook.php (bot). Copialo a la carpeta api.');
+    procesar_bot($from, $body);
+} catch (Throwable $e) {
+    _tw_log('Error en el bot: ' . $e->getMessage() . ' en ' . basename($e->getFile()) . ':' . $e->getLine());
 }
 
-// 2. Registrar el mensaje en tm_wa_mensajes
-$stmtMsg = $db->prepare("INSERT INTO tm_wa_mensajes (chat_id, direccion, mensaje, sid_twilio, estado) VALUES (?, 'in', ?, ?, 'delivered')");
-$stmtMsg->bind_param('iss', $chat_id, $body, $sid);
-$stmtMsg->execute();
-$stmtMsg->close();
-
-// Respuesta TwiML estándar (vacía o confirmación)
-header('Content-Type: text/xml');
-echo '<?xml version="1.0" encoding="UTF-8"?>';
-echo '<Response></Response>';
-exit;
+echo '<?xml version="1.0" encoding="UTF-8"?><Response></Response>';

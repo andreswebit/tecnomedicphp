@@ -19,13 +19,15 @@ function enviar_whatsapp(string $tel, string $msg): bool {
         return false;
     }
     $to = formatear_wa($tel);
+    $from = (string)TWILIO_WA_FROM;
+    if (stripos($from, 'whatsapp:') !== 0) $from = 'whatsapp:' . ltrim($from);
     $url = "https://api.twilio.com/2010-04-01/Accounts/" . TWILIO_SID . "/Messages.json";
     $ch = curl_init($url);
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_POST           => true,
         CURLOPT_POSTFIELDS     => http_build_query([
-            'From' => TWILIO_WA_FROM,
+            'From' => $from,
             'To'   => $to,
             'Body' => $msg,
         ]),
@@ -34,8 +36,10 @@ function enviar_whatsapp(string $tel, string $msg): bool {
     ]);
     $resp = curl_exec($ch);
     $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $cerr = curl_error($ch);
     curl_close($ch);
     if ($code === 201) { error_log("WA OK → $to"); return true; }
     error_log("Twilio error $code: $resp");
+    @file_put_contents(__DIR__ . '/../api/debug.log', date('Y-m-d H:i:s') . " TWILIO SEND $to HTTP $code $cerr " . substr((string)$resp, 0, 400) . "\n", FILE_APPEND);
     return false;
 }

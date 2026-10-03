@@ -1,6 +1,3 @@
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule ^ - [L]
 # Bloquea el acceso web a los logs (contienen telefonos y mensajes)
 <FilesMatch "\.(log|txt)$">
     Require all denied
