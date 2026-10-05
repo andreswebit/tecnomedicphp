@@ -98,6 +98,17 @@ try {
     $pacientes = [];
 }
 
+$asignacion_por_paciente = [];
+foreach ($asignaciones as $a) {
+    $pid = (int)($a['paciente_id'] ?? 0);
+    // Si un paciente tiene más de una asignación activa, mostramos la más reciente (orden DESC en el query).
+    if ($pid && !isset($asignacion_por_paciente[$pid])) {
+        $asignacion_por_paciente[$pid] = $a;
+    }
+}
+
+$pacientes_asignados = count($asignacion_por_paciente);
+
 $asignaciones_json = json_encode($asignaciones, JSON_UNESCAPED_UNICODE);
 
 $portal_titulo = 'Profesionales · Mi Portal';
@@ -230,8 +241,8 @@ require __DIR__ . '/../includes/portal_header.php';
 
 <div class="table-card" style="margin:0 28px 28px;">
     <div class="table-header">
-        <div class="table-title">🔗 <?= count($asignaciones) ?> asignación<?= count($asignaciones) !== 1 ? 'es' : '' ?>
-            activas</div>
+        <div class="table-title">👥 <?= count($pacientes) ?> paciente<?= count($pacientes) !== 1 ? 's' : '' ?>
+            <span class="badge" style="margin-left:10px;opacity:.85;">Asignados: <?= $pacientes_asignados ?></span></div>
         <div class="search-wrap">
             <span class="search-icon">🔍</span>
             <input type="text" id="searchAsig" placeholder="Buscar…" style="width:200px;">
@@ -249,36 +260,67 @@ require __DIR__ . '/../includes/portal_header.php';
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($asignaciones as $a): ?>
+                <?php foreach ($pacientes as $p):
+                    $pid = (int)($p['id'] ?? 0);
+                    $asig = ($pid && isset($asignacion_por_paciente[$pid])) ? $asignacion_por_paciente[$pid] : null;
+                    $tiene_asignacion = $asig ? true : false;
+                ?>
                 <tr>
-                    <td><strong><?= htmlspecialchars($a['paciente_apellido'] . ', ' . $a['paciente_nombre']) ?></strong>
+                    <td><strong><?= htmlspecialchars($p['apellido'] . ', ' . $p['nombre']) ?></strong></td>
+
+                    <td>
+                        <?php if ($tiene_asignacion): ?>
+                            <?= htmlspecialchars($asig['profesional_apellido'] . ', ' . $asig['profesional_nombre']) ?>
+                        <?php else: ?>
+                            <span class="badge" style="opacity:.6;">—</span>
+                        <?php endif; ?>
                     </td>
-                    <td><?= htmlspecialchars($a['profesional_apellido'] . ', ' . $a['profesional_nombre']) ?></td>
-                    <td><span class="badge"><?= htmlspecialchars(ucfirst($a['area'])) ?></span></td>
-                    <td><?= htmlspecialchars(date('d/m/Y', strtotime($a['fecha_asignacion']))) ?></td>
+
+                    <td>
+                        <?php if ($tiene_asignacion): ?>
+                            <span class="badge"><?= htmlspecialchars(ucfirst($asig['area'])) ?></span>
+                        <?php else: ?>
+                            <span class="badge" style="opacity:.6;">—</span>
+                        <?php endif; ?>
+                    </td>
+
+                    <td>
+                        <?php if ($tiene_asignacion): ?>
+                            <?= htmlspecialchars(date('d/m/Y', strtotime($asig['fecha_asignacion']))) ?>
+                        <?php else: ?>
+                            <span class="badge" style="opacity:.6;">—</span>
+                        <?php endif; ?>
+                    </td>
                     <td class="actions-col">
-                        <form method="post" onsubmit="return tmConfirmSubmit(this,'¿Desasignar este paciente?');">
-                            <input type="hidden" name="accion" value="desasignar">
-                            <input type="hidden" name="id" value="<?= $a['id'] ?>">
-                            <button type="submit" class="btn-actions btn-action btn-del" data-tooltip="Desasignar">
-                                <svg fill="#fcf8f8" height="16px" width="16px" version="1.1" id="Capa_1"
-                                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                    viewBox="0 0 177.055 177.055" xml:space="preserve">
-                                    <path d="M0.001,88.527c0,48.814,39.713,88.527,88.527,88.527c48.813,0,88.526-39.713,88.526-88.527S137.341,0,88.528,0
+                        <?php if (!$tiene_asignacion): ?>
+                            <button type="button" class="btn-actions btn-action btn-save" data-tooltip="Asignar"
+                                onclick='openModal("modalAsig", <?= json_encode(['paciente_id' => $pid], JSON_UNESCAPED_UNICODE) ?>)'>
+                                ➕ 
+                            </button>
+                        <?php else: ?>
+                            <form method="post" onsubmit="return tmConfirmSubmit(this,'¿Desasignar este paciente?');">
+                                <input type="hidden" name="accion" value="desasignar">
+                                <input type="hidden" name="id" value="<?= (int)$asig['id'] ?>">
+                                <button type="submit" class="btn-actions btn-action btn-del" data-tooltip="Desasignar">
+                                    <svg fill="#fcf8f8" height="16px" width="16px" version="1.1" id="Capa_1"
+                                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        viewBox="0 0 177.055 177.055" xml:space="preserve">
+                                        <path d="M0.001,88.527c0,48.814,39.713,88.527,88.527,88.527c48.813,0,88.526-39.713,88.526-88.527S137.341,0,88.528,0
 	C39.714,0,0.001,39.713,0.001,88.527z M88.528,24.304c35.413,0,64.224,28.811,64.224,64.224c0,13.324-4.081,25.712-11.055,35.983
 	L52.544,35.359C62.816,28.385,75.204,24.304,88.528,24.304z M124.511,141.696c-10.272,6.974-22.659,11.055-35.983,11.055
 	c-35.413,0-64.223-28.811-64.223-64.224c0-13.324,4.081-25.711,11.054-35.983L124.511,141.696z" />
-                                </svg> </button>
-                        </form>
+                                    </svg> </button>
+                            </form>
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <?php if (!$asignaciones): ?>
+        <?php if (!$pacientes): ?>
         <div class="empty-state">
-            <div class="empty-state-icon">🔗</div>
-            <div>No hay asignaciones activas.</div>
+            <div class="empty-state-icon">👥</div>
+            <div>No hay pacientes registrados.</div>
         </div>
         <?php endif; ?>
     </div>
@@ -655,6 +697,12 @@ require __DIR__ . '/../includes/portal_header.php';
     window.openModal = function(mode, data) {
         if (mode === 'modalAsig') {
             document.getElementById('modalAsig').classList.add('open');
+
+            // Pre-cargar paciente en el formulario de nueva asignación.
+            if (data && data.paciente_id) {
+                var sel = document.querySelector('#modalAsig select[name="paciente_id"]');
+                if (sel) sel.value = String(data.paciente_id);
+            }
             return;
         }
 

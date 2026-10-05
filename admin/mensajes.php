@@ -310,9 +310,30 @@ require __DIR__ . '/../includes/portal_header.php';
                         <div class="wm-contacts" id="wmContacts">
                             <?php
                             $wm_contactos = [];
-                            foreach ($contactos as $c) { if (!empty($c['email'])) $wm_contactos[strtolower($c['email'])] = trim(($c['nombre'] ?? '') . ' <' . $c['email'] . '>'); }
-                            foreach ($wm_contactos as $mail => $label): ?>
-                                <div data-m="<?= htmlspecialchars($label) ?>"><?= htmlspecialchars($label) ?></div>
+                            foreach ($contactos as $c) {
+                                if (empty($c['email'])) continue;
+                                $email = trim((string)$c['email']);
+                                $mail = strtolower($email);
+                                $nombre = trim((string)($c['nombre'] ?? ''));
+
+                                // Texto visible (solo nombre y apellido)
+                                $display = $nombre !== '' ? $nombre : 'Sin nombre';
+
+                                // Valor real a insertar en el campo To/Cc/Bcc (con <email>)
+                                $valor = trim($display . ' <' . $email . '>');
+
+                                $wm_contactos[$mail] = [
+                                    'display' => $display,
+                                    'valor' => $valor,
+                                    'email' => $email,
+                                ];
+                            }
+
+                            foreach ($wm_contactos as $mail => $item):
+                            ?>
+                                <div data-m="<?= htmlspecialchars($item['valor']) ?>" data-name="<?= htmlspecialchars($item['display']) ?>" title="<?= htmlspecialchars($item['email']) ?>">
+                                    <?= htmlspecialchars($item['display']) ?>
+                                </div>
                             <?php endforeach; ?>
                         </div>
                         <div class="wm-comp-side-f"><button type="button" data-t="wmTo">To+</button><button type="button" data-t="wmCc">Cc+</button><button type="button" data-t="wmBcc">Bcc+</button></div>

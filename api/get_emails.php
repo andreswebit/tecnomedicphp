@@ -198,7 +198,7 @@ try {
         exit;
     }
 
-    if ($action === 'move') {
+if ($action === 'move') {
         // Mueve un email (por id de tm_emails) desde su carpeta actual a folder_dest (alias o nombre real)
         $id = (int)($_POST['id'] ?? $_GET['id'] ?? 0);
         $folder_dest = trim($_POST['folder_dest'] ?? $_GET['folder_dest'] ?? '');
@@ -251,6 +251,61 @@ try {
         echo json_encode(['ok' => true, 'folder' => $destResolved]);
         exit;
     }
+
+
+    // if ($action === 'move') {
+    //     // Mueve un email (por id de tm_emails) desde su carpeta actual a folder_dest (alias o nombre real)
+    //     $id = (int)($_POST['id'] ?? $_GET['id'] ?? 0);
+    //     $folder_dest = trim($_POST['folder_dest'] ?? $_GET['folder_dest'] ?? '');
+
+    //     if ($id <= 0 || $folder_dest === '') {
+    //         http_response_code(400);
+    //         echo json_encode(['ok' => false, 'error' => 'Parametros invalidos']);
+    //         exit;
+    //     }
+
+    //     $st = db()->prepare("SELECT cuenta, folder, uid_imap FROM tm_emails WHERE id = ? AND cuenta = ? LIMIT 1");
+    //     $st->bind_param('is', $id, $cuenta);
+    //     $st->execute();
+    //     $row = $st->get_result()->fetch_assoc();
+    //     $st->close();
+
+    //     if (!$row) {
+    //         echo json_encode(['ok' => false, 'error' => 'Correo no encontrado']);
+    //         exit;
+    //     }
+
+    //     $srcFolder = (string)($row['folder'] ?? '');
+    //     $uidImap = (int)($row['uid_imap'] ?? 0);
+    //     if ($srcFolder === '' || $uidImap <= 0) {
+    //         http_response_code(400);
+    //         echo json_encode(['ok' => false, 'error' => 'Correo sin folder/uid_imap válido']);
+    //         exit;
+    //     }
+
+    //     // Resolver destino (alias -> nombre real del servidor)
+    //     $folderDestUpper = mb_strtoupper(trim($folder_dest));
+    //     $folderDestForResolve = $folder_dest;
+    //     if (in_array($folderDestUpper, $standardFolderAliases, true)) {
+    //         $folderDestForResolve = map_folder_alias_ferozo($folderDestUpper);
+    //     }
+    //     $destResolved = imap_resolve_folder_name_ferozo($cuenta, $folderDestForResolve);
+
+    //     $r = imap_move_message_ferozo($cuenta, $srcFolder, $destResolved, $uidImap);
+    //     if (!($r['ok'] ?? false)) {
+    //         http_response_code(500);
+    //         echo json_encode(['ok' => false, 'error' => $r['error'] ?? 'IMAP']);
+    //         exit;
+    //     }
+
+    //     $st = db()->prepare("UPDATE tm_emails SET folder = ? WHERE id = ? AND cuenta = ? LIMIT 1");
+    //     $st->bind_param('sis', $destResolved, $id, $cuenta);
+    //     $st->execute();
+    //     $st->close();
+
+    //     echo json_encode(['ok' => true, 'folder' => $destResolved]);
+    //     exit;
+    // }
 
     if ($action === 'rename_folder') {
         $old = trim($_POST['folder'] ?? '');

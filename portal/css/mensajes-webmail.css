@@ -34,6 +34,9 @@
 .wm-folders-foot button{ border:1px solid #c3cad1; background:#fff; border-radius:4px; padding:5px 8px; cursor:pointer; font-size:12px; }
 
 /* Lista */
+
+/* Resaltado en búsqueda de contactos (solo cuando hay match) */
+.wm-hl{ background:#dbeafe; color:#0b3b7a; padding:0 2px; border-radius:3px; }
 .wm-list-col{ display:flex; flex-direction:column; border-right:1px solid var(--wm-line); min-height:0; background:#fff; }
 .wm-list-head{ display:flex; align-items:center; gap:8px; padding:8px 10px; background:#f4f5f6; border-bottom:1px solid var(--wm-line); font-size:13px; color:var(--wm-ink); }
 .wm-list-head .wm-pager{ margin-left:auto; display:flex; align-items:center; gap:4px; }

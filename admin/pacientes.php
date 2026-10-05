@@ -134,57 +134,7 @@ require __DIR__ . '/../includes/portal_header.php';
     </div>
 </div>
 
-<?php if (count($pendientes)): ?>
-<div class="table-card" style="margin:0 28px 20px;">
-    <div class="table-header">
-        <div class="table-title">⏳ Pendientes de aprobación (<?= count($pendientes) ?>)</div>
-        <div class="search-wrap">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="searchPendientes" placeholder="Buscar…" style="width:200px;">
-        </div>
-    </div>
-    <div class="table-wrap">
-        <table id="tablaPendientes">
-            <thead>
-                <tr>
-                    <th class="sortable" data-col="0">Nombre<span class="sort-icon"></span></th>
-                    <th class="sortable" data-col="1">DNI<span class="sort-icon"></span></th>
-                    <th class="sortable" data-col="2">Email<span class="sort-icon"></span></th>
-                    <th class="sortable" data-col="3">Fecha<span class="sort-icon"></span></th>
-                    <th class="actions-col">Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($pendientes as $p): ?>
-                <tr>
-                    <td><strong><?= htmlspecialchars($p['apellido'] . ', ' . $p['nombre']) ?></strong></td>
-                    <td><?= htmlspecialchars($p['dni']) ?></td>
-                    <td><?= htmlspecialchars($p['email']) ?></td>
-                    <td><?= htmlspecialchars($p['fecha_alta']) ?></td>
-                    <td class="actions-col">
-                        <div class="btn-actions">
-                            <form method="post" style="flex:1;">
-                                <input type="hidden" name="accion" value="aprobar">
-                                <input type="hidden" name="id" value="<?= $p['id'] ?>">
-                                <button type="submit" class="btn-action btn-save" data-tooltip="Aprobar"
-                                    style="width:100%;">✅ Aprobar</button>
-                            </form>
-                            <form method="post" style="flex:1;"
-                                onsubmit="return tmConfirmSubmit(this,'¿Rechazar y eliminar esta solicitud?');">
-                                <input type="hidden" name="accion" value="rechazar">
-                                <input type="hidden" name="id" value="<?= $p['id'] ?>">
-                                <button type="submit" class="btn-action btn-del" data-tooltip="Rechazar"
-                                    style="width:100%;">❌ Rechazar</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-</div>
-<?php endif; ?>
+
 
 <div class="table-card" style="margin:0 28px 28px;">
     <div class="table-header">
