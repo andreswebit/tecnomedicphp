@@ -34,7 +34,7 @@ $base = BASE_URL; ?>
     <nav class="navbar" id="navbar">
         <div class="nb-brand">
             <a href="<?= $base ?>/">
-            <img class="nb-logo" src="<?= $base ?>/static/img/logos/Logotipo2.png" alt="TECNOMEDIC"
+            <img class="nb-logo" src="<?= $base ?>/static/img/tecno-logoSF.png" alt="TECNOMEDIC"
                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
                 
             </a>

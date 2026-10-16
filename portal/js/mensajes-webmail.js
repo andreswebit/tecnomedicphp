@@ -6,6 +6,7 @@
     cuenta: "contacto",
     folder: "INBOX",
     list: [],
+    accounts: [],
     cur: null,
     page: 1,
     per: 50,
@@ -375,7 +376,11 @@
       };
     });
   }
-  async function loadList() {
+  async function loadList(opts) {
+    opts = opts || {};
+    var autoSync = opts.autoSync !== false;
+    var keepSelected = opts.keepSelected === true;
+
     try {
       var d = await getJSON(
         API.get +
@@ -387,7 +392,23 @@
       if (!d.ok) return;
       S.list = d.emails || [];
       renderList();
-      if (!S.list.length && !window.__WM_SYNC) {
+
+      if (keepSelected && S.cur && S.cur.id) {
+        var curId = String(S.cur.id);
+        var hit = S.list.find(function (x) {
+          return String(x.id) === curId;
+        });
+        if (hit) {
+          var row = document.querySelector(
+            '#wmList .wm-row[data-id="' + curId + '"]'
+          );
+          if (row) row.click();
+        }
+      }
+
+      // Para recarga “instantánea” usamos la cache (tm_emails) y evitamos
+      // forzar sync IMAP cuando venimos de un cambio de cuenta.
+      if (autoSync && !S.list.length && !window.__WM_SYNC) {
         window.__WM_SYNC = true;
         try {
           await window.actualizarEmailsIMAP();
@@ -557,6 +578,62 @@
       toast("Error al marcar", true);
     }
   }
+  async function cargarCuentasAdmin() {
+    try {
+      var d = await getJSON(API.accounts + '?action=list');
+      if (!d.ok) return;
+      var accounts = d.accounts || [];
+      S.accounts = accounts;
+
+      // Renderizamos el select del panel lateral
+      var accSel = $("wmAccountSelect");
+      if (accSel) {
+        var cur = accSel.value || S.cuenta || 'contacto';
+        accSel.innerHTML = '';
+        accounts.forEach(function (a) {
+          var opt = document.createElement('option');
+          opt.value = a.account_key;
+          opt.textContent = a.display_name || a.account_key;
+          if (String(a.account_key) === String(cur)) opt.selected = true;
+          accSel.appendChild(opt);
+        });
+        if (!accounts.some(function (x) { return String(x.account_key) === String(cur); })) {
+          // fallback
+          S.cuenta = accounts[0] ? accounts[0].account_key : 'contacto';
+          accSel.value = S.cuenta;
+        }
+      }
+
+      // Renderizamos el select de remitente en compose (wmFrom)
+      var fromSel = $("wmFrom");
+      if (fromSel) {
+        var curFrom = fromSel.value || '';
+        fromSel.innerHTML = '';
+        accounts.forEach(function (a) {
+          var email = a.smtp_from_email || '';
+          if (!email) return;
+          var opt = document.createElement('option');
+          opt.value = email;
+          opt.textContent = (a.smtp_from_name ? (a.smtp_from_name + ' <' + email + '>') : email);
+          fromSel.appendChild(opt);
+        });
+        // si no hay cuentas con smtp_from_email, mantenemos el HTML original
+        if (!fromSel.options.length) {
+          // no-op
+        } else {
+          // heurística: si el from actual no está, setear al primero
+          var has = Array.prototype.some.call(fromSel.options, function (o) { return o.value === curFrom; });
+          if (!has) fromSel.value = fromSel.options[0].value;
+        }
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  // Exponemos la función para el modal CRUD admin en admin/mensajes.php
+  window.cargarCuentasAdmin = cargarCuentasAdmin;
+
   function bindToolbar() {
     $("wmBtnRefresh").onclick = window.actualizarEmailsIMAP;
     $("wmBtnCompose").onclick = function () {
@@ -579,6 +656,10 @@
       markCur(String(S.cur && S.cur.leido) === "0" ? "read" : "unread");
     };
     $("wmBtnMore").onclick = function () {
+      // El menú y modales admin se gestionan desde admin/mensajes.php.
+    };
+    $("wmIcPop").onclick = function () {
+      // "Abrir en ventana" (solo preview del email)
       if (S.cur) {
         var w = window.open("", "_blank");
         w.document.write(
@@ -586,11 +667,10 @@
             esc(S.cur.asunto || "") +
             '</title><div style="font-family:Verdana;font-size:13px;padding:16px">' +
             $("wmPrevBody").innerHTML +
-            "</div>",
+            "</div>"
         );
       }
     };
-    $("wmIcPop").onclick = $("wmBtnMore").onclick;
     var accSel = $("wmAccount") || $("wmAccountSelect");
     if (accSel)
       accSel.onchange = async function () {
@@ -599,11 +679,20 @@
         S.page = 1;
         S.cur = null;
         S.list = [];
-        $("wmFrom").value = S.cuenta + "@tecnomedic.com.ar";
+
+        // setear From según cuenta activa
+        var acc = (S.accounts || []).find(function (x) {
+          return String(x.account_key) === String(S.cuenta);
+        });
+        if (acc && acc.smtp_from_email) {
+          $("wmFrom").value = acc.smtp_from_email;
+        }
+
         clearPreview();
         renderList();
         await window.cargarCarpetasEmail();
-        await loadList();
+        // Recarga “instantánea” usando cache (tm_emails), sin hacer sync IMAP inmediato.
+        await loadList({ autoSync: false, keepSelected: false });
         var first = document.querySelector("#wmList .wm-row");
         if (first) first.click();
       };
@@ -943,7 +1032,24 @@
     var sig = localStorage.getItem("wm_firma");
     if (sig && mode === "new" && !o.bodyHtml)
       ed.innerHTML = "<br><br>-- <br>" + sig;
-    $("wmFrom").value = S.cuenta + "@tecnomedic.com.ar";
+    // setear From con la cuenta activa (smtp_from_email)
+    var acc = (S.accounts || []).find(function (x) {
+      return String(x.account_key) === String(S.cuenta);
+    });
+    if (acc && acc.smtp_from_email) {
+      $("wmFrom").value = acc.smtp_from_email;
+      // asegurar que el select coincida
+      if ($("wmFrom").options) {
+        Array.prototype.slice.call($("wmFrom").options).forEach(function (o) {
+          if (String(o.value) === String(acc.smtp_from_email)) o.selected = true;
+        });
+      }
+    } else if ($("wmFrom").options && $("wmFrom").options.length) {
+      $("wmFrom").value = $("wmFrom").options[0].value;
+    } else {
+      // fallback por compatibilidad
+      $("wmFrom").value = S.cuenta + "@tecnomedic.com.ar";
+    }
     view("Compose");
     setTimeout(function () {
       (to ? ed : $("wmTo")).focus();
@@ -958,9 +1064,9 @@
     }, 50);
   };
   function fromAccount() {
-    return String(($("wmFrom") || {}).value || "").indexOf("noreply") === 0
-      ? "noreply"
-      : "contacto";
+    // Derivamos la cuenta activa desde el select lateral.
+    // El backend usa esta cuenta para elegir IMAP/SMTP.
+    return String(S.cuenta || 'contacto');
   }
   function buildPayload() {
     var fd = new FormData(),
@@ -1033,8 +1139,16 @@
     if (!$("wmViewMail")) return;
     bindToolbar();
     bindCompose();
-    renderFolders();
-    clearPreview();
+
+    cargarCuentasAdmin()
+      .then(function () {
+        renderFolders();
+        clearPreview();
+      })
+      .catch(function () {
+        renderFolders();
+        clearPreview();
+      });
     var f = (new URLSearchParams(location.search).get("folder") || "").trim();
     if (f) S.folder = f;
     window

@@ -25,6 +25,33 @@ function parse_addr_list(string $s): array {
     return array_values($out);
 }
 
+function account_table_exists(mysqli $db): bool {
+    try {
+        $r = $db->query("SHOW TABLES LIKE 'tm_mail_accounts' LIMIT 1");
+        return (bool)($r && $r->num_rows > 0);
+    } catch (Throwable $e) {
+        return false;
+    }
+}
+
+function is_active_mail_account(mysqli $db, string $cuenta): bool {
+    $has = account_table_exists($db);
+    if (!$has) {
+        return in_array($cuenta, ['contacto', 'noreply'], true);
+    }
+
+    $st = $db->prepare(
+        "SELECT 1 FROM tm_mail_accounts
+         WHERE account_key = ? AND active = 1
+         LIMIT 1"
+    );
+    $st->bind_param('s', $cuenta);
+    $st->execute();
+    $ok = (bool)($st->get_result()->fetch_assoc());
+    $st->close();
+    return $ok;
+}
+
 $toRaw   = trim($_POST['to'] ?? '');
 $ccRaw   = trim($_POST['cc'] ?? '');
 $bccRaw  = trim($_POST['bcc'] ?? '');
@@ -35,6 +62,19 @@ $isHtml  = ($_POST['html'] ?? '0') === '1';
 $htmlIn  = trim($_POST['message_html'] ?? '');
 $prio    = (int)($_POST['priority'] ?? 3);
 $receipt = ($_POST['receipt'] ?? '0') === '1';
+
+$cuentaKey = trim((string)($_POST['cuenta'] ?? 'contacto'));
+$fromOverride = trim((string)($_POST['from'] ?? ''));
+
+$db = db();
+if (!is_active_mail_account($db, $cuentaKey)) {
+    // Compatibilidad: si la tabla no existe, acepta contacto/noreply; si no, hace fallback.
+    if (in_array($cuentaKey, ['contacto', 'noreply'], true)) {
+        // ok
+    } else {
+        $cuentaKey = 'contacto';
+    }
+}
 
 $toList  = parse_addr_list($toRaw);
 $ccList  = parse_addr_list($ccRaw);
@@ -99,8 +139,13 @@ if (!empty($_FILES['attachments']['name'])) {
 try {
     $replyOne = $replyTo !== '' ? (parse_addr_list($replyTo)[0] ?? '') : '';
     $opts = [
-        'cc' => $ccList, 'bcc' => $bccList, 'reply_to' => $replyOne,
-        'priority' => $prio, 'receipt' => $receipt,
+        'cc' => $ccList,
+        'bcc' => $bccList,
+        'reply_to' => $replyOne,
+        'priority' => $prio,
+        'receipt' => $receipt,
+        'cuenta' => $cuentaKey,
+        'from' => $fromOverride,
     ];
 
     $ok = enviar_email(implode(',', $toList), $subject, $text, $html, $adjuntos, $opts);
@@ -112,8 +157,7 @@ try {
 
     // Copia en Enviados del servidor, para verla en la webmail de Ferozo
     if ($ok && ($_POST['save_sent_in'] ?? 'SENT') !== '' && $mime !== '') {
-        $cuenta = in_array($_POST['cuenta'] ?? 'contacto', ['contacto', 'noreply'], true) ? $_POST['cuenta'] : 'contacto';
-        $a = imap_append_ferozo($cuenta, 'SENT', $mime, '\\Seen');
+        $a = imap_append_ferozo($cuentaKey, 'SENT', $mime, '\\Seen');
         if (!($a['ok'] ?? false)) $res['warning'] = 'Enviado, pero no se copio a Enviados: ' . ($a['error'] ?? '');
     }
     echo json_encode($res);

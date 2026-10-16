@@ -36,7 +36,7 @@ $etiquetaRol = [
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-logo">
                 <a href="<?= HOME_URL ?>/">
-                    <img src="<?= b('/static/img/tecno-logo.jpeg') ?>" alt="TECNOMEDIC" class="logo-img">
+                    <img src="<?= b('/static/img/tecno-logoSF.png') ?>" alt="TECNOMEDIC" class="logo-img">
                 </a>
             </div>
             <div class="sidebar-sub"></div>
@@ -64,21 +64,22 @@ $etiquetaRol = [
             <?php elseif ($rol === 'admin'): ?>
             <a href="<?= b('/admin/tablero.php') ?>"
                 class="nav-item <?= $activo === 'tablero' ? 'active' : '' ?>"><span></span><span>Tablero</span></a>
-            <a href="<?= b('/admin/index.php') ?>" class="nav-item"><span><img class="tm-thumb"
+
+            <a href="<?= b('/admin/index.php') ?>"
+                class="nav-item <?= $activo === 'turnos' ? 'active' : '' ?>"><span><img class="tm-thumb"
                         src="<?= $base ?>/static/img/icons/calendario2.ico" alt="" /></span><span>Turnos</span></a>
-            <a href="<?= b('/admin/pacientes.php') ?>"
+
+             <a href="<?= b('/admin/pacientes.php') ?>"
                 class="nav-item <?= $activo === 'pacientes' ? 'active' : '' ?>"><span><img class="tm-thumb"
                         src="<?= $base ?>/static/img/icons/pacientes.ico" alt="" /></span><span>Pacientes</span></a>
+
             <a href="<?= b('/admin/profesionales.php') ?>"
                 class="nav-item <?= $activo === 'profesionales' ? 'active' : '' ?>"><span><img class="tm-thumb"
                         src="<?= $base ?>/static/img/icons/doctor.ico" alt="" /></span><span>Profesionales</span></a>
             <a href="<?= b('/admin/usuarios.php') ?>"
                 class="nav-item <?= $activo === 'usuarios' ? 'active' : '' ?>"><span><img class="tm-thumb"
                         src="<?= $base ?>/static/img/icons/usuarios.ico" alt="" /></span><span>Usuarios</span></a>
-            <!-- <a href="<?= b('/admin/presupuestos.php') ?>"
-                class="nav-item <?= $activo === 'presupuestos' ? 'active' : '' ?>"><span><img class="tm-thumb"
-                        src="<?= $base ?>/static/img/icons/calculadora.ico"
-                        alt="" /></span><span>Presupuestos</span></a> -->
+          
             <a href="<?= b('/admin/recursos.php') ?>"
                 class="nav-item <?= $activo === 'recursos' ? 'active' : '' ?>"><span><img class="tm-thumb"
                         src="<?= $base ?>/static/img/icons/carpeta.ico" alt="" /></span><span>Recursos</span></a>
@@ -88,7 +89,7 @@ $etiquetaRol = [
             <a href="<?= b('/admin/consultar_dni.php') ?>"
                 class="nav-item <?= $activo === 'dni' ? 'active' : '' ?>"><span><img class="tm-thumb"
                         src="<?= $base ?>/static/img/icons/lupa.ico" alt="" /></span><span>Consultar DNI</span></a>
-            <a href="<?= $base ?>/tienda/"
+            <a href="<?= b('/tienda/ortopedia.php') ?>"
                 class="nav-item <?= $activo === 'tienda' ? 'active' : '' ?>"><span><img class="tm-thumb"
                         src="<?= $base ?>/static/img/icons/tienda.ico"
                         alt="" /></span><span>Tienda</span></a>

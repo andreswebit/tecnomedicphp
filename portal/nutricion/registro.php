@@ -27,6 +27,15 @@ $composicion = nutricion_ultimo_registro('tm_composiciones_nutricionales', $paci
 $laboratorio = nutricion_ultimo_registro('tm_laboratorios_nutricionales', $pacienteId) ?? [];
 $habitos = nutricion_ultimo_registro('tm_habitos_nutricionales', $pacienteId) ?? [];
 
+$mesSeleccionado = trim($_GET['mes'] ?? '');
+$mesSeleccionado = $mesSeleccionado !== '' ? $mesSeleccionado : date('Y-m');
+
+$planSemanal = plan_nutricional_semanal_get($pacienteId) ?? [];
+$planMensual = plan_nutricional_mensual_get($pacienteId, $mesSeleccionado) ?? [];
+
+$usuarioSesion = portal_current_user();
+$profNombreCompleto = $usuarioSesion ? trim(($usuarioSesion['nombre'] ?? '') . ' ' . ($usuarioSesion['apellido'] ?? '')) : '';
+
 $fechaNacimiento = $perfil['fecha_nacimiento'] ?? null;
 $edad = null;
 if ($fechaNacimiento) {
@@ -49,6 +58,7 @@ $secciones = [
     'laboratorio' => ['icono' => '⌁', 'texto' => 'Laboratorio'],
     'habitos' => ['icono' => '◷', 'texto' => 'Hábitos'],
     'diario' => ['icono' => '☷', 'texto' => 'Diario'],
+    'plan' => ['icono' => '✦', 'texto' => 'Plan nutricional'],
 ];
 
 function campoNutricion(string $name, string $label, string $unidad = '', string $type = 'number', string $placeholder = ''): void {
@@ -234,10 +244,149 @@ function campoNutricion(string $name, string $label, string $unidad = '', string
 
             <div class="nutri-note" style="margin-top:16px">El formulario de alta de comidas previo se conserva en el módulo nutricional; esta vista integra su historial dentro de la ficha profesional.</div>
             </section>
+
+            <section id="plan" class="nutri-panel">
+                <div class="nutri-section-head"><div class="nutri-section-icon">✦</div><div><h2>Plan nutricional</h2><p>Armado personalizado por mes.</p></div></div>
+
+                <form method="post" action="<?= b('/portal/nutricion/guardar_plan_nutricional_profesional.php') ?>">
+                    <input type="hidden" name="paciente_id" value="<?= (int)$pacienteId ?>">
+                    <input type="hidden" name="modo" value="mensual">
+
+                    <article class="nutri-card">
+                        <div class="nutri-card-head"><h3>Mes a planificar</h3><small>Seleccioná el mes del plan mensual</small></div>
+                        <div class="nutri-card-body">
+                            <div class="nutri-grid" style="gap:12px">
+                                <label class="nutri-field" style="grid-column:span 4; margin:0">
+                                    <span>Mes</span>
+                                    <div class="nutri-control">
+                                        <input type="month" name="mes" value="<?= htmlspecialchars($mesSeleccionado) ?>" <?= $readonly ?> required>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </article>
+
+
+                    <article class="nutri-card" style="margin-top:16px">
+                        <div class="nutri-card-head"><h3>Plan mensual</h3><small>Calendario por semanas</small></div>
+                        <div class="nutri-card-body">
+                            <?php
+                            $planMensualJson = is_array($planMensual) ? $planMensual : [];
+                            $semanasGuardadas = $planMensualJson['semanas'] ?? [];
+
+                            $mapSemanas = [];
+                            if (is_array($semanasGuardadas)) {
+                                foreach ($semanasGuardadas as $sem) {
+                                    $idx = (int)($sem['semana_index'] ?? 0);
+                                    $mapSemanas[$idx] = $sem['dias'] ?? [];
+                                }
+                            }
+
+                            $mesDate = $mesSeleccionado . '-01';
+                            $dtMes = new DateTime($mesDate);
+                            $mesNum = (int)$dtMes->format('m');
+
+                            // Grid real del calendario: desde el lunes de la semana que contiene el día 1,
+                            // hasta el domingo de la semana que contiene el último día del mes.
+                            $firstDow = (int)$dtMes->format('N'); // 1=lunes ... 7=domingo
+                            $gridStart = clone $dtMes;
+                            $gridStart->modify('-' . ($firstDow - 1) . ' days');
+
+                            $dtLast = clone $dtMes;
+                            $dtLast->modify('last day of this month');
+                            $lastDow = (int)$dtLast->format('N');
+                            $gridEnd = clone $dtLast;
+                            $gridEnd->modify('+' . (7 - $lastDow) . ' days');
+
+                            $diasSemanaFull = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];
+
+                            // Cantidad de semanas en la grilla (normalmente 4, 5 o 6).
+                            $semanaCount = (int)floor($gridStart->diff($gridEnd)->days / 7) + 1;
+                            $semanasRender = range(1, $semanaCount);
+
+                            ?>
+
+                            <div style="overflow-x:auto">
+                                <table id="tmPlanTablaMensual" class="nutri-data-table" style="min-width:900px">
+                                    <thead>
+                                        <tr>
+                                            <th>Semana</th>
+                                            <th>Lunes</th>
+                                            <th>Martes</th>
+                                            <th>Miércoles</th>
+                                            <th>Jueves</th>
+                                            <th>Viernes</th>
+                                            <th>Sábado</th>
+                                            <th>Domingo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($semanasRender as $semIndex):
+                                            $diasGuard = $mapSemanas[$semIndex] ?? [];
+
+                                            $weekStart = clone $gridStart;
+                                            $weekStart->modify('+' . (($semIndex - 1) * 7) . ' days');
+                                        ?>
+                                            <tr>
+                                                <td><span class="nutri-tag">Semana <?= (int)$semIndex ?></span></td>
+
+                                                <?php foreach ($diasSemanaFull as $diaKey):
+                                                    $cellDate = clone $weekStart;
+                                                    $diaOffset = array_search($diaKey, $diasSemanaFull, true);
+                                                    $cellDate->modify('+' . $diaOffset . ' days');
+
+                                                    $inMonth = ((int)$cellDate->format('m') === $mesNum);
+                                                    $diaData = $diasGuard[$diaKey] ?? [];
+                                                ?>
+                                                    <td style="min-width:120px; opacity:<?= $inMonth ? '1' : '0.45' ?>">
+                                                        <div style="font-weight:800; font-size:.66rem; color:var(--nm-muted); margin-bottom:6px">
+                                                            <?= $inMonth ? (int)$cellDate->format('d') : '' ?>
+                                                        </div>
+
+                                                        <?php foreach (['desayuno','almuerzo','merienda','cena','colacion'] as $comKey):
+                                                            $val = $inMonth ? (string)($diaData[$comKey] ?? '') : '';
+                                                        ?>
+                                                            <div style="margin-bottom:6px">
+                                                                <div style="font-weight:700; font-size:.6rem; color:var(--nm-muted); margin-bottom:2px"><?= htmlspecialchars($comKey) ?></div>
+
+                                                                <?php if ($inMonth): ?>
+                                                                    <textarea name="mes_plan[semanas][<?= (int)$semIndex ?>][<?= htmlspecialchars($diaKey) ?>][<?= htmlspecialchars($comKey) ?>]" rows="2" placeholder="Comida" <?= $readonly ?>><?= htmlspecialchars($val) ?></textarea>
+                                                                <?php else: ?>
+                                                                    <textarea rows="2" placeholder="" disabled></textarea>
+                                                                <?php endif; ?>
+
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                    </td>
+                                                <?php endforeach; ?>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="nutri-note" style="margin-top:12px">
+                                Se guarda sólo días del mes seleccionado. Las celdas fuera de mes se muestran sólo a nivel visual.
+                            </div>
+                        </div>
+                    </article>
+
+                    <?php if ($puedeEditar): ?>
+                        <div class="nutri-savebar">
+                            <span>Guardará sólo el plan mensual.</span>
+                            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
+                                <button class="nutri-save" type="button" onclick="tmDescargarPlanNutricionalPDF()">⬇️ Descargar PDF</button>
+                                <button class="nutri-save" type="submit">💾 Guardar plan nutricional</button>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </form>
+            </section>
+
         </main>
     </div>
 </div>
-<?php if (!empty($_GET['ok'])): ?><div id="nutriToast" class="nutri-toast show">✓ Registro guardado correctamente.</div><?php endif; ?>
+<?php if (!empty($_GET['ok'])): ?><div id="nutriToast" class="nutri-toast show">✓ Cambios guardados correctamente.</div><?php endif; ?>
 <script>
 (function () {
     var buttons = document.querySelectorAll('.nutri-nav button');
@@ -256,6 +405,14 @@ function campoNutricion(string $name, string $label, string $unidad = '', string
     }
     var toast = document.getElementById('nutriToast');
     if (toast) window.setTimeout(function () { toast.classList.remove('show'); }, 3600);
+
+    window.tmDescargarPlanNutricionalPDF = function () {
+        var mesInput = document.querySelector('section#plan input[type="month"][name="mes"]');
+        var mes = mesInput ? mesInput.value : '';
+        if (!mes) return;
+        var url = TM_BASE + '/portal/nutricion/descargar_plan_nutricional_pdf.php?paciente_id=<?= (int)$pacienteId ?>&mes=' + encodeURIComponent(mes);
+        window.open(url, '_blank');
+    };
 }());
 </script>
 <?php require __DIR__ . '/../../includes/portal_footer.php'; ?>

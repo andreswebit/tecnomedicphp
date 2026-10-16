@@ -6,9 +6,43 @@
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/env_loader.php';
 
-function imap_mailbox_prefix_ferozo(): string {
-    $server_imap = env('IMAP_HOST', 'c1452348.ferozo.com');
-    $port_imap = env('IMAP_PORT', '993');
+function account_table_exists(mysqli $db): bool {
+    try {
+        $r = $db->query("SHOW TABLES LIKE 'tm_mail_accounts' LIMIT 1");
+        return (bool)($r && $r->num_rows > 0);
+    } catch (Throwable $e) {
+        return false;
+    }
+}
+
+function get_mail_account_config(string $cuenta_name): ?array {
+    $db = db();
+    static $hasTable = null;
+    if ($hasTable === null) $hasTable = account_table_exists($db);
+    if (!$hasTable) return null;
+
+    $st = $db->prepare(
+        "SELECT id,
+                account_key,
+                imap_host, imap_port, imap_username, imap_password_enc,
+                smtp_host, smtp_port, smtp_username,
+                smtp_password_enc,
+                smtp_from_email, smtp_from_name,
+                smtp_reply_to_email, smtp_reply_to_name
+         FROM tm_mail_accounts
+         WHERE account_key = ? AND active = 1
+         LIMIT 1"
+    );
+    $st->bind_param('s', $cuenta_name);
+    $st->execute();
+    $row = $st->get_result()->fetch_assoc();
+    $st->close();
+    return $row ?: null;
+}
+
+function imap_mailbox_prefix_ferozo(?string $server_imap = null, ?int $port_imap = null): string {
+    $server_imap = $server_imap ?: env('IMAP_HOST', 'c1452348.ferozo.com');
+    $port_imap = $port_imap ?: (int) env('IMAP_PORT', '993');
     return "{{$server_imap}:{$port_imap}/imap/ssl}";
 }
 
@@ -17,33 +51,57 @@ function imap_mailbox_prefix_ferozo(): string {
  */
 function map_folder_alias_ferozo(string $alias): string {
     $alias = mb_strtoupper(trim($alias));
-    
+
     $mapping = [
-        'INBOX'      => 'INBOX',
-        'DRAFTS'     => 'INBOX.Drafts',
-        'SENT'       => 'INBOX.Sent Items',
-        'SPAM'       => 'INBOX.spam',
-        'TRASH'      => 'INBOX.Trash',
-        'DELETED'    => 'INBOX.Trash',
-        'JUNK'       => 'INBOX.spam',
+        'INBOX' => 'INBOX',
+        'DRAFTS' => 'INBOX.Drafts',
+        'SENT' => 'INBOX.Sent Items',
+        'SPAM' => 'INBOX.spam',
+        'TRASH' => 'INBOX.Trash',
+        'DELETED' => 'INBOX.Trash',
+        'JUNK' => 'INBOX.spam',
     ];
-    
+
     return $mapping[$alias] ?? $alias;
 }
 
 function imap_open_ferozo(string $cuenta_name, string $mailbox): array {
-    $server_imap = env('IMAP_HOST', 'c1452348.ferozo.com');
-    $port_imap   = env('IMAP_PORT', '993');
+    $cfg = get_mail_account_config($cuenta_name);
 
-    if ($cuenta_name === 'contacto') {
-        $username = env('IMAP_USER_CONTACTO', 'contacto@tecnomedic.com.ar');
-        $password = env('IMAP_PASS_CONTACTO', '');
-    } else {
-        $username = env('IMAP_USER_NOREPLY', 'noreply@tecnomedic.com.ar');
-        $password = env('IMAP_PASS_NOREPLY', '');
+    // Fallback histórico si no existe la tabla o no hay cuenta activa.
+    if (!$cfg) {
+        $server_imap = env('IMAP_HOST', 'c1452348.ferozo.com');
+        $port_imap = (int)env('IMAP_PORT', '993');
+        $prefix = imap_mailbox_prefix_ferozo($server_imap, $port_imap);
+
+        if ($cuenta_name === 'contacto') {
+            $username = env('IMAP_USER_CONTACTO', 'contacto@tecnomedic.com.ar');
+            $password = env('IMAP_PASS_CONTACTO', '');
+        } else {
+            $username = env('IMAP_USER_NOREPLY', 'noreply@tecnomedic.com.ar');
+            $password = env('IMAP_PASS_NOREPLY', '');
+        }
+
+        if (empty($password)) {
+            return ['ok' => false, 'error' => "Credenciales IMAP no configuradas para $cuenta_name"];
+        }
+
+        $inbox = @imap_open($mailbox, $username, $password);
+        if (!$inbox) {
+            return ['ok' => false, 'error' => 'No se pudo conectar al servidor IMAP: ' . imap_last_error()];
+        }
+
+        return ['ok' => true, 'inbox' => $inbox, 'username' => $username];
     }
 
-    if (empty($password)) {
+    $server_imap = $cfg['imap_host'] ?: env('IMAP_HOST', 'c1452348.ferozo.com');
+    $port_imap = isset($cfg['imap_port']) && (int)$cfg['imap_port'] > 0 ? (int)$cfg['imap_port'] : (int)env('IMAP_PORT', '993');
+    $imapPrefix = imap_mailbox_prefix_ferozo($server_imap, $port_imap);
+
+    $username = (string)($cfg['imap_username'] ?? '');
+    $password = (string)($cfg['imap_password_enc'] ?? '');
+
+    if ($username === '' || $password === '') {
         return ['ok' => false, 'error' => "Credenciales IMAP no configuradas para $cuenta_name"];
     }
 
@@ -56,7 +114,6 @@ function imap_open_ferozo(string $cuenta_name, string $mailbox): array {
 }
 
 function imap_strip_prefix(string $mailboxPrefix, string $mailboxFull): string {
-    // Ej: {host:993/imap/ssl}INBOX -> INBOX
     $pos = strpos($mailboxFull, '}');
     if ($pos !== false) {
         return substr($mailboxFull, $pos + 1);
@@ -65,7 +122,11 @@ function imap_strip_prefix(string $mailboxPrefix, string $mailboxFull): string {
 }
 
 function imap_list_folders_ferozo(string $cuenta_name = 'contacto'): array {
-    $mailboxPrefix = imap_mailbox_prefix_ferozo();
+    $cfg = get_mail_account_config($cuenta_name);
+
+    $server_imap = $cfg['imap_host'] ?? env('IMAP_HOST', 'c1452348.ferozo.com');
+    $port_imap = isset($cfg['imap_port']) && (int)$cfg['imap_port'] > 0 ? (int)$cfg['imap_port'] : (int)env('IMAP_PORT', '993');
+    $mailboxPrefix = imap_mailbox_prefix_ferozo($server_imap, $port_imap);
 
     // Conectamos a INBOX para poder listar
     $r = imap_open_ferozo($cuenta_name, $mailboxPrefix . 'INBOX');
@@ -95,9 +156,11 @@ function imap_list_folders_ferozo(string $cuenta_name = 'contacto'): array {
 }
 
 function imap_resolve_folder_name_ferozo(string $cuenta_name, string $requestedFolder): string {
-    // Caso-insensibilidad contra carpetas reales del servidor.
-    // Si no existe, devolvemos lo que pidieron.
-    $mailboxPrefix = imap_mailbox_prefix_ferozo();
+    $cfg = get_mail_account_config($cuenta_name);
+
+    $server_imap = $cfg['imap_host'] ?? env('IMAP_HOST', 'c1452348.ferozo.com');
+    $port_imap = isset($cfg['imap_port']) && (int)$cfg['imap_port'] > 0 ? (int)$cfg['imap_port'] : (int)env('IMAP_PORT', '993');
+    $mailboxPrefix = imap_mailbox_prefix_ferozo($server_imap, $port_imap);
 
     $r = imap_open_ferozo($cuenta_name, $mailboxPrefix . 'INBOX');
     if (!$r['ok']) {
@@ -120,7 +183,6 @@ function imap_resolve_folder_name_ferozo(string $cuenta_name, string $requestedF
         }
     }
 
-    // fallback: algunas cuentas devuelven sin respetar mayúsculas/minúsculas
     return $requestedFolder;
 }
 
@@ -130,7 +192,10 @@ function imap_create_folder_ferozo(string $cuenta_name = 'contacto', string $fol
         return ['ok' => false, 'error' => 'folder_name vacío'];
     }
 
-    $mailboxPrefix = imap_mailbox_prefix_ferozo();
+    $cfg = get_mail_account_config($cuenta_name);
+    $server_imap = $cfg['imap_host'] ?? env('IMAP_HOST', 'c1452348.ferozo.com');
+    $port_imap = isset($cfg['imap_port']) && (int)$cfg['imap_port'] > 0 ? (int)$cfg['imap_port'] : (int)env('IMAP_PORT', '993');
+    $mailboxPrefix = imap_mailbox_prefix_ferozo($server_imap, $port_imap);
 
     // Conectamos a INBOX
     $r = imap_open_ferozo($cuenta_name, $mailboxPrefix . 'INBOX');
@@ -148,7 +213,6 @@ function imap_create_folder_ferozo(string $cuenta_name = 'contacto', string $fol
         return ['ok' => false, 'error' => 'No se pudo crear la carpeta en IMAP: ' . (imap_last_error() ?: 'desconocido')];
     }
 
-    // Intentamos resolver el nombre normalizado por el servidor
     $foldersRes = imap_list_folders_ferozo($cuenta_name);
     if (!empty($foldersRes['ok']) && !empty($foldersRes['folders']) && is_array($foldersRes['folders'])) {
         $targetLower = mb_strtolower(trim($folder_name));
@@ -163,18 +227,21 @@ function imap_create_folder_ferozo(string $cuenta_name = 'contacto', string $fol
 }
 
 function sync_emails_ferozo(string $cuenta_name = 'contacto', string $folder = 'INBOX'): array {
-    // Falla controlada si IMAP no está habilitado
     if (!function_exists('imap_open')) {
         return ['ok' => false, 'error' => 'La extensión PHP IMAP no está habilitada (falta imap_open).'];
     }
 
     $folder = trim($folder) !== '' ? trim($folder) : 'INBOX';
-    
+
     // Mapear alias estándar a nombres reales de Ferozo (DRAFTS → INBOX.Drafts, etc)
     $folder = map_folder_alias_ferozo($folder);
-    
+
     $resolvedFolder = imap_resolve_folder_name_ferozo($cuenta_name, $folder);
-    $mailboxPrefix = imap_mailbox_prefix_ferozo();
+
+    $cfg = get_mail_account_config($cuenta_name);
+    $server_imap = $cfg['imap_host'] ?? env('IMAP_HOST', 'c1452348.ferozo.com');
+    $port_imap = isset($cfg['imap_port']) && (int)$cfg['imap_port'] > 0 ? (int)$cfg['imap_port'] : (int)env('IMAP_PORT', '993');
+    $mailboxPrefix = imap_mailbox_prefix_ferozo($server_imap, $port_imap);
 
     $r = imap_open_ferozo($cuenta_name, $mailboxPrefix . $resolvedFolder);
     if (!$r['ok']) {
@@ -220,7 +287,6 @@ function sync_emails_ferozo(string $cuenta_name = 'contacto', string $folder = '
 
             $fecha = isset($headerInfo->date) ? date('Y-m-d H:i:s', strtotime($headerInfo->date)) : date('Y-m-d H:i:s');
 
-            // Obtener cuerpos
             $cuerpo_txt = '';
             $cuerpo_html = '';
 
@@ -258,7 +324,6 @@ function sync_emails_ferozo(string $cuenta_name = 'contacto', string $folder = '
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?)"
             );
 
-            // Tipos: cuenta(s), uid(i), folder(s), resto (s)
             $stmtInsert->bind_param(
                 'sissssssss',
                 $cuenta_name,
@@ -285,7 +350,6 @@ function sync_emails_ferozo(string $cuenta_name = 'contacto', string $folder = '
     return ['ok' => true, 'nuevos' => $procesados, 'folder' => $resolvedFolder];
 }
 
-// Helpers para decoding
 function decode_imap_body($data, $encoding) {
     if ($encoding == 3) {
         $data = base64_decode($data);
@@ -296,7 +360,6 @@ function decode_imap_body($data, $encoding) {
     $data = mb_convert_encoding($data, 'UTF-8', 'auto');
     return trim($data);
 }
-
 
 // ═══════════════════════════════════════════════════════════════
 // Funciones agregadas: Enviados/Borradores por IMAP, eliminar mensajes,
@@ -321,22 +384,27 @@ function imap_crlf_ferozo(string $raw): string {
     return str_replace("\n", "\r\n", str_replace("\r\n", "\n", $raw));
 }
 
-/** Agrega un mensaje crudo (RFC822) a una carpeta. $folderAlias: SENT, DRAFTS o nombre real. */
 function imap_append_ferozo(string $cuenta, string $folderAlias, string $raw, string $flags = '\\Seen'): array {
     if ($raw === '') return ['ok' => false, 'error' => 'mensaje vacio'];
-    $prefix = imap_mailbox_prefix_ferozo();
+
+    $cfg = get_mail_account_config($cuenta);
+    $server_imap = $cfg['imap_host'] ?? env('IMAP_HOST', 'c1452348.ferozo.com');
+    $port_imap = isset($cfg['imap_port']) && (int)$cfg['imap_port'] > 0 ? (int)$cfg['imap_port'] : (int)env('IMAP_PORT', '993');
+    $prefix = imap_mailbox_prefix_ferozo($server_imap, $port_imap);
+
     $folder = imap_resolve_folder_name_ferozo($cuenta, map_folder_alias_ferozo($folderAlias));
 
     $r = imap_open_ferozo($cuenta, $prefix . 'INBOX');
     if (!$r['ok']) return $r;
     $imap = $r['inbox'];
+
     $ok = @imap_append($imap, $prefix . $folder, imap_crlf_ferozo($raw), $flags);
     $err = imap_last_error();
     @imap_close($imap);
+
     return $ok ? ['ok' => true, 'folder' => $folder] : ['ok' => false, 'error' => 'imap_append: ' . ($err ?: 'desconocido')];
 }
 
-/** Arma un mensaje RFC822 simple (para borradores). */
 function imap_build_message_ferozo(string $from, string $to, string $cc, string $subject, string $txt, string $html): string {
     $h  = "From: $from\r\n";
     if ($to !== '') $h .= "To: $to\r\n";
@@ -348,6 +416,7 @@ function imap_build_message_ferozo(string $from, string $to, string $cc, string 
     if ($html === '') {
         return $h . "Content-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n" . $enc($txt);
     }
+
     $b = 'tm_' . bin2hex(random_bytes(8));
     return $h . "Content-Type: multipart/alternative; boundary=\"$b\"\r\n\r\n"
         . "--$b\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n" . $enc($txt)
@@ -355,9 +424,12 @@ function imap_build_message_ferozo(string $from, string $to, string $cc, string 
         . "--$b--\r\n";
 }
 
-/** Elimina un mensaje por UID. Fuera de Papelera lo mueve a Papelera; dentro, lo borra definitivamente. */
 function imap_delete_message_ferozo(string $cuenta, string $folder, int $uid): array {
-    $prefix = imap_mailbox_prefix_ferozo();
+    $cfg = get_mail_account_config($cuenta);
+    $server_imap = $cfg['imap_host'] ?? env('IMAP_HOST', 'c1452348.ferozo.com');
+    $port_imap = isset($cfg['imap_port']) && (int)$cfg['imap_port'] > 0 ? (int)$cfg['imap_port'] : (int)env('IMAP_PORT', '993');
+    $prefix = imap_mailbox_prefix_ferozo($server_imap, $port_imap);
+
     $r = imap_open_ferozo($cuenta, $prefix . $folder);
     if (!$r['ok']) return $r;
     $imap = $r['inbox'];
@@ -370,15 +442,19 @@ function imap_delete_message_ferozo(string $cuenta, string $folder, int $uid): a
     } else {
         $ok = @imap_mail_move($imap, (string)$uid, $trash, CP_UID);
     }
+
     $err = imap_last_error();
     if ($ok) @imap_expunge($imap);
     @imap_close($imap);
+
     return $ok ? ['ok' => true] : ['ok' => false, 'error' => $err ?: 'no se pudo eliminar en IMAP'];
 }
 
-/** Mueve un mensaje por UID entre carpetas. */
 function imap_move_message_ferozo(string $cuenta, string $srcFolder, string $destFolder, int $uid): array {
-    $prefix = imap_mailbox_prefix_ferozo();
+    $cfg = get_mail_account_config($cuenta);
+    $server_imap = $cfg['imap_host'] ?? env('IMAP_HOST', 'c1452348.ferozo.com');
+    $port_imap = isset($cfg['imap_port']) && (int)$cfg['imap_port'] > 0 ? (int)$cfg['imap_port'] : (int)env('IMAP_PORT', '993');
+    $prefix = imap_mailbox_prefix_ferozo($server_imap, $port_imap);
 
     $r = imap_open_ferozo($cuenta, $prefix . $srcFolder);
     if (!$r['ok']) return $r;
@@ -387,6 +463,7 @@ function imap_move_message_ferozo(string $cuenta, string $srcFolder, string $des
     $ok = @imap_mail_move($imap, (string)$uid, $destFolder, CP_UID);
     $err = imap_last_error();
     if ($ok) @imap_expunge($imap);
+
     @imap_close($imap);
 
     return $ok ? ['ok' => true] : ['ok' => false, 'error' => $err ?: 'no se pudo mover en IMAP'];
@@ -395,30 +472,47 @@ function imap_move_message_ferozo(string $cuenta, string $srcFolder, string $des
 function imap_rename_folder_ferozo(string $cuenta, string $old, string $new): array {
     $old = imap_normalize_folder_ferozo($old);
     $new = imap_normalize_folder_ferozo($new);
+
     if (imap_folder_is_system_ferozo($old) || imap_folder_is_system_ferozo($new)) {
         return ['ok' => false, 'error' => 'No se pueden renombrar carpetas del sistema'];
     }
-    $prefix = imap_mailbox_prefix_ferozo();
+
+    $cfg = get_mail_account_config($cuenta);
+    $server_imap = $cfg['imap_host'] ?? env('IMAP_HOST', 'c1452348.ferozo.com');
+    $port_imap = isset($cfg['imap_port']) && (int)$cfg['imap_port'] > 0 ? (int)$cfg['imap_port'] : (int)env('IMAP_PORT', '993');
+    $prefix = imap_mailbox_prefix_ferozo($server_imap, $port_imap);
+
     $r = imap_open_ferozo($cuenta, $prefix . 'INBOX');
     if (!$r['ok']) return $r;
     $imap = $r['inbox'];
+
     $ok = @imap_renamemailbox($imap, $prefix . $old, $prefix . $new);
     $err = imap_last_error();
     @imap_close($imap);
+
     return $ok ? ['ok' => true, 'folder' => $new] : ['ok' => false, 'error' => 'No se pudo renombrar: ' . ($err ?: 'desconocido')];
 }
 
 function imap_delete_folder_ferozo(string $cuenta, string $name): array {
     $name = imap_normalize_folder_ferozo($name);
+
     if (imap_folder_is_system_ferozo($name)) {
         return ['ok' => false, 'error' => 'No se pueden eliminar carpetas del sistema'];
     }
-    $prefix = imap_mailbox_prefix_ferozo();
+
+    $cfg = get_mail_account_config($cuenta);
+    $server_imap = $cfg['imap_host'] ?? env('IMAP_HOST', 'c1452348.ferozo.com');
+    $port_imap = isset($cfg['imap_port']) && (int)$cfg['imap_port'] > 0 ? (int)$cfg['imap_port'] : (int)env('IMAP_PORT', '993');
+    $prefix = imap_mailbox_prefix_ferozo($server_imap, $port_imap);
+
     $r = imap_open_ferozo($cuenta, $prefix . 'INBOX');
     if (!$r['ok']) return $r;
+
     $imap = $r['inbox'];
     $ok = @imap_deletemailbox($imap, $prefix . $name);
     $err = imap_last_error();
+
     @imap_close($imap);
+
     return $ok ? ['ok' => true, 'folder' => $name] : ['ok' => false, 'error' => 'No se pudo eliminar: ' . ($err ?: 'desconocido')];
 }

@@ -82,7 +82,42 @@ function enviar_email(
 
         require_once __DIR__.'/config_mail.php';
 
-        $mail = crear_mail();
+        $cuentaKey = $opts['cuenta'] ?? null;
+        $fromOverride = trim((string)($opts['from'] ?? ''));
+
+        $mailCfg = null;
+        if ($cuentaKey) {
+            try {
+                $has = false;
+                $r = db()->query("SHOW TABLES LIKE 'tm_mail_accounts' LIMIT 1");
+                if ($r && $r->num_rows > 0) $has = true;
+
+                if ($has) {
+                    $st = db()->prepare(
+                        "SELECT smtp_host, smtp_port, smtp_username, smtp_password_enc,
+                                smtp_from_email, smtp_from_name,
+                                smtp_reply_to_email, smtp_reply_to_name
+                         FROM tm_mail_accounts
+                         WHERE account_key = ? AND active = 1
+                         LIMIT 1"
+                    );
+                    $st->bind_param('s', $cuentaKey);
+                    $st->execute();
+                    $mailCfg = $st->get_result()->fetch_assoc();
+                    $st->close();
+
+                    if (!$mailCfg) $mailCfg = null;
+                }
+            } catch (Throwable $e) {
+                $mailCfg = null;
+            }
+        }
+
+        $mail = $mailCfg ? crear_mail($mailCfg) : crear_mail();
+
+        if ($fromOverride && filter_var($fromOverride, FILTER_VALIDATE_EMAIL)) {
+            $mail->setFrom($fromOverride, $mail->FromName ?: env('MAIL_NAME', 'TECNOMEDIC'));
+        }
 
         // $dest admite varios correos separados por coma o punto y coma
         foreach (preg_split('/[,;]+/', $dest) as $a) {

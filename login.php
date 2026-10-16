@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="login-box">
 
         <div class="login-logo">
-            <img src="<?= b('/static/img/tecno-logo.jpeg') ?>" alt="TECNOMEDIC">
+            <img src="<?= b('/static/img/tecno-logoSF.png"') ?>" alt="TECNOMEDIC">
         </div>
 
         <div class="login-card">

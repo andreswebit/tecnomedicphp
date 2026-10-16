@@ -1,0 +1,42 @@
+TIENDA DE ORTOPEDIA TECNOMEDIC - PAGINA SEPARADA EN ARCHIVOS PHP
+
+COMO INSTALAR
+Copia las carpetas a la raiz de tu proyecto (se mezclan con las existentes, no pisan nada):
+  tienda/ortopedia.php
+  includes/tienda_ui/
+  static/tienda-ortopedia.css
+  static/tienda-ortopedia-extra.css
+  static/js/tienda-ortopedia.js
+  static/img/tienda/
+Abre: /tienda/ortopedia.php
+
+ESTRUCTURA
+  tienda/ortopedia.php            arma la pagina con las piezas
+  includes/tienda_ui/
+    bootstrap.php                 carga helpers y datos
+    data.php                      CONTENIDO: productos, categorias, ofertas, destacados, telefono, email, enlaces
+    helpers.php                   formato de precios, URLs, escape de HTML
+    layout_top.php                <head> y apertura del <body>
+    layout_bottom.php             scripts y cierre
+    header.php  hero.php  ofertas.php  destacados.php  categorias.php
+    catalogo.php  beneficios.php  footer.php  carrito.php
+    cards/                        tarjetas de producto (oferta, destacado grande, destacado lista, catalogo)
+  static/tienda-ortopedia.css     estilos de la pagina (los que generaba Readdy)
+  static/tienda-ortopedia-extra.css   estilos propios: carrito, menu movil, buscador
+  static/js/tienda-ortopedia.js   menu movil, filtro por categoria, buscador, carrito
+  static/img/tienda/              imagenes de los 15 productos y del banner
+
+COMO EDITAR
+  - Cambiar un producto, precio, stock, oferta o categoria: includes/tienda_ui/data.php
+    (precio_anterior con valor = producto en oferta; con null = precio normal)
+  - Cambiar quienes salen en Ofertas o Destacados: las listas $TIENDA_OFERTAS_IDS y $TIENDA_DESTACADOS_IDS
+  - Cambiar el diseno de una tarjeta: includes/tienda_ui/cards/
+  - Telefono, email y enlaces: arreglo $TIENDA al inicio de data.php
+
+PENDIENTES QUE DEBES REVISAR
+  1. Enlaces de producto: apuntan a /tienda/producto.php?id=ID (cambialo en 'url_producto' de data.php).
+  2. Boton "Finalizar compra" del carrito: apunta a /contacto.php (cambialo en 'url_checkout').
+  3. "Administrar" y "Volver al panel": estan ocultos. En tienda/ortopedia.php pone
+     $tienda_modo_admin = true cuando el usuario sea administrador.
+  4. Telefono y email del pie son los de la maqueta (+54 11 4000-0000, tienda@tecnomedic.com).
+  5. El carrito se guarda en el navegador del cliente. No envia pedidos al servidor.

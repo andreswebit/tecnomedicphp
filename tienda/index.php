@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../includes/tienda.php';
+require_once __DIR__ . '/includes/tienda.php';
 $base = BASE_URL;
 $categorias = get_categorias();
 ?>

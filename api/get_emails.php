@@ -26,8 +26,41 @@ if (in_array($folderUpper, $standardFolderAliases, true)) {
     $folderForResolve = map_folder_alias_ferozo($folderUpper);
 }
 
-if (!in_array($cuenta, ['contacto', 'noreply'], true)) {
-    $cuenta = 'contacto';
+function account_table_exists(mysqli $db): bool {
+    try {
+        $r = $db->query("SHOW TABLES LIKE 'tm_mail_accounts' LIMIT 1");
+        return (bool)($r && $r->num_rows > 0);
+    } catch (Throwable $e) {
+        return false;
+    }
+}
+
+function is_active_mail_account(mysqli $db, string $cuenta): bool {
+    $has = account_table_exists($db);
+    if (!$has) {
+        return in_array($cuenta, ['contacto', 'noreply'], true);
+    }
+
+    $st = $db->prepare(
+        "SELECT 1 FROM tm_mail_accounts
+         WHERE account_key = ? AND active = 1
+         LIMIT 1"
+    );
+    $st->bind_param('s', $cuenta);
+    $st->execute();
+    $ok = (bool)($st->get_result()->fetch_assoc());
+    $st->close();
+    return $ok;
+}
+
+$db = db();
+if (!is_active_mail_account($db, $cuenta)) {
+    // fallback compatibilidad
+    if (in_array($cuenta, ['contacto', 'noreply'], true)) {
+        // ok
+    } else {
+        $cuenta = 'contacto';
+    }
 }
 
 try {
@@ -45,15 +78,12 @@ try {
     if ($action === 'create_folder') {
         $folder_name = trim($_POST['folder_name'] ?? $_GET['folder_name'] ?? '');
 
-        // Validación simple: evitamos caracteres raros/sobrantes.
-        // Permitimos / . _ - y letras/números. (IMAP puede devolver nombres con otros chars, pero para creación acotamos.)
-        if (!preg_match('/^[A-Za-z0-9._\/-]{1,120}$/', $folder_name)) {
+        if (!preg_match('/^[A-Za-z0-9._\/ -]{1,120}$/', $folder_name)) {
             http_response_code(400);
             echo json_encode(['ok' => false, 'error' => 'Nombre de carpeta inválido']);
             exit;
         }
 
-        // Ferozo (Dovecot) usa "." como separador y exige el prefijo INBOX.
         $folder_name = str_replace('/', '.', $folder_name);
         if (stripos($folder_name, 'INBOX.') !== 0) $folder_name = 'INBOX.' . $folder_name;
 
@@ -71,25 +101,22 @@ try {
 
     if ($action === 'sync') {
         $r = sync_emails_ferozo($cuenta, $folder);
-        
-        // Si la sincronización falló, reportamos el error
+
         if (!($r['ok'] ?? false)) {
             http_response_code(500);
             echo json_encode(['ok' => false, 'error' => $r['error'] ?? 'Error al sincronizar IMAP']);
             exit;
         }
-        
+
         $resolvedFolder = imap_resolve_folder_name_ferozo($cuenta, $folderForResolve);
 
-        // Luego devolvemos lista actualizada del folder.
-        $list = _emails_list(db(), $cuenta, $resolvedFolder, 50);
+        $list = _emails_list($db, $cuenta, $resolvedFolder, 50);
         echo json_encode(['ok' => true, 'sync' => $r, 'folder' => $resolvedFolder, 'emails' => $list]);
         exit;
     }
 
     if ($action === 'mark') {
-        // Marca leido / no leido (cache local tm_emails)
-        $id   = (int)($_POST['id'] ?? $_GET['id'] ?? 0);
+        $id = (int)($_POST['id'] ?? $_GET['id'] ?? 0);
         $flag = trim($_POST['flag'] ?? $_GET['flag'] ?? '');
         if ($id <= 0 || !in_array($flag, ['read', 'unread'], true)) {
             http_response_code(400);
@@ -97,7 +124,7 @@ try {
             exit;
         }
         $v = $flag === 'read' ? 1 : 0;
-        $st = db()->prepare("UPDATE tm_emails SET leido = ? WHERE id = ? AND cuenta = ?");
+        $st = $db->prepare("UPDATE tm_emails SET leido = ? WHERE id = ? AND cuenta = ?");
         $st->bind_param('iis', $v, $id, $cuenta);
         $st->execute();
         $st->close();
@@ -106,7 +133,6 @@ try {
     }
 
     if ($action === 'save_draft') {
-        // Guarda el borrador en Borradores del servidor (IMAP) y actualiza la cache local.
         $draftId = (int)($_POST['draft_id'] ?? 0);
         $to      = trim($_POST['to'] ?? '');
         $cc      = trim($_POST['cc'] ?? '');
@@ -114,18 +140,30 @@ try {
         $txt     = trim($_POST['message'] ?? '');
         $html    = ($_POST['html'] ?? '0') === '1' ? trim($_POST['message_html'] ?? '') : '';
         $from    = trim($_POST['from'] ?? '');
+
         if ($from === '' || !filter_var($from, FILTER_VALIDATE_EMAIL)) {
-            $from = env('IMAP_USER_CONTACTO', 'contacto@tecnomedic.com.ar');
+            // intentamos from desde cuenta activa
+            $stAcc = $db->prepare(
+                "SELECT smtp_from_email FROM tm_mail_accounts
+                 WHERE account_key = ? AND active = 1 LIMIT 1"
+            );
+            $stAcc->bind_param('s', $cuenta);
+            $stAcc->execute();
+            $rowAcc = $stAcc->get_result()->fetch_assoc();
+            $stAcc->close();
+
+            $from = $rowAcc['smtp_from_email'] ?? env('IMAP_USER_CONTACTO', 'contacto@tecnomedic.com.ar');
         }
+
         $draftsFolder = imap_resolve_folder_name_ferozo($cuenta, map_folder_alias_ferozo('DRAFTS'));
 
-        // Si reeditamos un borrador, quitamos la version anterior
         if ($draftId > 0) {
-            $st = db()->prepare("SELECT uid_imap FROM tm_emails WHERE id = ? AND cuenta = ? AND folder = ? LIMIT 1");
+            $st = $db->prepare("SELECT uid_imap FROM tm_emails WHERE id = ? AND cuenta = ? AND folder = ? LIMIT 1");
             $st->bind_param('iss', $draftId, $cuenta, $draftsFolder);
             $st->execute();
             $old = $st->get_result()->fetch_assoc();
             $st->close();
+
             if ($old) {
                 if ((int)$old['uid_imap'] > 0) {
                     $r = imap_open_ferozo($cuenta, imap_mailbox_prefix_ferozo() . $draftsFolder);
@@ -135,14 +173,22 @@ try {
                         @imap_close($r['inbox']);
                     }
                 }
-                $st = db()->prepare("DELETE FROM tm_emails WHERE id = ? AND cuenta = ?");
+                $st = $db->prepare("DELETE FROM tm_emails WHERE id = ? AND cuenta = ?");
                 $st->bind_param('is', $draftId, $cuenta);
                 $st->execute();
                 $st->close();
             }
         }
 
-        $raw = imap_build_message_ferozo($from, $to, $cc, $subject !== '' ? $subject : '(Sin Asunto)', $txt, $html);
+        $raw = imap_build_message_ferozo(
+            $from,
+            $to,
+            $cc,
+            $subject !== '' ? $subject : '(Sin Asunto)',
+            $txt,
+            $html
+        );
+
         $r = imap_append_ferozo($cuenta, 'DRAFTS', $raw, '\\Draft \\Seen');
         if (!($r['ok'] ?? false)) {
             http_response_code(500);
@@ -150,11 +196,11 @@ try {
             exit;
         }
 
-        // Traemos el nuevo borrador a la cache y buscamos su id
         sync_emails_ferozo($cuenta, 'DRAFTS');
         $newId = 0;
         $subj = $subject !== '' ? $subject : '(Sin Asunto)';
-        $st = db()->prepare("SELECT id FROM tm_emails WHERE cuenta = ? AND folder = ? AND asunto = ? ORDER BY id DESC LIMIT 1");
+
+        $st = $db->prepare("SELECT id FROM tm_emails WHERE cuenta = ? AND folder = ? AND asunto = ? ORDER BY id DESC LIMIT 1");
         $st->bind_param('sss', $cuenta, $draftsFolder, $subj);
         $st->execute();
         $row = $st->get_result()->fetch_assoc();
@@ -172,11 +218,13 @@ try {
             echo json_encode(['ok' => false, 'error' => 'id invalido (metodo ' . $_SERVER['REQUEST_METHOD'] . ')']);
             exit;
         }
-        $st = db()->prepare("SELECT folder, uid_imap FROM tm_emails WHERE id = ? AND cuenta = ? LIMIT 1");
+
+        $st = $db->prepare("SELECT folder, uid_imap FROM tm_emails WHERE id = ? AND cuenta = ? LIMIT 1");
         $st->bind_param('is', $id, $cuenta);
         $st->execute();
         $row = $st->get_result()->fetch_assoc();
         $st->close();
+
         if (!$row) {
             echo json_encode(['ok' => false, 'error' => 'Correo no encontrado']);
             exit;
@@ -187,7 +235,8 @@ try {
             $r = imap_delete_message_ferozo($cuenta, $row['folder'], (int)$row['uid_imap']);
             if (!($r['ok'] ?? false)) $warning = $r['error'] ?? 'IMAP';
         }
-        $st = db()->prepare("DELETE FROM tm_emails WHERE id = ? AND cuenta = ?");
+
+        $st = $db->prepare("DELETE FROM tm_emails WHERE id = ? AND cuenta = ?");
         $st->bind_param('is', $id, $cuenta);
         $st->execute();
         $st->close();
@@ -198,8 +247,7 @@ try {
         exit;
     }
 
-if ($action === 'move') {
-        // Mueve un email (por id de tm_emails) desde su carpeta actual a folder_dest (alias o nombre real)
+    if ($action === 'move') {
         $id = (int)($_POST['id'] ?? $_GET['id'] ?? 0);
         $folder_dest = trim($_POST['folder_dest'] ?? $_GET['folder_dest'] ?? '');
 
@@ -209,7 +257,7 @@ if ($action === 'move') {
             exit;
         }
 
-        $st = db()->prepare("SELECT cuenta, folder, uid_imap FROM tm_emails WHERE id = ? AND cuenta = ? LIMIT 1");
+        $st = $db->prepare("SELECT cuenta, folder, uid_imap FROM tm_emails WHERE id = ? AND cuenta = ? LIMIT 1");
         $st->bind_param('is', $id, $cuenta);
         $st->execute();
         $row = $st->get_result()->fetch_assoc();
@@ -228,7 +276,6 @@ if ($action === 'move') {
             exit;
         }
 
-        // Resolver destino (alias -> nombre real del servidor)
         $folderDestUpper = mb_strtoupper(trim($folder_dest));
         $folderDestForResolve = $folder_dest;
         if (in_array($folderDestUpper, $standardFolderAliases, true)) {
@@ -243,7 +290,7 @@ if ($action === 'move') {
             exit;
         }
 
-        $st = db()->prepare("UPDATE tm_emails SET folder = ? WHERE id = ? AND cuenta = ? LIMIT 1");
+        $st = $db->prepare("UPDATE tm_emails SET folder = ? WHERE id = ? AND cuenta = ? LIMIT 1");
         $st->bind_param('sis', $destResolved, $id, $cuenta);
         $st->execute();
         $st->close();
@@ -252,80 +299,29 @@ if ($action === 'move') {
         exit;
     }
 
-
-    // if ($action === 'move') {
-    //     // Mueve un email (por id de tm_emails) desde su carpeta actual a folder_dest (alias o nombre real)
-    //     $id = (int)($_POST['id'] ?? $_GET['id'] ?? 0);
-    //     $folder_dest = trim($_POST['folder_dest'] ?? $_GET['folder_dest'] ?? '');
-
-    //     if ($id <= 0 || $folder_dest === '') {
-    //         http_response_code(400);
-    //         echo json_encode(['ok' => false, 'error' => 'Parametros invalidos']);
-    //         exit;
-    //     }
-
-    //     $st = db()->prepare("SELECT cuenta, folder, uid_imap FROM tm_emails WHERE id = ? AND cuenta = ? LIMIT 1");
-    //     $st->bind_param('is', $id, $cuenta);
-    //     $st->execute();
-    //     $row = $st->get_result()->fetch_assoc();
-    //     $st->close();
-
-    //     if (!$row) {
-    //         echo json_encode(['ok' => false, 'error' => 'Correo no encontrado']);
-    //         exit;
-    //     }
-
-    //     $srcFolder = (string)($row['folder'] ?? '');
-    //     $uidImap = (int)($row['uid_imap'] ?? 0);
-    //     if ($srcFolder === '' || $uidImap <= 0) {
-    //         http_response_code(400);
-    //         echo json_encode(['ok' => false, 'error' => 'Correo sin folder/uid_imap válido']);
-    //         exit;
-    //     }
-
-    //     // Resolver destino (alias -> nombre real del servidor)
-    //     $folderDestUpper = mb_strtoupper(trim($folder_dest));
-    //     $folderDestForResolve = $folder_dest;
-    //     if (in_array($folderDestUpper, $standardFolderAliases, true)) {
-    //         $folderDestForResolve = map_folder_alias_ferozo($folderDestUpper);
-    //     }
-    //     $destResolved = imap_resolve_folder_name_ferozo($cuenta, $folderDestForResolve);
-
-    //     $r = imap_move_message_ferozo($cuenta, $srcFolder, $destResolved, $uidImap);
-    //     if (!($r['ok'] ?? false)) {
-    //         http_response_code(500);
-    //         echo json_encode(['ok' => false, 'error' => $r['error'] ?? 'IMAP']);
-    //         exit;
-    //     }
-
-    //     $st = db()->prepare("UPDATE tm_emails SET folder = ? WHERE id = ? AND cuenta = ? LIMIT 1");
-    //     $st->bind_param('sis', $destResolved, $id, $cuenta);
-    //     $st->execute();
-    //     $st->close();
-
-    //     echo json_encode(['ok' => true, 'folder' => $destResolved]);
-    //     exit;
-    // }
-
     if ($action === 'rename_folder') {
         $old = trim($_POST['folder'] ?? '');
         $new = trim($_POST['new_name'] ?? '');
         $new = preg_replace('/^INBOX[.\/]/i', '', $new);
+
         if ($old === '' || !preg_match('/^[A-Za-z0-9._ -]{1,100}$/', $new)) {
             http_response_code(400);
             echo json_encode(['ok' => false, 'error' => 'Nombre invalido. Usa letras, numeros, espacio, punto, guion.']);
             exit;
         }
+
         $r = imap_rename_folder_ferozo($cuenta, $old, $new);
         if (!($r['ok'] ?? false)) {
             http_response_code(500);
             echo json_encode(['ok' => false, 'error' => $r['error'] ?? 'desconocido']);
             exit;
         }
-        $st = db()->prepare("UPDATE tm_emails SET folder = ? WHERE cuenta = ? AND folder = ?");
+
+        $st = $db->prepare("UPDATE tm_emails SET folder = ? WHERE cuenta = ? AND folder = ?");
         $st->bind_param('sss', $r['folder'], $cuenta, $old);
         $st->execute();
         $st->close();
+
         echo json_encode(['ok' => true, 'folder' => $r['folder']]);
         exit;
     }
@@ -337,16 +333,19 @@ if ($action === 'move') {
             echo json_encode(['ok' => false, 'error' => 'Carpeta vacia']);
             exit;
         }
+
         $r = imap_delete_folder_ferozo($cuenta, $name);
         if (!($r['ok'] ?? false)) {
             http_response_code(500);
             echo json_encode(['ok' => false, 'error' => $r['error'] ?? 'desconocido']);
             exit;
         }
-        $st = db()->prepare("DELETE FROM tm_emails WHERE cuenta = ? AND folder = ?");
+
+        $st = $db->prepare("DELETE FROM tm_emails WHERE cuenta = ? AND folder = ?");
         $st->bind_param('ss', $cuenta, $name);
         $st->execute();
         $st->close();
+
         echo json_encode(['ok' => true]);
         exit;
     }
@@ -355,8 +354,8 @@ if ($action === 'move') {
         $id = (int)($_GET['id'] ?? 0);
         if ($id <= 0) throw new Exception('id inválido');
 
-        $st = db()->prepare("SELECT * FROM tm_emails WHERE id = ? LIMIT 1");
-        $st->bind_param('i', $id);
+        $st = $db->prepare("SELECT * FROM tm_emails WHERE id = ? AND cuenta = ? LIMIT 1");
+        $st->bind_param('is', $id, $cuenta);
         $st->execute();
         $m = $st->get_result()->fetch_assoc();
         $st->close();
@@ -366,9 +365,8 @@ if ($action === 'move') {
             exit;
         }
 
-        // Marcar como leído al abrir
-        $st2 = db()->prepare("UPDATE tm_emails SET leido = 1 WHERE id = ?");
-        $st2->bind_param('i', $id);
+        $st2 = $db->prepare("UPDATE tm_emails SET leido = 1 WHERE id = ? AND cuenta = ?");
+        $st2->bind_param('is', $id, $cuenta);
         $st2->execute();
         $st2->close();
 
@@ -376,15 +374,10 @@ if ($action === 'move') {
         exit;
     }
 
-    // default: list
-    // Si no viene folder, usa INBOX.
     if ($folder === '') $folder = 'INBOX';
-
-    // Importante: resolvemos el nombre real del folder del servidor.
-    // Así evitamos que 'SENT' o 'TRASH' no coincidan con el nombre real (ej: "Sent Items").
     $resolvedFolder = imap_resolve_folder_name_ferozo($cuenta, $folderForResolve);
 
-    $list = _emails_list(db(), $cuenta, $resolvedFolder, 50);
+    $list = _emails_list($db, $cuenta, $resolvedFolder, 50);
     echo json_encode(['ok' => true, 'emails' => $list, 'folder' => $resolvedFolder]);
 
 } catch (Throwable $e) {

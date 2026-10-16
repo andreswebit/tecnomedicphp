@@ -46,11 +46,9 @@ $contactos_pendientes = count(array_filter($contactos, fn($c) => (int)($c['atend
 $contactos_atendidos = $contactos_total - $contactos_pendientes;
 
 // 2) Emails (cache local tm_emails)
-// Cuenta inicial para la vista Webmail (evita warning de variable no definida)
+// Cuenta inicial para la vista Webmail (solo para cargar la UI inicial)
 $cuenta = trim($_GET['cuenta'] ?? 'contacto');
-if (!in_array($cuenta, ['contacto', 'noreply'], true)) {
-    $cuenta = 'contacto';
-}
+if ($cuenta === '') $cuenta = 'contacto';
 $emails = [];
 $emails_sin_leer = 0;
 try {
@@ -85,7 +83,7 @@ require __DIR__ . '/../includes/portal_header.php';
 
 <link rel="stylesheet" href="<?= $base ?>/portal/css/mensajes.css">
 <link rel="stylesheet" href="<?= $base ?>/portal/css/mensajes-webmail.css">
-<script>window.WM_API = { get: '<?= b('/api/get_emails.php') ?>', send: '<?= b('/api/send_email.php') ?>', del: '<?= b('/api/delete_email.php') ?>' };</script>
+<script>window.WM_API = { get: '<?= b('/api/get_emails.php') ?>', send: '<?= b('/api/send_email.php') ?>', del: '<?= b('/api/delete_email.php') ?>', accounts: '<?= b('/api/mail_accounts.php') ?>' };</script>
 <script src="<?= $base ?>/portal/js/mensajes-webmail.js"></script>
 
 <div style="padding: 16px 28px 0;">
@@ -229,7 +227,17 @@ require __DIR__ . '/../includes/portal_header.php';
                     <button type="button" class="wm-tb-btn" id="wmBtnFwd" disabled><svg viewBox="0 0 24 24"><path d="m15 14 5-5-5-5"/><path d="M20 9H10a6 6 0 0 0-6 6v3"/></svg><span>Reenviar</span></button>
                     <button type="button" class="wm-tb-btn" id="wmBtnDel" disabled><svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="m6 6 1 14h10l1-14"/></svg><span>Eliminar</span></button>
                     <button type="button" class="wm-tb-btn" id="wmBtnMark" disabled><svg viewBox="0 0 24 24"><path d="M20 12 12 20 3 11V3h8Z"/><circle cx="7.5" cy="7.5" r="1"/></svg><span>Marcar</span></button>
-                    <button type="button" class="wm-tb-btn" id="wmBtnMore"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg><span>Más</span></button>
+                    <div style="position:relative; display:flex; flex-direction:column; align-items:center;">
+                        <button type="button" class="wm-tb-btn" id="wmBtnMore"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></svg><span>Más</span></button>
+                        <div id="wmMoreAdminMenu" style="display:none; position:absolute; top:44px; left:50%; transform:translateX(-50%); background:#fff; border:1px solid #e2e8f0; border-radius:10px; box-shadow:0 18px 44px rgba(13,27,42,.22); z-index:50; min-width:240px; padding:8px;">
+                            <button type="button" id="wmMoreActCreate" class="wm-more-admin-btn" style="width:100%; border:none; background:none; padding:10px 10px; text-align:left; cursor:pointer; border-radius:8px; font-size:13px; font-weight:700; color:#0d1b2a;">➕ Agregar cuenta de mail</button>
+                            <button type="button" id="wmMoreActUpdate" class="wm-more-admin-btn" style="width:100%; border:none; background:none; padding:10px 10px; text-align:left; cursor:pointer; border-radius:8px; font-size:13px; font-weight:700; color:#0d1b2a;">✏️ Modificar cuenta</button>
+                            <button type="button" id="wmMoreActDelete" class="wm-more-admin-btn" style="width:100%; border:none; background:none; padding:10px 10px; text-align:left; cursor:pointer; border-radius:8px; font-size:13px; font-weight:700; color:#0d1b2a;">🗑️ Eliminar cuenta</button>
+                            <div style="margin-top:6px; padding:8px 10px; border-top:1px solid #eef2f7; color:#64748b; font-size:11.5px; line-height:1.3;">
+                                Solo administradores.
+                            </div>
+                        </div>
+                    </div>
                     <div class="wm-tb-sp"></div>
                     <select class="wm-tb-select" id="wmFilter"><option value="all">Todos</option><option value="unread">No leídos</option><option value="read">Leídos</option></select>
                     <div class="wm-tb-search">🔍<input type="text" id="wmSearch" placeholder="Buscar..."><button type="button" id="wmSearchClear">✕</button></div>
@@ -537,6 +545,102 @@ require __DIR__ . '/../includes/portal_header.php';
     </div>
 </div>
 
+<!-- Modal CRUD cuentas de mail (admin) -->
+<div class="edit-modal-overlay" id="modalMailAccount" style="display:none;">
+    <div class="edit-modal" style="max-width:920px;">
+        <div class="edit-modal-header">
+            <div class="edit-modal-title" id="wmAccModalTitle">Cuenta de mail</div>
+            <button class="edit-modal-close" onclick="window.closeMailAccountModal && window.closeMailAccountModal()">✕</button>
+        </div>
+
+        <div class="edit-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:16px;">
+            <input type="hidden" id="wmAccModalId" value="">
+
+            <div class="edit-group" style="grid-column:1 / span 2;">
+                <div class="edit-label">Modo</div>
+                <div class="edit-input-wrap" id="wmAccModalModeWrap" style="font-weight:700; color:#0d1b2a;">—</div>
+            </div>
+
+            <div class="edit-group">
+                <div class="edit-label">account_key</div>
+                <div><input type="text" id="wmAccKey" class="edit-input" style="width:100%"></div>
+            </div>
+
+            <div class="edit-group">
+                <div class="edit-label">Nombre visible</div>
+                <div><input type="text" id="wmAccDisplayName" class="edit-input" style="width:100%"></div>
+            </div>
+
+            <div class="edit-group" style="grid-column:1 / span 2; display:flex; align-items:center; gap:10px;">
+                <input type="checkbox" id="wmAccActive" checked>
+                <label for="wmAccActive" style="color:#0d1b2a; font-weight:600;">Activa</label>
+            </div>
+
+            <div class="edit-group">
+                <div class="edit-label">IMAP host</div>
+                <div><input type="text" id="wmImapHost" class="edit-input" style="width:100%"></div>
+            </div>
+            <div class="edit-group">
+                <div class="edit-label">IMAP puerto</div>
+                <div><input type="text" id="wmImapPort" class="edit-input" style="width:100%" value="993"></div>
+            </div>
+            <div class="edit-group">
+                <div class="edit-label">IMAP usuario</div>
+                <div><input type="text" id="wmImapUsername" class="edit-input" style="width:100%"></div>
+            </div>
+            <div class="edit-group">
+                <div class="edit-label">IMAP password</div>
+                <div><input type="password" id="wmImapPassword" class="edit-input" style="width:100%" placeholder="(dejar vacío si no querés cambiar)"></div>
+            </div>
+
+            <div class="edit-group" style="grid-column:1 / span 2; height:1px; background:#e2e8f0; margin:6px 0;"></div>
+
+            <div class="edit-group">
+                <div class="edit-label">SMTP host</div>
+                <div><input type="text" id="wmSmtpHost" class="edit-input" style="width:100%"></div>
+            </div>
+            <div class="edit-group">
+                <div class="edit-label">SMTP puerto</div>
+                <div><input type="text" id="wmSmtpPort" class="edit-input" style="width:100%" value="465"></div>
+            </div>
+            <div class="edit-group">
+                <div class="edit-label">SMTP usuario</div>
+                <div><input type="text" id="wmSmtpUsername" class="edit-input" style="width:100%"></div>
+            </div>
+            <div class="edit-group">
+                <div class="edit-label">SMTP password</div>
+                <div><input type="password" id="wmSmtpPassword" class="edit-input" style="width:100%" placeholder="(dejar vacío si no querés cambiar)"></div>
+            </div>
+
+            <div class="edit-group">
+                <div class="edit-label">smtp_from_email</div>
+                <div><input type="text" id="wmFromEmail" class="edit-input" style="width:100%"></div>
+            </div>
+            <div class="edit-group">
+                <div class="edit-label">smtp_from_name</div>
+                <div><input type="text" id="wmFromName" class="edit-input" style="width:100%"></div>
+            </div>
+
+            <div class="edit-group">
+                <div class="edit-label">smtp_reply_to_email (opcional)</div>
+                <div><input type="text" id="wmReplyToEmail" class="edit-input" style="width:100%"></div>
+            </div>
+            <div class="edit-group">
+                <div class="edit-label">smtp_reply_to_name (opcional)</div>
+                <div><input type="text" id="wmReplyToName" class="edit-input" style="width:100%"></div>
+            </div>
+        </div>
+
+        <div class="edit-footer" style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-top:0; padding:14px 16px; border-top:1px solid rgba(226,232,240,1);">
+            <div id="wmAccModalWarn" style="color:#b91c1c; font-weight:700; font-size:12.5px; min-height:16px;"></div>
+            <div style="display:flex; gap:10px;">
+                <button type="button" class="btn btn-outline" onclick="window.closeMailAccountModal && window.closeMailAccountModal()">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="wmAccModalPrimaryBtn">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // ── NAVEGACIÓN ENTRE PESTAÑAS ──
@@ -608,6 +712,333 @@ document.addEventListener('DOMContentLoaded', function() {
     window.closeModalContacto = function() {
         document.getElementById('modalContacto').classList.remove('open');
     };
+
+    // ─────────────────────────────────────────────────────────
+    // Admin: Modal CRUD cuentas de mail
+    // ─────────────────────────────────────────────────────────
+    function getAccountsSnapshot(){
+        try {
+            return (window.__WM_ACCOUNTS_CACHE || []).slice();
+        } catch(e){
+            return [];
+        }
+    }
+
+    async function wmAdminFetchAccounts() {
+        try {
+            var d = await fetch(
+                window.WM_API && window.WM_API.accounts ? window.WM_API.accounts + '?action=list' : '',
+                { credentials: 'include' }
+            );
+            if (!d) return [];
+            var j = await d.json();
+            if (!j.ok) return [];
+            window.__WM_ACCOUNTS_CACHE = j.accounts || [];
+            return window.__WM_ACCOUNTS_CACHE;
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function openMailAccountModal(opts) {
+        opts = opts || {};
+        window.__WM_ADMIN_MODE = opts.mode || 'create';
+        window.__WM_ADMIN_EDIT_ID = opts.id || '';
+
+        var overlay = document.getElementById('modalMailAccount');
+        if (!overlay) return;
+        overlay.style.display = 'flex';
+
+        var title = document.getElementById('wmAccModalTitle');
+        if (title) {
+            var m = window.__WM_ADMIN_MODE;
+            title.textContent = m === 'update' ? 'Modificar cuenta de mail' : (m === 'delete' ? 'Eliminar cuenta de mail' : 'Agregar cuenta de mail');
+        }
+
+        var wrap = document.getElementById('wmAccModalModeWrap');
+        if (wrap) wrap.textContent = window.__WM_ADMIN_MODE;
+
+        document.getElementById('wmAccModalId').value = window.__WM_ADMIN_EDIT_ID;
+
+        // Para modo create, dejamos campos vacíos
+        if (window.__WM_ADMIN_MODE === 'create') {
+            document.getElementById('wmAccKey').value = '';
+            document.getElementById('wmAccDisplayName').value = '';
+            document.getElementById('wmAccActive').checked = true;
+
+            document.getElementById('wmImapHost').value = '';
+            document.getElementById('wmImapPort').value = '993';
+            document.getElementById('wmImapUsername').value = '';
+            document.getElementById('wmImapPassword').value = '';
+
+            document.getElementById('wmSmtpHost').value = '';
+            document.getElementById('wmSmtpPort').value = '465';
+            document.getElementById('wmSmtpUsername').value = '';
+            document.getElementById('wmSmtpPassword').value = '';
+
+            document.getElementById('wmFromEmail').value = '';
+            document.getElementById('wmFromName').value = '';
+            document.getElementById('wmReplyToEmail').value = '';
+            document.getElementById('wmReplyToName').value = '';
+
+            document.getElementById('wmAccModalPrimaryBtn').textContent = 'Guardar';
+        }
+
+        if (window.__WM_ADMIN_MODE === 'update' || window.__WM_ADMIN_MODE === 'delete') {
+            // En delete no debería necesitar credenciales, pero igual las mostramos si vinieron.
+            var acc = opts.account || null;
+            if (acc) {
+                document.getElementById('wmAccKey').value = acc.account_key || '';
+                document.getElementById('wmAccDisplayName').value = acc.display_name || '';
+                document.getElementById('wmAccActive').checked = String(acc.active) === '1';
+
+                document.getElementById('wmImapHost').value = acc.imap_host || '';
+                document.getElementById('wmImapPort').value = String(acc.imap_port || 993);
+                document.getElementById('wmImapUsername').value = acc.imap_username || '';
+                document.getElementById('wmImapPassword').value = '';
+
+                document.getElementById('wmSmtpHost').value = acc.smtp_host || '';
+                document.getElementById('wmSmtpPort').value = String(acc.smtp_port || 465);
+                document.getElementById('wmSmtpUsername').value = acc.smtp_username || '';
+                document.getElementById('wmSmtpPassword').value = '';
+
+                document.getElementById('wmFromEmail').value = acc.smtp_from_email || '';
+                document.getElementById('wmFromName').value = acc.smtp_from_name || '';
+                document.getElementById('wmReplyToEmail').value = acc.smtp_reply_to_email || '';
+                document.getElementById('wmReplyToName').value = acc.smtp_reply_to_name || '';
+            }
+
+            document.getElementById('wmAccKey').disabled = (window.__WM_ADMIN_MODE === 'update');
+            document.getElementById('wmImapPassword').disabled = (window.__WM_ADMIN_MODE === 'delete');
+            document.getElementById('wmSmtpPassword').disabled = (window.__WM_ADMIN_MODE === 'delete');
+
+            if (window.__WM_ADMIN_MODE === 'delete') {
+                document.getElementById('wmAccModalPrimaryBtn').textContent = 'Eliminar';
+            } else {
+                document.getElementById('wmAccModalPrimaryBtn').textContent = 'Guardar';
+            }
+        }
+    }
+
+    window.closeMailAccountModal = function() {
+        var overlay = document.getElementById('modalMailAccount');
+        if (!overlay) return;
+        overlay.style.display = 'none';
+    };
+
+    async function wmAdminSubmitAccount() {
+        var mode = window.__WM_ADMIN_MODE || 'create';
+        var id = window.__WM_ADMIN_EDIT_ID || '';
+
+        var fd = new FormData();
+        fd.append('action', mode);
+
+        // Identidad
+        if (mode === 'update' || mode === 'delete') {
+            fd.append('id', id);
+        }
+
+        var account_key = (document.getElementById('wmAccKey').value || '').trim();
+        var display_name = (document.getElementById('wmAccDisplayName').value || '').trim();
+        var active = document.getElementById('wmAccActive').checked ? '1' : '0';
+
+        fd.append('account_key', account_key);
+        fd.append('display_name', display_name);
+        fd.append('active', active);
+
+        // IMAP
+        fd.append('imap_host', (document.getElementById('wmImapHost').value || '').trim());
+        fd.append('imap_port', (document.getElementById('wmImapPort').value || '').trim());
+        fd.append('imap_username', (document.getElementById('wmImapUsername').value || '').trim());
+        fd.append('imap_password', (document.getElementById('wmImapPassword').value || '').trim());
+
+        // SMTP
+        fd.append('smtp_host', (document.getElementById('wmSmtpHost').value || '').trim());
+        fd.append('smtp_port', (document.getElementById('wmSmtpPort').value || '').trim());
+        fd.append('smtp_username', (document.getElementById('wmSmtpUsername').value || '').trim());
+        fd.append('smtp_password', (document.getElementById('wmSmtpPassword').value || '').trim());
+
+        // Identity
+        fd.append('smtp_from_email', (document.getElementById('wmFromEmail').value || '').trim());
+        fd.append('smtp_from_name', (document.getElementById('wmFromName').value || '').trim());
+        fd.append('smtp_reply_to_email', (document.getElementById('wmReplyToEmail').value || '').trim());
+        fd.append('smtp_reply_to_name', (document.getElementById('wmReplyToName').value || '').trim());
+
+        var apiUrl = window.WM_API && window.WM_API.accounts ? window.WM_API.accounts : '';
+        if (!apiUrl) {
+            alert('No se configuró la API de cuentas de mail.');
+            return;
+        }
+
+        // En el backend la acción se pasa por query string, no en POST['action'].
+        // Usamos la query: ?action=create|update|delete
+        var actionQuery = mode;
+        var url = apiUrl + '?action=' + encodeURIComponent(actionQuery);
+
+        var r = await fetch(url, { method: 'POST', credentials: 'include', body: fd });
+        var j = await r.json();
+        if (!j.ok) throw new Error(j.error || 'Error al guardar');
+        return j;
+    }
+
+    async function wmRefreshUIAfterAccountsChange() {
+        // recargar listado lateral y selección
+        try {
+            if (typeof window.cargarCuentasAdmin === 'function') {
+                await window.cargarCuentasAdmin();
+            }
+        } catch(e){}
+
+        // recargar inbox de forma instantánea usando cache (tm_emails),
+        // evitando un sync IMAP inmediato.
+        try {
+            if (typeof window.refrescarEmailsLista === 'function') {
+                await window.refrescarEmailsLista({ autoSync: false, keepSelected: true });
+            } else if (typeof window.actualizarEmailsIMAP === 'function') {
+                await window.actualizarEmailsIMAP();
+            }
+        } catch(e){}
+    }
+
+    async function wireAdminMoreMenu() {
+        var btn = document.getElementById('wmBtnMore');
+        var menu = document.getElementById('wmMoreAdminMenu');
+        if (!btn || !menu) return;
+
+        btn.addEventListener('click', function(e){
+            // se abre/cierra el menú sin interferir con el handler JS de mensajes-webmail
+            e.stopPropagation();
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        });
+
+        document.addEventListener('click', function(ev){
+            if (!menu.contains(ev.target) && ev.target !== btn) {
+                menu.style.display = 'none';
+            }
+        });
+
+        var bCreate = document.getElementById('wmMoreActCreate');
+        var bUpdate = document.getElementById('wmMoreActUpdate');
+        var bDelete = document.getElementById('wmMoreActDelete');
+
+        if (bCreate) {
+            bCreate.addEventListener('click', async function(ev){
+                ev.stopPropagation();
+                menu.style.display='none';
+                openMailAccountModal({mode:'create'});
+            });
+        }
+
+        if (bUpdate) {
+            bUpdate.addEventListener('click', async function(ev){
+                ev.stopPropagation();
+                menu.style.display='none';
+
+                // Elegimos cuenta desde el select lateral
+                var sel = document.getElementById('wmAccountSelect');
+                var key = sel ? sel.value : 'contacto';
+                var accounts = getAccountsSnapshot();
+                if (!accounts.length) accounts = await wmAdminFetchAccounts();
+
+                var acc = accounts.find(function(a){return String(a.account_key) === String(key);}) || null;
+                if (!acc) {
+                    alert('No se pudo encontrar la cuenta para modificar.');
+                    return;
+                }
+
+                // Necesitamos id para update; lo sacamos del list
+                // (en el response del list, id existe como number si la tabla existe)
+                var id = acc.id || '';
+
+                openMailAccountModal({mode:'update', id: id, account: acc});
+            });
+        }
+
+        if (bDelete) {
+            bDelete.addEventListener('click', async function(ev){
+                ev.stopPropagation();
+                menu.style.display='none';
+
+                var sel = document.getElementById('wmAccountSelect');
+                var key = sel ? sel.value : 'contacto';
+                var accounts = getAccountsSnapshot();
+                if (!accounts.length) accounts = await wmAdminFetchAccounts();
+
+                var acc = accounts.find(function(a){return String(a.account_key) === String(key);}) || null;
+                if (!acc) {
+                    alert('No se pudo encontrar la cuenta para eliminar.');
+                    return;
+                }
+
+                if (!confirm('¿Eliminar permanentemente la cuenta de mail "' + (acc.display_name || acc.account_key) + '"? Esto hace hard delete.')) return;
+
+                openMailAccountModal({mode:'delete', id: acc.id || '', account: acc});
+            });
+        }
+
+        var primary = document.getElementById('wmAccModalPrimaryBtn');
+        if (primary) {
+            primary.addEventListener('click', async function(ev){
+                ev.preventDefault();
+                var warn = document.getElementById('wmAccModalWarn');
+                if (warn) warn.textContent = '';
+                try {
+                    var mode = window.__WM_ADMIN_MODE;
+                    if (mode === 'update' && !(document.getElementById('wmAccKey').value || '').trim()) {
+                        throw new Error('account_key es requerido');
+                    }
+
+                    // En delete no necesitamos validaciones extra
+                    if (mode !== 'delete' && !(document.getElementById('wmAccKey').value || '').trim()) {
+                        throw new Error('account_key es requerido');
+                    }
+
+                    primary.disabled = true;
+                    primary.textContent = 'Procesando…';
+                    await wmAdminSubmitAccount();
+                    window.closeMailAccountModal();
+                    if (window.toast) window.toast('Cuenta guardada ✅'); else alert('Cuenta guardada ✅');
+                    await wmRefreshUIAfterAccountsChange();
+                    // refrescamos cache para el snapshot
+                    await wmAdminFetchAccounts();
+                } catch(err) {
+                    var w = document.getElementById('wmAccModalWarn');
+                    if (w) w.textContent = String(err && err.message ? err.message : err);
+                    alert(String(err && err.message ? err.message : err));
+                } finally {
+                    primary.disabled = false;
+                    primary.textContent = (window.__WM_ADMIN_MODE === 'delete') ? 'Eliminar' : 'Guardar';
+                }
+            });
+        }
+
+        // Si el overlay se toca afuera, cerramos
+        var overlay = document.getElementById('modalMailAccount');
+        if (overlay) {
+            overlay.addEventListener('click', function(ev){
+                if (ev.target === overlay) window.closeMailAccountModal();
+            });
+        }
+
+        // Guardar en el footer del modal
+        document.querySelectorAll('#modalMailAccount .edit-modal-close').forEach(function(x){
+            x.addEventListener('click', function(){ window.closeMailAccountModal(); });
+        });
+
+        // Preview init: cargar cuentas cache
+        await wmAdminFetchAccounts();
+      }
+
+    // seteo toast/esc por compatibilidad: usamos toast/esc definidos en mensajes-webmail.js
+    // En caso de que no existan, fallback simple
+    if (!window.toast) {
+        window.toast = function(msg){ alert(msg); };
+    }
+
+    // si el script de mensajes-webmail define cargarCuentasAdmin, esto lo va a reutilizar.
+    // wireAdminMoreMenu queda armado en DOMContentLoaded.
+
+    wireAdminMoreMenu();
 
     window.responderContactoEmail = function(toEmail, nombre, motivo) {
         closeModalContacto();
