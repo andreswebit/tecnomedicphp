@@ -2148,6 +2148,11 @@ footer {
   background: var(--navy, #0d1b2a);
   padding: 96px 0;
 }
+.tienda-grid {
+  display: grid;
+  margin-top: 10px;
+  margin-bottom: 40px;
+ }
 
 /* Header de sección */
 .tn-header {
