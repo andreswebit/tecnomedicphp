@@ -399,35 +399,39 @@ require __DIR__ . '/../includes/portal_header.php';
             <input type="hidden" name="modal_seccion" id="modalSeccion" value="tarjeta">
 
             <div class="edit-grid">
-                <div class="edit-group">
+
+                <div class="edit-section-title" id="titleTarjeta" style="grid-column:1/-1;margin:2px 0 14px;font-weight:900;color:#0f172a;">
+                    🧩 Novedaes (carrusel)
+                </div>
+                <div class="edit-group" id="group-ncar-tag">
                     <div class="edit-label">ncar-tag</div>
                     <div class="edit-input-wrap">
                         <input class="edit-input" type="text" name="ncar_tag" id="f-ncar_tag" placeholder="Ej: Tratamiento">
                     </div>
                 </div>
 
-                <div class="edit-group">
+                <div class="edit-group" id="group-ncar-title">
                     <div class="edit-label">ncar-title *</div>
                     <div class="edit-input-wrap">
                         <input class="edit-input" type="text" name="ncar_title" id="f-ncar_title" >
                     </div>
                 </div>
 
-                <div class="edit-group">
+                <div class="edit-group" id="group-ncar-expert">
                     <div class="edit-label">ncar-expert (descripcion expert)</div>
                     <div class="edit-input-wrap">
                         <input class="edit-input" type="text" name="ncar_expert" id="f-ncar_expert" placeholder="Ej: Cámara hiperbárica">
                     </div>
                 </div>
 
-                <div class="edit-group full">
+                <div class="edit-group full" id="group-descripcion">
                     <div class="edit-label">descripcion</div>
                     <div class="edit-input-wrap">
                         <textarea class="edit-input" name="descripcion" id="f-descripcion" rows="3"></textarea>
                     </div>
                 </div>
 
-                <div class="edit-group full">
+                <div class="edit-group full" id="group-ncar-list">
                     <div class="edit-label">ncar-list (viñetas) — 1 por línea</div>
                     <div class="edit-input-wrap">
                         <textarea class="edit-input" name="ncar_list" id="f-ncar_list" rows="3" placeholder="Ej:\n• ...\n• ..."></textarea>
@@ -454,6 +458,10 @@ require __DIR__ . '/../includes/portal_header.php';
                 </div>
 
                 <!-- Bloque NOTICIAS -->
+
+                    <div class="edit-section-title" id="titleNoticias" style="grid-column:1/-1;margin:22px 0 14px;font-weight:900;color:#0f172a;">
+                        📰 Noticias
+                    </div>
                 <div class="edit-group full" id="blockNoticiasWrap">
                     <div class="edit-label">Noticias (se muestran en la sección artículos)</div>
 
