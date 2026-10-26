@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS tm_novedades (
     imagen        VARCHAR(255) DEFAULT NULL,
     video_url     VARCHAR(500) DEFAULT NULL,
     categoria     VARCHAR(50) DEFAULT NULL,
-    tipo          ENUM('noticia','novedad') DEFAULT 'novedad',
+    tipo          ENUM('tarjeta','noticia') NOT NULL DEFAULT 'tarjeta',
     orden         INT DEFAULT 0,
     activo        TINYINT(1) DEFAULT 1,
     creado_en     DATETIME DEFAULT CURRENT_TIMESTAMP

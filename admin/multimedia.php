@@ -21,7 +21,7 @@ require __DIR__ . '/../includes/portal_header.php';
 
 <div class="tablero-grid">
     <a href="<?= b('/admin/novedades.php') ?>" class="tablero-tile">
-        <div class="tablero-icon"><img class="icon-image" src="<?= $base ?>/static/img/icons/reloj.ico" alt="" /></div>
+        <div class="tablero-icon"><img class="icon-image" src="<?= $base ?>/static/img/icons/reloj.png" alt="" /></div>
         <div class="tablero-title">Novedades</div>
         <div class="tablero-desc">Artículos del blog y noticias</div>
     </a>
@@ -43,7 +43,7 @@ require __DIR__ . '/../includes/portal_header.php';
     </a>
 
     <a href="<?= b('/admin/productos_destacados.php') ?>" class="tablero-tile">
-        <div class="tablero-icon"><img class="icon-image" src="<?= $base ?>/static/img/icons/estrella.ico" alt="" /></div>
+        <div class="tablero-icon"><img class="icon-image" src="<?= $base ?>/static/img/icons/favoritos.ico" alt="" /></div>
         <div class="tablero-title">Destacados</div>
         <div class="tablero-desc">Productos visibles en el homepage</div>
     </a>

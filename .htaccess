@@ -11,3 +11,22 @@ RewriteRule ^ - [L]
 # Tipos MIME correctos para video
 AddType video/mp4 .mp4
 AddType video/webm .webm
+
+# Límites de subida para videos de Novedades/Noticias (MP4 hasta 80 MB).
+# Se envuelven en IfModule: si el hosting corre PHP como CGI/FPM, php_value
+# daría error 500 sin estas guardas. En ese caso rige el archivo .user.ini.
+<IfModule mod_php.c>
+    php_value upload_max_filesize 80M
+    php_value post_max_size 90M
+    php_value max_execution_time 120
+</IfModule>
+<IfModule mod_php7.c>
+    php_value upload_max_filesize 80M
+    php_value post_max_size 90M
+    php_value max_execution_time 120
+</IfModule>
+<IfModule mod_php8.c>
+    php_value upload_max_filesize 80M
+    php_value post_max_size 90M
+    php_value max_execution_time 120
+</IfModule>

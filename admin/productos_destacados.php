@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/auth.php';
-require_once __DIR__ . '/../includes/tienda.php';
+
 portal_require_role(['admin']);
 
 $mensaje = '';
@@ -61,7 +61,7 @@ require __DIR__ . '/../includes/portal_header.php';
     </p>
 </div>
 
-<div class="table-card" style="margin:0 28px 28px;">
+<div class="table-card" style="margin:0 5px 5px;">
     <div class="table-header">
         <div class="table-title"><?= $total ?> producto<?= $total !== 1 ? 's' : '' ?> · <?= $destacados ?> destacado<?= $destacados !== 1 ? 's' : '' ?></div>
         <div class="search-wrap">

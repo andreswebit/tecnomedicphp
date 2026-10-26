@@ -1379,6 +1379,22 @@ iframe {
   font-size: 15px;
 }
 
+/* Noticias cargadas desde el admin: imagen o video vertical 9:16 */
+.art-img.art-media-916 {
+  aspect-ratio: 9 / 16;
+  width: 100%;
+  background: var(--g300);
+}
+
+.art-img.art-media-916 img,
+.art-img.art-media-916 video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50px 50px 30px 30px;
+}
+
 /* PRODUCTOS */
 #productos {
   background: var(--navy);

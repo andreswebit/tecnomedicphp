@@ -199,12 +199,12 @@ require_once __DIR__ . '/includes/db_testimonios.php';
 require_once __DIR__ . '/includes/db_portal.php';
 $novedades_carousel = [];
 try {
-    $novedades_carousel = array_filter(novedades_listar(), fn($n) => ($n['tipo'] ?? '') === 'tarjeta' && (int)($n['activo'] ?? 0) === 1);
-    $novedades_carousel = array_slice($novedades_carousel, 0, 3); // Máximo 3 slides
+    $novedades_carousel = novedades_listar('tarjeta', true);
+    $novedades_carousel = array_slice($novedades_carousel, 0, 8); // Máximo 8 slides (los puntos del carrusel se generan solos)
 } catch (Throwable $e) { /* BD sin tablas todavía → fallback hardcoded */ }
 ?>
     <!-- NOVEDADES CAROUSEL -->
-    <section id="novedaes">
+    <section id="novedades">
         <div class="ncar-progress">
             <div class="ncar-bar" id="ncarBar"></div>
         </div>
@@ -368,23 +368,21 @@ try {
                 <?php
                         $video_url = $n['video_url'] ?? '';
                         $has_video = !empty($video_url) && (str_contains($video_url, 'youtube.com') || str_contains($video_url, 'vimeo.com') || str_contains($video_url, '.mp4'));
-                        $has_image = !empty($n['imagen']) && file_exists(__DIR__ . '/../' . $n['imagen']);
+                        $has_image = !empty($n['imagen']) && is_file(__DIR__ . '/' . $n['imagen']);
                         $payload = novedad_payload_decode((string)($n['contenido'] ?? ''));
-                        $ncar_expert = $payload['ncar_expert'] ?? '';
-                        $ncar_descripcion = $payload['descripcion'] ?? '';
+                        $ncar_extracto = novedad_extracto($payload);
                         $ncar_list = $payload['ncar_list'] ?? [];
                         ?>
                 <!-- SLIDE <?= $slide_num + 1 ?> -->
                 <div class="ncar-slide">
                     <div class="ncar-text">
                         <span class="ncar-tag"><i class="fa-solid fa-circle"></i>&nbsp;
-                            <?= htmlspecialchars($n['categoria'] ?? 'Novedad') ?></span>
+                            <?= htmlspecialchars(($n['categoria'] ?? '') !== '' ? $n['categoria'] : 'Novedad') ?></span>
                         <h2 class="ncar-title"><?= htmlspecialchars($n['titulo']) ?></h2>
-                        <?php if (!empty($ncar_expert)): ?>
-                        <div class="ncar-expert"><?= htmlspecialchars($ncar_expert) ?></div>
-                        <?php endif; ?>
+                        <?php if ($ncar_extracto !== ''): ?>
                         <p class="ncar-excerpt">
-                            <?= nl2br(htmlspecialchars(substr(strip_tags($ncar_descripcion), 0, 200))) ?></p>
+                            <?= nl2br(htmlspecialchars(mb_substr(strip_tags($ncar_extracto), 0, 240))) ?></p>
+                        <?php endif; ?>
                         <?php if (!empty($ncar_list)): ?>
                         <ul class="ncar-list">
                             <?php foreach ($ncar_list as $item): ?>
@@ -664,7 +662,61 @@ try {
                 </a>
             </div>
 
+            <?php
+            // Noticias cargadas desde admin/novedades.php (tipo 'noticia', activas).
+            // Si no hay ninguna, se muestran las tarjetas fijas de más abajo.
+            $noticias_home = [];
+            try {
+                $noticias_home = array_slice(novedades_listar('noticia', true), 0, 6); // Máximo 6 noticias
+            } catch (Throwable $e) { /* BD sin tablas todavía → fallback fijo */ }
+
+            $meses_es = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+            $media_url = fn(string $ruta): string => preg_match('#^https?://#i', $ruta) ? $ruta : b('/' . $ruta);
+            ?>
             <div class="art-grid">
+
+                <?php if (!empty($noticias_home)): ?>
+                <?php foreach ($noticias_home as $nt): ?>
+                <?php
+                    $nt_payload  = novedad_payload_decode((string)($nt['contenido'] ?? ''));
+                    $nt_extracto = novedad_extracto($nt_payload);
+                    $nt_tiene_img = !empty($nt['imagen']) && is_file(__DIR__ . '/' . $nt['imagen']);
+                    $nt_tiene_vid = !empty($nt['video_url']);
+                    $nt_ts = strtotime((string)($nt['creado_en'] ?? '')) ?: time();
+                    $nt_fecha = (int)date('j', $nt_ts) . ' ' . $meses_es[(int)date('n', $nt_ts) - 1] . ' ' . date('Y', $nt_ts);
+                    $nt_wa = 'https://wa.me/543794775341?text=' . rawurlencode('Consulta sobre ' . $nt['titulo']);
+                ?>
+                <!-- ── NOTICIA (desde la base de datos) ── -->
+                <div class="art-card">
+                    <div class="art-img art-media-916">
+                        <?php if ($nt_tiene_vid): ?>
+                        <video controls playsinline preload="metadata"
+                            <?php if ($nt_tiene_img): ?>poster="<?= htmlspecialchars($media_url($nt['imagen'])) ?>"<?php endif; ?>
+                            src="<?= htmlspecialchars($media_url($nt['video_url'])) ?>"
+                            title="<?= htmlspecialchars($nt['titulo']) ?>"></video>
+                        <?php elseif ($nt_tiene_img): ?>
+                        <img src="<?= htmlspecialchars($media_url($nt['imagen'])) ?>"
+                            alt="<?= htmlspecialchars($nt['titulo']) ?>" loading="lazy" />
+                        <?php endif; ?>
+                    </div>
+                    <div class="art-body">
+                        <?php if (($nt['categoria'] ?? '') !== ''): ?>
+                        <span class="art-cat"><?= htmlspecialchars($nt['categoria']) ?></span>
+                        <?php endif; ?>
+                        <h3 class="art-title"><?= htmlspecialchars($nt['titulo']) ?></h3>
+                        <?php if ($nt_extracto !== ''): ?>
+                        <p class="art-excerpt"><?= nl2br(htmlspecialchars(strip_tags($nt_extracto))) ?></p>
+                        <?php endif; ?>
+                        <div class="art-foot">
+                            <span class="art-date"><i class="fa-regular fa-calendar"></i> <?= htmlspecialchars($nt_fecha) ?></span>
+                            <a href="<?= htmlspecialchars($nt_wa) ?>" target="_blank" class="art-more">
+                                Consultar <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+                <?php else: ?>
 
                 <!-- ── DESTACADO: Beneficios Cámara Hiperbárica ── -->
                 <div class="art-card ">
@@ -797,13 +849,16 @@ try {
 
 
                     <!--
-                  ★ PARA AGREGAR MÁS PUBLICACIONES: copiar un bloque <div class="art-card">
-                    y completar: art-cat, art-title, art-excerpt, art-date e img src.
-                  ★ Para artículo DESTACADO (ancho doble): agregar clase "feat" al art-card.
+                  ★ Las noticias se cargan desde Mi Portal > Multimedia > Novedades (sección Noticias).
+                    Estas tarjetas fijas se muestran solo mientras no haya noticias activas en la base.
                 -->
 
 
                 </div>
+                <?php endif; ?>
+
+            </div>
+        </div>
     </section>
 
 
