@@ -204,39 +204,238 @@ function novedad_carpeta(): string {
     return $carpeta;
 }
 
-function novedad_subir_imagen(array $file): string {
-    if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) return '';
-    $permitidas = ['jpg', 'jpeg', 'png', 'webp'];
-    $ext = strtolower(pathinfo((string)$file['name'], PATHINFO_EXTENSION));
-    if (!in_array($ext, $permitidas, true)) return '';
-    if ($file['size'] > NOVEDAD_MAX_IMAGEN) return '';
-    if (@getimagesize((string)$file['tmp_name']) === false) return '';
+/** Mueve el archivo subido a su destino. TM_TEST_MODE solo lo define el script de pruebas. */
+function novedad_mover_subido(string $tmp, string $dest): bool {
+    if (is_uploaded_file($tmp)) return move_uploaded_file($tmp, $dest);
+    if (defined('TM_TEST_MODE') && TM_TEST_MODE) return copy($tmp, $dest);
+    return false;
+}
 
-    $nombre = 'novedad_' . uniqid() . '.' . $ext;
-    if (move_uploaded_file($file['tmp_name'], novedad_carpeta() . '/' . $nombre)) {
-        return 'storage/novedades/' . $nombre;
+// ── Archivos duplicados ─────────────────────────────────────────
+// Los archivos se nombran con el SHA-1 de lo que se subió:
+//   novedad_<sha1>.<ext>            subido tal cual (ya era 9:16)
+//   novedad_<sha1>_<modo>.jpg|mp4   convertido a 9:16 (modo: desenfoque o recorte)
+//   novedad_video_<sha1>_sinverificar.mp4   video guardado sin poder medirlo (sin ffmpeg)
+// Subir dos veces el mismo archivo da el mismo nombre, así que no se graba otra copia.
+// Los archivos viejos (nombre con uniqid) se detectan comparando el contenido.
+
+/** Registra qué archivos ya existían y se reutilizaron ('imagen' / 'video'). Sin argumentos devuelve la lista. */
+function novedad_reutilizado(?string $tipo = null): array {
+    static $lista = [];
+    if ($tipo === '') $lista = [];
+    elseif ($tipo !== null && !in_array($tipo, $lista, true)) $lista[] = $tipo;
+    return $lista;
+}
+
+/** SHA-1 del contenido de un archivo, o '' si no se puede leer. */
+function novedad_hash(string $path): string {
+    $h = @sha1_file($path);
+    return $h === false ? '' : $h;
+}
+
+function novedad_archivo_valido(string $path): bool {
+    return is_file($path) && filesize($path) > 0;
+}
+
+/** Busca en storage/novedades un archivo con el mismo contenido. Devuelve la ruta relativa o ''. */
+function novedad_buscar_duplicado(string $path, string $hash = ''): string {
+    $size = @filesize($path);
+    if ($size === false || $size === 0) return '';
+    if ($hash === '') $hash = novedad_hash($path);
+    if ($hash === '') return '';
+
+    foreach (glob(novedad_carpeta() . '/novedad_*') ?: [] as $f) {
+        if (!is_file($f) || filesize($f) !== $size) continue;
+        if (novedad_hash($f) === $hash) return 'storage/novedades/' . basename($f);
     }
     return '';
 }
 
+/** Borra temporales de conversiones que quedaron a medias (más de 1 hora). */
+function novedad_limpiar_temporales(): void {
+    foreach (glob(novedad_carpeta() . '/tmp_*') ?: [] as $f) {
+        if (is_file($f) && filemtime($f) < time() - 3600) @unlink($f);
+    }
+}
+
+/**
+ * Cierra una conversión hecha en un archivo temporal: si ya había un archivo con el
+ * mismo contenido lo reutiliza; si no, deja el nuevo con su nombre final.
+ */
+function novedad_cerrar_conversion(string $tmpOut, string $dest, string $rel, string $tipo): string {
+    $dup = novedad_buscar_duplicado($tmpOut);
+    if ($dup !== '') {
+        @unlink($tmpOut);
+        novedad_reutilizado($tipo);
+        return $dup;
+    }
+    if (!@rename($tmpOut, $dest)) {
+        @unlink($tmpOut);
+        tm_media_error('No se pudo guardar el archivo convertido en el servidor.');
+        return '';
+    }
+    tm_media_convertido($tipo);
+    return $rel;
+}
+
+/**
+ * Sube una imagen. Si no es 9:16 la convierte (ver includes/media_vertical.php).
+ * Si el mismo archivo ya está en storage/novedades lo reutiliza.
+ * Devuelve la ruta relativa, o '' si falló (el motivo queda en tm_media_error()).
+ */
+function novedad_subir_imagen(array $file): string {
+    require_once __DIR__ . '/media_vertical.php';
+    tm_media_error('');
+
+    if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) return '';
+    $permitidas = ['jpg', 'jpeg', 'png', 'webp'];
+    $ext = strtolower(pathinfo((string)$file['name'], PATHINFO_EXTENSION));
+    if (!in_array($ext, $permitidas, true)) {
+        tm_media_error('Formato no permitido. Usá JPG, PNG o WEBP.');
+        return '';
+    }
+    if ($file['size'] > NOVEDAD_MAX_IMAGEN) {
+        tm_media_error('La imagen supera los 5 MB.');
+        return '';
+    }
+
+    $tmp = (string)$file['tmp_name'];
+    $dim = tm_imagen_dimensiones_visibles($tmp);
+    if ($dim === null) {
+        tm_media_error('No se pudo leer la imagen.');
+        return '';
+    }
+
+    $carpeta = novedad_carpeta();
+    novedad_limpiar_temporales();
+    $hash = novedad_hash($tmp);
+    $modo = '_' . TM_MEDIA_MODO;
+    $convertir = !tm_ratio_es_9_16((float)$dim[0], (float)$dim[1]);
+
+    // 1) Ya se subió antes este mismo archivo: se reutiliza y no se graba otra copia
+    if ($hash !== '') {
+        foreach (["novedad_{$hash}.{$ext}", "novedad_{$hash}{$modo}.jpg"] as $cand) {
+            if (novedad_archivo_valido($carpeta . '/' . $cand)) {
+                novedad_reutilizado('imagen');
+                return 'storage/novedades/' . $cand;
+            }
+        }
+    }
+
+    // 2) Ya es 9:16: se guarda tal cual (o se reutiliza un archivo viejo idéntico)
+    if (!$convertir) {
+        $dup = novedad_buscar_duplicado($tmp, $hash);
+        if ($dup !== '') {
+            novedad_reutilizado('imagen');
+            return $dup;
+        }
+        $nombre = $hash !== '' ? "novedad_{$hash}.{$ext}" : 'novedad_' . uniqid() . '.' . $ext;
+        if (novedad_mover_subido($tmp, $carpeta . '/' . $nombre)) {
+            return 'storage/novedades/' . $nombre;
+        }
+        tm_media_error('No se pudo guardar la imagen en el servidor.');
+        return '';
+    }
+
+    // 3) No es 9:16: se convierte (siempre sale como JPG)
+    $nombre = $hash !== '' ? "novedad_{$hash}{$modo}.jpg" : 'novedad_' . uniqid() . '.jpg';
+    $tmpOut = $carpeta . '/tmp_' . uniqid() . '.jpg';
+    if (!tm_imagen_a_vertical($tmp, $tmpOut)) {
+        if (is_file($tmpOut)) @unlink($tmpOut);
+        return '';
+    }
+    return novedad_cerrar_conversion($tmpOut, $carpeta . '/' . $nombre, 'storage/novedades/' . $nombre, 'imagen');
+}
+
+/**
+ * Sube un video MP4. Si no es 9:16 y el servidor tiene ffmpeg, lo convierte.
+ * Sin ffmpeg no se puede medir ni convertir: se guarda tal cual (el panel avisa
+ * al usuario antes de subir). Si el mismo archivo ya está en storage/novedades lo reutiliza.
+ */
 function novedad_subir_video(array $file): string {
+    require_once __DIR__ . '/media_vertical.php';
+    tm_media_error('');
+
     if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) return '';
     $ext = strtolower(pathinfo((string)$file['name'], PATHINFO_EXTENSION));
-    if ($ext !== 'mp4') return '';
-    if ($file['size'] > NOVEDAD_MAX_VIDEO) return '';
+    if ($ext !== 'mp4') {
+        tm_media_error('El video debe ser MP4.');
+        return '';
+    }
+    if ($file['size'] > NOVEDAD_MAX_VIDEO) {
+        tm_media_error('El video supera los 80 MB.');
+        return '';
+    }
 
+    $tmp = (string)$file['tmp_name'];
     if (function_exists('finfo_open')) {
         $fi = finfo_open(FILEINFO_MIME_TYPE);
-        $mime = $fi ? (string)finfo_file($fi, (string)$file['tmp_name']) : '';
+        $mime = $fi ? (string)finfo_file($fi, $tmp) : '';
         if ($fi) finfo_close($fi);
-        if ($mime !== '' && !in_array($mime, ['video/mp4', 'application/octet-stream'], true)) return '';
+        if ($mime !== '' && !in_array($mime, ['video/mp4', 'application/octet-stream'], true)) {
+            tm_media_error('El archivo no es un video MP4 válido.');
+            return '';
+        }
     }
 
-    $nombre = 'novedad_video_' . uniqid() . '.mp4';
-    if (move_uploaded_file($file['tmp_name'], novedad_carpeta() . '/' . $nombre)) {
-        return 'storage/novedades/' . $nombre;
+    $carpeta = novedad_carpeta();
+    novedad_limpiar_temporales();
+    $hash = novedad_hash($tmp);
+    $modo = '_' . TM_MEDIA_MODO;
+    $puedeConvertir = tm_video_conversion_disponible();
+
+    // 1) Ya se subió antes este mismo archivo: se reutiliza y no se graba otra copia
+    if ($hash !== '') {
+        $cands = ["novedad_video_{$hash}.mp4", "novedad_video_{$hash}{$modo}.mp4"];
+        // Un video guardado sin verificar solo sirve mientras el servidor siga sin poder verificarlo
+        if (!$puedeConvertir) array_unshift($cands, "novedad_video_{$hash}_sinverificar.mp4");
+        foreach ($cands as $cand) {
+            if (novedad_archivo_valido($carpeta . '/' . $cand)) {
+                novedad_reutilizado('video');
+                return 'storage/novedades/' . $cand;
+            }
+        }
     }
-    return '';
+
+    // 2) Medir el video (solo si hay ffmpeg)
+    $convertir = false;
+    if ($puedeConvertir) {
+        $dim = tm_video_dimensiones($tmp);
+        if ($dim === null) {
+            tm_media_error('No se pudo leer el video. Verificá que sea un MP4 válido.');
+            return '';
+        }
+        $convertir = !tm_ratio_es_9_16((float)$dim['w'], (float)$dim['h']);
+        if ($convertir && $dim['dur'] > TM_VID_MAX_SEG) {
+            tm_media_error('El video dura más de ' . (int)(TM_VID_MAX_SEG / 60) . ' minutos. Para convertirlo a 9:16 debe ser más corto.');
+            return '';
+        }
+    }
+
+    // 3) Ya es 9:16 (o no se puede medir): se guarda tal cual o se reutiliza un archivo idéntico
+    if (!$convertir) {
+        $dup = novedad_buscar_duplicado($tmp, $hash);
+        if ($dup !== '') {
+            novedad_reutilizado('video');
+            return $dup;
+        }
+        $sufijo = $puedeConvertir ? '' : '_sinverificar';
+        $nombre = $hash !== '' ? "novedad_video_{$hash}{$sufijo}.mp4" : 'novedad_video_' . uniqid() . '.mp4';
+        if (novedad_mover_subido($tmp, $carpeta . '/' . $nombre)) {
+            return 'storage/novedades/' . $nombre;
+        }
+        tm_media_error('No se pudo guardar el video en el servidor.');
+        return '';
+    }
+
+    // 4) No es 9:16: se convierte con ffmpeg
+    $nombre = $hash !== '' ? "novedad_video_{$hash}{$modo}.mp4" : 'novedad_video_' . uniqid() . '.mp4';
+    $tmpOut = $carpeta . '/tmp_' . uniqid() . '.mp4';
+    if (!tm_video_a_vertical($tmp, $tmpOut)) {
+        if (is_file($tmpOut)) @unlink($tmpOut);
+        return '';
+    }
+    return novedad_cerrar_conversion($tmpOut, $carpeta . '/' . $nombre, 'storage/novedades/' . $nombre, 'video');
 }
 
 /** Borra un archivo solo si está dentro de storage/novedades. */
@@ -249,4 +448,29 @@ function novedad_borrar_archivo(?string $ruta): void {
     if ($base === false || $real === false) return;
     if (strpos($real, $base . DIRECTORY_SEPARATOR) !== 0) return;
     if (is_file($real)) @unlink($real);
+}
+
+/** ¿Alguna publicación usa este archivo? Ante un error de base se asume que sí (no se borra). */
+function novedad_archivo_en_uso(string $ruta): bool {
+    if ($ruta === '') return false;
+    try {
+        $st = db()->prepare("SELECT COUNT(*) AS n FROM tm_novedades WHERE imagen = ? OR video_url = ?");
+        $st->bind_param('ss', $ruta, $ruta);
+        $st->execute();
+        $r = $st->get_result()->fetch_assoc();
+        return (int)($r['n'] ?? 0) > 0;
+    } catch (Throwable $e) {
+        return true;
+    }
+}
+
+/**
+ * Borra un archivo solo si ninguna publicación lo usa. Como un mismo archivo puede
+ * estar compartido por varias publicaciones, esta es la función que hay que usar
+ * al eliminar o reemplazar medios (después de actualizar la base).
+ */
+function novedad_liberar_archivo(?string $ruta): void {
+    $ruta = (string)$ruta;
+    if ($ruta === '' || novedad_archivo_en_uso($ruta)) return;
+    novedad_borrar_archivo($ruta);
 }

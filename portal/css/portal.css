@@ -691,6 +691,10 @@ table.portal-table th {
 }
 .lista-actions { display: flex; gap: 4px; flex-shrink: 0; }
 
+
+
+.edit-label { font-size: 0.75rem; font-weight: 400; color: var(--white); margin-bottom: 4px; }
+
 /* Empty state compacto */
 .ficha-empty { text-align: center; padding: 24px 16px; color: var(--muted); }
 .ficha-empty-icon { font-size: 1.8rem; margin-bottom: 8px; opacity: 0.7; }

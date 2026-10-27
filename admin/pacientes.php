@@ -259,7 +259,7 @@ require __DIR__ . '/../includes/portal_header.php';
 <div class="edit-modal-overlay" id="modalCrear">
     <div class="edit-modal">
         <div class="edit-modal-header">
-            <div class="edit-modal-title">➕ Nuevo paciente</div>
+            <div class="edit-modal-title"> Nuevo paciente</div>
             <button class="edit-modal-close"
                 style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;padding:4px;"
                 onclick="closeModal('modalCrear')">

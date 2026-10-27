@@ -1,28 +1,12 @@
 <?php
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/db_novedades.php';
+require_once __DIR__ . '/../includes/media_vertical.php';
 portal_require_role(['admin']);
 
 $mensaje = '';
 $error = '';
 $reabrir = null; // datos para reabrir el modal si falla una validación
-
-// Valida que la imagen esté en formato 9:16 (con tolerancia).
-function tm_is_ratio_9_16(array $file, float $tol = 0.03): bool {
-    if (empty($file['tmp_name']) || !is_file((string)$file['tmp_name'])) return false;
-
-    $info = @getimagesize((string)$file['tmp_name']);
-    if (!$info || empty($info[0]) || empty($info[1])) return false;
-
-    $w = (float)$info[0];
-    $h = (float)$info[1];
-    if ($h <= 0.0) return false;
-
-    $ratio = $w / $h;
-    $target = 9.0 / 16.0;
-
-    return abs($ratio - $target) <= ($target * $tol);
-}
 
 function tm_seccion_de_tipo(?string $tipo): string {
     return novedad_normalizar_tipo($tipo);
@@ -70,8 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errSubida = novedad_upload_error($_FILES['imagen']);
                 if ($errSubida !== '') {
                     $error = 'Imagen: ' . $errSubida;
-                } elseif (!tm_is_ratio_9_16($_FILES['imagen'])) {
-                    $error = 'La imagen debe tener formato 9:16 (vertical).';
+                } elseif (tm_imagen_dimensiones_visibles((string)$_FILES['imagen']['tmp_name']) === null) {
+                    $error = 'No se pudo leer la imagen. Usá JPG, PNG o WEBP.';
                 }
             }
             if ($error === '' && $vidNuevo) {
@@ -92,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($error === '' && $imgNueva) {
                 $nuevo = novedad_subir_imagen($_FILES['imagen']);
                 if ($nuevo === '') {
-                    $error = 'No se pudo subir la imagen (JPG, PNG o WEBP, hasta 5 MB).';
+                    $error = tm_media_error() ?: 'No se pudo subir la imagen (JPG, PNG o WEBP, hasta 5 MB).';
                 } else {
                     $d['imagen'] = $nuevo;
                 }
@@ -100,9 +84,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($error === '' && $vidNuevo) {
                 $nuevo = novedad_subir_video($_FILES['video_file']);
                 if ($nuevo === '') {
-                    // Si la imagen recién subida quedó huérfana, se borra.
-                    if ($imgNueva) novedad_borrar_archivo($d['imagen']);
-                    $error = 'No se pudo subir el video (MP4, hasta 80 MB).';
+                    // Si la imagen recién subida quedó sin usar, se borra (si otra publicación la usa, se conserva).
+                    if ($imgNueva) novedad_liberar_archivo($d['imagen']);
+                    $error = tm_media_error() ?: 'No se pudo subir el video (MP4, hasta 80 MB).';
                 } else {
                     $d['video_url'] = $nuevo;
                 }
@@ -114,10 +98,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     novedad_crear($d);
                 } else {
                     novedad_editar($id, $d);
-                    if ($imgNueva) novedad_borrar_archivo($viejaImagen);
-                    if ($vidNuevo) novedad_borrar_archivo($viejoVideo);
+                    if ($imgNueva) novedad_liberar_archivo($viejaImagen);
+                    if ($vidNuevo) novedad_liberar_archivo($viejoVideo);
                 }
-                header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?') . '?ok=1');
+                $conv = tm_media_convertido();
+                $reu = novedad_reutilizado();
+                header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?') . '?ok=1'
+                    . ($conv ? '&conv=' . implode(',', $conv) : '')
+                    . ($reu ? '&reuse=' . implode(',', $reu) : ''));
                 exit;
             }
 
@@ -146,8 +134,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         novedad_eliminar($id);
 
         if ($actual) {
-            novedad_borrar_archivo($actual['imagen'] ?? '');
-            novedad_borrar_archivo($actual['video_url'] ?? '');
+            novedad_liberar_archivo($actual['imagen'] ?? '');
+            novedad_liberar_archivo($actual['video_url'] ?? '');
         }
 
         header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?') . '?ok=1');
@@ -163,6 +151,7 @@ $inactivas = $total - $activas;
 $nTarjetas = count(array_filter($todas, fn($n) => tm_seccion_de_tipo((string)($n['tipo'] ?? '')) === 'tarjeta'));
 $nNoticias = $total - $nTarjetas;
 
+$videoConvierte = tm_video_conversion_disponible();
 $portal_titulo = 'Novedades · Mi Portal';
 $portal_activo = 'multimedia';
 require __DIR__ . '/../includes/portal_header.php';
@@ -195,13 +184,19 @@ require __DIR__ . '/../includes/portal_header.php';
 <div style="padding:24px 28px 0;">
     <div class="topbar" style="margin-bottom:20px;">
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
-            <div class="page-title">Multimedia / Novedades y Noticias</div>
-            <div class="chip">🎬 Carrusel + Artículos</div>
+            <div class="page-title"> Novedades y Noticias</div>
+            <div class="chip"> pagina principal</div>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <button class="btn-action btn-save" style="padding:9px 18px;font-size:13px;" onclick="openModal('crear')"
-                data-tooltip="Crear una novedad (carrusel) o una noticia (artículos)">
-                + Publicar
+            <button class="btn-action btn-save" style="padding:9px 18px;font-size:13px;"
+                onclick="openModal('crear', null, 'tarjeta')"
+                data-tooltip="Crear una novedad para el carrusel del inicio (#novedades)">
+                + Publicar novedades
+            </button>
+            <button class="btn-action btn-save" style="padding:9px 18px;font-size:13px; background:var(--navy);"
+                onclick="openModal('crear', null, 'noticia')"
+                data-tooltip="Crear una noticia para la sección artículos (#articulos)">
+                + Publicar noticias
             </button>
         </div>
     </div>
@@ -297,15 +292,31 @@ require __DIR__ . '/../includes/portal_header.php';
     </div>
 </div>
 
-<!-- ── MODAL (dos partes: Novedades arriba, Noticias abajo) ── -->
+<!-- ── MODAL (un formulario por botón: Novedades o Noticias) ── -->
 <div class="edit-modal-overlay" id="editModal">
     <div class="edit-modal" style="max-width:680px;">
         <div class="edit-modal-header">
-            <div class="edit-modal-title" id="modalTitle">➕ Nueva publicación</div>
-            <button class="edit-modal-close" onclick="closeModal()">✕</button>
+            <div class="edit-modal-title" id="modalTitle"> Nueva publicación</div>
+            <!-- <button class="edit-modal-close" onclick="closeModal()">✕xxx</button> -->
+            <button class="edit-modal-close"
+                style="background:none;border:none;font-size:24px;cursor:pointer;color:#888;padding:4px;"
+                onclick="closeModal('')">
+                <svg height="26" width="26" version="1.1" id="Layer_1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 512 512">
+                    <circle style="fill:#FF6643;" cx="256" cy="256" r="256" />
+                    <path style="fill:#FF6643;"
+                        d="M256,0v512c141.385,0,256-114.615,256-256S397.385,0,256,0z" />
+                    <polygon style="fill:#ffffff;"
+                        points="365.904,184.885 327.115,146.096 256,217.211 184.885,146.096 146.096,184.885 217.211,256
+                            146.096,327.115 184.885,365.904 256,294.789 327.115,365.904 365.904,327.115 294.789,256 " />
+                </svg>
+            </button>
         </div>
         <div id="modalHint" style="color:#cbd5e1;font-size:12px;margin:10px 0 0;">
-            Cada parte se guarda por separado con su propio botón.
+            <?= $videoConvierte
+                ? 'Las imágenes y los videos que no sean 9:16 se convierten solos.'
+                : 'Las imágenes que no sean 9:16 se convierten solas. Este servidor no convierte videos: subí el video ya en 9:16.' ?>
         </div>
 
         <!-- ═════════ PARTE 1: NOVEDADES (carrusel, section id="novedades") ═════════ -->
@@ -316,7 +327,7 @@ require __DIR__ . '/../includes/portal_header.php';
             <input type="hidden" name="modal_seccion" value="tarjeta">
 
             <div class="edit-section-title" style="margin:18px 0 4px;font-weight:900;color:var(--g100);">
-                🧩 Novedades · carrusel del inicio
+                Novedades · carrusel del inicio
             </div>
             <div style="color:#94a3b8;font-size:11px;margin-bottom:6px;">
                 Se muestran en la sección #novedades de la página principal.
@@ -324,28 +335,28 @@ require __DIR__ . '/../includes/portal_header.php';
 
             <div class="edit-grid">
                 <div class="edit-group">
-                    <div class="edit-label">ncar-tag</div>
+                    <div class="edit-label">Encabezado</div>
                     <div class="edit-input-wrap">
                         <input class="edit-input" type="text" name="ncar_tag" maxlength="50" placeholder="Ej: Tratamiento">
                     </div>
                 </div>
 
                 <div class="edit-group">
-                    <div class="edit-label">ncar-title *</div>
+                    <div class="edit-label">Titulo</div>
                     <div class="edit-input-wrap">
                         <input class="edit-input" type="text" name="ncar_title" maxlength="200" required>
                     </div>
                 </div>
 
                 <div class="edit-group full">
-                    <div class="edit-label">ncar-expert (extracto) *</div>
+                    <div class="edit-label">Extracto</div>
                     <div class="edit-input-wrap">
                         <textarea class="edit-input" name="ncar_expert" rows="3" required></textarea>
                     </div>
                 </div>
 
                 <div class="edit-group full">
-                    <div class="edit-label">ncar-list (viñetas) * · una por línea</div>
+                    <div class="edit-label"> Lista ( genera una viñeta por línea)</div>
                     <div class="edit-input-wrap">
                         <textarea class="edit-input" name="ncar_list" rows="4" required
                             placeholder="Acelera la cicatrización&#10;Mejora la circulación"></textarea>
@@ -357,15 +368,15 @@ require __DIR__ . '/../includes/portal_header.php';
                     <div class="edit-input-wrap" style="display:flex;flex-direction:column;gap:10px;">
                         <div style="display:flex;gap:12px;flex-wrap:wrap;">
                             <div style="min-width:220px;flex:1;">
-                                <div style="color:#94a3b8;font-size:12px;margin-bottom:6px;">Imagen 9:16 (JPG, PNG, WEBP · 5 MB)</div>
+                                <div style="color:#94a3b8;font-size:12px;margin-bottom:6px;">Imagen max 5 MB. Si no es 9:16 se convierte.</div>
                                 <input class="edit-input" type="file" name="imagen" accept="image/jpeg,image/png,image/webp" data-check="image">
                             </div>
                             <div style="min-width:220px;flex:1;">
-                                <div style="color:#94a3b8;font-size:12px;margin-bottom:6px;">Video 9:16 (MP4 · 80 MB)</div>
+                                <div style="color:#94a3b8;font-size:12px;margin-bottom:6px;">Video MP4 (80 MB). <?= $videoConvierte ? 'Si no es 9:16 se convierte.' : 'Debe ser 9:16.' ?></div>
                                 <input class="edit-input" type="file" name="video_file" accept="video/mp4" data-check="video">
                             </div>
                         </div>
-                        <div class="nv-file-error" style="display:none;color:#fca5a5;font-size:12px;font-weight:600;"></div>
+                        <div class="nv-file-error" style="display:none;font-size:12px;font-weight:600;"></div>
                     </div>
                 </div>
 
@@ -396,7 +407,7 @@ require __DIR__ . '/../includes/portal_header.php';
 
             <div class="edit-footer">
                 <button type="button" class="btn btn-outline" onclick="closeModal()">Cancelar</button>
-                <button type="submit" class="btn-edit-save" data-role="submit">💾 Crear novedad</button>
+                <button type="submit" class="btn-edit-save" data-role="submit">💾 Publicar novedad</button>
             </div>
         </form>
 
@@ -410,7 +421,7 @@ require __DIR__ . '/../includes/portal_header.php';
             <input type="hidden" name="modal_seccion" value="noticia">
 
             <div class="edit-section-title" style="margin:18px 0 4px;font-weight:900;color:var(--g100);">
-                📰 Noticias
+                Noticias
             </div>
             <div style="color:#94a3b8;font-size:11px;margin-bottom:6px;">
                 Se muestran en la sección #articulos de la página principal. Imagen o video en formato 9:16.
@@ -443,15 +454,15 @@ require __DIR__ . '/../includes/portal_header.php';
                     <div class="edit-input-wrap" style="display:flex;flex-direction:column;gap:10px;">
                         <div style="display:flex;gap:12px;flex-wrap:wrap;">
                             <div style="min-width:220px;flex:1;">
-                                <div style="color:#94a3b8;font-size:12px;margin-bottom:6px;">Imagen 9:16 (JPG, PNG, WEBP · 5 MB)</div>
+                                <div style="color:#94a3b8;font-size:12px;margin-bottom:6px;">Imagen (JPG, PNG, WEBP · 5 MB). Si no es 9:16 se convierte.</div>
                                 <input class="edit-input" type="file" name="imagen" accept="image/jpeg,image/png,image/webp" data-check="image">
                             </div>
                             <div style="min-width:220px;flex:1;">
-                                <div style="color:#94a3b8;font-size:12px;margin-bottom:6px;">Video 9:16 (MP4 · 80 MB)</div>
+                                <div style="color:#94a3b8;font-size:12px;margin-bottom:6px;">Video MP4 (80 MB). <?= $videoConvierte ? 'Si no es 9:16 se convierte.' : 'Debe ser 9:16.' ?></div>
                                 <input class="edit-input" type="file" name="video_file" accept="video/mp4" data-check="video">
                             </div>
                         </div>
-                        <div class="nv-file-error" style="display:none;color:#fca5a5;font-size:12px;font-weight:600;"></div>
+                        <div class="nv-file-error" style="display:none;font-size:12px;font-weight:600;"></div>
                     </div>
                 </div>
 
@@ -482,7 +493,7 @@ require __DIR__ . '/../includes/portal_header.php';
 
             <div class="edit-footer">
                 <button type="button" class="btn btn-outline" onclick="closeModal()">Cancelar</button>
-                <button type="submit" class="btn-edit-save" data-role="submit">💾 Crear noticia</button>
+                <button type="submit" class="btn-edit-save" data-role="submit">💾 Publicar noticia</button>
             </div>
         </form>
     </div>
@@ -498,11 +509,23 @@ require __DIR__ . '/../includes/portal_header.php';
     var BASE = '<?= b('/') ?>';
     var RATIO = 9 / 16;
     var TOL = 0.03;
+    var VIDEO_CONVIERTE = <?= $videoConvierte ? 'true' : 'false' ?>;
+    var MODO_TXT = <?= TM_MEDIA_MODO === 'recorte' ? "'recortando los bordes al centro'" : "'sobre un fondo desenfocado'" ?>;
 
     // Toast (solo si volvió de guardar)
     var toast = document.getElementById('toast-ok');
     if (new URLSearchParams(location.search).get('ok') === '1') {
         if (toast) {
+            var qs = new URLSearchParams(location.search);
+            var conv = (qs.get('conv') || '').split(',').filter(Boolean);
+            var reuse = (qs.get('reuse') || '').split(',').filter(Boolean);
+            if (conv.length || reuse.length) {
+                var nom = function(t) { return t === 'video' ? 'El video' : 'La imagen'; };
+                var partes = [];
+                conv.forEach(function(t) { partes.push(nom(t) + ' se convirtió a 9:16.'); });
+                reuse.forEach(function(t) { partes.push(nom(t) + ' ya estaba en el servidor y se reutilizó (no se grabó otra copia).'); });
+                toast.textContent = '✅ Guardado. ' + partes.join(' ');
+            }
             setTimeout(function () {
                 toast.style.opacity = '0';
                 toast.style.transform = 'translateY(10px)';
@@ -558,11 +581,13 @@ require __DIR__ . '/../includes/portal_header.php';
         return cells[col].textContent.trim().toLowerCase();
     }
 
-    // ── Validación 9:16 en el navegador (imagen y video) ──
-    function mostrarErrorArchivo(form, msg) {
+    // ── Aviso 9:16 en el navegador (imagen y video) ──
+    // 'error' = rojo, 'info' = verde. Solo se rechaza lo que el servidor no puede procesar.
+    function mostrarErrorArchivo(form, msg, tipo) {
         var box = form.querySelector('.nv-file-error');
         if (!box) return;
         box.textContent = msg || '';
+        box.style.color = tipo === 'info' ? '#86efac' : '#fca5a5';
         box.style.display = msg ? 'block' : 'none';
     }
 
@@ -581,7 +606,7 @@ require __DIR__ . '/../includes/portal_header.php';
             var url = URL.createObjectURL(f);
             var rechazar = function(msg) {
                 inp.value = '';
-                mostrarErrorArchivo(form, msg);
+                mostrarErrorArchivo(form, msg, 'error');
                 URL.revokeObjectURL(url);
             };
 
@@ -589,8 +614,10 @@ require __DIR__ . '/../includes/portal_header.php';
                 var im = new Image();
                 im.onload = function() {
                     if (!ratioOk(im.naturalWidth, im.naturalHeight)) {
-                        rechazar('La imagen mide ' + im.naturalWidth + '×' + im.naturalHeight + '. Debe ser 9:16 (vertical).');
-                    } else { URL.revokeObjectURL(url); }
+                        mostrarErrorArchivo(form, 'La imagen mide ' + im.naturalWidth + '×' + im.naturalHeight +
+                            '. Se convertirá a 9:16 ' + MODO_TXT + '.', 'info');
+                    }
+                    URL.revokeObjectURL(url);
                 };
                 im.onerror = function() { rechazar('No se pudo leer la imagen.'); };
                 im.src = url;
@@ -599,7 +626,14 @@ require __DIR__ . '/../includes/portal_header.php';
                 v.preload = 'metadata';
                 v.onloadedmetadata = function() {
                     if (!ratioOk(v.videoWidth, v.videoHeight)) {
-                        rechazar('El video mide ' + v.videoWidth + '×' + v.videoHeight + '. Debe ser 9:16 (vertical).');
+                        var medida = 'El video mide ' + v.videoWidth + '×' + v.videoHeight + '. ';
+                        if (VIDEO_CONVIERTE) {
+                            mostrarErrorArchivo(form, medida + 'Se convertirá a 9:16 ' + MODO_TXT +
+                                '. Puede tardar unos minutos al guardar.', 'info');
+                            URL.revokeObjectURL(url);
+                        } else {
+                            rechazar(medida + 'Este servidor no convierte videos. Subilo ya en 9:16 (vertical).');
+                        }
                     } else { URL.revokeObjectURL(url); }
                 };
                 v.onerror = function() { rechazar('No se pudo leer el video.'); };
@@ -670,26 +704,33 @@ require __DIR__ . '/../includes/portal_header.php';
         var hint = document.getElementById('modalHint');
         var divider = document.getElementById('modalDivider');
 
-        if (editar) {
-            // Solo se muestra la parte del registro que se edita
+        // Con sección definida (editar, o uno de los dos botones de publicar) se ve solo ese formulario.
+        // Sin sección se muestran los dos, uno debajo del otro.
+        var unica = editar || !!seccion;
+
+        if (unica) {
             fT.style.display = (sec === 'tarjeta') ? '' : 'none';
             fN.style.display = (sec === 'noticia') ? '' : 'none';
             divider.style.display = 'none';
-            hint.style.display = 'none';
-            title.textContent = sec === 'noticia' ? '📰 Editar noticia' : '✏️ Editar novedad';
 
             var f = formDe(sec);
-            rellenarForm(f, data);
-            f.querySelector('[data-role=submit]').textContent = '💾 Guardar cambios';
+            if (editar) {
+                title.textContent = sec === 'noticia' ? ' Editar noticia' : ' Editar novedad';
+                rellenarForm(f, data);
+                f.querySelector('[data-role=submit]').textContent = '💾 Guardar cambios';
+            } else {
+                title.textContent = sec === 'noticia' ? ' Nueva noticia' : ' Nueva novedad';
+                f.querySelector('[data-role=submit]').textContent = sec === 'noticia' ? ' Publicar noticia' : ' Publicar novedad';
+            }
         } else {
             fT.style.display = '';
             fN.style.display = '';
             divider.style.display = '';
-            hint.style.display = '';
-            title.textContent = '➕ Nueva publicación';
-            fT.querySelector('[data-role=submit]').textContent = '💾 Crear novedad';
-            fN.querySelector('[data-role=submit]').textContent = '💾 Crear noticia';
+            title.textContent = ' Nueva publicación';
+            fT.querySelector('[data-role=submit]').textContent = ' Publicar novedad';
+            fN.querySelector('[data-role=submit]').textContent = ' Publicar noticia';
         }
+        hint.style.display = editar ? 'none' : '';
 
         document.getElementById('editModal').classList.add('open');
     };
@@ -727,12 +768,12 @@ require __DIR__ . '/../includes/portal_header.php';
         if (re.mode === 'editar') {
             openModal('editar', re.data, re.seccion);
         } else {
-            openModal('crear');
+            openModal('crear', null, re.seccion);
             var f = formDe(re.seccion);
             rellenarForm(f, re.data);
             f.querySelector('[data-role=accion]').value = 'crear';
             f.querySelector('[data-role=id]').value = '';
-            f.querySelector('[data-role=submit]').textContent = re.seccion === 'noticia' ? '💾 Crear noticia' : '💾 Crear novedad';
+            f.querySelector('[data-role=submit]').textContent = re.seccion === 'noticia' ? '💾 Publicar noticia' : '💾 Publicar novedad';
             var prev = f.querySelector('.nv-preview');
             if (prev) prev.style.display = 'none';
             f.scrollIntoView({ block: 'start' });
