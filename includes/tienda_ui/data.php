@@ -181,5 +181,22 @@ $TIENDA_PRODUCTOS = [
 
 // Ids que se muestran en cada bloque, en orden
 $TIENDA_OFERTAS_IDS = [100001, 100002, 100006, 100007, 100011, 100012];
-// El primero es el destacado grande (N.o 1); el resto va en la lista numerada
-$TIENDA_DESTACADOS_IDS = [100002, 100008, 100011, 100012, 100014];
+
+// Los destacados se guardan en tm_config para que el panel y la tienda usen
+// la misma selección sin duplicar el catálogo en otra tabla.
+$TIENDA_DESTACADOS_IDS_DEFAULT = [100002, 100008, 100011, 100012, 100014];
+$TIENDA_DESTACADOS_IDS = $TIENDA_DESTACADOS_IDS_DEFAULT;
+
+if (function_exists('config_get')) {
+    try {
+        $guardados = json_decode((string)config_get('tienda_destacados_ids'), true);
+        if (is_array($guardados)) {
+            $TIENDA_DESTACADOS_IDS = array_values(array_filter(
+                array_map('intval', $guardados),
+                fn($id) => isset($TIENDA_PRODUCTOS[(string)$id])
+            ));
+        }
+    } catch (Throwable $e) {
+        // Si la configuración todavía no existe, se usan los valores iniciales.
+    }
+}

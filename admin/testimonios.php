@@ -203,17 +203,17 @@ require __DIR__ . '/../includes/portal_header.php';
 <div class="stats" style="margin:28px 28px 0;">
     <div class="stat-card blue">
         <div class="stat-label">Total</div>
-        <div class="stat-value"><?= $total ?></div>
+        <div class="stat-value" style="text-align: end;"><?= $total ?></div>
         <div class="stat-sub">testimonios</div>
     </div>
     <div class="stat-card green">
         <div class="stat-label">Activos</div>
-        <div class="stat-value"><?= $activos ?></div>
+        <div class="stat-value" style="text-align: end;"><?= $activos ?></div>
         <div class="stat-sub">visibles</div>
     </div>
     <div class="stat-card amber">
         <div class="stat-label">Inactivos</div>
-        <div class="stat-value"><?= $total - $activos ?></div>
+        <div class="stat-value" style="text-align: end;"><?= $total - $activos ?></div>
         <div class="stat-sub">ocultos</div>
     </div>
 </div>
@@ -239,7 +239,7 @@ require __DIR__ . '/../includes/portal_header.php';
         </div>
     </div>
     <div class="table-wrap">
-        <table id="mainTable">
+        <table id="mainTable" style="width:100%;table-layout:auto;">
             <thead>
                 <tr>
                     <th class="sortable" data-col="0">Nombre<span class="sort-icon"></span></th>
@@ -256,7 +256,7 @@ require __DIR__ . '/../includes/portal_header.php';
                 <tr>
                     <td><strong><?= htmlspecialchars($t['nombre']) ?></strong></td>
                     <td><?= htmlspecialchars($t['rol'] ?: '-') ?></td>
-                    <td style="max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="<?= htmlspecialchars($t['texto']) ?>">
+                    <td style="max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="<?= htmlspecialchars($t['texto']) ?>">
                         <?= htmlspecialchars(mb_substr($t['texto'], 0, 60)) ?>…
                     </td>
                     <td>
@@ -304,7 +304,7 @@ require __DIR__ . '/../includes/portal_header.php';
 <div class="edit-modal-overlay" id="editModal">
     <div class="edit-modal">
         <div class="edit-modal-header">
-            <div class="edit-modal-title" id="modalTitle">➕ Nuevo testimonio</div>
+            <div class="edit-modal-title" id="modalTitle"> Nuevo testimonio</div>
             <button class="edit-modal-close" onclick="closeModal()">✕</button>
         </div>
 

@@ -240,17 +240,17 @@ require __DIR__ . '/../includes/portal_header.php';
 <div class="stats" style="margin:28px 28px 0;">
     <div class="stat-card blue">
         <div class="stat-label">Total</div>
-        <div class="stat-value"><?= $total ?></div>
+        <div class="stat-value" style="text-align: end;"><?= $total ?></div>
         <div class="stat-sub">usuarios</div>
     </div>
     <div class="stat-card green">
         <div class="stat-label">Aprobados</div>
-        <div class="stat-value"><?= $aprobados ?></div>
+        <div class="stat-value" style="text-align: end;"><?= $aprobados ?></div>
         <div class="stat-sub">activos</div>
     </div>
     <div class="stat-card amber">
         <div class="stat-label">Pendientes</div>
-        <div class="stat-value"><?= $pendientes ?></div>
+        <div class="stat-value" style="text-align: end;"><?= $pendientes ?></div>
         <div class="stat-sub">por aprobar</div>
     </div>
 </div>

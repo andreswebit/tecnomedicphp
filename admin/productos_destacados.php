@@ -5,23 +5,40 @@ portal_require_role(['admin']);
 
 $mensaje = '';
 
+require_once __DIR__ . '/../includes/tienda_ui/bootstrap.php';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = (int)($_POST['id'] ?? 0);
-    $destacado = isset($_POST['destacado']) ? 1 : 0;
-    $st = db()->prepare("UPDATE tm_productos SET destacado = ? WHERE id = ?");
-    $st->bind_param('ii', $destacado, $id);
-    $st->execute();
+    $destacado = isset($_POST['destacado']) && $_POST['destacado'] === '1';
+    $seleccionados = array_values(array_filter(
+        array_map('intval', $TIENDA_DESTACADOS_IDS),
+        fn($producto_id) => $producto_id !== $id
+    ));
+
+    if ($destacado) {
+        $seleccionados[] = $id;
+    }
+
+    config_set('tienda_destacados_ids', json_encode($seleccionados, JSON_UNESCAPED_UNICODE));
     header('Location: ' . strtok($_SERVER['REQUEST_URI'], '?') . '?ok=1');
     exit;
 }
 
-$productos = db()->query(
-    "SELECT p.*, f.nombre AS familia_nombre, c.nombre AS categoria_nombre, c.slug AS categoria_slug
-     FROM tm_productos p
-     JOIN tm_familias f ON f.id = p.familia_id
-     JOIN tm_categorias c ON c.id = f.categoria_id
-     ORDER BY p.destacado DESC, p.creado_en DESC"
-)->fetch_all(MYSQLI_ASSOC);
+$destacados = array_map('intval', $TIENDA_DESTACADOS_IDS);
+$productos = array_values(array_map(
+    static function (array $producto) use ($destacados): array {
+        $producto['destacado'] = in_array((int)$producto['id'], $destacados, true) ? 1 : 0;
+        $producto['familia_nombre'] = $producto['categoria'];
+        $producto['categoria_nombre'] = $producto['categoria'];
+        $producto['modalidad'] = 'venta';
+        $producto['activo'] = ((int)($producto['stock'] ?? 0) > 0) ? 1 : 0;
+        return $producto;
+    },
+    $TIENDA_PRODUCTOS
+));
+usort($productos, static function (array $a, array $b): int {
+    return [$b['destacado'], $a['id']] <=> [$a['destacado'], $b['id']];
+});
 
 $total = count($productos);
 $destacados = count(array_filter($productos, fn($p) => $p['destacado']));
@@ -98,7 +115,7 @@ require __DIR__ . '/../includes/portal_header.php';
                         <span class="badge pendiente"><?= htmlspecialchars($p['categoria_nombre'] ?? '-') ?></span>
                     </td>
                     <td><?= htmlspecialchars($p['familia_nombre'] ?? '-') ?></td>
-                    <td><?= htmlspecialchars(modalidad_label($p['modalidad'])) ?></td>
+                    <td>Venta</td>
                     <td>
                         <span class="badge <?= $p['activo'] ? 'aprobado' : 'pendiente' ?>">
                             <?= $p['activo'] ? 'Sí' : 'No' ?>

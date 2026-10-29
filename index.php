@@ -875,8 +875,7 @@ try {
                 <?php                 
                 require_once __DIR__ . '/includes/tienda_ui/bootstrap.php';
                 $ui = __DIR__ . '/includes/tienda_ui/';
-                require $ui . 'layout_top.php';
-                require $ui . 'ofertas.php';
+                require $ui . 'destacados_home.php';
             ?>
             </div>
     </section>
