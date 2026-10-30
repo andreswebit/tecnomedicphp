@@ -1,7 +1,7 @@
 # Graph Report - tecnomedic_php  (2026-10-29)
 
 ## Corpus Check
-- 162 files · ~4,431,418 words
+- 162 files · ~4,435,692 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `bab4a827`
+- Built from commit: `4dd67046`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 

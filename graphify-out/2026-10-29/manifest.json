@@ -5,8 +5,8 @@
     "semantic_hash": ""
   },
   "admin/config_sitio.php": {
-    "mtime": 1787959323.2382176,
-    "ast_hash": "3019cccf2f703c6bdcb2349cf207ceaf",
+    "mtime": 1792938384.71358,
+    "ast_hash": "a1ecab2a07ac8a4b2720260a1e18f6f3",
     "semantic_hash": ""
   },
   "admin/consultar_dni.php": {
@@ -25,8 +25,8 @@
     "semantic_hash": ""
   },
   "admin/index.php": {
-    "mtime": 1789667893.3616145,
-    "ast_hash": "7fe8f200446816abc25219ce4431db90",
+    "mtime": 1791070798.6255777,
+    "ast_hash": "c0b0306fa6fec8ba87fafc7b59f97721",
     "semantic_hash": ""
   },
   "admin/login.php": {
@@ -45,18 +45,18 @@
     "semantic_hash": ""
   },
   "admin/multimedia.php": {
-    "mtime": 1788125324.5815063,
-    "ast_hash": "07a2e508f105b043e96f8690c9c8cab0",
+    "mtime": 1792940066.9831371,
+    "ast_hash": "b1b174ff2fe1a83bf5df7c4dccbdd2bb",
     "semantic_hash": ""
   },
   "admin/novedades.php": {
-    "mtime": 1789667901.2264888,
-    "ast_hash": "89f00d368ed2750a763f12c97480d4aa",
+    "mtime": 1793142171.7221453,
+    "ast_hash": "7ca50d0cfde67ce41e7f6a2349ccb050",
     "semantic_hash": ""
   },
   "admin/pacientes.php": {
-    "mtime": 1789667892.2363384,
-    "ast_hash": "3c33a64aa05501afaa4ddc24a5623fe6",
+    "mtime": 1793139970.3978674,
+    "ast_hash": "b3df07b71f575cebb0d370afbd1cf34d",
     "semantic_hash": ""
   },
   "admin/portal_usuarios.php": {
@@ -75,13 +75,13 @@
     "semantic_hash": ""
   },
   "admin/productos_destacados.php": {
-    "mtime": 1789667898.9665802,
-    "ast_hash": "d529262c800a04ca2260fc0d4f70b587",
+    "mtime": 1793311727.9031334,
+    "ast_hash": "aeccf5d7dfcb1d9733a59f4f10fe04ca",
     "semantic_hash": ""
   },
   "admin/profesionales.php": {
-    "mtime": 1789688679.0216765,
-    "ast_hash": "b503ba9f2717e82e99053ef5974f8c7c",
+    "mtime": 1791244332.109672,
+    "ast_hash": "f182229b359f38ac24eba25053fb4264",
     "semantic_hash": ""
   },
   "admin/propuesta-ficha-medica.php": {
@@ -105,8 +105,8 @@
     "semantic_hash": ""
   },
   "admin/tablero.php": {
-    "mtime": 1790458026.4299607,
-    "ast_hash": "f91f7b5480f3bc06fc26e9f0058fc444",
+    "mtime": 1790895443.8438385,
+    "ast_hash": "fadf1fcb13aad7be26c7a0cb4991edc9",
     "semantic_hash": ""
   },
   "admin/test_mail.php": {
@@ -115,18 +115,18 @@
     "semantic_hash": ""
   },
   "admin/testimonios.php": {
-    "mtime": 1789667900.0897703,
-    "ast_hash": "5140e279bd2603da0a309948207d46b3",
+    "mtime": 1793280535.6783187,
+    "ast_hash": "42bb68c8a81d5c9b5742e2dab072c361",
     "semantic_hash": ""
   },
   "admin/tienda_section.php": {
-    "mtime": 1784675230.919482,
-    "ast_hash": "a2c2a49484fbc43a22f6c9141d4fc0ab",
+    "mtime": 1790894073.079836,
+    "ast_hash": "2a01e4b23249fb60ed5c9b65c89411b8",
     "semantic_hash": ""
   },
   "admin/usuarios.php": {
-    "mtime": 1789945227.6944356,
-    "ast_hash": "28c9b60f4f8dad3283272c7783394f6d",
+    "mtime": 1793280451.2227602,
+    "ast_hash": "83a3f79329c6d4877f21505818691518",
     "semantic_hash": ""
   },
   "api/horarios.php": {
@@ -165,8 +165,8 @@
     "semantic_hash": ""
   },
   "bot/webhook.php": {
-    "mtime": 1784850449.8380005,
-    "ast_hash": "7b0ee282cbd23d9c4afe553e92d8bd42",
+    "mtime": 1791044025.0147753,
+    "ast_hash": "e921291f13cd942cca645ac96214311b",
     "semantic_hash": ""
   },
   "composer.json": {
@@ -200,8 +200,8 @@
     "semantic_hash": ""
   },
   "includes/config_mail.php": {
-    "mtime": 1786201587.8183997,
-    "ast_hash": "a6e3bcc61eb45d2959c89d3332424bbd",
+    "mtime": 1792068347.3680408,
+    "ast_hash": "88f76f7cc21ea18a0f75869acdecc2b4",
     "semantic_hash": ""
   },
   "includes/db.php": {
@@ -225,13 +225,13 @@
     "semantic_hash": ""
   },
   "includes/db_novedades.php": {
-    "mtime": 1787702714.6702118,
-    "ast_hash": "1d4d8b219ceb8c73e6b47fbbdaf9c356",
+    "mtime": 1793150806.0,
+    "ast_hash": "1914d0b77f22b7747717c63be265ed25",
     "semantic_hash": ""
   },
   "includes/db_nutricion.php": {
-    "mtime": 1789655588.523954,
-    "ast_hash": "a9403d3d5e2e2829792db63f2ca1d2a5",
+    "mtime": 1791249169.888348,
+    "ast_hash": "eaef7585be428c10cbbf1440763f21d1",
     "semantic_hash": ""
   },
   "includes/db_portal.php": {
@@ -255,13 +255,13 @@
     "semantic_hash": ""
   },
   "includes/email.php": {
-    "mtime": 1787420374.0,
-    "ast_hash": "ccdd9b31e31ffa035f4c0924390e155e",
+    "mtime": 1792068880.3661752,
+    "ast_hash": "f19a3457f0b4c3a6fada4df741757417",
     "semantic_hash": ""
   },
   "includes/env_loader.php": {
-    "mtime": 1785812458.0,
-    "ast_hash": "318f5ceb803db6e95861b87bd4b64fe7",
+    "mtime": 1790810951.6006176,
+    "ast_hash": "565ad9a448b60760c26bb57901ad6c23",
     "semantic_hash": ""
   },
   "includes/pendiente.php": {
@@ -275,28 +275,23 @@
     "semantic_hash": ""
   },
   "includes/portal_header.php": {
-    "mtime": 1790457793.7079153,
-    "ast_hash": "6841edd5d646abbd2d2c4946c0a90227",
-    "semantic_hash": ""
-  },
-  "includes/tienda.php": {
-    "mtime": 1784932482.1819224,
-    "ast_hash": "c1224118bd14bd4a10bcf655cdf9a531",
+    "mtime": 1792106654.8346343,
+    "ast_hash": "43fee70b7303e8b4e79eadb525daf86d",
     "semantic_hash": ""
   },
   "includes/whatsapp.php": {
-    "mtime": 1784843150.8837442,
-    "ast_hash": "c39398c16ac9c1141010a09913c067a2",
+    "mtime": 1792635290.625543,
+    "ast_hash": "a0430fa67708fd207b235c0c213a669f",
     "semantic_hash": ""
   },
   "index.php": {
-    "mtime": 1788565581.5310514,
-    "ast_hash": "61a00c1cf31a6af86235a7bbde4c82b5",
+    "mtime": 1793311738.720006,
+    "ast_hash": "0ad32a49d5a6e927b0551fbe177d5aaf",
     "semantic_hash": ""
   },
   "login.php": {
-    "mtime": 1790288879.175524,
-    "ast_hash": "55ab5246905b8ab1b52e06284c83bd82",
+    "mtime": 1792102912.0702112,
+    "ast_hash": "04d834c70b14443409ed69edfc6f6a7f",
     "semantic_hash": ""
   },
   "loginViejo.php": {
@@ -380,8 +375,8 @@
     "semantic_hash": ""
   },
   "portal/nutricion/registro.php": {
-    "mtime": 1790204956.7961767,
-    "ast_hash": "2457467c37dd26ba2330f4d7b327384d",
+    "mtime": 1791501629.3223803,
+    "ast_hash": "9a8f17ede32a8ca60cc5367910e09a73",
     "semantic_hash": ""
   },
   "portal/paciente/dashboard.php": {
@@ -422,21 +417,6 @@
   "register.php": {
     "mtime": 1790285265.6498904,
     "ast_hash": "bd914e413c1574b54625d0c5edc3c1f0",
-    "semantic_hash": ""
-  },
-  "tienda/categoria.php": {
-    "mtime": 1784928342.4368405,
-    "ast_hash": "22dad41657b3903059f93188f86849ca",
-    "semantic_hash": ""
-  },
-  "tienda/index.php": {
-    "mtime": 1784928214.3611543,
-    "ast_hash": "b8e2829cd3b8de234b2d66570c1aef68",
-    "semantic_hash": ""
-  },
-  "tienda/producto.php": {
-    "mtime": 1784928391.2409074,
-    "ast_hash": "a50c76a30b7ccd303d55c5ea22d3591c",
     "semantic_hash": ""
   },
   "turnos.php": {
@@ -1100,18 +1080,13 @@
     "semantic_hash": ""
   },
   "admin/mensajes.php": {
-    "mtime": 1790519529.0615675,
-    "ast_hash": "a45acbfeeaab0b3190663644ec04709f",
-    "semantic_hash": ""
-  },
-  "api/delete_email.php": {
-    "mtime": 1790441361.2183778,
-    "ast_hash": "3a5c2ae360bfb9873aa25bf2175d7aeb",
+    "mtime": 1792106279.3021002,
+    "ast_hash": "06e9d5782f3503bc8bdb1a8b664f6b21",
     "semantic_hash": ""
   },
   "api/get_emails.php": {
-    "mtime": 1790381632.3900597,
-    "ast_hash": "10910efe125a83c10ab6a20f221b8ec6",
+    "mtime": 1792635290.6225452,
+    "ast_hash": "7ba9e4411020604ea4b4029654a16af5",
     "semantic_hash": ""
   },
   "api/get_wa_chats.php": {
@@ -1130,23 +1105,23 @@
     "semantic_hash": ""
   },
   "api/send_email.php": {
-    "mtime": 1790382376.4725444,
-    "ast_hash": "daeaa73556e5d050601cfc08051da193",
+    "mtime": 1792069884.4514945,
+    "ast_hash": "73212dc8dd88c6c0cc0f78751442ea01",
     "semantic_hash": ""
   },
   "api/send_wa_message.php": {
-    "mtime": 1790382344.61315,
-    "ast_hash": "4dfacc183040c134c3fe87fbfd74b134",
+    "mtime": 1792635290.6245437,
+    "ast_hash": "1b7495fb329076116816dc14aa487144",
     "semantic_hash": ""
   },
   "api/twilio_webhook.php": {
-    "mtime": 1790380053.0583959,
-    "ast_hash": "0329dc089a1d2ed5a3f593647638bb7f",
+    "mtime": 1791053702.0,
+    "ast_hash": "6d50cabcc17f96c4060e339d9e5cbf32",
     "semantic_hash": ""
   },
   "includes/email_reader.php": {
-    "mtime": 1790438512.5675585,
-    "ast_hash": "70f7812b3fc8e0f95dd2c5c84f4a89ed",
+    "mtime": 1792068241.8381784,
+    "ast_hash": "3134cda58465853bb35120567811991f",
     "semantic_hash": ""
   },
   "portal/ficha/agregar_medicamento.php": {
@@ -1207,6 +1182,401 @@
   "static/img/icons/mascota tecnomedic.png": {
     "mtime": 1790462732.049437,
     "ast_hash": "3d398973dee96f7a3819540be9066e2d",
+    "semantic_hash": ""
+  },
+  "api/mail_accounts.php": {
+    "mtime": 1792635290.6235447,
+    "ast_hash": "4a6ed8b43a1b9d910aecea99f90ab14e",
+    "semantic_hash": ""
+  },
+  "api/meta_webhook.php": {
+    "mtime": 1792627969.4096682,
+    "ast_hash": "9a7fa7326c543ac0da7507d8a48d16c8",
+    "semantic_hash": ""
+  },
+  "api/wa_diagnostico.php": {
+    "mtime": 1791043231.8755445,
+    "ast_hash": "88fa75223a7445d8dbdc3b651323f752",
+    "semantic_hash": ""
+  },
+  "api/wa_importar_twilio.php": {
+    "mtime": 1791043241.4641361,
+    "ast_hash": "3d964ef2dbe848487bc4a45843c5d2e7",
+    "semantic_hash": ""
+  },
+  "api/wa_nuevo_chat.php": {
+    "mtime": 1791075186.0,
+    "ast_hash": "a947ab4a3999fa4c3a05f57d4e9c107f",
+    "semantic_hash": ""
+  },
+  "includes/media_vertical.php": {
+    "mtime": 1793149684.0,
+    "ast_hash": "8b511845f8a5e401f6724dcc3c232cb6",
+    "semantic_hash": ""
+  },
+  "includes/tienda_ui/beneficios.php": {
+    "mtime": 1791511860.0,
+    "ast_hash": "6cf41d4f00a4ee7bf57245c4391d3ca5",
+    "semantic_hash": ""
+  },
+  "includes/tienda_ui/bootstrap.php": {
+    "mtime": 1793311701.6275034,
+    "ast_hash": "40e9be6bf2c2ca65b21f0524cd35523a",
+    "semantic_hash": ""
+  },
+  "includes/tienda_ui/cards/card_catalogo.php": {
+    "mtime": 1791511928.0,
+    "ast_hash": "aa6c6feb0389ff5cb32de007753224e1",
+    "semantic_hash": ""
+  },
+  "includes/tienda_ui/cards/card_destacado_item.php": {
+    "mtime": 1791511860.0,
+    "ast_hash": "f23095398c368380407eb6b27ec60e1f",
+    "semantic_hash": ""
+  },
+  "includes/tienda_ui/cards/card_destacado_principal.php": {
+    "mtime": 1791511860.0,
+    "ast_hash": "ae72a7dfb75f6bc7c1e95a04dceddc5a",
+    "semantic_hash": ""
+  },
+  "includes/tienda_ui/cards/card_oferta.php": {
+    "mtime": 1791511860.0,
+    "ast_hash": "bafd2f9648c717ab1dcb41302e6e6c4e",
+    "semantic_hash": ""
+  },
+  "includes/tienda_ui/carrito.php": {
+    "mtime": 1791511860.0,
+    "ast_hash": "0762329bee3a846bd3a0b4188a079413",
+    "semantic_hash": ""
+  },
+  "includes/tienda_ui/catalogo.php": {
+    "mtime": 1791511860.0,
+    "ast_hash": "31b520bb49009ef6e51a15924f564731",
+    "semantic_hash": ""
+  },
+  "includes/tienda_ui/categorias.php": {
+    "mtime": 1791511860.0,
+    "ast_hash": "559df24610b88ca64380964b907c5d02",
+    "semantic_hash": ""
+  },
+  "includes/tienda_ui/data.php": {
+    "mtime": 1793311637.93407,
+    "ast_hash": "cb84d24dfbe998553b489e97db635342",
+    "semantic_hash": ""
+  },
+  "includes/tienda_ui/destacados.php": {
+    "mtime": 1791511860.0,
+    "ast_hash": "ddc94e5bd8ea7bf5b4b984d09f38ce22",
+    "semantic_hash": ""
+  },
+  "includes/tienda_ui/destacados_home.php": {
+    "mtime": 1793311754.2786684,
+    "ast_hash": "616cfac674ca7670a46870cc05f9a9da",
+    "semantic_hash": ""
+  },
+  "includes/tienda_ui/footer.php": {
+    "mtime": 1791511860.0,
+    "ast_hash": "de1c0a3c6c27a765b93f60b8297b2ab3",
+    "semantic_hash": ""
+  },
+  "includes/tienda_ui/header.php": {
+    "mtime": 1792017259.4259408,
+    "ast_hash": "09440fa9cbd6ed58fd977d3a76050722",
+    "semantic_hash": ""
+  },
+  "includes/tienda_ui/helpers.php": {
+    "mtime": 1792015147.7803345,
+    "ast_hash": "35bdd8968387bc8ed38b3a95f5810ac6",
+    "semantic_hash": ""
+  },
+  "includes/tienda_ui/hero.php": {
+    "mtime": 1791511860.0,
+    "ast_hash": "26f8330c77af5356237ce981e51f04ac",
+    "semantic_hash": ""
+  },
+  "includes/tienda_ui/layout_bottom.php": {
+    "mtime": 1791511860.0,
+    "ast_hash": "a589f47430f7fd1ea89e32e4187db88e",
+    "semantic_hash": ""
+  },
+  "includes/tienda_ui/layout_top.php": {
+    "mtime": 1792014987.0402977,
+    "ast_hash": "4daccdcdbcb9b045ed73a31b91614a51",
+    "semantic_hash": ""
+  },
+  "includes/tienda_ui/ofertas.php": {
+    "mtime": 1791511860.0,
+    "ast_hash": "aa0dfcc195e39040f1a25bfbc53ba32b",
+    "semantic_hash": ""
+  },
+  "includes/wa_hub.php": {
+    "mtime": 1791043106.0525203,
+    "ast_hash": "b04f3b896076e033d0cce20f1ce0fdaa",
+    "semantic_hash": ""
+  },
+  "portal/js/mensajes-webmail.js": {
+    "mtime": 1792635290.627542,
+    "ast_hash": "772ea6a64fe58d47304a5e89d77b8784",
+    "semantic_hash": ""
+  },
+  "portal/nutricion/descargar_plan_nutricional_pdf.php": {
+    "mtime": 1791589634.8397198,
+    "ast_hash": "ed4f62e9c9f6023037457a94dce4108f",
+    "semantic_hash": ""
+  },
+  "portal/nutricion/guardar_plan_nutricional_profesional.php": {
+    "mtime": 1791249467.251819,
+    "ast_hash": "bbfce729fc5693a0eb0a80f963dbb552",
+    "semantic_hash": ""
+  },
+  "static/js/tienda-ortopedia.js": {
+    "mtime": 1791511952.0,
+    "ast_hash": "03ed1416e3d56f7a546ea131f0335de7",
+    "semantic_hash": ""
+  },
+  "tienda/ortopedia.php": {
+    "mtime": 1792015394.1454036,
+    "ast_hash": "dbbaebf27333671d431c0a83cdaa23de",
+    "semantic_hash": ""
+  },
+  "tmp_js_check.js": {
+    "mtime": 1790631460.3534956,
+    "ast_hash": "99ea87cd4bf8c837ec19762f63c22a96",
+    "semantic_hash": ""
+  },
+  "tienda/LEEME.txt": {
+    "mtime": 1791511964.0,
+    "ast_hash": "2065d1e4f5f94ecf46a2443c47c3af1f",
+    "semantic_hash": ""
+  },
+  "static/img/fondo/IMG_5858.JPG": {
+    "mtime": 1792273679.9085753,
+    "ast_hash": "ebad7c2e7cd250fc1d1e90fa7d572940",
+    "semantic_hash": ""
+  },
+  "static/img/icons/reloj.png": {
+    "mtime": 1792683737.6434567,
+    "ast_hash": "a77ca42ff63259ff8a52579376c29e70",
+    "semantic_hash": ""
+  },
+  "static/img/logos/site_logo_20261022_140702.png": {
+    "mtime": 1792670822.9401863,
+    "ast_hash": "a83eeee30295372c6bf5090d7f2fb297",
+    "semantic_hash": ""
+  },
+  "static/img/logos/site_logo_20261022_140744.png": {
+    "mtime": 1792670864.8033195,
+    "ast_hash": "60c7945f097d62c2a2bd471539f8a84b",
+    "semantic_hash": ""
+  },
+  "static/img/logos/site_logo_20261022_141507.png": {
+    "mtime": 1792671307.2445207,
+    "ast_hash": "a83eeee30295372c6bf5090d7f2fb297",
+    "semantic_hash": ""
+  },
+  "static/img/logos/site_logo_20261022_141616.png": {
+    "mtime": 1792671376.2488327,
+    "ast_hash": "a83eeee30295372c6bf5090d7f2fb297",
+    "semantic_hash": ""
+  },
+  "static/img/logos/site_logo_20261022_141732.png": {
+    "mtime": 1792671452.1679711,
+    "ast_hash": "a83eeee30295372c6bf5090d7f2fb297",
+    "semantic_hash": ""
+  },
+  "static/img/logos/site_logo_20261022_141858.png": {
+    "mtime": 1792671538.8957784,
+    "ast_hash": "60c7945f097d62c2a2bd471539f8a84b",
+    "semantic_hash": ""
+  },
+  "static/img/logos/site_logo_20261022_142747.png": {
+    "mtime": 1792672067.5367303,
+    "ast_hash": "a83eeee30295372c6bf5090d7f2fb297",
+    "semantic_hash": ""
+  },
+  "static/img/tecno-logoSF.png": {
+    "mtime": 1741600364.0,
+    "ast_hash": "a83eeee30295372c6bf5090d7f2fb297",
+    "semantic_hash": ""
+  },
+  "static/img/testimonios/testimonio_20261023_220517_ffa5d02b547f.jpg": {
+    "mtime": 1792785917.9037886,
+    "ast_hash": "f254c158713357bd7a1d3b3d1ff91ba3",
+    "semantic_hash": ""
+  },
+  "static/img/testimonios/testimonio_20261024_235809_101c2eee3dac.jpg": {
+    "mtime": 1792879089.1764357,
+    "ast_hash": "a387cf9068e39e3ea0044695ffd41886",
+    "semantic_hash": ""
+  },
+  "static/img/tienda/ortho-bandage-01.jpg": {
+    "mtime": 1791511798.0,
+    "ast_hash": "331ab236ba720005a0753e79ef30d616",
+    "semantic_hash": ""
+  },
+  "static/img/tienda/ortho-cane-01.jpg": {
+    "mtime": 1791511798.0,
+    "ast_hash": "48bdbfac2089ecd1a38ea0d1b11467a1",
+    "semantic_hash": ""
+  },
+  "static/img/tienda/ortho-cane-02.jpg": {
+    "mtime": 1791511798.0,
+    "ast_hash": "4823d443684b9dcbede23f2b49185310",
+    "semantic_hash": ""
+  },
+  "static/img/tienda/ortho-cane-03.jpg": {
+    "mtime": 1791511798.0,
+    "ast_hash": "7ac5dc1fb6bad994b03cb07cf3c7420a",
+    "semantic_hash": ""
+  },
+  "static/img/tienda/ortho-cast-01.jpg": {
+    "mtime": 1791511798.0,
+    "ast_hash": "aebe132712459a03e1dea8f80f6ff7a5",
+    "semantic_hash": ""
+  },
+  "static/img/tienda/ortho-crutches-01.jpg": {
+    "mtime": 1791511798.0,
+    "ast_hash": "6fa8d1f4052bd3e5a8c0563f0f129e90",
+    "semantic_hash": ""
+  },
+  "static/img/tienda/ortho-gauze-01.jpg": {
+    "mtime": 1791511798.0,
+    "ast_hash": "6be98ebc2cf918f01e21f7db02927640",
+    "semantic_hash": ""
+  },
+  "static/img/tienda/ortho-gel-01.jpg": {
+    "mtime": 1791511798.0,
+    "ast_hash": "a0b63563cda083b3293d1dac759f05ac",
+    "semantic_hash": ""
+  },
+  "static/img/tienda/ortho-gloves-01.jpg": {
+    "mtime": 1791511798.0,
+    "ast_hash": "392fcc26592f1d0fcee2155309b18639",
+    "semantic_hash": ""
+  },
+  "static/img/tienda/ortho-hero-01.jpg": {
+    "mtime": 1791511798.0,
+    "ast_hash": "29687b26d42c109671c7b875fbed1576",
+    "semantic_hash": ""
+  },
+  "static/img/tienda/ortho-knee-01.jpg": {
+    "mtime": 1791511798.0,
+    "ast_hash": "4e103409b0b3f97fe9bad9423d3b865d",
+    "semantic_hash": ""
+  },
+  "static/img/tienda/ortho-lumbar-01.jpg": {
+    "mtime": 1791511798.0,
+    "ast_hash": "7168bb542929f425108411d23f1b549a",
+    "semantic_hash": ""
+  },
+  "static/img/tienda/ortho-syringe-01.jpg": {
+    "mtime": 1791511798.0,
+    "ast_hash": "faa1912c8b6714590420b41093167ab1",
+    "semantic_hash": ""
+  },
+  "static/img/tienda/ortho-walker-01.jpg": {
+    "mtime": 1791511798.0,
+    "ast_hash": "71f7f001bdac1cb2aa3a8f36db1da44b",
+    "semantic_hash": ""
+  },
+  "static/img/tienda/ortho-wheelchair-01.jpg": {
+    "mtime": 1791511798.0,
+    "ast_hash": "625639893c3ec18fe30e942a451ef00d",
+    "semantic_hash": ""
+  },
+  "static/img/tienda/ortho-wheelchair-02.jpg": {
+    "mtime": 1791511798.0,
+    "ast_hash": "b0276f963a819ae6514a7e928789a320",
+    "semantic_hash": ""
+  },
+  "static/video/testimonios/testimonio_20261023_020728_69846e22a97f.jpg": {
+    "mtime": 1792714048.4450576,
+    "ast_hash": "a387cf9068e39e3ea0044695ffd41886",
+    "semantic_hash": ""
+  },
+  "static/video/testimonios/testimonio_20261023_220256_fcc073edb8a6.jpg": {
+    "mtime": 1792785776.8338506,
+    "ast_hash": "3e42d7b8b26774035ed6262314a782f5",
+    "semantic_hash": ""
+  },
+  "static/video/testimonios/testimonio_20261023_220727_ba8a0bddbb03.jpg": {
+    "mtime": 1792786047.3766527,
+    "ast_hash": "a387cf9068e39e3ea0044695ffd41886",
+    "semantic_hash": ""
+  },
+  "storage/novedades/novedad_6ade1bdbe2abc.jpg": {
+    "mtime": 1792941019.8280313,
+    "ast_hash": "772ef356cc1e5f8cccecbfbf705f1fcc",
+    "semantic_hash": ""
+  },
+  "storage/novedades/novedad_6ade1c0665ecd.jpg": {
+    "mtime": 1792941062.405721,
+    "ast_hash": "772ef356cc1e5f8cccecbfbf705f1fcc",
+    "semantic_hash": ""
+  },
+  "storage/novedades/novedad_6ade1c2407de6.jpg": {
+    "mtime": 1792941092.0118353,
+    "ast_hash": "1bae60216e543a0f6c5ff71af19d364f",
+    "semantic_hash": ""
+  },
+  "storage/novedades/novedad_6ade7d45f3df5.jpg": {
+    "mtime": 1792965957.855585,
+    "ast_hash": "17f559948b6a2c760253b7401ce73806",
+    "semantic_hash": ""
+  },
+  "storage/novedades/novedad_6adfca9c75a48.jpg": {
+    "mtime": 1793051292.4394965,
+    "ast_hash": "772ef356cc1e5f8cccecbfbf705f1fcc",
+    "semantic_hash": ""
+  },
+  "storage/novedades/novedad_6adfe0eab9bd4.jpg": {
+    "mtime": 1793057002.6475582,
+    "ast_hash": "979c4af4b034437f9ad0a21a898f46ac",
+    "semantic_hash": ""
+  },
+  "static/img/fondo/IMG_5859.mp4": {
+    "mtime": 1792259042.0,
+    "ast_hash": "3c667eab3a107ace78e4628f9e413acf",
+    "semantic_hash": ""
+  },
+  "static/video/hero_video_20261020_014133.mp4": {
+    "mtime": 1792453293.9353135,
+    "ast_hash": "3c667eab3a107ace78e4628f9e413acf",
+    "semantic_hash": ""
+  },
+  "static/video/testimonios/testimonio_20261023_020633_6cea98b6dece.mp4": {
+    "mtime": 1792713993.0170157,
+    "ast_hash": "deeb8a61175e51502be506b587e74da2",
+    "semantic_hash": ""
+  },
+  "static/video/testimonios/testimonio_20261023_020728_7f22370d7381.mp4": {
+    "mtime": 1792714048.434064,
+    "ast_hash": "deeb8a61175e51502be506b587e74da2",
+    "semantic_hash": ""
+  },
+  "static/video/testimonios/testimonio_20261023_220256_5b631fb83674.mp4": {
+    "mtime": 1792785776.828853,
+    "ast_hash": "ae3b2090482e6918641b35e61eeeb78d",
+    "semantic_hash": ""
+  },
+  "static/video/testimonios/testimonio_20261023_220727_0dd9cc343509.mp4": {
+    "mtime": 1792786047.3666608,
+    "ast_hash": "deeb8a61175e51502be506b587e74da2",
+    "semantic_hash": ""
+  },
+  "storage/novedades/novedad_video_6adfd6e5da9ff.mp4": {
+    "mtime": 1793054437.7725384,
+    "ast_hash": "1a44b96db8ff3d8c1ddf7a27de8c1b0a",
+    "semantic_hash": ""
+  },
+  "storage/novedades/novedad_video_6adfdfbe8472d.mp4": {
+    "mtime": 1793056702.1137507,
+    "ast_hash": "d1ce17f40315219aea38d98ff0744dab",
+    "semantic_hash": ""
+  },
+  "storage/novedades/novedad_video_6adfe076b380c.mp4": {
+    "mtime": 1793056886.669602,
+    "ast_hash": "736d94df1db14226de8bac3c528bf9d4",
     "semantic_hash": ""
   }
 }

@@ -581,12 +581,30 @@
   async function cargarCuentasAdmin() {
     try {
       var d = await getJSON(API.accounts + '?action=list');
-      if (!d.ok) return;
-      var accounts = d.accounts || [];
+      var accSel = $("wmAccountSelect");
+      if (!d.ok) {
+        console.warn('No se pudieron cargar las cuentas de correo:', d.error || 'respuesta inválida');
+        return;
+      }
+
+      var accounts = (d.accounts || []).filter(function (a) {
+        return String(a.active) !== '0';
+      });
+
+      // Si la tabla todavía no está creada o la API no devuelve cuentas,
+      // conservamos las cuentas históricas renderizadas por PHP.
+      if (!accounts.length && accSel && accSel.options.length) {
+        accounts = Array.prototype.map.call(accSel.options, function (opt) {
+          return {
+            account_key: opt.value,
+            display_name: opt.textContent,
+            active: 1
+          };
+        });
+      }
       S.accounts = accounts;
 
       // Renderizamos el select del panel lateral
-      var accSel = $("wmAccountSelect");
       if (accSel) {
         var cur = accSel.value || S.cuenta || 'contacto';
         accSel.innerHTML = '';

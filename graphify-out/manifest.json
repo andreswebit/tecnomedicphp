@@ -1185,7 +1185,7 @@
     "semantic_hash": ""
   },
   "api/mail_accounts.php": {
-    "mtime": 1792635290.6235447,
+    "mtime": 1793318535.652509,
     "ast_hash": "4a6ed8b43a1b9d910aecea99f90ab14e",
     "semantic_hash": ""
   },
@@ -1315,8 +1315,8 @@
     "semantic_hash": ""
   },
   "portal/js/mensajes-webmail.js": {
-    "mtime": 1792635290.627542,
-    "ast_hash": "772ea6a64fe58d47304a5e89d77b8784",
+    "mtime": 1793318556.6192906,
+    "ast_hash": "20dfe796c4ad5e9d875aefdeeceec8b9",
     "semantic_hash": ""
   },
   "portal/nutricion/descargar_plan_nutricional_pdf.php": {
@@ -1577,6 +1577,16 @@
   "storage/novedades/novedad_video_6adfe076b380c.mp4": {
     "mtime": 1793056886.669602,
     "ast_hash": "736d94df1db14226de8bac3c528bf9d4",
+    "semantic_hash": ""
+  },
+  "manual_funcionamiento_frontend.txt": {
+    "mtime": 1793313119.391901,
+    "ast_hash": "460434dcf5020c6ceb805c5a7a73fa12",
+    "semantic_hash": ""
+  },
+  "MANUAL.pdf": {
+    "mtime": 1793312574.114911,
+    "ast_hash": "8d0ddb08d287e3f2f010419fd5213ddf",
     "semantic_hash": ""
   }
 }

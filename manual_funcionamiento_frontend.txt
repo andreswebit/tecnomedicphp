@@ -1,0 +1,1030 @@
+MANUAL DE FUNCIONAMIENTO DEL SISTEMA COMPLETO
+TECNOMEDIC
+
+Versión de trabajo: octubre de 2026
+
+======================================================================
+1. OBJETIVO Y ALCANCE
+======================================================================
+
+Este manual describe el funcionamiento de TecnoMedic desde el punto de
+vista de las acciones que una persona puede realizar en las pantallas del
+sistema, sin entrar en detalles de programación, base de datos ni tareas
+internas del servidor.
+
+El sistema tiene cuatro perfiles principales:
+
+- Visitante: utiliza el sitio público sin iniciar sesión.
+- Paciente: tiene una cuenta aprobada y accede a Mi Portal.
+- Profesional: tiene una cuenta creada por administración y atiende a
+  pacientes que le fueron asignados.
+- Administrador: gestiona la operación del centro desde el panel privado.
+
+Las opciones visibles pueden variar según el rol, el estado de la cuenta y
+los permisos asignados.
+
+Cuando una función depende de una configuración externa, de una cuenta de
+correo, de WhatsApp o de la disponibilidad de contenido cargado por
+administración, se indica expresamente en este manual.
+
+======================================================================
+2. ACCESO GENERAL AL SITIO
+======================================================================
+
+2.1. Sitio público
+
+Cualquier visitante puede acceder al inicio y consultar la información
+pública sin tener una cuenta.
+
+Desde el sitio público se puede acceder a:
+
+- Inicio.
+- Áreas y especialidades.
+- Nosotros y el equipo profesional.
+- Turnos.
+- Tienda.
+- Recursos públicos.
+- Presupuestos.
+- Contacto.
+- Mi Portal.
+- WhatsApp e Instagram, cuando los enlaces están disponibles.
+
+2.2. Mi Portal
+
+El botón Mi Portal lleva a la pantalla de ingreso.
+
+Para ingresar:
+
+1. Escribí tu email o tu DNI.
+2. Escribí tu contraseña.
+3. Presioná el botón de ingreso.
+4. El sistema identifica tu rol y abre el panel correspondiente.
+
+Destinos según el rol:
+
+- Paciente: panel del paciente.
+- Profesional: lista de pacientes asignados.
+- Administrador: tablero de administración.
+
+Si una cuenta de paciente todavía no fue aprobada, no puede acceder al
+panel normal. El sistema muestra la pantalla de cuenta pendiente.
+
+2.3. Cerrar sesión
+
+En todos los perfiles autenticados aparece la opción Cerrar sesión al final
+del menú lateral de Mi Portal. Al utilizarla se cierra la sesión actual y se
+vuelve al acceso del sistema.
+
+======================================================================
+3. VISITANTE: FUNCIONES DEL SITIO PÚBLICO
+======================================================================
+
+3.1. Inicio
+
+La página de inicio permite:
+
+- Ver el banner principal y el video o imagen principal del sitio.
+- Entrar a las áreas del centro.
+- Solicitar un turno.
+- Consultar las novedades publicadas.
+- Ver artículos o noticias.
+- Consultar productos destacados de la tienda.
+- Leer testimonios publicados.
+- Acceder a Contacto, Presupuesto y Mi Portal.
+- Abrir los enlaces disponibles a redes sociales y WhatsApp.
+
+El contenido de novedades, noticias, testimonios, profesionales destacados,
+video principal y productos destacados depende de lo que haya publicado
+administración.
+
+3.2. Áreas y especialidades
+
+El sitio ofrece páginas informativas para:
+
+- Audiología.
+- Medicina Hiperbárica.
+- Nutrición.
+- Ortopedia y Rehabilitación.
+- Equipamiento Médico y Quirúrgico.
+
+En cada área se puede consultar la información pública de los servicios.
+Desde el sitio se puede continuar hacia la solicitud de turno cuando la
+página ofrece ese enlace.
+
+3.3. Novedades y noticias
+
+Las novedades se muestran en el carrusel o bloque destacado del inicio.
+Las noticias aparecen como tarjetas editoriales con imagen o video, título,
+etiqueta y descripción breve.
+
+Cuando una noticia tiene el botón Consultar, se puede abrir una
+comunicación por WhatsApp.
+
+Si no hay contenido publicado o activo, el sitio puede mostrar contenido
+fijo de respaldo o no mostrar elementos en esa sección.
+
+3.4. Reservar un turno
+
+La persona visitante puede solicitar un turno desde el botón Reservar
+Turno, desde la sección Turnos o desde la página turnos.php.
+
+Datos del formulario:
+
+- Especialidad o área.
+- Nombre.
+- Apellido.
+- DNI, opcional.
+- Obra social, opcional.
+- Teléfono.
+- Email.
+- Fecha.
+- Horario disponible.
+
+Especialidades disponibles:
+
+- Audiología.
+- Medicina Hiperbárica.
+- Nutrición.
+- Ortopedia y Rehabilitación.
+- Equipamiento Médico y Quirúrgico.
+
+El calendario y los horarios disponibles dependen de la fecha y del área
+seleccionada. Los horarios configurados habitualmente son:
+
+- 08:30.
+- 09:45.
+- 11:00.
+- 16:30.
+- 17:45.
+- 19:00.
+
+Cada horario tiene un cupo independiente por especialidad. Si el horario se
+llena, hay que elegir otro.
+
+El botón de envío se habilita cuando los datos obligatorios, la fecha y el
+horario son válidos.
+
+Mensajes habituales del formulario:
+
+- Por favor completá todos los campos obligatorios.
+- Elegí una especialidad válida.
+- El email ingresado no es válido.
+- El horario seleccionado no es válido.
+- Ese horario ya no tiene lugares disponibles. Por favor elegí otro.
+
+La solicitud queda inicialmente pendiente de confirmación por parte del
+centro. La persona puede recibir una comunicación por email o WhatsApp,
+dependiendo de la configuración disponible.
+
+3.5. Presupuestos
+
+La página pública de Presupuesto permite enviar una solicitud sin iniciar
+sesión.
+
+Datos que puede pedir el formulario:
+
+- Nombre.
+- Apellido.
+- DNI, CUIT o CUIL.
+- Email.
+- Teléfono.
+- Área o servicio.
+- Descripción de lo que se necesita presupuestar.
+
+Las áreas pueden incluir Audiología, Medicina Hiperbárica, Nutrición,
+Ortopedia, Equipamiento, Tienda/Productos u Otro.
+
+Al enviar la solicitud, el sistema informa que fue recibida y que la
+respuesta puede enviarse posteriormente por email. La consulta por
+WhatsApp depende de la integración disponible y de la configuración del
+sistema.
+
+3.6. Formulario de contacto
+
+Desde Contacto se puede enviar una consulta al centro.
+
+Campos:
+
+- Nombre, obligatorio.
+- Email, obligatorio.
+- Teléfono, opcional.
+- Motivo de contacto.
+- Mensaje, obligatorio.
+
+Motivos habituales:
+
+- Consulta general.
+- Turno.
+- Presupuesto.
+- Tienda o productos.
+- Otro.
+
+Después del envío se muestra un mensaje de recepción, por ejemplo:
+"¡Recibimos tu mensaje!"
+
+3.7. Recursos públicos
+
+La página Recursos muestra los materiales que administración marcó como
+públicos.
+
+El visitante puede:
+
+- Ver el título del recurso.
+- Leer su descripción.
+- Consultar el tipo de archivo.
+- Ver el área relacionada.
+- Descargar el archivo disponible.
+
+Los materiales exclusivos del Portal no aparecen en esta sección pública.
+
+3.8. Tienda pública
+
+La tienda permite consultar productos de ortopedia y movilidad cuando el
+catálogo está disponible.
+
+El visitante puede:
+
+- Buscar productos por nombre.
+- Filtrar por categoría.
+- Ver la cantidad de productos.
+- Abrir el detalle de un producto.
+- Agregar productos al carrito.
+- Aumentar o disminuir cantidades.
+- Quitar productos del carrito.
+- Vaciar el carrito.
+- Consultar el total calculado.
+- Intentar iniciar el proceso de compra desde Finalizar compra.
+
+El carrito se conserva en el navegador de la persona. El destino final de
+la compra y la confirmación de un pedido dependen de la integración de la
+tienda que se encuentre configurada.
+
+La tienda puede mostrar productos con precio, productos para consultar y
+productos destacados en el inicio.
+
+3.9. Bot de WhatsApp
+
+Al escribir al número del centro, el bot puede mostrar un menú con estas
+opciones:
+
+1. Sacar turno.
+2. Consultar mi turno.
+3. Modificar turno.
+4. Cancelar turno.
+5. Información y horarios.
+6. Nuestras áreas.
+7. Salir.
+
+Para volver al menú se puede escribir 0.
+
+El bot puede pedir datos como nombre, apellido, obra social, DNI, fecha y
+horario. Para consultar, modificar o cancelar un turno solicita el DNI.
+
+Si no encuentra un turno activo, muestra un mensaje indicando que no hay un
+turno activo para ese DNI.
+
+El bot no necesariamente incluye las mismas funciones que el sitio web. En
+particular, la selección de especialidad al reservar, el contacto con una
+persona y la solicitud de presupuestos por chat pueden depender de tareas
+pendientes de la integración de WhatsApp.
+
+======================================================================
+4. REGISTRO E INGRESO DE PACIENTES
+======================================================================
+
+4.1. Crear una cuenta
+
+Una persona puede registrarse como paciente desde Mi Portal o desde la
+página de registro.
+
+Datos principales:
+
+- Nombre.
+- Apellido.
+- DNI.
+- Email.
+- Obra social.
+- Teléfono, opcional.
+- Contraseña.
+- Repetición de contraseña.
+
+Reglas habituales:
+
+- La contraseña debe tener al menos seis caracteres.
+- Las contraseñas deben coincidir.
+- El email debe ser válido.
+- La cuenta debe ser aprobada por administración antes de ingresar.
+
+4.2. Cuenta pendiente
+
+Después del registro, la cuenta queda pendiente. Administración debe
+aprobarla desde el panel de Usuarios o Pacientes.
+
+Mientras permanezca pendiente, la persona no puede utilizar el panel
+completo del paciente.
+
+4.3. Errores de ingreso
+
+Si el email o DNI y la contraseña no coinciden, se muestra un mensaje de
+credenciales incorrectas.
+
+Si la cuenta está pendiente, desactivada o no habilitada, el sistema puede
+mostrar una pantalla informativa en lugar del panel.
+
+======================================================================
+5. PACIENTE: FUNCIONES DE MI PORTAL
+======================================================================
+
+5.1. Inicio del paciente
+
+El paciente puede consultar:
+
+- Saludo con su nombre.
+- DNI.
+- Email.
+- Teléfono.
+- Obra social.
+- Accesos a Mi perfil, Mi ficha médica, Registro alimentario, Recursos y
+  Mis turnos.
+
+5.2. Mi perfil
+
+El paciente puede modificar:
+
+- Teléfono.
+- Obra social.
+- Fecha de nacimiento.
+- Nueva contraseña, opcional.
+- Repetición de la nueva contraseña, opcional.
+
+El nombre y el DNI se muestran como datos identificatorios y no se editan
+desde esta pantalla.
+
+Para aplicar los cambios se debe presionar Guardar.
+
+5.3. Mis turnos
+
+El paciente puede consultar sus turnos registrados con:
+
+- Fecha.
+- Hora.
+- Estado.
+
+Los estados habituales son Pendiente, Confirmado y Cancelado.
+
+Desde el botón Agregar turno puede abrir una nueva solicitud con parte de
+sus datos ya completados, como nombre, apellido, DNI, teléfono, email y
+obra social.
+
+La pantalla del paciente no muestra necesariamente botones para modificar
+o cancelar un turno ya cargado. Esas operaciones pueden realizarse por el
+bot de WhatsApp o solicitarse al centro.
+
+5.4. Mi ficha médica
+
+El paciente puede abrir su ficha médica desde el inicio.
+
+Puede consultar, según la información cargada:
+
+- Historia clínica.
+- Tratamientos.
+- Medicamentos.
+- Estudios disponibles.
+
+La ficha del paciente es de solo lectura. La carga, modificación y
+eliminación de información clínica corresponde al profesional autorizado o
+al administrador.
+
+Los estudios disponibles pueden descargarse cuando el sistema los muestra
+con esa opción.
+
+5.5. Registro alimentario
+
+El paciente puede acceder a su registro nutricional.
+
+Puede consultar, si existen datos cargados:
+
+- Resumen nutricional.
+- Antropometría.
+- Composición corporal.
+- Laboratorio.
+- Hábitos y estilo de vida.
+- Diario alimentario.
+- Plan nutricional mensual.
+
+La acción confirmada para el paciente es agregar una comida al diario.
+
+Para agregar una comida se informa:
+
+- Fecha.
+- Tipo de comida: desayuno, almuerzo, merienda, cena o colación.
+- Descripción de lo consumido y, opcionalmente, cantidades.
+
+El paciente no puede editar el objetivo nutricional ni los controles
+profesionales cuando esos campos aparecen deshabilitados.
+
+El paciente tampoco puede borrar comidas o mediciones desde las opciones
+profesionales del módulo.
+
+5.6. Recursos del Portal
+
+El paciente puede consultar y descargar los documentos que administración
+publicó exclusivamente para usuarios del Portal.
+
+5.7. Restricciones del paciente
+
+El paciente no puede:
+
+- Aprobar cuentas.
+- Ver pacientes de otras personas.
+- Editar la ficha clínica.
+- Gestionar profesionales o asignaciones.
+- Administrar turnos de otras personas.
+- Administrar contenido del sitio.
+- Gestionar la tienda.
+- Leer los mensajes internos del centro.
+
+======================================================================
+6. PROFESIONAL: FUNCIONES DE MI PORTAL
+======================================================================
+
+6.1. Inicio del profesional
+
+El profesional puede consultar sus datos básicos, como área y matrícula,
+cuando fueron cargados por administración.
+
+6.2. Pacientes asignados
+
+La pantalla Mis pacientes asignados muestra únicamente los pacientes que
+administración vinculó con ese profesional.
+
+La tabla puede mostrar:
+
+- Nombre y apellido.
+- DNI.
+- Obra social.
+- Teléfono.
+- Área o especialidad.
+
+El profesional no puede ver pacientes que no tengan una asignación activa.
+
+6.3. Ficha médica del paciente
+
+Desde el botón Ficha, el profesional puede abrir la ficha de un paciente
+asignado.
+
+Según el permiso y la asignación, puede:
+
+- Consultar los datos del paciente.
+- Editar datos personales habilitados.
+- Consultar la historia clínica.
+- Agregar o modificar información de historia clínica.
+- Eliminar registros de historia cuando la pantalla lo habilita.
+- Agregar tratamientos.
+- Eliminar tratamientos.
+- Agregar medicamentos.
+- Eliminar medicamentos.
+- Subir estudios.
+- Descargar estudios.
+- Eliminar estudios.
+
+Los estudios admitidos pueden ser PDF, JPG o PNG, con el límite indicado en
+la pantalla de carga.
+
+Los botones de edición aparecen solamente cuando el profesional tiene
+permiso para ese paciente. La asignación activa es la que habilita el
+acceso.
+
+6.4. Módulo de Nutrición
+
+Cuando el paciente está asignado en el área de Nutrición, el profesional
+puede abrir el registro nutricional.
+
+Secciones disponibles:
+
+- Resumen.
+- Antropometría.
+- Composición corporal.
+- Laboratorio.
+- Hábitos.
+- Diario alimentario.
+- Plan nutricional.
+
+El profesional autorizado puede cargar o guardar:
+
+Resumen y ficha profesional:
+
+- Sexo biológico.
+- Ocupación o tipo de trabajo.
+- Objetivo principal de consulta.
+- Patologías o condiciones diagnosticadas.
+- Medicación actual.
+- Suplementación actual.
+
+Antropometría:
+
+- Fecha de medición.
+- Peso.
+- Altura.
+- IMC.
+- Cintura.
+- Cadera.
+- Brazo relajado.
+- Brazo contraído.
+- Muslo medial.
+- Observaciones, cuando estén disponibles.
+
+Composición corporal:
+
+- Pliegues cutáneos.
+- Porcentaje de grasa.
+- Masa grasa.
+- Porcentaje y masa muscular.
+- Porcentaje de agua.
+- Grasa visceral.
+- IMC.
+
+Laboratorio:
+
+- Fecha del análisis.
+- Glucosa.
+- Hemoglobina glicosilada.
+- Insulina.
+- Colesterol total, LDL y HDL.
+- Triglicéridos.
+- GOT y GPT.
+- Creatinina.
+- Urea.
+- Ácido úrico.
+- Hemoglobina y hematocrito.
+- Ferritina e hierro.
+- TSH, T3 y T4.
+- Vitamina D y vitamina B12.
+- Ácido fólico.
+
+Hábitos y variables:
+
+- Presión arterial.
+- Horas y calidad del sueño.
+- Tipo de evacuación y frecuencia.
+- Nivel de estrés.
+- Actividad física.
+- Consumo diario de agua.
+
+Diario alimentario:
+
+- Consultar comidas cargadas por el paciente.
+- Agregar comidas cuando el permiso de edición lo permite.
+
+Plan nutricional:
+
+- Elegir el mes.
+- Completar el calendario semanal o mensual.
+- Guardar el plan nutricional.
+- Consultar o descargar el plan cuando la opción esté disponible.
+
+La pantalla puede indicar que no existe interpretación automática de los
+valores de laboratorio. La interpretación clínica corresponde al
+profesional.
+
+6.5. Recursos
+
+El profesional puede consultar y descargar los recursos disponibles para el
+Portal.
+
+6.6. Restricciones del profesional
+
+El profesional no puede:
+
+- Ver pacientes no asignados.
+- Aprobar cuentas de usuarios.
+- Crear otros administradores.
+- Gestionar el contenido general del sitio.
+- Administrar todos los turnos como un administrador.
+- Acceder a los mensajes generales del centro desde su menú normal.
+- Gestionar la tienda o los productos destacados.
+
+======================================================================
+7. ADMINISTRADOR: TABLERO Y MÓDULOS
+======================================================================
+
+7.1. Tablero
+
+Después de iniciar sesión, el administrador accede al tablero principal.
+
+Accesos visibles:
+
+- Turnos.
+- Pacientes.
+- Profesionales.
+- Usuarios.
+- Consultar DNI.
+- Recursos.
+- Mensajes.
+- Tienda.
+- Multimedia.
+
+7.2. Turnos
+
+El administrador puede:
+
+- Ver el listado de turnos.
+- Consultar el calendario.
+- Cambiar el mes visible.
+- Buscar turnos o pacientes.
+- Filtrar y ordenar la información.
+- Crear un nuevo turno desde el formulario.
+- Cambiar el estado de un turno.
+- Guardar estados Pendiente, Confirmado o Cancelado.
+- Editar un turno.
+- Imprimir el turno o ticket.
+- Imprimir listados cuando la opción aparece.
+- Eliminar turnos con confirmación.
+
+Un turno nuevo normalmente comienza como Pendiente. El centro puede
+confirmarlo o cancelarlo desde el panel.
+
+La disponibilidad de horarios se calcula teniendo en cuenta la fecha y el
+área o especialidad.
+
+7.3. Pacientes
+
+El módulo de pacientes permite:
+
+- Ver pacientes activos.
+- Buscar pacientes.
+- Ordenar la lista.
+- Crear un nuevo paciente.
+- Aprobar cuentas pendientes.
+- Rechazar o desactivar cuentas cuando la opción aparece.
+- Ver la ficha médica.
+- Ver el registro nutricional.
+- Editar datos personales.
+- Editar contacto, fecha de nacimiento y obra social.
+- Eliminar un paciente con confirmación.
+
+El administrador puede consultar la ficha de cualquier paciente del sistema.
+
+7.4. Profesionales y asignaciones
+
+El administrador puede:
+
+- Ver los profesionales registrados.
+- Buscar y filtrar profesionales.
+- Crear profesionales.
+- Editar sus datos.
+- Cargar o modificar área, matrícula y datos profesionales.
+- Activar o desactivar profesionales.
+- Eliminar profesionales cuando la pantalla lo permite.
+- Asignar un paciente a un profesional.
+- Elegir el área de la asignación.
+- Ver las asignaciones existentes.
+- Desasignar pacientes.
+
+Cuando se desasigna un paciente, la relación queda inactiva. El profesional
+deja de ver la ficha de ese paciente.
+
+7.5. Usuarios
+
+El administrador puede gestionar las cuentas del sistema.
+
+Acciones visibles:
+
+- Crear usuarios.
+- Crear pacientes.
+- Crear profesionales.
+- Crear administradores, según los permisos de la cuenta actual.
+- Editar datos de usuarios.
+- Editar datos profesionales.
+- Aprobar cuentas pendientes.
+- Activar o desactivar cuentas.
+- Resetear contraseñas.
+- Eliminar usuarios, salvo las restricciones de seguridad del sistema.
+- Buscar y ordenar usuarios.
+
+La aprobación de pacientes es necesaria para que puedan utilizar su Portal.
+
+7.6. Consultar DNI
+
+El administrador puede buscar un DNI en el padrón del centro.
+
+La consulta sirve para verificar si la persona ya está registrada o cargada
+en el sistema y mostrar la información disponible para ese DNI.
+
+7.7. Recursos
+
+El administrador puede administrar los documentos descargables.
+
+Acciones visibles:
+
+- Ver el total de recursos.
+- Ver recursos públicos.
+- Ver recursos exclusivos del Portal.
+- Buscar y ordenar recursos.
+- Subir archivos.
+- Cargar título y descripción.
+- Asociar un área.
+- Elegir si el recurso es público o exclusivo del Portal.
+- Descargar un recurso.
+- Eliminarlo con confirmación.
+
+Los formatos y el tamaño máximo permitidos se indican en el formulario de
+carga. Habitualmente se admiten PDF, JPG, JPEG, PNG, DOC y DOCX, con un
+límite de hasta 15 MB.
+
+7.8. Centro de mensajes
+
+El módulo Mensajes tiene tres áreas principales.
+
+A. Mensajes Web
+
+El administrador puede:
+
+- Ver los mensajes recibidos desde Contacto.
+- Buscar por nombre, email, teléfono, motivo o mensaje.
+- Abrir el detalle de un mensaje.
+- Marcarlo como Atendido.
+- Volver a marcarlo como Pendiente.
+- Eliminarlo.
+- Consultar contadores de mensajes totales, pendientes y atendidos.
+
+B. Email corporativo
+
+La interfaz de correo puede permitir:
+
+- Ver la bandeja de entrada.
+- Actualizar los mensajes.
+- Leer correos.
+- Redactar mensajes.
+- Responder.
+- Responder a todos.
+- Reenviar.
+- Eliminar mensajes.
+- Marcar mensajes como leídos o no leídos.
+- Buscar mensajes.
+- Filtrar carpetas.
+- Consultar distintas cuentas configuradas.
+
+La disponibilidad real del envío depende de la configuración del correo
+corporativo y del servidor.
+
+C. WhatsApp Web
+
+La interfaz muestra los chats recibidos y los mensajes pendientes de leer.
+Según la configuración, puede permitir abrir conversaciones, leer mensajes,
+marcarlos y responder desde el panel.
+
+La disponibilidad de cada acción depende de la integración de WhatsApp y de
+la conexión configurada.
+
+7.9. Presupuestos
+
+El módulo de Presupuestos permite al administrador:
+
+- Ver el total de solicitudes.
+- Ver presupuestos Pendientes.
+- Ver presupuestos Elaborados.
+- Ver presupuestos Enviados.
+- Buscar solicitudes.
+- Ordenar columnas.
+- Abrir el detalle.
+- Consultar paciente, DNI/CUIT, email, teléfono, área, fecha y descripción.
+- Eliminar una solicitud con confirmación.
+
+Los estados previstos son:
+
+- Pendiente.
+- Elaborado.
+- Enviado.
+
+En la interfaz actualmente relevada, la consulta y eliminación están
+confirmadas. La edición del presupuesto, el cambio manual de estado y el
+envío desde esta pantalla pueden no estar disponibles todavía.
+
+El acceso a Presupuestos puede existir como página protegida aunque no
+aparezca como acceso directo en todas las versiones del tablero o menú.
+
+7.10. Tienda y productos destacados
+
+El acceso Tienda puede mostrar la sección o catálogo de productos.
+
+Desde el panel de productos destacados, el administrador puede:
+
+- Ver los productos disponibles.
+- Buscar y ordenar productos.
+- Consultar categoría, familia y modalidad.
+- Activar un producto como destacado.
+- Quitar un producto de destacados.
+
+Los productos destacados son los que pueden aparecer en la sección Tienda
+del inicio.
+
+La gestión completa de stock, pedidos, precios y catálogo depende de la
+integración de tienda que esté configurada. Esas acciones no están todas
+confirmadas desde el panel frontend actual.
+
+7.11. Multimedia
+
+El módulo Multimedia reúne varias áreas de gestión.
+
+A. Novedades y noticias
+
+El administrador puede, según la pantalla:
+
+- Crear una novedad.
+- Crear una noticia.
+- Editar contenido.
+- Eliminar contenido.
+- Cargar título, etiqueta y extracto.
+- Definir el orden.
+- Activar o desactivar la publicación.
+- Subir imágenes.
+- Subir videos MP4.
+
+Las novedades se muestran en el carrusel o bloque destacado del inicio.
+Las noticias se muestran en la sección de artículos.
+
+Las imágenes y videos están pensados para formato vertical 9:16. El sistema
+puede convertir archivos que no tengan esa proporción cuando cuenta con las
+herramientas necesarias.
+
+Límites habituales indicados por el sistema:
+
+- Imágenes JPG, PNG o WEBP de hasta 5 MB.
+- Videos MP4 de hasta 80 MB.
+
+B. Staff médico
+
+El administrador puede gestionar profesionales destacados del sitio:
+
+- Agregar un miembro.
+- Editar datos.
+- Eliminarlo.
+- Cargar nombre y apellido.
+- Cargar título y especialidad.
+- Agregar descripción.
+- Agregar Instagram cuando corresponda.
+- Subir foto.
+- Definir orden.
+- Activar o desactivar la publicación.
+
+C. Testimonios
+
+El administrador puede acceder a la gestión de testimonios y reseñas de
+pacientes. Las opciones de alta, edición, activación y eliminación dependen
+de los controles que muestre esa pantalla.
+
+D. Configuración del sitio
+
+La configuración del sitio permite administrar elementos generales visibles
+en el frontend, como el video principal y otros datos de contacto o redes,
+cuando esos campos están habilitados.
+
+7.12. Recordatorios
+
+El sistema cuenta con una pantalla para enviar recordatorios de turnos por
+email.
+
+El administrador puede ejecutarla desde el navegador con la sesión
+correspondiente. También puede existir una ejecución programada diaria en
+el hosting.
+
+La entrega efectiva depende de la configuración del correo.
+
+======================================================================
+8. ESTADOS Y PERMISOS IMPORTANTES
+======================================================================
+
+8.1. Estados de turnos
+
+- Pendiente: solicitud recibida, todavía no confirmada.
+- Confirmado: turno aprobado por el centro.
+- Cancelado: turno anulado.
+
+8.2. Estados de usuarios
+
+Una cuenta puede estar pendiente, activa, aprobada o desactivada según el
+rol y la acción realizada por administración.
+
+8.3. Ficha médica
+
+- Paciente: consulta su propia ficha en modo lectura.
+- Profesional: consulta y edita fichas de pacientes asignados.
+- Administrador: consulta y edita las fichas del sistema.
+
+8.4. Registro nutricional
+
+- Paciente: consulta sus datos y puede agregar comidas al diario.
+- Profesional: consulta y edita el registro de pacientes asignados,
+  especialmente cuando la asignación corresponde a Nutrición.
+- Administrador: puede consultar y editar los registros desde las
+  opciones administrativas habilitadas.
+
+======================================================================
+9. PREGUNTAS FRECUENTES
+======================================================================
+
+No puedo ingresar.
+
+Verificá el email o DNI y la contraseña. Si la cuenta es nueva, puede estar
+pendiente de aprobación o desactivada.
+
+No aparece mi turno.
+
+Revisá Mis turnos. Si todavía no aparece, contactá al centro para verificar
+que la solicitud haya sido recibida.
+
+El horario ya no tiene lugar.
+
+Elegí otro horario. Los cupos se controlan por fecha, hora y especialidad.
+
+No puedo editar mi ficha médica.
+
+El paciente tiene acceso de solo lectura. La edición corresponde a un
+profesional asignado o al administrador.
+
+No veo un paciente en mi lista profesional.
+
+El profesional sólo ve pacientes con asignación activa. Consultá con
+administración.
+
+No puedo cargar datos nutricionales.
+
+Los controles profesionales requieren permiso de edición. El paciente puede
+agregar comidas al diario, pero no modificar el objetivo ni los controles
+profesionales.
+
+No veo un recurso.
+
+El recurso puede ser exclusivo del Portal, estar desactivado o no haber sido
+cargado todavía.
+
+La imagen o el video no queda vertical.
+
+El sistema intenta adaptar el contenido. Si la conversión no es posible,
+conviene subir un archivo preparado en formato vertical 9:16.
+
+No puedo finalizar una compra.
+
+La tienda puede mostrar el carrito aunque la etapa de checkout dependa de
+una integración externa o todavía no esté habilitada.
+
+No aparece Presupuestos en el menú.
+
+La página puede existir y estar protegida para administración aunque el
+acceso directo no figure en todas las versiones del tablero.
+
+======================================================================
+10. FUNCIONES QUE DEPENDEN DE CONFIGURACIÓN O DESARROLLO PENDIENTE
+======================================================================
+
+Las siguientes funciones deben verificarse antes de presentar el sistema
+como completamente operativo en producción:
+
+- Recuperación de contraseña desde el frontend.
+- Edición o cancelación de turnos desde el Portal del paciente.
+- Selección de especialidad en todas las reservas realizadas por WhatsApp.
+- Opción del bot para contactar a una persona.
+- Opción del bot para solicitar presupuestos.
+- Respuesta efectiva y envío desde el correo corporativo.
+- Respuesta efectiva desde WhatsApp Web.
+- Checkout y confirmación de pedidos de la tienda.
+- Gestión completa de precios, stock y pedidos.
+- Cambio de estado y envío de presupuestos desde el módulo de
+  administración.
+- Permisos detallados de cada pantalla nutricional según el tipo de
+  profesional.
+- Disponibilidad de archivos y recursos cargados en cada entorno.
+- Conversión automática de videos si el servidor no cuenta con la
+  herramienta necesaria.
+
+======================================================================
+11. RESUMEN POR ROL
+======================================================================
+
+VISITANTE
+
+Puede navegar el sitio, consultar áreas, solicitar turnos, pedir
+presupuestos, enviar mensajes de contacto, descargar recursos públicos,
+consultar la tienda y utilizar las funciones disponibles del bot.
+
+PACIENTE
+
+Puede ingresar a Mi Portal, consultar sus datos, editar su perfil, ver sus
+turnos, agregar nuevos turnos, consultar su ficha médica en modo lectura,
+agregar comidas al diario nutricional y descargar recursos del Portal.
+
+PROFESIONAL
+
+Puede ver únicamente sus pacientes asignados, consultar y editar sus fichas
+según permiso, gestionar la información clínica y trabajar con el módulo de
+Nutrición cuando corresponde a su asignación.
+
+ADMINISTRADOR
+
+Puede gestionar turnos, pacientes, profesionales, usuarios, asignaciones,
+DNI, recursos, mensajes, presupuestos, productos destacados, novedades,
+noticias, staff, testimonios y configuración visible del sitio, según las
+opciones disponibles en cada módulo.
+
+FIN DEL MANUAL
