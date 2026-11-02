@@ -128,8 +128,11 @@
       }
     }
     if (!d) {
-      console.error("Respuesta no JSON", r.status, r.url, txt.slice(0, 300));
-      return { ok: false, error: "HTTP " + r.status + " respuesta invalida" };
+      console.error("Respuesta no JSON", r.status, r.url, txt.slice(0, 1000));
+      return {
+        ok: false,
+        error: "HTTP " + r.status + " respuesta inválida: " + (txt.trim().slice(0, 180) || "respuesta vacía")
+      };
     }
     return d;
   }
@@ -583,7 +586,12 @@
       var d = await getJSON(API.accounts + '?action=list');
       var accSel = $("wmAccountSelect");
       if (!d.ok) {
+        // La API puede no estar disponible todavía en una copia desplegada.
+        // No interrumpimos el webmail: el selector PHP conserva las cuentas base.
         console.warn('No se pudieron cargar las cuentas de correo:', d.error || 'respuesta inválida');
+        if (accSel && accSel.options.length) {
+          S.cuenta = accSel.value || 'contacto';
+        }
         return;
       }
 

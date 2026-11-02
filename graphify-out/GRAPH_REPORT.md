@@ -1,16 +1,16 @@
 # Graph Report - tecnomedic_php  (2026-10-29)
 
 ## Corpus Check
-- 162 files · ~4,435,692 words
+- 162 files · ~4,435,706 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 459 nodes · 705 edges · 128 communities (126 shown, 2 thin omitted)
+- 458 nodes · 702 edges · 128 communities (126 shown, 2 thin omitted)
 - Extraction: 79% EXTRACTED · 21% INFERRED · 0% AMBIGUOUS · INFERRED: 150 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `4dd67046`
+- Built from commit: `683a2bef`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -153,8 +153,8 @@ Cohesion: 0.50
 Nodes (3): contacto_crear(), contacto_marcar_atendido(), contactos_listar()
 
 ### Community 86 - "get_emails.php"
-Cohesion: 0.70
-Nodes (4): account_table_exists(), _emails_list(), is_active_mail_account(), mysqli
+Cohesion: 0.67
+Nodes (3): _emails_list(), is_active_mail_account(), mysqli
 
 ### Community 88 - "tmp_js_check.js"
 Cohesion: 0.47
@@ -181,7 +181,7 @@ Nodes (3): wa_hub_guardar_entrante(), wa_hub_log(), wa_hub_tablas()
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `db()` connect `db` to `db_portal.php`, `db_testimonios.php`, `db.php`, `auth.php`, `email.php`, `wa_hub_guardar_entrante`, `db_config.php`, `db_presupuestos.php`, `email_reader.php`, `db_contacto.php`, `persona_upsert`, `db_novedades.php`, `db_recursos.php`, `db_nutricion.php`?**
-  _High betweenness centrality (0.249) - this node is a cross-community bridge._
+  _High betweenness centrality (0.251) - this node is a cross-community bridge._
 - **Why does `enviar_email()` connect `email.php` to `db`, `email_reader.php`?**
   _High betweenness centrality (0.039) - this node is a cross-community bridge._
 - **Why does `get_mail_account_config()` connect `email_reader.php` to `db`?**

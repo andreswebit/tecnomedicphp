@@ -26,17 +26,8 @@ if (in_array($folderUpper, $standardFolderAliases, true)) {
     $folderForResolve = map_folder_alias_ferozo($folderUpper);
 }
 
-function account_table_exists(mysqli $db): bool {
-    try {
-        $r = $db->query("SHOW TABLES LIKE 'tm_mail_accounts' LIMIT 1");
-        return (bool)($r && $r->num_rows > 0);
-    } catch (Throwable $e) {
-        return false;
-    }
-}
-
 function is_active_mail_account(mysqli $db, string $cuenta): bool {
-    $has = account_table_exists($db);
+    $has = function_exists('account_table_exists') && account_table_exists($db);
     if (!$has) {
         return in_array($cuenta, ['contacto', 'noreply'], true);
     }
